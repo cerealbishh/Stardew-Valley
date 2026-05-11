@@ -400,7 +400,7 @@
 <p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="bridge-lbl" id="blbl"&gt;Bridge Disconnected&lt;/div&gt;</p>
 <p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
 <p class="p1"><span class="Apple-converted-space">      </span>&lt;input class="bridge-inp" id="bridge-ip" type="text"</p>
-<p class="p1"><span class="Apple-converted-space">             </span>placeholder="Mac IP — e.g. 10.0.0.70"</p>
+<p class="p1"><span class="Apple-converted-space">             </span>placeholder="IP or tunnel URL — e.g. 10.0.0.70 or https://abc.trycloudflare.com"</p>
 <p class="p1"><span class="Apple-converted-space">             </span>autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"&gt;</p>
 <p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
 <p class="p2"><br></p>
@@ -657,9 +657,10 @@
 <p class="p1"><span class="Apple-converted-space">  </span>clearTimeout(S.retry);</p>
 <p class="p1"><span class="Apple-converted-space">  </span>const ip = $('bridge-ip').value.trim();</p>
 <p class="p1"><span class="Apple-converted-space">  </span>if (!ip) { setBridgeOff(); return; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>localStorage.setItem('sdv_ip', ip);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>localStorage.setItem('sdv_ip', ip);
+  const saveUrl = ip.startsWith('http') ? ip.replace(/\\/+$/,'')+'/save' : `https://${ip}:${BRIDGE_PORT}/save`;</p>
 <p class="p1"><span class="Apple-converted-space">  </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const res = await fetch(`https://${ip}:${BRIDGE_PORT}/save`, {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const res = await fetch(saveUrl, {</p>
 <p class="p1"><span class="Apple-converted-space">      </span>signal: AbortSignal.timeout(5000)</p>
 <p class="p1"><span class="Apple-converted-space">    </span>});</p>
 <p class="p1"><span class="Apple-converted-space">    </span>if (!res.ok) throw new Error('bad');</p>
