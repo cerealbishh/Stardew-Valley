@@ -1,0 +1,36 @@
+# Certificates and keys — NEVER commit these
+bridge-cert.pem
+bridge-key.pem
+stardew-bridge.pem
+*.pem
+*.key
+*.p12
+*.mobileconfig
+
+# Stardew save files
+Hoedown_203853699
+SaveGameInfo
+saves/
+
+# Screenshots and moodboard images
+*.png
+*.jpg
+*.jpeg
+IMG_*.png
+Screenshot_*.png
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Old files no longer needed
+gitignore.txt
+vercel.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
