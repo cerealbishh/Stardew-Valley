@@ -252,7 +252,10 @@ def parse_save():
 
     events = set()
     for e in root.findall(".//player/eventsSeen/int"):
-        if e.text: events.add(int(e.text))
+        try:
+            if e.text: events.add(int(e.text))
+        except ValueError:
+            pass
     out["events"] = list(events)
 
     total_money_el = root.find(".//player/totalMoneyEarned")
