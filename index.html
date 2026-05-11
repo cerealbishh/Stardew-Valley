@@ -7,829 +7,697 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2685.6">
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
   </style>
 </head>
 <body>
-<p class="p1">content: &lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en" data-season="spring" data-dark="false"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1">&lt;meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"&gt;</p>
-<p class="p1">&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;</p>
-<p class="p1">&lt;meta name="apple-mobile-web-app-status-bar-style" content="default"&gt;</p>
-<p class="p1">&lt;meta name="apple-mobile-web-app-title" content="Hoe Down"&gt;</p>
-<p class="p1">&lt;title&gt;Stardew or Dew Not, There Is No Try&lt;/title&gt;</p>
-<p class="p1">&lt;link rel="manifest" href="./manifest.json"&gt;</p>
-<p class="p1">&lt;style&gt;</p>
-<p class="p1">*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}</p>
-<p class="p1">html{height:100%}</p>
-<p class="p1">body{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size:15px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--bg);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height:100%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex-direction:column;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow:hidden;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Tokens ── */</p>
-<p class="p1">:root{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--r66:#5b90c8;<span class="Apple-converted-space">      </span>--r66-bg:#ddeeff;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--hoard:#c05e5e;<span class="Apple-converted-space">    </span>--hoard-bg:#fde4e4;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--story:#5a9e78;<span class="Apple-converted-space">    </span>--story-bg:#daf0e6;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--night:#8f6ec0;<span class="Apple-converted-space">    </span>--night-bg:#ecdff8;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--bg:#fff8f5;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--card-bg:#ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--text:#382020;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--text-muted:#907575;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--border:rgba(0,0,0,0.09);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--ticker-bg:#281515;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--ticker-text:#ffd0a0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--nav-bg:#ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--nav-border:#e8d0c8;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--nav-h:60px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--ticker-h:34px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--safe-top:env(safe-area-inset-top,0px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--safe-bottom:env(safe-area-inset-bottom,0px);</p>
-<p class="p1">}</p>
-<p class="p1">[data-dark=true]{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--bg:#221414;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--card-bg:#2c1a1a;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--text:#f0e4e0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--text-muted:#a88888;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--border:rgba(255,255,255,0.09);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--nav-bg:#2c1a1a;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--nav-border:#483030;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--r66-bg:#182840;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--hoard-bg:#381a1a;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--story-bg:#182a20;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--night-bg:#241638;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Seasonal gradient tokens */</p>
-<p class="p1">[data-season=spring]{--sa:#fde8f2;--sb:#ede8fd}</p>
-<p class="p1">[data-season=summer]{--sa:#fff0e0;--sb:#fde8ec}</p>
-<p class="p1">[data-season=fall]<span class="Apple-converted-space">  </span>{--sa:#feeee0;--sb:#f8ece0}</p>
-<p class="p1">[data-season=winter]{--sa:#e2eeff;--sb:#eae2ff}</p>
-<p class="p1">[data-dark=true][data-season=spring]{--sa:#2e1824;--sb:#231828}</p>
-<p class="p1">[data-dark=true][data-season=summer]{--sa:#2e2014;--sb:#2e1820}</p>
-<p class="p1">[data-dark=true][data-season=fall]<span class="Apple-converted-space">  </span>{--sa:#2e2010;--sb:#281808}</p>
-<p class="p1">[data-dark=true][data-season=winter]{--sa:#141c2e;--sb:#1c1428}</p>
-<p class="p2"><br></p>
-<p class="p1">body::before{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>content:'';position:fixed;inset:0;z-index:0;pointer-events:none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:linear-gradient(140deg,var(--sa) 0%,var(--sb) 50%,var(--bg) 100%);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Ticker ── */</p>
-<p class="p1">#ticker{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position:relative;z-index:100;flex-shrink:0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height:calc(var(--ticker-h) + var(--safe-top));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding-top:var(--safe-top);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--ticker-bg);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:var(--ticker-text);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size:12px;font-weight:bold;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow:hidden;display:flex;align-items:center;</p>
-<p class="p1">}</p>
-<p class="p1">#ticker-track{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>white-space:nowrap;display:inline-block;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding-left:100vw;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>animation:scroll-ticker 35s linear infinite;</p>
-<p class="p1">}</p>
-<p class="p1">#ticker-track:hover{animation-play-state:paused}</p>
-<p class="p1">@keyframes scroll-ticker{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>from{transform:translateX(0)}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>to{transform:translateX(-100%)}</p>
-<p class="p1">}</p>
-<p class="p1">#ticker-track span{margin:0 20px}</p>
-<p class="p1">#ticker-track .dot{opacity:0.4;margin:0 4px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Layout ── */</p>
-<p class="p1">#main{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex:1;position:relative;z-index:1;overflow:hidden;</p>
-<p class="p1">}</p>
-<p class="p1">.panel{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position:absolute;inset:0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow-y:auto;-webkit-overflow-scrolling:touch;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>opacity:0;pointer-events:none;transition:opacity 0.18s;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 8px);</p>
-<p class="p1">}</p>
-<p class="p1">.panel.active{opacity:1;pointer-events:all}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Bottom nav ── */</p>
-<p class="p1">#nav{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position:relative;z-index:100;flex-shrink:0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--nav-bg);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-top:1.5px solid var(--nav-border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height:calc(var(--nav-h) + var(--safe-bottom));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding-bottom:var(--safe-bottom);</p>
-<p class="p1">}</p>
-<p class="p1">.nav-tab{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap:2px;padding-top:6px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size:9.5px;font-family:'Courier New',monospace;font-weight:bold;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text-muted);letter-spacing:0.03em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:none;background:none;cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position:relative;transition:color 0.13s;</p>
-<p class="p1">}</p>
-<p class="p1">.nav-tab .ni{font-size:21px;line-height:1;transition:transform 0.13s}</p>
-<p class="p1">.nav-tab.active .ni{transform:translateY(-2px)}</p>
-<p class="p1">.nav-tab[data-panel=home].active<span class="Apple-converted-space">  </span>{color:var(--text)}</p>
-<p class="p1">.nav-tab[data-panel=route].active {color:var(--r66)}</p>
-<p class="p1">.nav-tab[data-panel=hoard].active {color:var(--hoard)}</p>
-<p class="p1">.nav-tab[data-panel=story].active {color:var(--story)}</p>
-<p class="p1">.nav-tab[data-panel=nightlock].active{color:var(--night)}</p>
-<p class="p1">.nav-tab.active::after{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>content:'';position:absolute;top:0;left:25%;right:25%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height:2.5px;border-radius:0 0 3px 3px;background:currentColor;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Tab bars ── */</p>
-<p class="p1">.tab-bar{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>scrollbar-width:none;gap:6px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding:10px 12px 4px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position:sticky;top:0;z-index:10;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:linear-gradient(to bottom,var(--sa,var(--bg)) 80%,transparent);</p>
-<p class="p1">}</p>
-<p class="p1">.tab-bar::-webkit-scrollbar{display:none}</p>
-<p class="p1">.tab-btn{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex-shrink:0;padding:6px 13px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius:20px;border:2px solid var(--panel-accent,#bbb);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:transparent;color:var(--panel-accent,#999);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:11.5px;font-weight:bold;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;white-space:nowrap;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;transition:all 0.13s;</p>
-<p class="p1">}</p>
-<p class="p1">.tab-btn.active{background:var(--panel-accent,#999);color:#fff}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Cards ── */</p>
-<p class="p1">.card{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--card-bg);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius:15px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:2.5px solid var(--panel-accent,var(--border));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 10px rgba(0,0,0,0.06);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;overflow:hidden;</p>
-<p class="p1">}</p>
-<p class="p1">.card-hd{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:space-between;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding:11px 15px;cursor:pointer;user-select:none;-webkit-user-select:none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:13px;font-weight:bold;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:rgba(128,128,128,0.06);</p>
-<p class="p1">}</p>
-<p class="p1">.card-hd .chev{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:var(--panel-accent,#bbb);font-size:10px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transition:transform 0.18s;</p>
-<p class="p1">}</p>
-<p class="p1">.card[open]&gt;.card-hd&gt;.chev{transform:rotate(180deg)}</p>
-<p class="p1">.card-body{padding:12px 15px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Checkerboard stripe ── */</p>
-<p class="p1">.checker-bar{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height:3px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background-image:repeating-conic-gradient(</p>
-<p class="p1"><span class="Apple-converted-space">    </span>color-mix(in srgb,var(--panel-accent,#ccc) 40%,transparent) 0% 25%,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>transparent 0% 50%</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background-size:6px 6px;margin:0 12px 8px;border-radius:2px;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Home ── */</p>
-<p class="p1">#home{padding-top:8px}</p>
-<p class="p1">.home-hdr{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>text-align:center;padding:0 16px 2px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;</p>
-<p class="p1">}</p>
-<p class="p1">.home-hdr h1{font-size:20px;font-weight:bold;color:var(--text);letter-spacing:-0.02em}</p>
-<p class="p1">.home-hdr p{font-size:11px;color:var(--text-muted);margin-top:2px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Junimo stage */</p>
-<p class="p1">.junimo-stage{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height:72px;position:relative;overflow:hidden;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin:8px 0;</p>
-<p class="p1">}</p>
-<p class="p1">.junimo{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position:absolute;bottom:0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size:0;/* SVG */</p>
-<p class="p1"><span class="Apple-converted-space">  </span>animation:jbounce 0.7s ease-in-out infinite alternate;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transition:opacity 0.4s;</p>
-<p class="p1">}</p>
-<p class="p1">@keyframes jbounce{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>from{transform:translateY(0) scale(1)}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>to{transform:translateY(-14px) scale(1.1)}</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Bridge section */</p>
-<p class="p1">.bridge-box{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:14px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 8px rgba(0,0,0,0.05);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;padding:12px 14px;</p>
-<p class="p1">}</p>
-<p class="p1">.bridge-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}</p>
-<p class="p1">.bdot{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width:9px;height:9px;border-radius:50%;flex-shrink:0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:#bbb;transition:background 0.3s,box-shadow 0.3s;</p>
-<p class="p1">}</p>
-<p class="p1">.bdot.on{background:#5a9e78;box-shadow:0 0 6px #5a9e7888}</p>
-<p class="p1">.bdot.err{background:#c05e5e}</p>
-<p class="p1">.bridge-lbl{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:12.5px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight:bold;color:var(--text);flex:1;</p>
-<p class="p1">}</p>
-<p class="p1">.bridge-inp{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width:100%;padding:8px 11px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);border-radius:10px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--bg);color:var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:13px;outline:none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transition:border-color 0.15s;</p>
-<p class="p1">}</p>
-<p class="p1">.bridge-inp:focus{border-color:var(--r66)}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Quick stats */</p>
-<p class="p1">.quick-stats{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:grid;grid-template-columns:repeat(3,1fr);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap:8px;margin:0 12px 10px;</p>
-<p class="p1">}</p>
-<p class="p1">.qs{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);padding:9px 8px;text-align:center;</p>
-<p class="p1">}</p>
-<p class="p1">.qs-lbl{font-size:9.5px;font-family:'Courier New',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}</p>
-<p class="p1">.qs-val{font-size:16px;font-weight:bold;font-family:'Courier New',monospace;color:var(--text)}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Panel entry cards */</p>
-<p class="p1">.entry-grid{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:grid;grid-template-columns:1fr 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap:9px;margin:0 12px 10px;</p>
-<p class="p1">}</p>
-<p class="p1">.entry-card{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:13px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:2.5px solid var(--ec,var(--border));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding:13px 12px;cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 8px rgba(0,0,0,0.05);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transition:transform 0.1s,box-shadow 0.1s;</p>
-<p class="p1">}</p>
-<p class="p1">.entry-card:active{transform:scale(0.96);box-shadow:0 1px 4px rgba(0,0,0,0.04)}</p>
-<p class="p1">.entry-icon{font-size:26px;margin-bottom:5px}</p>
-<p class="p1">.entry-name{font-family:'Courier New',monospace;font-size:12.5px;font-weight:bold;color:var(--ec,var(--text))}</p>
-<p class="p1">.entry-desc{font-size:10.5px;color:var(--text-muted);margin-top:2px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Controls row */</p>
-<p class="p1">.ctrl-row{display:flex;gap:8px;margin:0 12px 10px}</p>
-<p class="p1">.ctrl-btn{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex:1;padding:9px 8px;border-radius:11px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);background:var(--card-bg);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text);font-family:'Courier New',monospace;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size:11.5px;font-weight:bold;cursor:pointer;text-align:center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;transition:background 0.13s;</p>
-<p class="p1">}</p>
-<p class="p1">.ctrl-btn:active{background:var(--border)}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Search */</p>
-<p class="p1">.search-wrap{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;gap:8px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;padding:9px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:12px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);</p>
-<p class="p1">}</p>
-<p class="p1">.search-wrap input{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex:1;border:none;background:transparent;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text);font-size:14px;outline:none;</p>
-<p class="p1">}</p>
-<p class="p1">.search-wrap input::placeholder{color:var(--text-muted)}</p>
-<p class="p1">.search-ico{color:var(--text-muted);font-size:15px;flex-shrink:0}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Tab content */</p>
-<p class="p1">.tab-content{display:none;padding-top:6px}</p>
-<p class="p1">.tab-content.active{display:block}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Empty states */</p>
-<p class="p1">.empty{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>text-align:center;padding:44px 24px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text-muted);font-family:'Courier New',monospace;font-size:12.5px;</p>
-<p class="p1">}</p>
-<p class="p1">.empty .ei{font-size:38px;display:block;margin-bottom:10px}</p>
-<p class="p2"><br></p>
-<p class="p1">/* Floating particles */</p>
-<p class="p1">.particle{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position:fixed;pointer-events:none;z-index:0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>animation:pfloat linear forwards;opacity:0;</p>
-<p class="p1">}</p>
-<p class="p1">@keyframes pfloat{</p>
-<p class="p1"><span class="Apple-converted-space">  </span>0%<span class="Apple-converted-space">  </span>{transform:translateY(0) rotate(0deg);opacity:0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>8%<span class="Apple-converted-space">  </span>{opacity:0.4}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>90% {opacity:0.3}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>100%{transform:translateY(-105vh) rotate(25deg);opacity:0}</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Panel accent inheritance ── */</p>
-<p class="p1">#route<span class="Apple-converted-space">    </span>{--panel-accent:var(--r66)}</p>
-<p class="p1">#hoard<span class="Apple-converted-space">    </span>{--panel-accent:var(--hoard)}</p>
-<p class="p1">#story<span class="Apple-converted-space">    </span>{--panel-accent:var(--story)}</p>
-<p class="p1">#nightlock{--panel-accent:var(--night)}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Desktop ── */</p>
-<p class="p1">@media(min-width:768px){</p>
-<p class="p1"><span class="Apple-converted-space">  </span>body{flex-direction:row;overflow:hidden}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#ticker{position:fixed;top:0;left:0;right:0;z-index:200}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#nav{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>position:fixed;top:calc(var(--ticker-h) + var(--safe-top));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>left:0;bottom:0;width:190px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>flex-direction:column;justify-content:flex-start;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>border-top:none;border-right:1.5px solid var(--nav-border);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>padding:6px 0;height:auto;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.nav-tab{flex-direction:row;justify-content:flex-start;padding:11px 16px;gap:10px;font-size:12.5px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.nav-tab .ni{font-size:18px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.nav-tab.active::after{top:0;bottom:0;left:0;right:auto;width:3px;height:auto;border-radius:0 3px 3px 0}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#main{</p>
-<p class="p1"><span class="Apple-converted-space">    </span>margin-top:calc(var(--ticker-h) + var(--safe-top));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>margin-left:190px;flex:1;overflow-y:auto;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.panel{position:relative;inset:auto;opacity:1;pointer-events:all;overflow-y:visible;padding-bottom:24px}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>.panel:not(.active){display:none}</p>
-<p class="p1">}</p>
-<p class="p1">&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- Ticker --&gt;</p>
-<p class="p1">&lt;div id="ticker"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="ticker-track"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="t-status"&gt;⚡ Bridge: ○ Off&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="t-gold"&gt;💰 —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="t-day"&gt;📅 —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="t-skills"&gt;Farm — · Fish — · Mine —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="t-ore"&gt;⛏ Cu — · Fe — · Au —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="t-depth"&gt;Mine Floor: —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span id="t-earn"&gt;Earned: —&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- Main --&gt;</p>
-<p class="p1">&lt;div id="main"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- HOME --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="home" class="panel active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="home-hdr"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1&gt;🌾 Stardew or Dew Not&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p id="home-sub"&gt;There Is No Try · Hoe Down Farms&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="junimo-stage" id="junimo-stage"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="search-wrap"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="search-ico"&gt;🔍&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;input id="search-inp" type="search" placeholder="Search tasks, items, NPCs…"</p>
-<p class="p1"><span class="Apple-converted-space">             </span>autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="bridge-box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="bridge-row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="bdot err" id="bdot"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="bridge-lbl" id="blbl"&gt;Bridge Disconnected&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;input class="bridge-inp" id="bridge-ip" type="text"</p>
-<p class="p1"><span class="Apple-converted-space">             </span>placeholder="IP or tunnel URL — e.g. 10.0.0.70 or https://abc.trycloudflare.com"</p>
-<p class="p1"><span class="Apple-converted-space">             </span>autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="quick-stats"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Gold&lt;/div&gt;&lt;div class="qs-val" id="qs-gold"&gt;—&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Day&lt;/div&gt;&lt;div class="qs-val" id="qs-day"&gt;—&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Mine&lt;/div&gt;&lt;div class="qs-val" id="qs-mine"&gt;—&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="entry-grid"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--r66)" data-goto="route"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🔵&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Route 66&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Daily checklist&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--hoard)" data-goto="hoard"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🔴&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;The Hoard&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Bundles &amp;amp; unlocks&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--story)" data-goto="story"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🟢&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Story Time&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Events &amp;amp; lore&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--night)" data-goto="nightlock"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🟣&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Nightlock&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Inventory &amp;amp; skills&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="ctrl-row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="ctrl-btn" id="dark-btn"&gt;🌙 Dark Mode&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="ctrl-btn" id="icon-btn"&gt;🎨 Icons: Pixel&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- ROUTE 66 --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="route" class="panel"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="r-tasks"&gt;Prep/Fire/Plate&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-cal"&gt;It Is Wednesday 🐸&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-par"&gt;Are We There Yet 🗺️&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-carry"&gt;🚨 Never Forget&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="r-tasks" class="tab-content active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📅&lt;/span&gt;Day-by-day tasks coming in Session 3&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="r-cal" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🐸&lt;/span&gt;Calendar coming in Session 3&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="r-par" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🗺️&lt;/span&gt;Par check coming in Session 3&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="r-carry" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🚨&lt;/span&gt;Carryover coming in Session 3&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- THE HOARD --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="hoard" class="panel"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="h-junimo"&gt;Junimo Feed 🌽&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-quests"&gt;Take This Job 📋&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-museum"&gt;Look Shiny ✨&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-unlocks"&gt;Made It Myself 🔨&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-npcs"&gt;Covenant 💌&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="h-junimo" class="tab-content active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌽&lt;/span&gt;Junimo bundles coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="h-quests" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📋&lt;/span&gt;Quests coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="h-museum" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;✨&lt;/span&gt;Museum coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="h-unlocks" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🔨&lt;/span&gt;Unlocks coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="h-npcs" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;💌&lt;/span&gt;NPC cards coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- STORY TIME --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="story" class="panel"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="s-prev"&gt;Previously On 🎬&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-cov"&gt;Covenant 💌&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-lore"&gt;The Lore 📜&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-quest"&gt;Main Quest 📋&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-mile"&gt;Milestones 🏆&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="s-prev" class="tab-content active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🎬&lt;/span&gt;Cutscenes coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="s-cov" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;💌&lt;/span&gt;NPC cards coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="s-lore" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📜&lt;/span&gt;World flags coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="s-quest" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📋&lt;/span&gt;Main quest coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="s-mile" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🏆&lt;/span&gt;Milestones coming in Session 4&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- NIGHTLOCK --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="nightlock" class="panel"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="n-tardis"&gt;Tardis 🌀&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-davy"&gt;Davy Jones 🏴‍☠️&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-fit"&gt;Fit Check 👗&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-skills"&gt;Skillmaxxing 📈&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-grass"&gt;Touching Grass 🌿&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-vid"&gt;One Video 📺&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-cast"&gt;The Cast 🐄&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-plot"&gt;Plot Armor 🛡️&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-holo"&gt;Holocron 🔮&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-tardis" class="tab-content active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌀&lt;/span&gt;Inventory coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-davy" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🏴‍☠️&lt;/span&gt;Chests coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-fit" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;👗&lt;/span&gt;Equipment coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-skills" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📈&lt;/span&gt;Skills coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-grass" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌿&lt;/span&gt;Friendship coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-vid" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📺&lt;/span&gt;Recipes coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-cast" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🐄&lt;/span&gt;Animals coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-plot" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🛡️&lt;/span&gt;Special flags coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="n-holo" class="tab-content"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🔮&lt;/span&gt;Collections coming in Session 5&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/div&gt;&lt;!-- /#main --&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;!-- Nav --&gt;</p>
-<p class="p1">&lt;nav id="nav"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab active" data-panel="home"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🏠&lt;/span&gt;&lt;span&gt;Home&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="route"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🔵&lt;/span&gt;&lt;span&gt;Route 66&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="hoard"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🔴&lt;/span&gt;&lt;span&gt;The Hoard&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="story"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🟢&lt;/span&gt;&lt;span&gt;Story Time&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="nightlock"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🟣&lt;/span&gt;&lt;span&gt;Nightlock&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</p>
-<p class="p1">&lt;/nav&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p1">// ─── Config ───────────────────────────────────────────</p>
-<p class="p1">const BRIDGE_PORT = 8742;</p>
-<p class="p1">const RETRY_MS<span class="Apple-converted-space">    </span>= 30000;</p>
-<p class="p2"><br></p>
-<p class="p1">const PARTICLES = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>spring:['🌸','🌷','🌼','🍀','💐','🌸'],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>summer:['☀️','🌻','🍑','🌊','🌺','⭐'],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>fall:<span class="Apple-converted-space">  </span>['🍂','🍁','🌾','🎃','🍄','🍎'],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>winter:['❄️','⛄','✨','💎','🌨️','🔮']</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">const JUNIMO_COLORS = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>spring:['#f5a0c0','#c0a0f5','#a0f0c0'],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>summer:['#f5d040','#f59040','#40d0f0'],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>fall:<span class="Apple-converted-space">  </span>['#d4855a','#c8d45a','#8b6040'],</p>
-<p class="p1"><span class="Apple-converted-space">  </span>winter:['#a0c8f8','#c8a0f8','#f0f0e8']</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── State ────────────────────────────────────────────</p>
-<p class="p1">const S = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>panel:<span class="Apple-converted-space">  </span>'home',</p>
-<p class="p1"><span class="Apple-converted-space">  </span>dark: <span class="Apple-converted-space">  </span>localStorage.getItem('sdv_dark') === 'true',</p>
-<p class="p1"><span class="Apple-converted-space">  </span>icons:<span class="Apple-converted-space">  </span>localStorage.getItem('sdv_icons') || 'pixel',</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ip: <span class="Apple-converted-space">    </span>localStorage.getItem('sdv_ip') || '',</p>
-<p class="p1"><span class="Apple-converted-space">  </span>data: <span class="Apple-converted-space">  </span>null,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ok: <span class="Apple-converted-space">    </span>false,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>retry:<span class="Apple-converted-space">  </span>null,</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Helpers ─────────────────────────────────────────</p>
-<p class="p1">const $<span class="Apple-converted-space">  </span>= id =&gt; document.getElementById(id);</p>
-<p class="p1">const qs = s<span class="Apple-converted-space">  </span>=&gt; document.querySelector(s);</p>
-<p class="p1">const fmtK = n =&gt; n == null ? '—' : n &gt;= 1000 ? (n/1000).toFixed(1)+'k' : String(n);</p>
-<p class="p1">const cap<span class="Apple-converted-space">  </span>= s =&gt; s ? s[0].toUpperCase()+s.slice(1) : s;</p>
-<p class="p1">const curSeason = () =&gt; (S.data?.season || 'spring');</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Dark mode ────────────────────────────────────────</p>
-<p class="p1">function applyDark() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.documentElement.setAttribute('data-dark', S.dark);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('dark-btn').textContent = S.dark ? '☀️ Light Mode' : '🌙 Dark Mode';</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Season ───────────────────────────────────────────</p>
-<p class="p1">function applySeason(s) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.documentElement.setAttribute('data-season', s);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Navigation ───────────────────────────────────────</p>
-<p class="p1">function goPanel(id) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.panel').forEach(p =&gt; p.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.nav-tab').forEach(t =&gt; t.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const panel = $(id);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (panel) panel.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const tab = qs(`.nav-tab[data-panel="${id}"]`);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (tab) tab.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>S.panel = id;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (panel) panel.scrollTop = 0;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Tab switching ────────────────────────────────────</p>
-<p class="p1">function goTab(tabId) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const content = $(tabId);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (!content) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const panel = content.closest('.panel');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>panel.querySelectorAll('.tab-content').forEach(t =&gt; t.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>panel.querySelectorAll('.tab-btn').forEach(b =&gt; b.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>content.classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const btn = panel.querySelector(`.tab-btn[data-tab="${tabId}"]`);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (btn) btn.classList.add('active');</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Bridge ───────────────────────────────────────────</p>
-<p class="p1">async function fetchBridge() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>clearTimeout(S.retry);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const ip = $('bridge-ip').value.trim();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (!ip) { setBridgeOff(); return; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>localStorage.setItem('sdv_ip', ip);
-  const saveUrl = ip.startsWith('http') ? ip.replace(/\/+$/,'')+'/save' : `https://${ip}:${BRIDGE_PORT}/save`;
-  const saveUrl = ip.startsWith('http') ? ip.replace(/\/+$/,'')+'/save' : `https://${ip}:${BRIDGE_PORT}/save`;
-  const saveUrl = ip.startsWith('http') ? ip.replace(/\\/+$/,'')+'/save' : `https://${ip}:${BRIDGE_PORT}/save`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const res = await fetch(saveUrl, {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>signal: AbortSignal.timeout(5000)</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (!res.ok) throw new Error('bad');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const d = await res.json();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (d.error) throw new Error(d.error);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>S.data = d; S.ok = true;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>setBridgeOn(d);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>renderFromData(d);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>} catch(_) {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>S.ok = false; setBridgeOff();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>S.retry = setTimeout(fetchBridge, RETRY_MS);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function setBridgeOn(d) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('bdot').className = 'bdot on';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('blbl').textContent = `Connected · ${cap(d.season)} ${d.day}, Y${d.year}`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTicker();</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function setBridgeOff() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('bdot').className = 'bdot err';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('blbl').textContent = 'Bridge Disconnected';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTicker();</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function renderFromData(d) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>applySeason(d.season || 'spring');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>spawnParticles(d.season || 'spring');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>// Quick stats</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('qs-gold').textContent = d.gold != null ? fmtK(d.gold) : '—';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('qs-day').textContent<span class="Apple-converted-space">  </span>= d.day <span class="Apple-converted-space">  </span>!= null ? `${cap(d.season||'?')[0]}${d.day}` : '—';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('qs-mine').textContent = d.deepestMineLevel != null ? `F${d.deepestMineLevel}` :</p>
-<p class="p1"><span class="Apple-converted-space">                             </span>d.skills?.mine != null ? `Lv${d.skills.mine}` : '—';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>// Home sub</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('home-sub').textContent =</p>
-<p class="p1"><span class="Apple-converted-space">    </span>`${cap(d.season||'spring')} ${d.day||'?'} · Year ${d.year||1} · ${d.farm||'Hoe Down Farms'}`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTicker();</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function renderTicker() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const d = S.data;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('t-status').textContent = S.ok ? '⚡ Bridge: ● On' : '⚡ Bridge: ○ Off';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (d) {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$('t-gold').textContent <span class="Apple-converted-space">  </span>= `💰 ${d.gold != null ? d.gold.toLocaleString()+'g' : '—'}`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$('t-day').textContent<span class="Apple-converted-space">    </span>= `📅 ${cap(d.season||'?')} ${d.day||'?'}, Y${d.year||1}`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const sk = d.skills || {};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$('t-skills').textContent = `Farm Lv${sk.farm??'—'} · Fish Lv${sk.fish??'—'} · Mine Lv${sk.mine??'—'}`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$('t-ore').textContent<span class="Apple-converted-space">    </span>= `⛏ Cu${d.copperOre??'—'} Fe${d.ironOre??'—'} Au${d.goldOre??'—'}`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$('t-depth').textContent<span class="Apple-converted-space">  </span>= `Mine: F${d.deepestMineLevel??'—'}`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$('t-earn').textContent <span class="Apple-converted-space">  </span>= `Earned: ${d.totalMoneyEarned != null ? d.totalMoneyEarned.toLocaleString()+'g' : '—'}`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Junimos ─────────────────────────────────────────</p>
-<p class="p1">const junimoSVG = c =&gt; `&lt;svg viewBox="0 0 40 46" width="36" height="42" xmlns="http://www.w3.org/2000/svg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;circle cx="20" cy="8" r="5" fill="${c}"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;line x1="20" y1="13" x2="20" y2="19" stroke="${c}" stroke-width="3" stroke-linecap="round"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="20" cy="28" rx="14" ry="17" fill="${c}"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="13" cy="24" rx="3.5" ry="3.5" fill="white"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="27" cy="24" rx="3.5" ry="3.5" fill="white"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;circle cx="14" cy="25" r="2" fill="#333"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;circle cx="28" cy="25" r="2" fill="#333"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;path d="M7 43 Q10 47 14 44 Q17 42 20 44 Q23 42 26 44 Q30 47 33 43" fill="${c}"/&gt;</p>
-<p class="p1">&lt;/svg&gt;`;</p>
-<p class="p2"><br></p>
-<p class="p1">function spawnJunimo() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const stage = $('junimo-stage');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (!stage) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const cols = JUNIMO_COLORS[curSeason()];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const col<span class="Apple-converted-space">  </span>= cols[Math.floor(Math.random() * cols.length)];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const j<span class="Apple-converted-space">    </span>= document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>j.className = 'junimo';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>j.innerHTML = junimoSVG(col);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>j.style.cssText = `left:${5+Math.random()*80}%;bottom:0;animation-duration:${0.5+Math.random()*0.6}s`;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>stage.appendChild(j);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const life = 2000 + Math.random() * 1500;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>setTimeout(() =&gt; { j.style.opacity='0'; setTimeout(()=&gt;j.remove(), 500); }, life);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function startJunimos() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>spawnJunimo();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>setInterval(() =&gt; { if (Math.random() &gt; 0.25) spawnJunimo(); }, 1600);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Particles ────────────────────────────────────────</p>
-<p class="p1">let particleInterval;</p>
-<p class="p1">function spawnParticles(season) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>clearInterval(particleInterval);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.particle').forEach(p =&gt; p.remove());</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const emojis = PARTICLES[season] || PARTICLES.spring;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>function one() {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const p = document.createElement('div');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p.className = 'particle';</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p.textContent = emojis[Math.floor(Math.random() * emojis.length)];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const dur = 9 + Math.random() * 9;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p.style.cssText = `left:${Math.random()*92}%;bottom:-5%;font-size:${13+Math.random()*12}px;animation-duration:${dur}s`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.body.appendChild(p);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>setTimeout(() =&gt; p.remove(), dur * 1000 + 500);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>for (let i = 0; i &lt; 5; i++) setTimeout(one, i * 900);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>particleInterval = setInterval(one, 2800);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Event delegation ────────────────────────────────</p>
-<p class="p1">document.addEventListener('click', e =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const navTab<span class="Apple-converted-space">    </span>= e.target.closest('.nav-tab');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const entryCard = e.target.closest('.entry-card');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const tabBtn<span class="Apple-converted-space">    </span>= e.target.closest('.tab-btn');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (navTab)<span class="Apple-converted-space">    </span>{ goPanel(navTab.dataset.panel); return; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (entryCard) { goPanel(entryCard.dataset.goto); return; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (tabBtn &amp;&amp; tabBtn.dataset.tab) { goTab(tabBtn.dataset.tab); return; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (e.target.id === 'dark-btn') {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>S.dark = !S.dark;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>localStorage.setItem('sdv_dark', S.dark);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>applyDark();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (e.target.id === 'icon-btn') {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const styles = ['Pixel','Kawaii','Line'];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const cur<span class="Apple-converted-space">  </span>= styles.findIndex(s =&gt; $('icon-btn').textContent.includes(s));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const next = (cur + 1) % styles.length;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>S.icons = styles[next].toLowerCase();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>localStorage.setItem('sdv_icons', S.icons);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>$('icon-btn').textContent = `🎨 Icons: ${styles[next]}`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">});</p>
-<p class="p2"><br></p>
-<p class="p1">$('bridge-ip').addEventListener('keydown', e =&gt; { if (e.key === 'Enter') fetchBridge(); });</p>
-<p class="p1">$('bridge-ip').addEventListener('blur', () =&gt; { if ($('bridge-ip').value.trim()) fetchBridge(); });</p>
-<p class="p2"><br></p>
-<p class="p1">// ─── Init ─────────────────────────────────────────────</p>
-<p class="p1">function init() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>applyDark();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const stored = S.icons;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const lbl = stored === 'kawaii' ? 'Kawaii' : stored === 'line' ? 'Line' : 'Pixel';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>$('icon-btn').textContent = `🎨 Icons: ${lbl}`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (S.ip) $('bridge-ip').value = S.ip;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>spawnParticles('spring');</p>
-<p class="p1"><span class="Apple-converted-space">  </span>startJunimos();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderTicker();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (S.ip) fetchBridge();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>else S.retry = setTimeout(fetchBridge, RETRY_MS);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if ('serviceWorker' in navigator) {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>navigator.serviceWorker.register('./service-worker.js').catch(() =&gt; {});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">document.addEventListener('DOMContentLoaded', init);</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p1">&lt;script src="./update-checker.js"&gt;&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">file_path: /home/user/Stardew-Valley/index.html</p>
-<p class="p2"><br></p>
-<p class="p1">File has not been read yet. Read it first before writing to it.</p>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="en" data-season="spring" data-dark="false"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-status-bar-style" content="default"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-title" content="Hoe Down"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;title&gt;Stardew or Dew Not, There Is No Try&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1">&lt;link rel="manifest" href="./manifest.json"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;style&gt;</span></p>
+<p class="p1"><span class="s1">*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}</span></p>
+<p class="p1"><span class="s1">html{height:100%}</span></p>
+<p class="p1"><span class="s1">body{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--bg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex-direction:column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow:hidden;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Tokens ── */</span></p>
+<p class="p1"><span class="s1">:root{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--r66:#5b90c8;<span class="Apple-converted-space">      </span>--r66-bg:#ddeeff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--hoard:#c05e5e;<span class="Apple-converted-space">    </span>--hoard-bg:#fde4e4;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--story:#5a9e78;<span class="Apple-converted-space">    </span>--story-bg:#daf0e6;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--night:#8f6ec0;<span class="Apple-converted-space">    </span>--night-bg:#ecdff8;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--bg:#fff8f5;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--card-bg:#ffffff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text:#382020;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text-muted:#907575;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--border:rgba(0,0,0,0.09);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--ticker-bg:#281515;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--ticker-text:#ffd0a0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-bg:#ffffff;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-border:#e8d0c8;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-h:60px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--ticker-h:34px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--safe-top:env(safe-area-inset-top,0px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--safe-bottom:env(safe-area-inset-bottom,0px);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">[data-dark=true]{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--bg:#221414;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--card-bg:#2c1a1a;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text:#f0e4e0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text-muted:#a88888;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--border:rgba(255,255,255,0.09);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-bg:#2c1a1a;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-border:#483030;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--r66-bg:#182840;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--hoard-bg:#381a1a;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--story-bg:#182a20;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--night-bg:#241638;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Seasonal gradient */</span></p>
+<p class="p1"><span class="s1">[data-season=spring]{--sa:#fde8f2;--sb:#ede8fd}</span></p>
+<p class="p1"><span class="s1">[data-season=summer]{--sa:#fff0e0;--sb:#fde8ec}</span></p>
+<p class="p1"><span class="s1">[data-season=fall]<span class="Apple-converted-space">  </span>{--sa:#feeee0;--sb:#f8ece0}</span></p>
+<p class="p1"><span class="s1">[data-season=winter]{--sa:#e2eeff;--sb:#eae2ff}</span></p>
+<p class="p1"><span class="s1">[data-dark=true][data-season=spring]{--sa:#2e1824;--sb:#231828}</span></p>
+<p class="p1"><span class="s1">[data-dark=true][data-season=summer]{--sa:#2e2014;--sb:#2e1820}</span></p>
+<p class="p1"><span class="s1">[data-dark=true][data-season=fall]<span class="Apple-converted-space">  </span>{--sa:#2e2010;--sb:#281808}</span></p>
+<p class="p1"><span class="s1">[data-dark=true][data-season=winter]{--sa:#141c2e;--sb:#1c1428}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">body::before{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>content:'';position:fixed;inset:0;z-index:0;pointer-events:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:linear-gradient(140deg,var(--sa) 0%,var(--sb) 50%,var(--bg) 100%);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Ticker ── */</span></p>
+<p class="p1"><span class="s1">#ticker{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;z-index:100;flex-shrink:0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:calc(var(--ticker-h) + var(--safe-top));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding-top:var(--safe-top);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--ticker-bg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--ticker-text);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:12px;font-weight:bold;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow:hidden;display:flex;align-items:center;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">#ticker-track{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>white-space:nowrap;display:inline-block;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding-left:100vw;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>animation:scroll-ticker 35s linear infinite;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">#ticker-track:hover{animation-play-state:paused}</span></p>
+<p class="p1"><span class="s1">@keyframes scroll-ticker{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>from{transform:translateX(0)}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>to{transform:translateX(-100%)}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">#ticker-track span{margin:0 18px}</span></p>
+<p class="p1"><span class="s1">#ticker-track .dot{opacity:0.35;margin:0 4px}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Layout ── */</span></p>
+<p class="p1"><span class="s1">#main{flex:1;position:relative;z-index:1;overflow:hidden}</span></p>
+<p class="p1"><span class="s1">.panel{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute;inset:0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow-y:auto;-webkit-overflow-scrolling:touch;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>opacity:0;pointer-events:none;transition:opacity 0.18s;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 8px);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.panel.active{opacity:1;pointer-events:all}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Bottom nav ── */</span></p>
+<p class="p1"><span class="s1">#nav{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;z-index:100;flex-shrink:0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--nav-bg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-top:1.5px solid var(--nav-border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:calc(var(--nav-h) + var(--safe-bottom));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding-bottom:var(--safe-bottom);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.nav-tab{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:2px;padding-top:6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:9.5px;font-family:'Courier New',monospace;font-weight:bold;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text-muted);letter-spacing:0.03em;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:none;background:none;cursor:pointer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;transition:color 0.13s;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.nav-tab .ni{font-size:21px;line-height:1;transition:transform 0.13s;display:inline-block}</span></p>
+<p class="p1"><span class="s1">.nav-tab.active .ni{transform:translateY(-2px)}</span></p>
+<p class="p1"><span class="s1">.nav-tab[data-panel=home].active<span class="Apple-converted-space">    </span>{color:var(--text)}</span></p>
+<p class="p1"><span class="s1">.nav-tab[data-panel=route].active <span class="Apple-converted-space">  </span>{color:var(--r66)}</span></p>
+<p class="p1"><span class="s1">.nav-tab[data-panel=hoard].active <span class="Apple-converted-space">  </span>{color:var(--hoard)}</span></p>
+<p class="p1"><span class="s1">.nav-tab[data-panel=story].active <span class="Apple-converted-space">  </span>{color:var(--story)}</span></p>
+<p class="p1"><span class="s1">.nav-tab[data-panel=nightlock].active{color:var(--night)}</span></p>
+<p class="p1"><span class="s1">.nav-tab.active::after{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>content:'';position:absolute;top:0;left:25%;right:25%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:2.5px;border-radius:0 0 3px 3px;background:currentColor;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Tab bars ── */</span></p>
+<p class="p1"><span class="s1">.tab-bar{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>scrollbar-width:none;gap:6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:10px 12px 4px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:sticky;top:0;z-index:10;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:rgba(255,248,245,0.85);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">[data-dark=true] .tab-bar{background:rgba(34,20,20,0.85)}</span></p>
+<p class="p1"><span class="s1">.tab-bar::-webkit-scrollbar{display:none}</span></p>
+<p class="p1"><span class="s1">.tab-btn{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex-shrink:0;padding:6px 13px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:20px;border:2px solid var(--panel-accent,#bbb);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:transparent;color:var(--panel-accent,#999);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:11.5px;font-weight:bold;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>cursor:pointer;white-space:nowrap;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;transition:all 0.13s;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.tab-btn.active{background:var(--panel-accent,#999);color:#fff}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Cards ── */</span></p>
+<p class="p1"><span class="s1">.card{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:15px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2.5px solid var(--panel-accent,var(--border));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 10px rgba(0,0,0,0.06);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;overflow:hidden;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.card-hd{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:space-between;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:11px 15px;cursor:pointer;user-select:none;-webkit-user-select:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:13px;font-weight:bold;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.card-hd .chev{color:var(--panel-accent,#bbb);font-size:10px;transition:transform 0.18s}</span></p>
+<p class="p1"><span class="s1">.card[open]&gt;.card-hd&gt;.chev{transform:rotate(180deg)}</span></p>
+<p class="p1"><span class="s1">.card-body{padding:12px 15px}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Checkerboard stripe ── */</span></p>
+<p class="p1"><span class="s1">.checker-bar{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:3px;margin:0 12px 8px;border-radius:2px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background-image:repeating-conic-gradient(</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color-mix(in srgb,var(--panel-accent,#ccc) 35%,transparent) 0% 25%,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transparent 0% 50%</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background-size:6px 6px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Home ── */</span></p>
+<p class="p1"><span class="s1">#home{padding-top:8px}</span></p>
+<p class="p1"><span class="s1">.home-hdr{text-align:center;padding:4px 16px 2px}</span></p>
+<p class="p1"><span class="s1">.home-hdr h1{font-family:'Courier New',monospace;font-size:20px;font-weight:bold;color:var(--text);letter-spacing:-0.02em}</span></p>
+<p class="p1"><span class="s1">.home-hdr p{font-size:11px;color:var(--text-muted);margin-top:2px;font-family:'Courier New',monospace}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.junimo-stage{height:72px;position:relative;overflow:hidden;margin:8px 0}</span></p>
+<p class="p1"><span class="s1">.junimo{position:absolute;bottom:0;animation:jbounce 0.7s ease-in-out infinite alternate;transition:opacity 0.4s}</span></p>
+<p class="p1"><span class="s1">@keyframes jbounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-14px) scale(1.1)}}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.bridge-box{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 8px rgba(0,0,0,0.05);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;padding:12px 14px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.bridge-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}</span></p>
+<p class="p1"><span class="s1">.bdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:#bbb;transition:background 0.3s,box-shadow 0.3s}</span></p>
+<p class="p1"><span class="s1">.bdot.on{background:#5a9e78;box-shadow:0 0 6px #5a9e7866}</span></p>
+<p class="p1"><span class="s1">.bdot.err{background:#c05e5e}</span></p>
+<p class="p1"><span class="s1">.bridge-lbl{font-family:'Courier New',monospace;font-size:12.5px;font-weight:bold;color:var(--text);flex:1}</span></p>
+<p class="p1"><span class="s1">.bridge-inp{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:100%;padding:8px 11px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);border-radius:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--bg);color:var(--text);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:13px;outline:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:border-color 0.15s;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.bridge-inp:focus{border-color:var(--r66)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 12px 10px}</span></p>
+<p class="p1"><span class="s1">.qs{background:var(--card-bg);border-radius:12px;border:2px solid var(--border);padding:9px 8px;text-align:center}</span></p>
+<p class="p1"><span class="s1">.qs-lbl{font-size:9.5px;font-family:'Courier New',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}</span></p>
+<p class="p1"><span class="s1">.qs-val{font-size:16px;font-weight:bold;font-family:'Courier New',monospace;color:var(--text)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:0 12px 10px}</span></p>
+<p class="p1"><span class="s1">.entry-card{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:13px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2.5px solid var(--ec,var(--border));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:13px 12px;cursor:pointer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 8px rgba(0,0,0,0.05);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:transform 0.1s,box-shadow 0.1s;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.entry-card:active{transform:scale(0.96);box-shadow:0 1px 4px rgba(0,0,0,0.04)}</span></p>
+<p class="p1"><span class="s1">.entry-icon{font-size:26px;margin-bottom:5px}</span></p>
+<p class="p1"><span class="s1">.entry-name{font-family:'Courier New',monospace;font-size:12.5px;font-weight:bold;color:var(--ec,var(--text))}</span></p>
+<p class="p1"><span class="s1">.entry-desc{font-size:10.5px;color:var(--text-muted);margin-top:2px}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.ctrl-row{display:flex;gap:8px;margin:0 12px 10px}</span></p>
+<p class="p1"><span class="s1">.ctrl-btn{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex:1;padding:9px 8px;border-radius:11px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);background:var(--card-bg);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);font-family:'Courier New',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:11.5px;font-weight:bold;cursor:pointer;text-align:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.search-wrap{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;gap:8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;padding:9px 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:12px;border:2px solid var(--border);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.search-wrap input{flex:1;border:none;background:transparent;color:var(--text);font-size:14px;outline:none}</span></p>
+<p class="p1"><span class="s1">.search-wrap input::placeholder{color:var(--text-muted)}</span></p>
+<p class="p1"><span class="s1">.search-ico{color:var(--text-muted);font-size:15px;flex-shrink:0}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Tab content */</span></p>
+<p class="p1"><span class="s1">.tab-content{display:none;padding-top:6px}</span></p>
+<p class="p1"><span class="s1">.tab-content.active{display:block}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">.empty{text-align:center;padding:44px 24px;color:var(--text-muted);font-family:'Courier New',monospace;font-size:12.5px}</span></p>
+<p class="p1"><span class="s1">.empty .ei{font-size:38px;display:block;margin-bottom:10px}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Particles */</span></p>
+<p class="p1"><span class="s1">.particle{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:fixed;pointer-events:none;z-index:0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>animation:pfloat linear forwards;opacity:0;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">@keyframes pfloat{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>0%<span class="Apple-converted-space">  </span>{transform:translateY(0) rotate(0deg);opacity:0}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>8%<span class="Apple-converted-space">  </span>{opacity:0.38}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>88% {opacity:0.28}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>100%{transform:translateY(-108vh) rotate(28deg);opacity:0}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Panel accent */</span></p>
+<p class="p1"><span class="s1">#route<span class="Apple-converted-space">    </span>{--panel-accent:var(--r66)}</span></p>
+<p class="p1"><span class="s1">#hoard<span class="Apple-converted-space">    </span>{--panel-accent:var(--hoard)}</span></p>
+<p class="p1"><span class="s1">#story<span class="Apple-converted-space">    </span>{--panel-accent:var(--story)}</span></p>
+<p class="p1"><span class="s1">#nightlock{--panel-accent:var(--night)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* ── Desktop ── */</span></p>
+<p class="p1"><span class="s1">@media(min-width:768px){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>body{flex-direction:row}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#ticker{position:fixed;top:0;left:0;right:0;z-index:200}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#nav{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>position:fixed;top:calc(var(--ticker-h) + var(--safe-top));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>left:0;bottom:0;width:190px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>flex-direction:column;justify-content:flex-start;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-top:none;border-right:1.5px solid var(--nav-border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding:6px 0;height:auto;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.nav-tab{flex-direction:row;justify-content:flex-start;padding:11px 16px;gap:10px;font-size:12.5px}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.nav-tab .ni{font-size:18px}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.nav-tab.active::after{top:0;bottom:0;left:0;right:auto;width:3px;height:auto;border-radius:0 3px 3px 0}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#main{margin-top:calc(var(--ticker-h) + var(--safe-top));margin-left:190px;flex:1;overflow-y:auto}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.panel{position:relative;inset:auto;opacity:1;pointer-events:all;overflow-y:visible;padding-bottom:24px;transition:none}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.panel:not(.active){display:none}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.panel.active{display:block}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.tab-bar{background:rgba(255,248,245,0.9)}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;div id="ticker"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="ticker-track"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-status"&gt;⚡ Bridge: ○ Off&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-gold"&gt;💰 —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-day"&gt;📅 —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-skills"&gt;Farm — · Fish — · Mine —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-ore"&gt;⛏ Cu — · Fe — · Au —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-depth"&gt;Mine Floor: —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-earn"&gt;Earned: —&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;div id="main"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- HOME --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="home" class="panel active"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="home-hdr"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;h1&gt;🌾 Stardew or Dew Not&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p id="home-sub"&gt;There Is No Try · Hoe Down Farms&lt;/p&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="junimo-stage" id="junimo-stage"&gt;&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="search-wrap"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="search-ico"&gt;🔍&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;input id="search-inp" type="search" placeholder="Search tasks, items, NPCs…"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="bridge-box"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="bridge-row"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bdot err" id="bdot"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bridge-lbl" id="blbl"&gt;Bridge Disconnected&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;input class="bridge-inp" id="bridge-ip" type="text"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>placeholder="IP or tunnel URL — e.g. 10.0.0.70 or https://abc.trycloudflare.com"</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="quick-stats"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Gold&lt;/div&gt;&lt;div class="qs-val" id="qs-gold"&gt;—&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Day&lt;/div&gt;&lt;div class="qs-val" id="qs-day"&gt;—&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Mine&lt;/div&gt;&lt;div class="qs-val" id="qs-mine"&gt;—&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="entry-grid"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--r66)" data-goto="route"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🔵&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Route 66&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Daily checklist&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--hoard)" data-goto="hoard"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🔴&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;The Hoard&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Bundles &amp;amp; unlocks&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--story)" data-goto="story"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🟢&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Story Time&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Events &amp;amp; lore&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--night)" data-goto="nightlock"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🟣&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Nightlock&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Inventory &amp;amp; skills&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ctrl-row"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="ctrl-btn" id="dark-btn"&gt;🌙 Dark Mode&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="ctrl-btn" id="icon-btn"&gt;🎨 Icons: Pixel&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- ROUTE 66 --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="route" class="panel"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="r-tasks"&gt;Prep/Fire/Plate&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-cal"&gt;It Is Wednesday 🐸&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-par"&gt;Are We There Yet 🗺️&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-carry"&gt;🚨 Never Forget&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="r-tasks" class="tab-content active"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📅&lt;/span&gt;Day-by-day tasks coming in Session 3&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="r-cal" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🐸&lt;/span&gt;Calendar coming in Session 3&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="r-par" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🗺️&lt;/span&gt;Par check coming in Session 3&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="r-carry" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🚨&lt;/span&gt;Carryover coming in Session 3&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- THE HOARD --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="hoard" class="panel"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="h-junimo"&gt;Junimo Feed 🌽&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-quests"&gt;Take This Job 📋&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-museum"&gt;Look Shiny ✨&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-unlocks"&gt;Made It Myself 🔨&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-npcs"&gt;Covenant 💌&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-junimo" class="tab-content active"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌽&lt;/span&gt;Junimo bundles coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-quests" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📋&lt;/span&gt;Quests coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-museum" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;✨&lt;/span&gt;Museum coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-unlocks" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🔨&lt;/span&gt;Unlocks coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-npcs" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;💌&lt;/span&gt;NPC cards coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- STORY TIME --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="story" class="panel"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="s-prev"&gt;Previously On 🎬&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-cov"&gt;Covenant 💌&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-lore"&gt;The Lore 📜&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-quest"&gt;Main Quest 📋&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-mile"&gt;Milestones 🏆&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-prev" class="tab-content active"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🎬&lt;/span&gt;Cutscenes coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-cov" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;💌&lt;/span&gt;NPC cards coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-lore" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📜&lt;/span&gt;World flags coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-quest" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📋&lt;/span&gt;Main quest coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-mile" class="tab-content"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🏆&lt;/span&gt;Milestones coming in Session 4&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- NIGHTLOCK --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="nightlock" class="panel"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="n-tardis"&gt;Tardis 🌀&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-davy"&gt;Davy Jones 🏴‍☠️&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-fit"&gt;Fit Check 👗&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-skills"&gt;Skillmaxxing 📈&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-grass"&gt;Touching Grass 🌿&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-vid"&gt;One Video 📺&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-cast"&gt;The Cast 🐄&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-plot"&gt;Plot Armor 🛡️&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-holo"&gt;Holocron 🔮&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-tardis" class="tab-content active"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌀&lt;/span&gt;Inventory — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-davy" <span class="Apple-converted-space">  </span>class="tab-content"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;🏴‍☠️&lt;/span&gt;Chests — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-fit"<span class="Apple-converted-space">    </span>class="tab-content"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;👗&lt;/span&gt;Equipment — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-skills" class="tab-content"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;📈&lt;/span&gt;Skills — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-grass"<span class="Apple-converted-space">  </span>class="tab-content"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌿&lt;/span&gt;Friendship — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-vid"<span class="Apple-converted-space">    </span>class="tab-content"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;📺&lt;/span&gt;Recipes — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-cast" <span class="Apple-converted-space">  </span>class="tab-content"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;🐄&lt;/span&gt;Animals — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-plot" <span class="Apple-converted-space">  </span>class="tab-content"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;🛡️&lt;/span&gt;Flags — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-holo" <span class="Apple-converted-space">  </span>class="tab-content"&gt;&lt;div class="empty"&gt;&lt;span class="ei"&gt;🔮&lt;/span&gt;Collections — Session 5&lt;/div&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;nav id="nav"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab active" data-panel="home"&gt;&lt;span class="ni"&gt;🏠&lt;/span&gt;&lt;span&gt;Home&lt;/span&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="route"&gt;&lt;span class="ni"&gt;🔵&lt;/span&gt;&lt;span&gt;Route 66&lt;/span&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="hoard"&gt;&lt;span class="ni"&gt;🔴&lt;/span&gt;&lt;span&gt;The Hoard&lt;/span&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="story"&gt;&lt;span class="ni"&gt;🟢&lt;/span&gt;&lt;span&gt;Story Time&lt;/span&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="nightlock"&gt;&lt;span class="ni"&gt;🟣&lt;/span&gt;&lt;span&gt;Nightlock&lt;/span&gt;&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/nav&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p1"><span class="s1">const BRIDGE_PORT = 8742;</span></p>
+<p class="p1"><span class="s1">const RETRY_MS<span class="Apple-converted-space">    </span>= 30000;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">const PARTICLES = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spring:['🌸','🌷','🌼','🍀','💐','🌸'],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>summer:['☀️','🌻','🍑','🌊','🌺','⭐'],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>fall:<span class="Apple-converted-space">  </span>['🍂','🍁','🌾','🎃','🍄','🍎'],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>winter:['❄️','⛄','✨','💎','🌨️','🔮']</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p1"><span class="s1">const JUNIMO_COLS = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spring:['#f5a0c0','#c0a0f5','#a0f0c0'],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>summer:['#f5d040','#f59040','#40d0f0'],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>fall:<span class="Apple-converted-space">  </span>['#d4855a','#c8d45a','#8b6040'],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>winter:['#a0c8f8','#c8a0f8','#f0f0e8']</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">const S = {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>panel:'home',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>dark: localStorage.getItem('sdv_dark')==='true',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>icons:localStorage.getItem('sdv_icons')||'pixel',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>ip: <span class="Apple-converted-space">  </span>localStorage.getItem('sdv_ip')||'',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>data: null, ok:false, retry:null,</span></p>
+<p class="p1"><span class="s1">};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">const $<span class="Apple-converted-space">  </span>= id =&gt; document.getElementById(id);</span></p>
+<p class="p1"><span class="s1">const qs = s<span class="Apple-converted-space">  </span>=&gt; document.querySelector(s);</span></p>
+<p class="p1"><span class="s1">const cap = s =&gt; s ? s[0].toUpperCase()+s.slice(1) : '?';</span></p>
+<p class="p1"><span class="s1">const fmtK = n =&gt; n==null?'—':n&gt;=1000?(n/1000).toFixed(1)+'k':String(n);</span></p>
+<p class="p1"><span class="s1">const season = () =&gt; S.data?.season || 'spring';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function applyDark(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.documentElement.setAttribute('data-dark', S.dark);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('dark-btn').textContent = S.dark ? '☀️ Light Mode' : '🌙 Dark Mode';</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function goPanel(id){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.panel').forEach(p=&gt;p.classList.remove('active'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.nav-tab').forEach(t=&gt;t.classList.remove('active'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const p = $(id); if(p){ p.classList.add('active'); p.scrollTop=0; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const t = qs(`.nav-tab[data-panel="${id}"]`); if(t) t.classList.add('active');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>S.panel = id;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function goTab(tabId){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const c = $(tabId); if(!c) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const panel = c.closest('.panel');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>panel.querySelectorAll('.tab-content').forEach(t=&gt;t.classList.remove('active'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>panel.querySelectorAll('.tab-btn').forEach(b=&gt;b.classList.remove('active'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>c.classList.add('active');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const btn = panel.querySelector(`.tab-btn[data-tab="${tabId}"]`);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(btn) btn.classList.add('active');</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">async function fetchBridge(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>clearTimeout(S.retry);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const ip = $('bridge-ip').value.trim();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(!ip){ setBridgeOff(); return; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>localStorage.setItem('sdv_ip', ip);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const saveUrl = ip.startsWith('http') ? ip.replace(/\/+$/,'')+'/save' : `https://${ip}:${BRIDGE_PORT}/save`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>try{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const res = await fetch(saveUrl,{signal:AbortSignal.timeout(5000)});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(!res.ok) throw 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const d = await res.json();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(d.error) throw 0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>S.data=d; S.ok=true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setBridgeOn(d); renderFromData(d);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}catch(_){ S.ok=false; setBridgeOff(); }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>S.retry = setTimeout(fetchBridge, RETRY_MS);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function setBridgeOn(d){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('bdot').className='bdot on';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('blbl').textContent=`Connected · ${cap(d.season)} ${d.day}, Y${d.year}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderTicker();</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">function setBridgeOff(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('bdot').className='bdot err';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('blbl').textContent='Bridge Disconnected';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderTicker();</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function renderFromData(d){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.documentElement.setAttribute('data-season', d.season||'spring');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spawnParticles(d.season||'spring');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('qs-gold').textContent = fmtK(d.gold);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const s = cap(d.season||'spring');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('qs-day').textContent<span class="Apple-converted-space">  </span>= d.day ? `${s[0]}${d.day}` : '—';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('qs-mine').textContent = d.deepestMineLevel!=null ? `F${d.deepestMineLevel}` :</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                             </span>d.skills?.mine!=null ? `Lv${d.skills.mine}` : '—';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('home-sub').textContent = `${s} ${d.day||'?'} · Year ${d.year||1} · ${d.farm||'Hoe Down Farms'}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderTicker();</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function renderTicker(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const d = S.data;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('t-status').textContent = S.ok ? '⚡ Bridge: ● On' : '⚡ Bridge: ○ Off';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(!d) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('t-gold').textContent <span class="Apple-converted-space">  </span>= `💰 ${d.gold!=null?d.gold.toLocaleString()+'g':'—'}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('t-day').textContent<span class="Apple-converted-space">    </span>= `📅 ${cap(d.season)} ${d.day||'?'}, Y${d.year||1}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const sk = d.skills||{};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('t-skills').textContent = `Farm Lv${sk.farm??'—'} · Fish Lv${sk.fish??'—'} · Mine Lv${sk.mine??'—'}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('t-ore').textContent<span class="Apple-converted-space">    </span>= `⛏ Cu${d.copperOre??'—'} Fe${d.ironOre??'—'} Au${d.goldOre??'—'}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('t-depth').textContent<span class="Apple-converted-space">  </span>= `Mine: F${d.deepestMineLevel??'—'}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('t-earn').textContent <span class="Apple-converted-space">  </span>= `Earned: ${d.totalMoneyEarned!=null?d.totalMoneyEarned.toLocaleString()+'g':'—'}`;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Junimos */</span></p>
+<p class="p1"><span class="s1">const jSVG = c =&gt; `&lt;svg viewBox="0 0 40 46" width="36" height="42" xmlns="http://www.w3.org/2000/svg"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;circle cx="20" cy="8" r="5" fill="${c}"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;line x1="20" y1="13" x2="20" y2="19" stroke="${c}" stroke-width="3" stroke-linecap="round"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="20" cy="28" rx="14" ry="17" fill="${c}"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="13" cy="24" rx="3.5" ry="3.5" fill="white"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="27" cy="24" rx="3.5" ry="3.5" fill="white"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;circle cx="14" cy="25" r="2" fill="#2a1a1a"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;circle cx="28" cy="25" r="2" fill="#2a1a1a"/&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;path d="M7 43 Q10 47 14 44 Q17 42 20 44 Q23 42 26 44 Q30 47 33 43" fill="${c}"/&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/svg&gt;`;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function spawnJunimo(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const stage = $('junimo-stage'); if(!stage) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const cols = JUNIMO_COLS[season()];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const col<span class="Apple-converted-space">  </span>= cols[Math.floor(Math.random()*cols.length)];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const j = document.createElement('div');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>j.className = 'junimo';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>j.innerHTML = jSVG(col);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>j.style.cssText = `left:${5+Math.random()*80}%;bottom:0;animation-duration:${0.5+Math.random()*0.7}s`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>stage.appendChild(j);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>setTimeout(()=&gt;{ j.style.opacity='0'; setTimeout(()=&gt;j.remove(),450); }, 2000+Math.random()*1800);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function startJunimos(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spawnJunimo();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>setInterval(()=&gt;{ if(Math.random()&gt;0.2) spawnJunimo(); }, 1800);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Particles */</span></p>
+<p class="p1"><span class="s1">let pInt;</span></p>
+<p class="p1"><span class="s1">function spawnParticles(s){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>clearInterval(pInt);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.particle').forEach(p=&gt;p.remove());</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const emojis = PARTICLES[s]||PARTICLES.spring;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function one(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const p = document.createElement('div');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>p.className='particle';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>p.textContent = emojis[Math.floor(Math.random()*emojis.length)];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const dur = 9+Math.random()*9;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>p.style.cssText=`left:${Math.random()*92}%;bottom:-4%;font-size:${13+Math.random()*11}px;animation-duration:${dur}s`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>document.body.appendChild(p);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setTimeout(()=&gt;p.remove(), dur*1000+500);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>for(let i=0;i&lt;5;i++) setTimeout(one, i*700);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>pInt = setInterval(one, 2800);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* Event delegation */</span></p>
+<p class="p1"><span class="s1">document.addEventListener('click', e=&gt;{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const navTab<span class="Apple-converted-space">    </span>= e.target.closest('.nav-tab');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const entryCard = e.target.closest('.entry-card');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const tabBtn<span class="Apple-converted-space">    </span>= e.target.closest('.tab-btn');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(navTab)<span class="Apple-converted-space">              </span>{ goPanel(navTab.dataset.panel); return; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(entryCard) <span class="Apple-converted-space">          </span>{ goPanel(entryCard.dataset.goto); return; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(tabBtn?.dataset.tab) { goTab(tabBtn.dataset.tab); return; }</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(e.target.id==='dark-btn'){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>S.dark=!S.dark; localStorage.setItem('sdv_dark',S.dark); applyDark(); return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(e.target.id==='icon-btn'){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const styles=['Pixel','Kawaii','Line'];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const cur = styles.findIndex(s=&gt;$('icon-btn').textContent.includes(s));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const next = (cur+1)%3;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>S.icons=styles[next].toLowerCase();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>localStorage.setItem('sdv_icons',S.icons);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>$('icon-btn').textContent=`🎨 Icons: ${styles[next]}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1">});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">$('bridge-ip').addEventListener('keydown', e=&gt;{ if(e.key==='Enter') fetchBridge(); });</span></p>
+<p class="p1"><span class="s1">$('bridge-ip').addEventListener('blur', ()=&gt;{ if($('bridge-ip').value.trim()) fetchBridge(); });</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function init(){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>applyDark();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const lbl={pixel:'Pixel',kawaii:'Kawaii',line:'Line'}[S.icons]||'Pixel';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('icon-btn').textContent=`🎨 Icons: ${lbl}`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(S.ip) $('bridge-ip').value=S.ip;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spawnParticles('spring');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>startJunimos();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderTicker();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if(S.ip) fetchBridge();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>else S.retry=setTimeout(fetchBridge, RETRY_MS);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if('serviceWorker' in navigator)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>navigator.serviceWorker.register('./service-worker.js').catch(()=&gt;{});</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">document.addEventListener('DOMContentLoaded', init);</span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;script src="./update-checker.js"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>
