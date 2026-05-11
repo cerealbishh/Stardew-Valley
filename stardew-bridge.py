@@ -16,8 +16,8 @@ from datetime import datetime, timezone, timedelta
 SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/Hoedown_203853699/Hoedown_203853699"
 PORT = 8742
 POLL_INTERVAL = 5
-CERT_FILE = "/Users/roohi/Documents/Stardew Valley/bridge-cert.pem"
-KEY_FILE  = "/Users/roohi/Documents/Stardew Valley/bridge-key.pem"
+CERT_FILE = "/Users/roohi/roohis-macbook-air.tailcce197.ts.net.crt"
+KEY_FILE  = "/Users/roohi/roohis-macbook-air.tailcce197.ts.net.key"
 
 latest_data = {}
 last_modified = 0
