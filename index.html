@@ -1,829 +1,1053 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en" data-season="spring" data-dark="false">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Stardew Year 1</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#5a9e4a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>
+:root{
+  --bg:#f4f0e8;--surf:#fff;--text:#3d2b1f;--muted:#8a7a6a;
+  --acc:#5a9e4a;--acc2:#c85fa8;--border:#e0d8c8;
+  --tk-bg:#5a9e4a;--tk-text:#fff;
+  --nav-bg:rgba(255,255,255,0.96);--nav-act:#5a9e4a;
+  --r:12px;--gap:12px;
+  --t-fire:#e53935;--t-prep:#f57c00;--t-gather:#388e3c;
+  --t-plate:#7b1fa2;--t-purchase:#1565c0;--t-par:#f9a825;--t-tomorrow:#546e7a;
+}
+html[data-season=summer]{--acc:#e8960a;--acc2:#1976d2;--tk-bg:#e8960a;}
+html[data-season=fall]{--acc:#d4622d;--acc2:#8b4513;--tk-bg:#c4521d;}
+html[data-season=winter]{--acc:#4a90d9;--acc2:#9b59b6;--tk-bg:#3a80c9;--bg:#e8eef8;}
+html[data-dark=true]{--bg:#1a1a2e;--surf:#16213e;--text:#e2e2e2;--muted:#7a8a9a;--border:#2a3a5e;--nav-bg:rgba(22,33,62,0.97);}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);}
+body{display:flex;flex-direction:column;overflow:hidden;}
+
+#ticker{
+  background:var(--tk-bg);color:var(--tk-text);
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+  font-weight:600;font-size:15px;flex-shrink:0;
+  padding-top:calc(10px + env(safe-area-inset-top));
+}
+#ticker-right{display:flex;gap:10px;align-items:center;}
+#dark-btn{background:none;border:none;color:var(--tk-text);font-size:18px;cursor:pointer;padding:0;line-height:1;}
+#bridge-dot{width:8px;height:8px;border-radius:50%;background:#ff5252;flex-shrink:0;}
+#bridge-dot.ok{background:#69f0ae;}
+
+#main{flex:1;overflow:hidden;position:relative;}
+.panel{position:absolute;inset:0;overflow-y:auto;padding:var(--gap);display:none;-webkit-overflow-scrolling:touch;}
+.panel.active{display:block;}
+.panel-title{font-size:18px;font-weight:700;margin-bottom:var(--gap);color:var(--acc);}
+
+#nav{
+  display:flex;background:var(--nav-bg);
+  border-top:1px solid var(--border);
+  padding-bottom:env(safe-area-inset-bottom);flex-shrink:0;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:8px 4px;background:none;border:none;cursor:pointer;
+  color:var(--muted);font-size:10px;font-weight:500;
+}
+.nav-btn .icon{font-size:20px;}
+.nav-btn.active{color:var(--nav-act);}
+
+.route-day{background:var(--surf);border-radius:var(--r);border:1px solid var(--border);margin-bottom:8px;overflow:hidden;}
+.day-header{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;user-select:none;font-weight:600;}
+.day-num{background:var(--acc);color:#fff;border-radius:6px;padding:2px 7px;font-size:13px;font-weight:700;flex-shrink:0;}
+.route-day.today .day-num{background:var(--acc2);}
+.day-name{flex:1;font-size:14px;}
+.day-event{font-size:10px;background:var(--acc2);color:#fff;border-radius:10px;padding:1px 6px;flex-shrink:0;}
+.day-arrow{color:var(--muted);font-size:11px;transition:transform .2s;flex-shrink:0;}
+.route-day[data-open=true] .day-arrow{transform:rotate(90deg);}
+.day-body{display:none;border-top:1px solid var(--border);}
+.route-day[data-open=true] .day-body{display:block;}
+
+.task-row{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);}
+.task-row:last-child{border-bottom:none;}
+.task-check{width:20px;height:20px;border-radius:4px;border:2px solid var(--border);background:var(--surf);flex-shrink:0;cursor:pointer;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s;}
+.task-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);}
+.task-check[data-checked="1"]::after{content:'✓';color:#fff;font-size:12px;font-weight:700;}
+.task-label{flex:1;font-size:13.5px;line-height:1.4;}
+.task-row[data-checked="1"] .task-label{color:var(--muted);text-decoration:line-through;}
+.type-badge{font-size:10px;font-weight:600;padding:1px 5px;border-radius:4px;color:#fff;flex-shrink:0;margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
+.tb-fire{background:var(--t-fire);}
+.tb-prep{background:var(--t-prep);}
+.tb-gather{background:var(--t-gather);}
+.tb-plate{background:var(--t-plate);}
+.tb-purchase{background:var(--t-purchase);}
+.tb-par{background:var(--t-par);}
+.tb-tomorrow{background:var(--t-tomorrow);}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px;}
+.cal-day{aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;background:var(--surf);border:1px solid var(--border);position:relative;cursor:pointer;}
+.cal-day.today{background:var(--acc);color:#fff;border-color:var(--acc);}
+.cal-day.past{color:var(--muted);}
+.cal-day.has-event::after{content:'';position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:var(--acc2);}
+.cal-day.today.has-event::after{background:#fff;}
+.event-list{margin-top:8px;}
+.event-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.event-item:last-child{border-bottom:none;}
+.event-dot{width:8px;height:8px;border-radius:50%;background:var(--acc2);flex-shrink:0;}
+.event-d{font-weight:700;min-width:24px;color:var(--acc);}
+
+.par-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
+.par-item:last-child{border-bottom:none;}
+.par-check{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.par-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);}
+.par-check[data-checked="1"]::after{content:'✓';color:#fff;font-size:11px;font-weight:700;}
+.par-day{font-size:11px;color:var(--muted);margin-left:auto;flex-shrink:0;}
+
+.carry-section{margin-bottom:16px;}
+.carry-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.carry-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
+.carry-item:last-child{border-bottom:none;}
+.carry-check{width:20px;height:20px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.carry-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);}
+.carry-check[data-checked="1"]::after{content:'✓';color:#fff;font-size:12px;font-weight:700;}
+
+.bridge-row{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.bridge-row label{font-size:12px;font-weight:600;color:var(--muted);}
+.bridge-input{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;color:var(--text);width:100%;}
+.bridge-btn{background:var(--acc);color:#fff;border:none;border-radius:8px;padding:11px 20px;font-size:14px;font-weight:600;cursor:pointer;width:100%;}
+.bridge-status{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:12px;color:var(--muted);font-family:monospace;margin-top:8px;min-height:60px;white-space:pre-wrap;word-break:break-all;}
+
+.junimo{position:fixed;pointer-events:none;z-index:1000;width:32px;height:32px;animation:jh .6s ease-in-out infinite alternate;}
+@keyframes jh{from{transform:translateY(0);}to{transform:translateY(-6px);}}
+.particle{position:fixed;pointer-events:none;z-index:999;width:6px;height:6px;border-radius:50%;animation:pf .8s ease-out forwards;}
+@keyframes pf{from{transform:translate(0,0) scale(1);opacity:1;}to{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0;}}
+</style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="en" data-season="spring" data-dark="false"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-status-bar-style" content="default"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;meta name="apple-mobile-web-app-title" content="Hoe Down"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;title&gt;Stardew or Dew Not, There Is No Try&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1">&lt;link rel="manifest" href="./manifest.json"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;style&gt;</span></p>
-<p class="p1"><span class="s1">*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}</span></p>
-<p class="p1"><span class="s1">html{height:100%}</span></p>
-<p class="p1"><span class="s1">body{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--bg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:100%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex-direction:column;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow:hidden;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Tokens ── */</span></p>
-<p class="p1"><span class="s1">:root{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--r66:#5b90c8;<span class="Apple-converted-space">      </span>--r66-bg:#ddeeff;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--hoard:#c05e5e;<span class="Apple-converted-space">    </span>--hoard-bg:#fde4e4;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--story:#5a9e78;<span class="Apple-converted-space">    </span>--story-bg:#daf0e6;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--night:#8f6ec0;<span class="Apple-converted-space">    </span>--night-bg:#ecdff8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--bg:#fff8f5;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--card-bg:#ffffff;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text:#382020;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text-muted:#907575;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--border:rgba(0,0,0,0.09);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--ticker-bg:#281515;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--ticker-text:#ffd0a0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-bg:#ffffff;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-border:#e8d0c8;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-h:60px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--ticker-h:34px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--safe-top:env(safe-area-inset-top,0px);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--safe-bottom:env(safe-area-inset-bottom,0px);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">[data-dark=true]{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--bg:#221414;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--card-bg:#2c1a1a;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text:#f0e4e0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--text-muted:#a88888;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--border:rgba(255,255,255,0.09);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-bg:#2c1a1a;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--nav-border:#483030;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--r66-bg:#182840;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--hoard-bg:#381a1a;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--story-bg:#182a20;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--night-bg:#241638;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Seasonal gradient tokens */</span></p>
-<p class="p1"><span class="s1">[data-season=spring]{--sa:#fde8f2;--sb:#ede8fd}</span></p>
-<p class="p1"><span class="s1">[data-season=summer]{--sa:#fff0e0;--sb:#fde8ec}</span></p>
-<p class="p1"><span class="s1">[data-season=fall]<span class="Apple-converted-space">  </span>{--sa:#feeee0;--sb:#f8ece0}</span></p>
-<p class="p1"><span class="s1">[data-season=winter]{--sa:#e2eeff;--sb:#eae2ff}</span></p>
-<p class="p1"><span class="s1">[data-dark=true][data-season=spring]{--sa:#2e1824;--sb:#231828}</span></p>
-<p class="p1"><span class="s1">[data-dark=true][data-season=summer]{--sa:#2e2014;--sb:#2e1820}</span></p>
-<p class="p1"><span class="s1">[data-dark=true][data-season=fall]<span class="Apple-converted-space">  </span>{--sa:#2e2010;--sb:#281808}</span></p>
-<p class="p1"><span class="s1">[data-dark=true][data-season=winter]{--sa:#141c2e;--sb:#1c1428}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">body::before{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>content:'';position:fixed;inset:0;z-index:0;pointer-events:none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:linear-gradient(140deg,var(--sa) 0%,var(--sb) 50%,var(--bg) 100%);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Ticker ── */</span></p>
-<p class="p1"><span class="s1">#ticker{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;z-index:100;flex-shrink:0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:calc(var(--ticker-h) + var(--safe-top));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding-top:var(--safe-top);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--ticker-bg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--ticker-text);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:12px;font-weight:bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow:hidden;display:flex;align-items:center;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">#ticker-track{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>white-space:nowrap;display:inline-block;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding-left:100vw;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>animation:scroll-ticker 35s linear infinite;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">#ticker-track:hover{animation-play-state:paused}</span></p>
-<p class="p1"><span class="s1">@keyframes scroll-ticker{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>from{transform:translateX(0)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>to{transform:translateX(-100%)}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">#ticker-track span{margin:0 20px}</span></p>
-<p class="p1"><span class="s1">#ticker-track .dot{opacity:0.4;margin:0 4px}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Layout ── */</span></p>
-<p class="p1"><span class="s1">#main{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex:1;position:relative;z-index:1;overflow:hidden;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.panel{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute;inset:0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow-y:auto;-webkit-overflow-scrolling:touch;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>opacity:0;pointer-events:none;transition:opacity 0.18s;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding-bottom:calc(var(--nav-h) + var(--safe-bottom) + 8px);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.panel.active{opacity:1;pointer-events:all}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Bottom nav ── */</span></p>
-<p class="p1"><span class="s1">#nav{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;z-index:100;flex-shrink:0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--nav-bg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-top:1.5px solid var(--nav-border);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:calc(var(--nav-h) + var(--safe-bottom));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding-bottom:var(--safe-bottom);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.nav-tab{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:2px;padding-top:6px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:9.5px;font-family:'Courier New',monospace;font-weight:bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text-muted);letter-spacing:0.03em;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:none;background:none;cursor:pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;transition:color 0.13s;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.nav-tab .ni{font-size:21px;line-height:1;transition:transform 0.13s}</span></p>
-<p class="p1"><span class="s1">.nav-tab.active .ni{transform:translateY(-2px)}</span></p>
-<p class="p1"><span class="s1">.nav-tab[data-panel=home].active<span class="Apple-converted-space">  </span>{color:var(--text)}</span></p>
-<p class="p1"><span class="s1">.nav-tab[data-panel=route].active {color:var(--r66)}</span></p>
-<p class="p1"><span class="s1">.nav-tab[data-panel=hoard].active {color:var(--hoard)}</span></p>
-<p class="p1"><span class="s1">.nav-tab[data-panel=story].active {color:var(--story)}</span></p>
-<p class="p1"><span class="s1">.nav-tab[data-panel=nightlock].active{color:var(--night)}</span></p>
-<p class="p1"><span class="s1">.nav-tab.active::after{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>content:'';position:absolute;top:0;left:25%;right:25%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:2.5px;border-radius:0 0 3px 3px;background:currentColor;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Tab bars ── */</span></p>
-<p class="p1"><span class="s1">.tab-bar{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>scrollbar-width:none;gap:6px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:10px 12px 4px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:sticky;top:0;z-index:10;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:linear-gradient(to bottom,var(--sa,var(--bg)) 80%,transparent);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.tab-bar::-webkit-scrollbar{display:none}</span></p>
-<p class="p1"><span class="s1">.tab-btn{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex-shrink:0;padding:6px 13px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:20px;border:2px solid var(--panel-accent,#bbb);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:transparent;color:var(--panel-accent,#999);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:11.5px;font-weight:bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>cursor:pointer;white-space:nowrap;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;transition:all 0.13s;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.tab-btn.active{background:var(--panel-accent,#999);color:#fff}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Cards ── */</span></p>
-<p class="p1"><span class="s1">.card{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2.5px solid var(--panel-accent,var(--border));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 10px rgba(0,0,0,0.06);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;overflow:hidden;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.card-hd{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:space-between;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:11px 15px;cursor:pointer;user-select:none;-webkit-user-select:none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:13px;font-weight:bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:rgba(128,128,128,0.06);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.card-hd .chev{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--panel-accent,#bbb);font-size:10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:transform 0.18s;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.card[open]&gt;.card-hd&gt;.chev{transform:rotate(180deg)}</span></p>
-<p class="p1"><span class="s1">.card-body{padding:12px 15px}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Checkerboard stripe ── */</span></p>
-<p class="p1"><span class="s1">.checker-bar{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:3px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background-image:repeating-conic-gradient(</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>color-mix(in srgb,var(--panel-accent,#ccc) 40%,transparent) 0% 25%,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>transparent 0% 50%</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background-size:6px 6px;margin:0 12px 8px;border-radius:2px;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Home ── */</span></p>
-<p class="p1"><span class="s1">#home{padding-top:8px}</span></p>
-<p class="p1"><span class="s1">.home-hdr{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-align:center;padding:0 16px 2px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.home-hdr h1{font-size:20px;font-weight:bold;color:var(--text);letter-spacing:-0.02em}</span></p>
-<p class="p1"><span class="s1">.home-hdr p{font-size:11px;color:var(--text-muted);margin-top:2px}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Junimo stage */</span></p>
-<p class="p1"><span class="s1">.junimo-stage{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:72px;position:relative;overflow:hidden;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:8px 0;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.junimo{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute;bottom:0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:0;/* SVG */</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>animation:jbounce 0.7s ease-in-out infinite alternate;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:opacity 0.4s;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">@keyframes jbounce{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>from{transform:translateY(0) scale(1)}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>to{transform:translateY(-14px) scale(1.1)}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Bridge section */</span></p>
-<p class="p1"><span class="s1">.bridge-box{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:14px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 8px rgba(0,0,0,0.05);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;padding:12px 14px;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.bridge-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}</span></p>
-<p class="p1"><span class="s1">.bdot{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:9px;height:9px;border-radius:50%;flex-shrink:0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:#bbb;transition:background 0.3s,box-shadow 0.3s;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.bdot.on{background:#5a9e78;box-shadow:0 0 6px #5a9e7888}</span></p>
-<p class="p1"><span class="s1">.bdot.err{background:#c05e5e}</span></p>
-<p class="p1"><span class="s1">.bridge-lbl{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:12.5px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-weight:bold;color:var(--text);flex:1;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.bridge-inp{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:100%;padding:8px 11px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);border-radius:10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--bg);color:var(--text);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'Courier New',monospace;font-size:13px;outline:none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:border-color 0.15s;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.bridge-inp:focus{border-color:var(--r66)}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Quick stats */</span></p>
-<p class="p1"><span class="s1">.quick-stats{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid;grid-template-columns:repeat(3,1fr);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:8px;margin:0 12px 10px;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.qs{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);padding:9px 8px;text-align:center;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.qs-lbl{font-size:9.5px;font-family:'Courier New',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:3px}</span></p>
-<p class="p1"><span class="s1">.qs-val{font-size:16px;font-weight:bold;font-family:'Courier New',monospace;color:var(--text)}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Panel entry cards */</span></p>
-<p class="p1"><span class="s1">.entry-grid{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid;grid-template-columns:1fr 1fr;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:9px;margin:0 12px 10px;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.entry-card{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:13px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2.5px solid var(--ec,var(--border));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:13px 12px;cursor:pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>box-shadow:0 2px 8px rgba(0,0,0,0.05);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:transform 0.1s,box-shadow 0.1s;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.entry-card:active{transform:scale(0.96);box-shadow:0 1px 4px rgba(0,0,0,0.04)}</span></p>
-<p class="p1"><span class="s1">.entry-icon{font-size:26px;margin-bottom:5px}</span></p>
-<p class="p1"><span class="s1">.entry-name{font-family:'Courier New',monospace;font-size:12.5px;font-weight:bold;color:var(--ec,var(--text))}</span></p>
-<p class="p1"><span class="s1">.entry-desc{font-size:10.5px;color:var(--text-muted);margin-top:2px}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Controls row */</span></p>
-<p class="p1"><span class="s1">.ctrl-row{display:flex;gap:8px;margin:0 12px 10px}</span></p>
-<p class="p1"><span class="s1">.ctrl-btn{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex:1;padding:9px 8px;border-radius:11px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);background:var(--card-bg);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);font-family:'Courier New',monospace;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:11.5px;font-weight:bold;cursor:pointer;text-align:center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>-webkit-tap-highlight-color:transparent;transition:background 0.13s;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.ctrl-btn:active{background:var(--border)}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Search */</span></p>
-<p class="p1"><span class="s1">.search-wrap{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;gap:8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0 12px 10px;padding:9px 12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--card-bg);border-radius:12px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid var(--border);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.search-wrap input{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex:1;border:none;background:transparent;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text);font-size:14px;outline:none;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.search-wrap input::placeholder{color:var(--text-muted)}</span></p>
-<p class="p1"><span class="s1">.search-ico{color:var(--text-muted);font-size:15px;flex-shrink:0}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Tab content */</span></p>
-<p class="p1"><span class="s1">.tab-content{display:none;padding-top:6px}</span></p>
-<p class="p1"><span class="s1">.tab-content.active{display:block}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Empty states */</span></p>
-<p class="p1"><span class="s1">.empty{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-align:center;padding:44px 24px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--text-muted);font-family:'Courier New',monospace;font-size:12.5px;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">.empty .ei{font-size:38px;display:block;margin-bottom:10px}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* Floating particles */</span></p>
-<p class="p1"><span class="s1">.particle{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:fixed;pointer-events:none;z-index:0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>animation:pfloat linear forwards;opacity:0;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">@keyframes pfloat{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>0%<span class="Apple-converted-space">  </span>{transform:translateY(0) rotate(0deg);opacity:0}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>8%<span class="Apple-converted-space">  </span>{opacity:0.4}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>90% {opacity:0.3}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>100%{transform:translateY(-105vh) rotate(25deg);opacity:0}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Panel accent inheritance ── */</span></p>
-<p class="p1"><span class="s1">#route<span class="Apple-converted-space">    </span>{--panel-accent:var(--r66)}</span></p>
-<p class="p1"><span class="s1">#hoard<span class="Apple-converted-space">    </span>{--panel-accent:var(--hoard)}</span></p>
-<p class="p1"><span class="s1">#story<span class="Apple-converted-space">    </span>{--panel-accent:var(--story)}</span></p>
-<p class="p1"><span class="s1">#nightlock{--panel-accent:var(--night)}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">/* ── Desktop ── */</span></p>
-<p class="p1"><span class="s1">@media(min-width:768px){</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>body{flex-direction:row;overflow:hidden}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#ticker{position:fixed;top:0;left:0;right:0;z-index:200}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#nav{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>position:fixed;top:calc(var(--ticker-h) + var(--safe-top));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>left:0;bottom:0;width:190px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>flex-direction:column;justify-content:flex-start;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>border-top:none;border-right:1.5px solid var(--nav-border);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>padding:6px 0;height:auto;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.nav-tab{flex-direction:row;justify-content:flex-start;padding:11px 16px;gap:10px;font-size:12.5px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.nav-tab .ni{font-size:18px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.nav-tab.active::after{top:0;bottom:0;left:0;right:auto;width:3px;height:auto;border-radius:0 3px 3px 0}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>#main{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin-top:calc(var(--ticker-h) + var(--safe-top));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>margin-left:190px;flex:1;overflow-y:auto;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.panel{position:relative;inset:auto;opacity:1;pointer-events:all;overflow-y:visible;padding-bottom:24px}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.panel:not(.active){display:none}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;!-- Ticker --&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div id="ticker"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="ticker-track"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-status"&gt;⚡ Bridge: ○ Off&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-gold"&gt;💰 —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-day"&gt;📅 —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-skills"&gt;Farm — · Fish — · Mine —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-ore"&gt;⛏ Cu — · Fe — · Au —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-depth"&gt;Mine Floor: —&lt;/span&gt;&lt;span class="dot"&gt;·&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="t-earn"&gt;Earned: —&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;!-- Main --&gt;</span></p>
-<p class="p1"><span class="s1">&lt;div id="main"&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- HOME --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="home" class="panel active"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="home-hdr"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;h1&gt;🌾 Stardew or Dew Not&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;p id="home-sub"&gt;There Is No Try · Hoe Down Farms&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="junimo-stage" id="junimo-stage"&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="search-wrap"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="search-ico"&gt;🔍&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;input id="search-inp" type="search" placeholder="Search tasks, items, NPCs…"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="bridge-box"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="bridge-row"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bdot err" id="bdot"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="bridge-lbl" id="blbl"&gt;Bridge Disconnected&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;input class="bridge-inp" id="bridge-ip" type="text"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>placeholder="Mac IP — e.g. 10.0.0.70"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">             </span>autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="quick-stats"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Gold&lt;/div&gt;&lt;div class="qs-val" id="qs-gold"&gt;—&lt;/div&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Day&lt;/div&gt;&lt;div class="qs-val" id="qs-day"&gt;—&lt;/div&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="qs"&gt;&lt;div class="qs-lbl"&gt;Mine&lt;/div&gt;&lt;div class="qs-val" id="qs-mine"&gt;—&lt;/div&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="entry-grid"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--r66)" data-goto="route"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🔵&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Route 66&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Daily checklist&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--hoard)" data-goto="hoard"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🔴&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;The Hoard&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Bundles &amp;amp; unlocks&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--story)" data-goto="story"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🟢&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Story Time&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Events &amp;amp; lore&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="entry-card" style="--ec:var(--night)" data-goto="nightlock"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-icon"&gt;🟣&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-name"&gt;Nightlock&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="entry-desc"&gt;Inventory &amp;amp; skills&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="ctrl-row"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="ctrl-btn" id="dark-btn"&gt;🌙 Dark Mode&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="ctrl-btn" id="icon-btn"&gt;🎨 Icons: Pixel&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- ROUTE 66 --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="route" class="panel"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="r-tasks"&gt;Prep/Fire/Plate&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-cal"&gt;It Is Wednesday 🐸&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-par"&gt;Are We There Yet 🗺️&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="r-carry"&gt;🚨 Never Forget&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="r-tasks" class="tab-content active"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📅&lt;/span&gt;Day-by-day tasks coming in Session 3&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="r-cal" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🐸&lt;/span&gt;Calendar coming in Session 3&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="r-par" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🗺️&lt;/span&gt;Par check coming in Session 3&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="r-carry" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🚨&lt;/span&gt;Carryover coming in Session 3&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- THE HOARD --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="hoard" class="panel"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="h-junimo"&gt;Junimo Feed 🌽&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-quests"&gt;Take This Job 📋&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-museum"&gt;Look Shiny ✨&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-unlocks"&gt;Made It Myself 🔨&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="h-npcs"&gt;Covenant 💌&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-junimo" class="tab-content active"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌽&lt;/span&gt;Junimo bundles coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-quests" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📋&lt;/span&gt;Quests coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-museum" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;✨&lt;/span&gt;Museum coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-unlocks" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🔨&lt;/span&gt;Unlocks coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="h-npcs" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;💌&lt;/span&gt;NPC cards coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- STORY TIME --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="story" class="panel"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="s-prev"&gt;Previously On 🎬&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-cov"&gt;Covenant 💌&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-lore"&gt;The Lore 📜&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-quest"&gt;Main Quest 📋&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="s-mile"&gt;Milestones 🏆&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-prev" class="tab-content active"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🎬&lt;/span&gt;Cutscenes coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-cov" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;💌&lt;/span&gt;NPC cards coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-lore" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📜&lt;/span&gt;World flags coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-quest" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📋&lt;/span&gt;Main quest coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="s-mile" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🏆&lt;/span&gt;Milestones coming in Session 4&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- NIGHTLOCK --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="nightlock" class="panel"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="tab-bar"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn active" data-tab="n-tardis"&gt;Tardis 🌀&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-davy"&gt;Davy Jones 🏴‍☠️&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-fit"&gt;Fit Check 👗&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-skills"&gt;Skillmaxxing 📈&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-grass"&gt;Touching Grass 🌿&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-vid"&gt;One Video 📺&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-cast"&gt;The Cast 🐄&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-plot"&gt;Plot Armor 🛡️&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;button class="tab-btn" data-tab="n-holo"&gt;Holocron 🔮&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="checker-bar"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-tardis" class="tab-content active"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌀&lt;/span&gt;Inventory coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-davy" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🏴‍☠️&lt;/span&gt;Chests coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-fit" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;👗&lt;/span&gt;Equipment coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-skills" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📈&lt;/span&gt;Skills coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-grass" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🌿&lt;/span&gt;Friendship coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-vid" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;📺&lt;/span&gt;Recipes coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-cast" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🐄&lt;/span&gt;Animals coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-plot" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🛡️&lt;/span&gt;Special flags coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="n-holo" class="tab-content"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="empty"&gt;&lt;span class="ei"&gt;🔮&lt;/span&gt;Collections coming in Session 5&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;/div&gt;&lt;!-- /#main --&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;!-- Nav --&gt;</span></p>
-<p class="p1"><span class="s1">&lt;nav id="nav"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab active" data-panel="home"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🏠&lt;/span&gt;&lt;span&gt;Home&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="route"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🔵&lt;/span&gt;&lt;span&gt;Route 66&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="hoard"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🔴&lt;/span&gt;&lt;span&gt;The Hoard&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="story"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🟢&lt;/span&gt;&lt;span&gt;Story Time&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="nav-tab" data-panel="nightlock"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span class="ni"&gt;🟣&lt;/span&gt;&lt;span&gt;Nightlock&lt;/span&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/nav&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;script&gt;</span></p>
-<p class="p1"><span class="s1">// ─── Config ───────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">const BRIDGE_PORT = 8742;</span></p>
-<p class="p1"><span class="s1">const RETRY_MS<span class="Apple-converted-space">    </span>= 30000;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">const PARTICLES = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spring:['🌸','🌷','🌼','🍀','💐','🌸'],</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>summer:['☀️','🌻','🍑','🌊','🌺','⭐'],</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>fall:<span class="Apple-converted-space">  </span>['🍂','🍁','🌾','🎃','🍄','🍎'],</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>winter:['❄️','⛄','✨','💎','🌨️','🔮']</span></p>
-<p class="p1"><span class="s1">};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">const JUNIMO_COLORS = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spring:['#f5a0c0','#c0a0f5','#a0f0c0'],</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>summer:['#f5d040','#f59040','#40d0f0'],</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>fall:<span class="Apple-converted-space">  </span>['#d4855a','#c8d45a','#8b6040'],</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>winter:['#a0c8f8','#c8a0f8','#f0f0e8']</span></p>
-<p class="p1"><span class="s1">};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── State ────────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">const S = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>panel:<span class="Apple-converted-space">  </span>'home',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>dark: <span class="Apple-converted-space">  </span>localStorage.getItem('sdv_dark') === 'true',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>icons:<span class="Apple-converted-space">  </span>localStorage.getItem('sdv_icons') || 'pixel',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>ip: <span class="Apple-converted-space">    </span>localStorage.getItem('sdv_ip') || '',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>data: <span class="Apple-converted-space">  </span>null,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>ok: <span class="Apple-converted-space">    </span>false,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>retry:<span class="Apple-converted-space">  </span>null,</span></p>
-<p class="p1"><span class="s1">};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Helpers ─────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">const $<span class="Apple-converted-space">  </span>= id =&gt; document.getElementById(id);</span></p>
-<p class="p1"><span class="s1">const qs = s<span class="Apple-converted-space">  </span>=&gt; document.querySelector(s);</span></p>
-<p class="p1"><span class="s1">const fmtK = n =&gt; n == null ? '—' : n &gt;= 1000 ? (n/1000).toFixed(1)+'k' : String(n);</span></p>
-<p class="p1"><span class="s1">const cap<span class="Apple-converted-space">  </span>= s =&gt; s ? s[0].toUpperCase()+s.slice(1) : s;</span></p>
-<p class="p1"><span class="s1">const curSeason = () =&gt; (S.data?.season || 'spring');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Dark mode ────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">function applyDark() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.documentElement.setAttribute('data-dark', S.dark);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('dark-btn').textContent = S.dark ? '☀️ Light Mode' : '🌙 Dark Mode';</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Season ───────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">function applySeason(s) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.documentElement.setAttribute('data-season', s);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Navigation ───────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">function goPanel(id) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.panel').forEach(p =&gt; p.classList.remove('active'));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.nav-tab').forEach(t =&gt; t.classList.remove('active'));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const panel = $(id);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (panel) panel.classList.add('active');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const tab = qs(`.nav-tab[data-panel="${id}"]`);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (tab) tab.classList.add('active');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>S.panel = id;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (panel) panel.scrollTop = 0;</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Tab switching ────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">function goTab(tabId) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const content = $(tabId);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (!content) return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const panel = content.closest('.panel');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>panel.querySelectorAll('.tab-content').forEach(t =&gt; t.classList.remove('active'));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>panel.querySelectorAll('.tab-btn').forEach(b =&gt; b.classList.remove('active'));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>content.classList.add('active');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const btn = panel.querySelector(`.tab-btn[data-tab="${tabId}"]`);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (btn) btn.classList.add('active');</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Bridge ───────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">async function fetchBridge() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>clearTimeout(S.retry);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const ip = $('bridge-ip').value.trim();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (!ip) { setBridgeOff(); return; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>localStorage.setItem('sdv_ip', ip);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>try {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const res = await fetch(`https://${ip}:${BRIDGE_PORT}/save`, {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>signal: AbortSignal.timeout(5000)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (!res.ok) throw new Error('bad');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const d = await res.json();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (d.error) throw new Error(d.error);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>S.data = d; S.ok = true;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setBridgeOn(d);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>renderFromData(d);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>} catch(_) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>S.ok = false; setBridgeOff();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>S.retry = setTimeout(fetchBridge, RETRY_MS);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function setBridgeOn(d) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('bdot').className = 'bdot on';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('blbl').textContent = `Connected · ${cap(d.season)} ${d.day}, Y${d.year}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderTicker();</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function setBridgeOff() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('bdot').className = 'bdot err';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('blbl').textContent = 'Bridge Disconnected';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderTicker();</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function renderFromData(d) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>applySeason(d.season || 'spring');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spawnParticles(d.season || 'spring');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>// Quick stats</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('qs-gold').textContent = d.gold != null ? fmtK(d.gold) : '—';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('qs-day').textContent<span class="Apple-converted-space">  </span>= d.day <span class="Apple-converted-space">  </span>!= null ? `${cap(d.season||'?')[0]}${d.day}` : '—';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('qs-mine').textContent = d.deepestMineLevel != null ? `F${d.deepestMineLevel}` :</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                             </span>d.skills?.mine != null ? `Lv${d.skills.mine}` : '—';</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>// Home sub</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('home-sub').textContent =</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>`${cap(d.season||'spring')} ${d.day||'?'} · Year ${d.year||1} · ${d.farm||'Hoe Down Farms'}`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderTicker();</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function renderTicker() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const d = S.data;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('t-status').textContent = S.ok ? '⚡ Bridge: ● On' : '⚡ Bridge: ○ Off';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (d) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>$('t-gold').textContent <span class="Apple-converted-space">  </span>= `💰 ${d.gold != null ? d.gold.toLocaleString()+'g' : '—'}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>$('t-day').textContent<span class="Apple-converted-space">    </span>= `📅 ${cap(d.season||'?')} ${d.day||'?'}, Y${d.year||1}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const sk = d.skills || {};</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>$('t-skills').textContent = `Farm Lv${sk.farm??'—'} · Fish Lv${sk.fish??'—'} · Mine Lv${sk.mine??'—'}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>$('t-ore').textContent<span class="Apple-converted-space">    </span>= `⛏ Cu${d.copperOre??'—'} Fe${d.ironOre??'—'} Au${d.goldOre??'—'}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>$('t-depth').textContent<span class="Apple-converted-space">  </span>= `Mine: F${d.deepestMineLevel??'—'}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>$('t-earn').textContent <span class="Apple-converted-space">  </span>= `Earned: ${d.totalMoneyEarned != null ? d.totalMoneyEarned.toLocaleString()+'g' : '—'}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Junimos ─────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">const junimoSVG = c =&gt; `&lt;svg viewBox="0 0 40 46" width="36" height="42" xmlns="http://www.w3.org/2000/svg"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;circle cx="20" cy="8" r="5" fill="${c}"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;line x1="20" y1="13" x2="20" y2="19" stroke="${c}" stroke-width="3" stroke-linecap="round"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="20" cy="28" rx="14" ry="17" fill="${c}"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="13" cy="24" rx="3.5" ry="3.5" fill="white"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;ellipse cx="27" cy="24" rx="3.5" ry="3.5" fill="white"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;circle cx="14" cy="25" r="2" fill="#333"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;circle cx="28" cy="25" r="2" fill="#333"/&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;path d="M7 43 Q10 47 14 44 Q17 42 20 44 Q23 42 26 44 Q30 47 33 43" fill="${c}"/&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/svg&gt;`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function spawnJunimo() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const stage = $('junimo-stage');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (!stage) return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const cols = JUNIMO_COLORS[curSeason()];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const col<span class="Apple-converted-space">  </span>= cols[Math.floor(Math.random() * cols.length)];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const j<span class="Apple-converted-space">    </span>= document.createElement('div');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>j.className = 'junimo';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>j.innerHTML = junimoSVG(col);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>j.style.cssText = `left:${5+Math.random()*80}%;bottom:0;animation-duration:${0.5+Math.random()*0.6}s`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>stage.appendChild(j);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const life = 2000 + Math.random() * 1500;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>setTimeout(() =&gt; { j.style.opacity='0'; setTimeout(()=&gt;j.remove(), 500); }, life);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">function startJunimos() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spawnJunimo();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>setInterval(() =&gt; { if (Math.random() &gt; 0.25) spawnJunimo(); }, 1600);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Particles ────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">let particleInterval;</span></p>
-<p class="p1"><span class="s1">function spawnParticles(season) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>clearInterval(particleInterval);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.particle').forEach(p =&gt; p.remove());</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const emojis = PARTICLES[season] || PARTICLES.spring;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>function one() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const p = document.createElement('div');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>p.className = 'particle';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>p.textContent = emojis[Math.floor(Math.random() * emojis.length)];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const dur = 9 + Math.random() * 9;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>p.style.cssText = `left:${Math.random()*92}%;bottom:-5%;font-size:${13+Math.random()*12}px;animation-duration:${dur}s`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>document.body.appendChild(p);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>setTimeout(() =&gt; p.remove(), dur * 1000 + 500);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>for (let i = 0; i &lt; 5; i++) setTimeout(one, i * 900);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>particleInterval = setInterval(one, 2800);</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Event delegation ────────────────────────────────</span></p>
-<p class="p1"><span class="s1">document.addEventListener('click', e =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const navTab<span class="Apple-converted-space">    </span>= e.target.closest('.nav-tab');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const entryCard = e.target.closest('.entry-card');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const tabBtn<span class="Apple-converted-space">    </span>= e.target.closest('.tab-btn');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (navTab)<span class="Apple-converted-space">    </span>{ goPanel(navTab.dataset.panel); return; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (entryCard) { goPanel(entryCard.dataset.goto); return; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (tabBtn &amp;&amp; tabBtn.dataset.tab) { goTab(tabBtn.dataset.tab); return; }</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (e.target.id === 'dark-btn') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>S.dark = !S.dark;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>localStorage.setItem('sdv_dark', S.dark);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>applyDark();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (e.target.id === 'icon-btn') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const styles = ['Pixel','Kawaii','Line'];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const cur<span class="Apple-converted-space">  </span>= styles.findIndex(s =&gt; $('icon-btn').textContent.includes(s));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const next = (cur + 1) % styles.length;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>S.icons = styles[next].toLowerCase();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>localStorage.setItem('sdv_icons', S.icons);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>$('icon-btn').textContent = `🎨 Icons: ${styles[next]}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1">});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">$('bridge-ip').addEventListener('keydown', e =&gt; { if (e.key === 'Enter') fetchBridge(); });</span></p>
-<p class="p1"><span class="s1">$('bridge-ip').addEventListener('blur', () =&gt; { if ($('bridge-ip').value.trim()) fetchBridge(); });</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// ─── Init ─────────────────────────────────────────────</span></p>
-<p class="p1"><span class="s1">function init() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>applyDark();</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const stored = S.icons;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const lbl = stored === 'kawaii' ? 'Kawaii' : stored === 'line' ? 'Line' : 'Pixel';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>$('icon-btn').textContent = `🎨 Icons: ${lbl}`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (S.ip) $('bridge-ip').value = S.ip;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spawnParticles('spring');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>startJunimos();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>renderTicker();</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if (S.ip) fetchBridge();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>else S.retry = setTimeout(fetchBridge, RETRY_MS);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>if ('serviceWorker' in navigator) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>navigator.serviceWorker.register('./service-worker.js').catch(() =&gt; {});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">document.addEventListener('DOMContentLoaded', init);</span></p>
-<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;script src="./update-checker.js"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+
+<div id="ticker">
+  <span id="ticker-text">Spring 1 · Year 1</span>
+  <div id="ticker-right">
+    <div id="bridge-dot" title="Bridge"></div>
+    <button id="dark-btn" aria-label="Dark mode">🌙</button>
+  </div>
+</div>
+
+<main id="main">
+  <div class="panel active" id="p-route">
+    <div class="panel-title">📅 Route</div>
+    <div id="route-list"></div>
+  </div>
+  <div class="panel" id="p-cal">
+    <div class="panel-title">🗓 Calendar</div>
+    <div id="cal-content"></div>
+  </div>
+  <div class="panel" id="p-par">
+    <div class="panel-title">🎯 Par Checks</div>
+    <div id="par-content"></div>
+  </div>
+  <div class="panel" id="p-carry">
+    <div class="panel-title">🎒 Carry List</div>
+    <div id="carry-content"></div>
+  </div>
+  <div class="panel" id="p-bridge">
+    <div class="panel-title">🌉 Bridge</div>
+    <div class="bridge-row">
+      <label>Mac IP or Tailscale hostname</label>
+      <input class="bridge-input" id="bridge-ip" type="text" placeholder="192.168.1.x or host.ts.net">
+    </div>
+    <button class="bridge-btn" id="bridge-connect">Connect</button>
+    <div class="bridge-status" id="bridge-status">Not connected</div>
+  </div>
+</main>
+
+<nav id="nav">
+  <button class="nav-btn active" data-tab="route"><span class="icon">📅</span>Route</button>
+  <button class="nav-btn" data-tab="cal"><span class="icon">🗓</span>Cal</button>
+  <button class="nav-btn" data-tab="par"><span class="icon">🎯</span>Par</button>
+  <button class="nav-btn" data-tab="carry"><span class="icon">🎒</span>Carry</button>
+  <button class="nav-btn" data-tab="bridge"><span class="icon">🌉</span>Bridge</button>
+</nav>
+
+<script>
+const BRIDGE_PORT=8742,RETRY_MS=30000;
+const S={season:'spring',day:1,dark:false,tab:'route',bridgeIP:'',retryTimer:null,bridge:null};
+
+const RD={
+spring:[
+{d:1,name:'Year Begins',tasks:[
+  {type:'fire',label:'Plant all 15 parsnip seeds',id:'sp1a'},
+  {type:'fire',label:'Chop 50+ wood, clear 50+ stone',id:'sp1b'},
+  {type:'gather',label:'Forage south: spring onions (Cindersap), beach items',id:'sp1c'},
+  {type:'prep',label:'Craft a Chest (50 wood) for overflow storage',id:'sp1d'},
+  {type:'tomorrow',label:'Pierre opens tomorrow — save 2200g for cauliflower + potato seeds',id:'sp1e'},
+]},
+{d:2,name:'Fish + Farm',tasks:[
+  {type:'fire',label:'Water parsnips',id:'sp2a'},
+  {type:'fire',label:'Visit Willy at beach — receive free Bamboo Fishing Rod',id:'sp2b'},
+  {type:'fire',label:'Fish at mountain lake or beach to level up fishing skill',id:'sp2c'},
+  {type:'gather',label:'Forage Cindersap Forest (daffodils, leeks)',id:'sp2d'},
+]},
+{d:3,name:"Pierre's Seeds",tasks:[
+  {type:'purchase',label:'Buy 15 Cauliflower Seeds (80g each = 1200g)',id:'sp3a'},
+  {type:'purchase',label:'Buy 20 Potato Seeds (50g each = 1000g)',id:'sp3b'},
+  {type:'fire',label:'Plant all seeds immediately — water them',id:'sp3c'},
+  {type:'fire',label:'Fish all remaining energy',id:'sp3d'},
+]},
+{d:4,name:'Mine Opens',tasks:[
+  {type:'fire',label:'Water all crops',id:'sp4a'},
+  {type:'fire',label:'Enter the mine — Marlon intro cutscene',id:'sp4b'},
+  {type:'fire',label:'Reach mine level 5+ (copper ore starts at L1)',id:'sp4c'},
+  {type:'gather',label:'Collect 20+ copper ore, 10+ stone',id:'sp4d'},
+  {type:'prep',label:'Sleep with 1+ copper ore to trigger Furnace blueprint',id:'sp4e'},
+]},
+{d:5,name:'Furnace + Mine',tasks:[
+  {type:'prep',label:'Build Furnace (25 copper ore + 25 stone)',id:'sp5a'},
+  {type:'fire',label:'Water crops — then mine to level 10 (chest reward)',id:'sp5b'},
+  {type:'fire',label:'Smelt first copper bars (5 ore each, 30 min/bar)',id:'sp5c'},
+]},
+{d:6,name:'Mine Push',tasks:[
+  {type:'fire',label:'Water crops',id:'sp6a'},
+  {type:'fire',label:'Mine — target level 15–20',id:'sp6b'},
+  {type:'prep',label:'Buy Fiberglass Rod from Willy (1800g) if fishing is priority',id:'sp6c'},
+]},
+{d:7,name:"Lewis Birthday",tasks:[
+  {type:'plate',label:"Lewis bday ♥ Leek, Spring Onion, Daffodil, or any gem",id:'sp7a'},
+  {type:'fire',label:'Water crops',id:'sp7b'},
+  {type:'fire',label:'Mine — target level 20–25',id:'sp7c'},
+]},
+{d:8,name:'Iron Push',tasks:[
+  {type:'fire',label:'Water crops',id:'sp8a'},
+  {type:'fire',label:'Mine — push to level 30+ (iron ore zone begins)',id:'sp8b'},
+  {type:'gather',label:'Collect 30+ iron ore, smelt bars in evening',id:'sp8c'},
+]},
+{d:9,name:'Mine Level 40',tasks:[
+  {type:'fire',label:'Water crops',id:'sp9a'},
+  {type:'fire',label:'Mine — reach level 40 (chest reward)',id:'sp9b'},
+  {type:'fire',label:'Smelt iron bars (5 ore each)',id:'sp9c'},
+  {type:'purchase',label:'Buy Large Pack from Pierre (2000g) if not yet',id:'sp9d'},
+]},
+{d:10,name:"Vincent Birthday",tasks:[
+  {type:'plate',label:"Vincent bday ♥ Grape, Fiddlehead Fern, Pink Cake",id:'sp10a'},
+  {type:'fire',label:'Water crops',id:'sp10b'},
+  {type:'fire',label:'Mine — push toward level 50',id:'sp10c'},
+]},
+{d:11,name:'Mine Level 50',tasks:[
+  {type:'fire',label:'Mine level 50 (chest reward: Boots)',id:'sp11a'},
+  {type:'fire',label:'Water crops',id:'sp11b'},
+  {type:'tomorrow',label:'Egg Festival tomorrow (Spring 13) — save 3000g for strawberry seeds',id:'sp11c'},
+]},
+{d:12,name:'Pre-Festival',tasks:[
+  {type:'fire',label:'Water crops',id:'sp12a'},
+  {type:'fire',label:'Mine — target level 55–60',id:'sp12b'},
+  {type:'prep',label:'Smelt iron bars, save gold',id:'sp12c'},
+  {type:'tomorrow',label:'Egg Festival! Bring 3000g+ for 30 strawberry seeds at 100g each',id:'sp12d'},
+]},
+{d:13,name:'🥚 Egg Festival',tasks:[
+  {type:'purchase',label:'Buy 30+ Strawberry Seeds from Pierre stall (100g each)',id:'sp13a'},
+  {type:'fire',label:'Participate in egg hunt — win for prize',id:'sp13b'},
+  {type:'prep',label:'Cannot plant today (festival ends after market closes)',id:'sp13c'},
+]},
+{d:14,name:'Plant Strawberries',tasks:[
+  {type:'fire',label:'Plant ALL strawberry seeds — water immediately',id:'sp14a'},
+  {type:'fire',label:'Water all other crops',id:'sp14b'},
+  {type:'plate',label:"Haley bday ♥ Sunflower, Pink Cake, Daffodil",id:'sp14c'},
+  {type:'fire',label:'Mine — push to level 65',id:'sp14d'},
+]},
+{d:15,name:'Mine Level 70',tasks:[
+  {type:'fire',label:'Water crops',id:'sp15a'},
+  {type:'fire',label:'Mine — target level 70 (gold elevator unlocks at 65)',id:'sp15b'},
+  {type:'fire',label:'Harvest parsnips if grown — sell or ship',id:'sp15c'},
+]},
+{d:16,name:'Mine Level 75',tasks:[
+  {type:'fire',label:'Water crops',id:'sp16a'},
+  {type:'fire',label:'Mine — level 75+',id:'sp16b'},
+  {type:'gather',label:'Forage any remaining spring items',id:'sp16c'},
+]},
+{d:17,name:'Mine Level 80',tasks:[
+  {type:'fire',label:'Water crops',id:'sp17a'},
+  {type:'fire',label:'Mine — level 80 (gold ore zone begins)',id:'sp17b'},
+  {type:'prep',label:'Start smelting gold bars in evenings',id:'sp17c'},
+]},
+{d:18,name:"Pam Birthday",tasks:[
+  {type:'plate',label:"Pam bday ♥ Parsnip, Pale Ale, Glazed Yams",id:'sp18a'},
+  {type:'fire',label:'Water crops',id:'sp18b'},
+  {type:'fire',label:'Mine — push to level 85',id:'sp18c'},
+  {type:'fire',label:'Harvest parsnips and potatoes if ready',id:'sp18d'},
+]},
+{d:19,name:'Mine Level 90',tasks:[
+  {type:'fire',label:'Water crops',id:'sp19a'},
+  {type:'fire',label:'Mine — level 90+',id:'sp19b'},
+  {type:'prep',label:'Craft Quality Sprinklers (1 iron bar + 1 gold bar + 1 refined quartz)',id:'sp19c'},
+]},
+{d:20,name:'Mine Level 95',tasks:[
+  {type:'fire',label:'Water crops',id:'sp20a'},
+  {type:'fire',label:'Mine — level 95',id:'sp20b'},
+  {type:'prep',label:'Refine quartz: Quartz/Frozen Tear + stone at Recycler',id:'sp20c'},
+]},
+{d:21,name:'Mine Level 100 🔑',tasks:[
+  {type:'fire',label:'Water crops',id:'sp21a'},
+  {type:'fire',label:'Mine — reach level 100: SKULL KEY obtained!',id:'sp21b'},
+  {type:'fire',label:'Harvest strawberries (first harvest if planted day 14)',id:'sp21c'},
+]},
+{d:22,name:'Skull Cavern Day 1',tasks:[
+  {type:'fire',label:'Skull Cavern: target floor 10+ on first run',id:'sp22a'},
+  {type:'gather',label:'Collect iridium ore, gems',id:'sp22b'},
+  {type:'prep',label:'Supplies: 30 bombs, 30 staircases, lots of food',id:'sp22c'},
+]},
+{d:23,name:'Fish or Mine',tasks:[
+  {type:'fire',label:'If raining: FISH — catfish in river!',id:'sp23a'},
+  {type:'fire',label:'If sunny: Skull Cavern run',id:'sp23b'},
+  {type:'fire',label:'Water crops',id:'sp23c'},
+]},
+{d:24,name:'Prep Summer',tasks:[
+  {type:'fire',label:'Water crops',id:'sp24a'},
+  {type:'fire',label:'Mine or Skull Cavern',id:'sp24b'},
+  {type:'prep',label:'Plan summer layout: 36 melon + 96 blueberry tiles',id:'sp24c'},
+]},
+{d:25,name:'Harvest + Sell',tasks:[
+  {type:'fire',label:'Harvest strawberries (second harvest)',id:'sp25a'},
+  {type:'fire',label:'Harvest cauliflower and potatoes',id:'sp25b'},
+  {type:'prep',label:'Install quality sprinklers for summer',id:'sp25c'},
+]},
+{d:26,name:"Pierre Birthday",tasks:[
+  {type:'plate',label:"Pierre bday ♥ Fried Calamari, Daffodil, or gem",id:'sp26a'},
+  {type:'fire',label:'Harvest remaining crops',id:'sp26b'},
+  {type:'fire',label:'Skull Cavern or mine',id:'sp26c'},
+]},
+{d:27,name:"Emily Birthday",tasks:[
+  {type:'plate',label:"Emily bday ♥ Cloth, Wool, Amethyst, Aquamarine",id:'sp27a'},
+  {type:'fire',label:'Harvest ALL remaining crops — last water day',id:'sp27b'},
+  {type:'fire',label:'Sell all spring crops',id:'sp27c'},
+  {type:'prep',label:'Clear farm tiles for summer layout',id:'sp27d'},
+]},
+{d:28,name:'Season End',tasks:[
+  {type:'fire',label:'All crops die tonight — harvest anything left',id:'sp28a'},
+  {type:'purchase',label:'Buy summer seeds: 36 Melon (200g), 96 Blueberry (80g)',id:'sp28b'},
+  {type:'prep',label:'Set up sprinklers for summer layout',id:'sp28c'},
+  {type:'tomorrow',label:'Plant ALL summer seeds on Summer 1!',id:'sp28d'},
+]},
+],
+
+summer:[
+{d:1,name:'Summer Begins',tasks:[
+  {type:'fire',label:'Plant Melon seeds (36) and Blueberry seeds (96)',id:'su1a'},
+  {type:'fire',label:'Plant Sunflowers (Dye Bundle)',id:'su1b'},
+  {type:'fire',label:'Water all crops',id:'su1c'},
+]},
+{d:2,name:'Fish + Farm',tasks:[
+  {type:'fire',label:'Water crops (if no sprinklers)',id:'su2a'},
+  {type:'fire',label:'Fish: pufferfish (beach 12pm–4pm), shad (river)',id:'su2b'},
+  {type:'gather',label:'Forage for summer items: fern, red mushroom',id:'su2c'},
+]},
+{d:3,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern — target floor 25+',id:'su3a'},
+  {type:'prep',label:'Bring: Spicy Eel, Bombs, Staircases, Coffee',id:'su3b'},
+  {type:'gather',label:'Iridium ore — need 1000+ for equipment',id:'su3c'},
+]},
+{d:4,name:"Jas Birthday",tasks:[
+  {type:'plate',label:"Jas bday ♥ Fairy Rose, Pink Cake, Plum Pudding",id:'su4a'},
+  {type:'fire',label:'Water crops',id:'su4b'},
+  {type:'fire',label:'Fish or Skull Cavern',id:'su4c'},
+]},
+{d:5,name:'Rain Check',tasks:[
+  {type:'fire',label:'If raining: FISH catfish (river/forest) and pufferfish (beach)!',id:'su5a'},
+  {type:'fire',label:'If sunny: Skull Cavern',id:'su5b'},
+]},
+{d:6,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern — push for floor 40+',id:'su6a'},
+  {type:'prep',label:'Smelt iridium bars (5 ore each, 8 hrs/bar)',id:'su6b'},
+]},
+{d:7,name:'Craft Day',tasks:[
+  {type:'prep',label:'Craft Iridium Sprinklers (1 gold bar + 1 iridium bar)',id:'su7a'},
+  {type:'prep',label:'Craft Kegs (30 wood + 1 copper + 1 iron bar + 1 oak resin)',id:'su7b'},
+  {type:'fire',label:'Water crops, fish in afternoon',id:'su7c'},
+]},
+{d:8,name:"Gus Birthday + Blueberries",tasks:[
+  {type:'plate',label:"Gus bday ♥ Diamond, Escargot, Orange",id:'su8a'},
+  {type:'fire',label:'Harvest blueberries — FIRST HARVEST!',id:'su8b'},
+  {type:'prep',label:'Put blueberries in kegs for wine (7d → 3x profit)',id:'su8c'},
+]},
+{d:9,name:'Artisan Setup',tasks:[
+  {type:'fire',label:'Water crops',id:'su9a'},
+  {type:'prep',label:'Set up more Kegs and Preserve Jars',id:'su9b'},
+  {type:'fire',label:'Skull Cavern',id:'su9c'},
+]},
+{d:10,name:"Maru Birthday",tasks:[
+  {type:'plate',label:"Maru bday ♥ Diamond, Gold Bar, Iridium Bar, Battery Pack, Pepper Poppers",id:'su10a'},
+  {type:'fire',label:'Water crops',id:'su10b'},
+  {type:'fire',label:'Fish or Skull Cavern',id:'su10c'},
+]},
+{d:11,name:'🌊 Luau',tasks:[
+  {type:'plate',label:'Luau potluck — bring BEST quality crop (iridium star)',id:'su11a'},
+  {type:'fire',label:'Attend Luau (9am–2pm at beach)',id:'su11b'},
+  {type:'fire',label:'Harvest blueberries if ready',id:'su11c'},
+]},
+{d:12,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'su12a'},
+  {type:'fire',label:'Water crops',id:'su12b'},
+  {type:'prep',label:'Smelt iridium bars',id:'su12c'},
+]},
+{d:13,name:"Alex Birthday",tasks:[
+  {type:'plate',label:"Alex bday ♥ Complete Breakfast, Salmon Dinner",id:'su13a'},
+  {type:'fire',label:'Water crops',id:'su13b'},
+  {type:'fire',label:'Skull Cavern',id:'su13c'},
+]},
+{d:14,name:'Fish or Mine',tasks:[
+  {type:'fire',label:'Water crops',id:'su14a'},
+  {type:'fire',label:'If rainy: fish for summer fish (pike, shad)',id:'su14b'},
+  {type:'fire',label:'If sunny: Skull Cavern',id:'su14c'},
+  {type:'prep',label:'Upgrade tools at Clint (gold pickaxe/watering can)',id:'su14d'},
+]},
+{d:15,name:'Mid-Summer',tasks:[
+  {type:'fire',label:'Water crops, harvest blueberries',id:'su15a'},
+  {type:'fire',label:'Skull Cavern',id:'su15b'},
+]},
+{d:16,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern — push for floor 50+',id:'su16a'},
+  {type:'fire',label:'Water crops',id:'su16b'},
+]},
+{d:17,name:"Sam Birthday + Melons",tasks:[
+  {type:'plate',label:"Sam bday ♥ Pizza, Maple Bar, Cactus Fruit",id:'su17a'},
+  {type:'fire',label:'Harvest melons — FIRST HARVEST!',id:'su17b'},
+  {type:'fire',label:'Water crops',id:'su17c'},
+  {type:'prep',label:'Put melons in kegs for wine',id:'su17d'},
+]},
+{d:18,name:'Farm + Cavern',tasks:[
+  {type:'fire',label:'Water crops',id:'su18a'},
+  {type:'fire',label:'Skull Cavern',id:'su18b'},
+  {type:'fire',label:'Harvest blueberries',id:'su18c'},
+]},
+{d:19,name:"Demetrius Birthday",tasks:[
+  {type:'plate',label:"Demetrius bday ♥ Bean Hotpot, Ice Cream, Strawberry",id:'su19a'},
+  {type:'fire',label:'Water crops',id:'su19b'},
+  {type:'fire',label:'Skull Cavern',id:'su19c'},
+]},
+{d:20,name:'Keg Check',tasks:[
+  {type:'fire',label:'Water crops',id:'su20a'},
+  {type:'prep',label:'Check kegs — blueberry wine ready if loaded Day 8',id:'su20b'},
+  {type:'fire',label:'Skull Cavern',id:'su20c'},
+]},
+{d:21,name:'Late Summer',tasks:[
+  {type:'fire',label:'Water crops, harvest blueberries + melons',id:'su21a'},
+  {type:'fire',label:'Skull Cavern',id:'su21b'},
+  {type:'prep',label:'Plan fall crop layout: pumpkin, cranberry, bok choy',id:'su21c'},
+]},
+{d:22,name:"Dwarf Birthday",tasks:[
+  {type:'plate',label:"Dwarf bday ♥ Amethyst, Aquamarine, Ruby, Emerald, Topaz",id:'su22a'},
+  {type:'fire',label:'Water crops',id:'su22b'},
+  {type:'fire',label:'Skull Cavern',id:'su22c'},
+]},
+{d:23,name:'Final Push',tasks:[
+  {type:'fire',label:'Water crops',id:'su23a'},
+  {type:'fire',label:'Skull Cavern or fishing',id:'su23b'},
+]},
+{d:24,name:'Pre-Harvest',tasks:[
+  {type:'fire',label:'Water crops',id:'su24a'},
+  {type:'fire',label:'Harvest melons and blueberries',id:'su24b'},
+  {type:'prep',label:'Set up fall farm layout (iridium sprinklers)',id:'su24c'},
+]},
+{d:25,name:'Harvest + Buy',tasks:[
+  {type:'fire',label:'Water + harvest blueberries and melons',id:'su25a'},
+  {type:'purchase',label:'Buy fall seeds: Pumpkin (100g), Cranberry (120g), Bok Choy (50g)',id:'su25b'},
+  {type:'fire',label:'Skull Cavern final summer run',id:'su25c'},
+]},
+{d:26,name:'Sell + Clear',tasks:[
+  {type:'fire',label:'Harvest all summer crops',id:'su26a'},
+  {type:'fire',label:'Ship or sell harvested goods',id:'su26b'},
+  {type:'prep',label:'Clear farm tiles for fall layout',id:'su26c'},
+]},
+{d:27,name:'Pre-Festival',tasks:[
+  {type:'fire',label:'Final water — crops die tonight',id:'su27a'},
+  {type:'fire',label:'Harvest EVERYTHING that is ready',id:'su27b'},
+  {type:'prep',label:'Pumpkin needs 13 days — plant on Fall 1 = first harvest Fall 14',id:'su27c'},
+]},
+{d:28,name:'🌊 Moonlight Jellies',tasks:[
+  {type:'fire',label:'Harvest any remaining summer crops',id:'su28a'},
+  {type:'fire',label:'Dance of the Moonlight Jellies at night (beach)',id:'su28b'},
+  {type:'purchase',label:'Buy fall seeds from Pierre before festival',id:'su28c'},
+  {type:'tomorrow',label:'Plant ALL fall crops on Fall 1!',id:'su28d'},
+]},
+],
+
+fall:[
+{d:1,name:'Fall Begins',tasks:[
+  {type:'fire',label:'Plant Pumpkins (36+), Cranberries (36+), Bok Choy',id:'fa1a'},
+  {type:'fire',label:'Water all crops',id:'fa1b'},
+  {type:'gather',label:'Forage: chanterelle, common mushroom, red/purple mushroom',id:'fa1c'},
+]},
+{d:2,name:"Penny Birthday",tasks:[
+  {type:'plate',label:"Penny bday ♥ Diamond, Emerald, Melon, Poppy, Poppyseed Muffin, Tom Kha Soup",id:'fa2a'},
+  {type:'fire',label:'Water crops',id:'fa2b'},
+  {type:'fire',label:'Skull Cavern',id:'fa2c'},
+]},
+{d:3,name:'Mine + Forage',tasks:[
+  {type:'fire',label:'Water crops',id:'fa3a'},
+  {type:'fire',label:'Skull Cavern',id:'fa3b'},
+  {type:'gather',label:'Forage forest for fall items',id:'fa3c'},
+]},
+{d:4,name:'Farm Day',tasks:[
+  {type:'fire',label:'Water crops',id:'fa4a'},
+  {type:'fire',label:'Fish: tiger trout in river (fall exclusive)',id:'fa4b'},
+  {type:'prep',label:'Craft Lightning Rods (10 iron + 5 refined quartz + 1 bat wing)',id:'fa4c'},
+]},
+{d:5,name:"Elliott Birthday",tasks:[
+  {type:'plate',label:"Elliott bday ♥ Crab, Duck Feather, Lobster, Pomegranate, Squid Ink, Tom Kha Soup",id:'fa5a'},
+  {type:'fire',label:'Water crops',id:'fa5b'},
+  {type:'fire',label:'Skull Cavern',id:'fa5c'},
+]},
+{d:6,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'fa6a'},
+  {type:'fire',label:'Water crops',id:'fa6b'},
+  {type:'prep',label:'Smelt iridium bars for sprinkler upgrades',id:'fa6c'},
+]},
+{d:7,name:'Pre-Blackberry',tasks:[
+  {type:'fire',label:'Water crops',id:'fa7a'},
+  {type:'fire',label:'Skull Cavern',id:'fa7b'},
+  {type:'tomorrow',label:'Blackberry season Fall 8–11 — forage every morning!',id:'fa7c'},
+]},
+{d:8,name:'🫐 Blackberry Season',tasks:[
+  {type:'gather',label:'FORAGE BLACKBERRIES — Cindersap Forest + farm edges',id:'fa8a'},
+  {type:'fire',label:'Water crops',id:'fa8b'},
+  {type:'gather',label:'Target 100+ blackberries (bundle + cooking)',id:'fa8c'},
+]},
+{d:9,name:'Blackberry + Farm',tasks:[
+  {type:'gather',label:'Forage blackberries (peak season)',id:'fa9a'},
+  {type:'fire',label:'Water crops, harvest cranberries (first harvest)',id:'fa9b'},
+]},
+{d:10,name:'Blackberry Final',tasks:[
+  {type:'gather',label:'Forage blackberries — last good day',id:'fa10a'},
+  {type:'fire',label:'Water crops, harvest cranberries',id:'fa10b'},
+]},
+{d:11,name:"Jodi Birthday",tasks:[
+  {type:'plate',label:"Jodi bday ♥ Chocolate Cake, Crispy Bass, Diamond, Eggplant Parmesan",id:'fa11a'},
+  {type:'fire',label:'Water crops',id:'fa11b'},
+  {type:'fire',label:'Skull Cavern',id:'fa11c'},
+]},
+{d:12,name:'Mid-Fall Harvest',tasks:[
+  {type:'fire',label:'Harvest cranberries (second harvest)',id:'fa12a'},
+  {type:'fire',label:'Water crops',id:'fa12b'},
+  {type:'fire',label:'Skull Cavern',id:'fa12c'},
+]},
+{d:13,name:"Abigail Birthday",tasks:[
+  {type:'plate',label:"Abigail bday ♥ Amethyst, Blackberry Cobbler, Chocolate Cake, Pumpkin, Spicy Eel",id:'fa13a'},
+  {type:'fire',label:'Water crops',id:'fa13b'},
+  {type:'fire',label:'Skull Cavern',id:'fa13c'},
+]},
+{d:14,name:"Harvey Birthday + Pumpkins",tasks:[
+  {type:'plate',label:"Harvey bday ♥ Coffee, Pickles, Super Meal, Truffle Oil, Wine",id:'fa14a'},
+  {type:'fire',label:'Harvest pumpkins — FIRST HARVEST!',id:'fa14b'},
+  {type:'fire',label:'Water crops, harvest cranberries',id:'fa14c'},
+]},
+{d:15,name:"Sandy Birthday + Pre-Fair",tasks:[
+  {type:'plate',label:"Sandy bday ♥ Crocus, Daffodil, Maki Roll, Roots Platter",id:'fa15a'},
+  {type:'fire',label:'Water crops',id:'fa15b'},
+  {type:'prep',label:'Prepare Grange Display for Fair tomorrow! 9 items, best quality',id:'fa15c'},
+  {type:'prep',label:'Best scoring: iridium-star animal product, artisan good, crop, fish, mineral',id:'fa15d'},
+]},
+{d:16,name:'🎡 Stardew Valley Fair',tasks:[
+  {type:'fire',label:'GRANGE DISPLAY — 9 items, variety of categories (aim 90+ points)',id:'fa16a'},
+  {type:'fire',label:'Attend Fair 9am–3pm at Pelican Town',id:'fa16b'},
+  {type:'purchase',label:'Spend star tokens: Rarecrow (800★), furniture, or seeds',id:'fa16c'},
+]},
+{d:17,name:'Post-Fair',tasks:[
+  {type:'fire',label:'Water crops',id:'fa17a'},
+  {type:'fire',label:'Skull Cavern',id:'fa17b'},
+  {type:'prep',label:'Load kegs with fall artisan goods (pumpkin → wine)',id:'fa17c'},
+]},
+{d:18,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern deep run',id:'fa18a'},
+  {type:'fire',label:'Water crops, harvest cranberries',id:'fa18b'},
+]},
+{d:19,name:'Farm Day',tasks:[
+  {type:'fire',label:'Water crops',id:'fa19a'},
+  {type:'fire',label:'Skull Cavern',id:'fa19b'},
+  {type:'prep',label:'Check Traveling Cart on Fri/Sun for rare CC items',id:'fa19c'},
+]},
+{d:20,name:'Harvest Push',tasks:[
+  {type:'fire',label:'Water crops, harvest pumpkins + cranberries',id:'fa20a'},
+  {type:'fire',label:'Skull Cavern',id:'fa20b'},
+]},
+{d:21,name:"Robin Birthday",tasks:[
+  {type:'plate',label:"Robin bday ♥ Goat Cheese, Peach, Spaghetti",id:'fa21a'},
+  {type:'fire',label:'Water crops, harvest cranberries',id:'fa21b'},
+  {type:'fire',label:'Skull Cavern',id:'fa21c'},
+]},
+{d:22,name:'Final Harvest Prep',tasks:[
+  {type:'fire',label:'Water crops',id:'fa22a'},
+  {type:'fire',label:'Skull Cavern',id:'fa22b'},
+  {type:'prep',label:'Order missing CC items from Krobus shop or Traveling Cart',id:'fa22c'},
+]},
+{d:23,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern deep run',id:'fa23a'},
+  {type:'fire',label:'Water + harvest all ready crops',id:'fa23b'},
+]},
+{d:24,name:"Willy Birthday",tasks:[
+  {type:'plate',label:"Willy bday ♥ Catfish, Diamond, Iridium Bar, Mead, Octopus, Pumpkin",id:'fa24a'},
+  {type:'fire',label:'Water + final harvest of cranberries + pumpkins',id:'fa24b'},
+  {type:'fire',label:'Skull Cavern',id:'fa24c'},
+]},
+{d:25,name:'Harvest All',tasks:[
+  {type:'fire',label:'Harvest EVERYTHING — pumpkins, cranberries, bok choy',id:'fa25a'},
+  {type:'fire',label:'Ship or store all goods',id:'fa25b'},
+  {type:'prep',label:'Prepare for Spirit\'s Eve tomorrow (6pm)',id:'fa25c'},
+]},
+{d:26,name:"🎃 Spirit's Eve",tasks:[
+  {type:'fire',label:"Spirit's Eve festival 6pm–11:30pm, town",id:'fa26a'},
+  {type:'purchase',label:'Solve maze for Golden Pumpkin (event prize)',id:'fa26b'},
+]},
+{d:27,name:'Final Fall Day',tasks:[
+  {type:'fire',label:'Harvest anything remaining',id:'fa27a'},
+  {type:'fire',label:'Sell goods, organize storage',id:'fa27b'},
+  {type:'purchase',label:'Buy Winter Seeds from Pierre (25g) for winter foraging income',id:'fa27c'},
+  {type:'prep',label:'Stock up on food + supplies for winter Skull Cavern runs',id:'fa27d'},
+]},
+{d:28,name:'Season End',tasks:[
+  {type:'fire',label:'Final harvest — all crops die tonight',id:'fa28a'},
+  {type:'fire',label:'Sell everything (shipping bin empties at midnight)',id:'fa28b'},
+  {type:'prep',label:'Organize backpack and chests for winter',id:'fa28c'},
+  {type:'tomorrow',label:'Winter: no crops — focus on Skull Cavern, fishing, artisan goods',id:'fa28d'},
+]},
+],
+
+winter:[
+{d:1,name:'Winter Begins',tasks:[
+  {type:'plate',label:"Krobus bday ♥ Diamond, Iridium Bar, Void Egg, Void Mayonnaise",id:'wi1a'},
+  {type:'fire',label:'No crops — Skull Cavern all day!',id:'wi1b'},
+  {type:'prep',label:'Plant winter seeds (forage seeds) if you have them',id:'wi1c'},
+  {type:'gather',label:'Forage winter items: holly, nautilus fossil, crystal fruit',id:'wi1d'},
+]},
+{d:2,name:'Fish + Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern deep run',id:'wi2a'},
+  {type:'fire',label:'Fish: winter fishing (squid at night, lingcod, midnight carp)',id:'wi2b'},
+  {type:'prep',label:'Check kegs and preserve jars',id:'wi2c'},
+]},
+{d:3,name:"Linus Birthday",tasks:[
+  {type:'plate',label:"Linus bday ♥ Blueberry Tart, Cactus Fruit, Dish O' The Sea, Yam",id:'wi3a'},
+  {type:'fire',label:'Skull Cavern',id:'wi3b'},
+  {type:'fire',label:'Fish for winter ocean fish',id:'wi3c'},
+]},
+{d:4,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern — target floor 100+',id:'wi4a'},
+  {type:'prep',label:'Smelt iridium bars',id:'wi4b'},
+]},
+{d:5,name:'Mine + Fish',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi5a'},
+  {type:'fire',label:'Fish: lingcod, squid, midnight carp',id:'wi5b'},
+]},
+{d:6,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi6a'},
+  {type:'fire',label:'Upgrade tools at Clint if not done (iridium tools!)',id:'wi6b'},
+]},
+{d:7,name:"Caroline Birthday",tasks:[
+  {type:'plate',label:"Caroline bday ♥ Daffodil, Fish Taco, Green Tea, Summer Spangle",id:'wi7a'},
+  {type:'fire',label:'Skull Cavern',id:'wi7b'},
+  {type:'fire',label:'Fish',id:'wi7c'},
+]},
+{d:8,name:'🎣 Festival of Ice',tasks:[
+  {type:'fire',label:'Festival of Ice — fishing contest on mountain lake 9am–2pm',id:'wi8a'},
+  {type:'fire',label:'Win fishing contest: use Iridium Rod + Trap Bobber',id:'wi8b'},
+  {type:'prep',label:'No mining today (lake area is festival zone)',id:'wi8c'},
+]},
+{d:9,name:'Post-Festival',tasks:[
+  {type:'fire',label:'Skull Cavern — winter is prime grind time',id:'wi9a'},
+  {type:'fire',label:'Fish',id:'wi9b'},
+  {type:'prep',label:'Check artisan output (wine, pickles, juice)',id:'wi9c'},
+]},
+{d:10,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi10a'},
+  {type:'fire',label:'Fish: squid at night (9pm–2am, beach)',id:'wi10b'},
+  {type:'prep',label:'Smelt iridium bars, craft iridium tools',id:'wi10c'},
+]},
+{d:11,name:'Deep Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern — target floor 150+',id:'wi11a'},
+  {type:'fire',label:'Fish',id:'wi11b'},
+  {type:'prep',label:'Restock: bombs, staircases, food',id:'wi11c'},
+]},
+{d:12,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi12a'},
+  {type:'fire',label:'Fish or forage',id:'wi12b'},
+]},
+{d:13,name:'Mid-Winter',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi13a'},
+  {type:'fire',label:'Fish: check ocean for winter fish',id:'wi13b'},
+  {type:'prep',label:'Craft Crab Pots (x20+) for passive fish at rivers/beach',id:'wi13c'},
+]},
+{d:14,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern deep run',id:'wi14a'},
+  {type:'prep',label:'Buy Winter Star gift — check whose secret child you are (mailbox)',id:'wi14b'},
+]},
+{d:15,name:'🌃 Night Market Day 1',tasks:[
+  {type:'fire',label:'Night Market on beach — evening to 2am',id:'wi15a'},
+  {type:'purchase',label:'Buy: Mermaid Pearl, Rarecrow #5, or rare seeds',id:'wi15b'},
+  {type:'fire',label:'Fish from submarine (rare deep fish)',id:'wi15c'},
+  {type:'fire',label:'Skull Cavern in the morning',id:'wi15d'},
+]},
+{d:16,name:'🌃 Night Market Day 2',tasks:[
+  {type:'fire',label:'Night Market — painter portraits, magic shop',id:'wi16a'},
+  {type:'fire',label:'Submarine fishing: Blobfish, Midnight Squid',id:'wi16b'},
+  {type:'fire',label:'Skull Cavern in morning',id:'wi16c'},
+]},
+{d:17,name:'🌃 Night Market Day 3',tasks:[
+  {type:'fire',label:'Night Market final night — buy anything missed',id:'wi17a'},
+  {type:'fire',label:'Submarine fishing last chance',id:'wi17b'},
+  {type:'fire',label:'Skull Cavern in morning',id:'wi17c'},
+]},
+{d:18,name:'Post-Market',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi18a'},
+  {type:'fire',label:'Fish',id:'wi18b'},
+  {type:'prep',label:'Ship wines for gold — artisan goods compound well',id:'wi18c'},
+]},
+{d:19,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi19a'},
+  {type:'fire',label:'Fish: squid (night), lingcod, midnight carp',id:'wi19b'},
+]},
+{d:20,name:"Evelyn Birthday",tasks:[
+  {type:'plate',label:"Evelyn bday ♥ Beet, Chocolate Cake, Diamond, Fairy Rose, Stuffing, Tulip",id:'wi20a'},
+  {type:'fire',label:'Skull Cavern',id:'wi20b'},
+  {type:'fire',label:'Fish',id:'wi20c'},
+]},
+{d:21,name:'Skull Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern deep run',id:'wi21a'},
+  {type:'prep',label:'Organize inventory — CC items, ship extras',id:'wi21b'},
+]},
+{d:22,name:'Year End Prep',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi22a'},
+  {type:'fire',label:'Fish',id:'wi22b'},
+  {type:'prep',label:'Buy Winter Star gift for your assigned villager',id:'wi22c'},
+]},
+{d:23,name:"Leah Birthday",tasks:[
+  {type:'plate',label:"Leah bday ♥ Goat Cheese, Poppyseed Muffin, Salad, Truffle, Wine",id:'wi23a'},
+  {type:'fire',label:'Skull Cavern',id:'wi23b'},
+  {type:'fire',label:'Fish',id:'wi23c'},
+]},
+{d:24,name:"George Birthday",tasks:[
+  {type:'plate',label:"George bday ♥ Fried Mushroom, Leek",id:'wi24a'},
+  {type:'fire',label:'Skull Cavern final run before Feast',id:'wi24b'},
+  {type:'prep',label:'Wrap Winter Star gift for tomorrow',id:'wi24c'},
+]},
+{d:25,name:'🎄 Feast of the Winter Star',tasks:[
+  {type:'fire',label:'Feast of the Winter Star — town square 9am–2pm',id:'wi25a'},
+  {type:'fire',label:'Give secret gift to your assigned villager',id:'wi25b'},
+  {type:'purchase',label:'Buy items from vendors at the feast',id:'wi25c'},
+]},
+{d:26,name:'Final Cavern',tasks:[
+  {type:'fire',label:'Skull Cavern — last big push of Year 1',id:'wi26a'},
+  {type:'fire',label:'Fish',id:'wi26b'},
+  {type:'prep',label:'Ship remaining artisan goods',id:'wi26c'},
+]},
+{d:27,name:'Year End Push',tasks:[
+  {type:'fire',label:'Skull Cavern',id:'wi27a'},
+  {type:'fire',label:'Fish + check artisan output',id:'wi27b'},
+  {type:'prep',label:'Plan Year 2: greenhouse, expanded farm, animals',id:'wi27c'},
+]},
+{d:28,name:'🏆 Year 1 Complete!',tasks:[
+  {type:'fire',label:'Final shipping — everything in bin by midnight',id:'wi28a'},
+  {type:'prep',label:'Review Community Center progress — what remains for Year 2?',id:'wi28b'},
+  {type:'prep',label:'Check skill levels — aim for 10 in farming/mining/fishing',id:'wi28c'},
+  {type:'tomorrow',label:'Year 2 begins — greenhouse unlocks if CC Pantry done!',id:'wi28d'},
+]},
+],
+};
+
+const EVENTS={
+spring:[
+  {d:7,name:"Lewis's Birthday"},{d:10,name:"Vincent's Birthday"},
+  {d:13,name:"Egg Festival"},{d:14,name:"Haley's Birthday"},
+  {d:18,name:"Pam's Birthday"},{d:26,name:"Pierre's Birthday"},
+  {d:27,name:"Emily's Birthday"},
+],
+summer:[
+  {d:4,name:"Jas's Birthday"},{d:8,name:"Gus's Birthday"},
+  {d:10,name:"Maru's Birthday"},{d:11,name:"Luau"},
+  {d:13,name:"Alex's Birthday"},{d:17,name:"Sam's Birthday"},
+  {d:19,name:"Demetrius's Birthday"},{d:22,name:"Dwarf's Birthday"},
+  {d:28,name:"Dance of the Moonlight Jellies"},
+],
+fall:[
+  {d:2,name:"Penny's Birthday"},{d:5,name:"Elliott's Birthday"},
+  {d:8,name:"Blackberry Season Starts"},{d:11,name:"Jodi's Birthday"},
+  {d:13,name:"Abigail's Birthday"},{d:14,name:"Harvey's Birthday"},
+  {d:15,name:"Sandy's Birthday"},{d:16,name:"Stardew Valley Fair"},
+  {d:21,name:"Robin's Birthday"},{d:24,name:"Willy's Birthday"},
+  {d:26,name:"Spirit's Eve"},
+],
+winter:[
+  {d:1,name:"Krobus's Birthday"},{d:3,name:"Linus's Birthday"},
+  {d:7,name:"Caroline's Birthday"},{d:8,name:"Festival of Ice"},
+  {d:15,name:"Night Market"},{d:16,name:"Night Market"},{d:17,name:"Night Market"},
+  {d:20,name:"Evelyn's Birthday"},{d:23,name:"Leah's Birthday"},
+  {d:24,name:"George's Birthday"},{d:25,name:"Feast of the Winter Star"},
+],
+};
+
+const PAR=[
+  {id:'furnace',label:'Furnace built',target:'Sp5'},
+  {id:'mine40',label:'Mine Level 40',target:'Sp9'},
+  {id:'mine80',label:'Mine Level 80',target:'Sp17'},
+  {id:'skullkey',label:'Skull Key (Mine 100)',target:'Sp19'},
+  {id:'strawberry',label:'Strawberries planted after Egg Festival',target:'Sp14'},
+  {id:'sumseeds',label:'Summer seeds purchased',target:'Sp28'},
+  {id:'keg1',label:'First Keg crafted',target:'Su7'},
+  {id:'blueberry',label:'Blueberries harvested',target:'Su8'},
+  {id:'melon',label:'Melons harvested',target:'Su17'},
+  {id:'iridbar',label:'First Iridium Bar smelted',target:'Su10'},
+  {id:'fallseeds',label:'Fall crops planted on Fall 1',target:'Fa1'},
+  {id:'blackberry',label:'100+ Blackberries foraged',target:'Fa11'},
+  {id:'grange',label:'Grange Display 90+ points',target:'Fa16'},
+  {id:'fishing10',label:'Fishing Skill Level 10',target:'Wi1'},
+  {id:'minebundles',label:'All Boiler Room bundles complete',target:'Wi14'},
+  {id:'cc',label:'Community Center complete!',target:'Wi28'},
+];
+
+const CARRY={
+  'Tools & Upgrades':[
+    {id:'pickaxe',label:'Iridium Pickaxe (from Clint — 25,000g)'},
+    {id:'hoe',label:'Gold+ Hoe (for tilling efficiently)'},
+    {id:'can',label:'Gold+ Watering Can (waters 3 wide)'},
+    {id:'rod',label:'Iridium Fishing Rod (Willy — 7,500g)'},
+    {id:'boots',label:'Best boots from mine chests (Space Boots or better)'},
+  ],
+  'Mine Supplies':[
+    {id:'bombs',label:'30+ Bombs (craft: 4 iron ore + 1 coal)'},
+    {id:'stairs',label:'30+ Stone Stairs (99 stone each)'},
+    {id:'coffee',label:'Coffee (speed boost — NEVER sell)'},
+    {id:'spicyeel',label:'Spicy Eel (luck + speed — NEVER sell)'},
+    {id:'food',label:'High-energy food (Fried Egg, Salad, Chub)'},
+  ],
+  'Community Center':[
+    {id:'goldcrops',label:'5x Gold Star each: Parsnip, Potato, Cauliflower, Melon, Pumpkin, Corn'},
+    {id:'prismatic',label:'Prismatic Shard (for vault or CC display)'},
+    {id:'nautilus',label:'Nautilus Shell (Field Research bundle)'},
+    {id:'sunflower',label:'Sunflower (Dye Bundle)'},
+    {id:'duckfeather',label:'Duck Feather (Dye Bundle — needs Duck in Year 1)'},
+    {id:'seaurchin',label:'Sea Urchin (Dye Bundle — submarine fishing, Night Market)'},
+  ],
+  'NPC Gifts':[
+    {id:'diamonds',label:'Diamonds (loved by Maru, Gus, Evelyn, Emily, Willy)'},
+    {id:'gems',label:'Amethyst, Aquamarine, Ruby, Emerald, Topaz for birthdays'},
+    {id:'wine',label:'Artisan wine (Harvey, Leah loved gifts)'},
+  ],
+};
+
+const lsGet=k=>localStorage.getItem(k);
+const lsSet=(k,v)=>localStorage.setItem(k,v);
+const lsTgl=k=>{const v=lsGet(k)==='1';lsSet(k,v?'0':'1');return !v;};
+
+function renderTicker(){
+  const n={spring:'Spring',summer:'Summer',fall:'Fall',winter:'Winter'};
+  document.getElementById('ticker-text').textContent=`${n[S.season]} ${S.day} · Year 1`;
+  document.documentElement.dataset.season=S.season;
+}
+
+function renderRoute(){
+  const list=document.getElementById('route-list');
+  const days=RD[S.season];
+  const frag=document.createDocumentFragment();
+  days.forEach(day=>{
+    const isToday=day.d===S.day;
+    const card=document.createElement('div');
+    card.className='route-day'+(isToday?' today':'');
+    card.dataset.open=isToday?'true':'false';
+    card.dataset.d=day.d;
+    const evts=(EVENTS[S.season]||[]).filter(e=>e.d===day.d);
+    const evtHtml=evts.map(e=>`<span class="day-event">${e.name}</span>`).join('');
+    card.innerHTML=`<div class="day-header">
+      <span class="day-num">${day.d}</span>
+      <span class="day-name">${day.name}</span>
+      ${evtHtml}
+      <span class="day-arrow">▶</span>
+    </div>
+    <div class="day-body">${day.tasks.map(t=>{
+      const ch=lsGet('sdv_t_'+t.id)==='1'?'1':'0';
+      return `<div class="task-row" data-checked="${ch}">
+        <div class="task-check" data-id="${t.id}" data-checked="${ch}"></div>
+        <span class="type-badge tb-${t.type}">${t.type}</span>
+        <span class="task-label">${t.label}</span>
+      </div>`;
+    }).join('')}</div>`;
+    frag.appendChild(card);
+  });
+  list.innerHTML='';
+  list.appendChild(frag);
+  const todayEl=list.querySelector('.route-day.today');
+  if(todayEl) setTimeout(()=>todayEl.scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function renderCal(){
+  const evts=EVENTS[S.season]||[];
+  const evtDays=new Set(evts.map(e=>e.d));
+  let html='<div class="cal-grid">';
+  for(let d=1;d<=28;d++){
+    const cls=['cal-day',d===S.day?'today':'',d<S.day?'past':'',evtDays.has(d)?'has-event':''].filter(Boolean).join(' ');
+    html+=`<div class="${cls}" data-cal-d="${d}">${d}</div>`;
+  }
+  html+='</div><div class="event-list">';
+  evts.forEach(e=>{html+=`<div class="event-item"><div class="event-dot"></div><span class="event-d">${e.d}</span><span>${e.name}</span></div>`;});
+  html+='</div>';
+  document.getElementById('cal-content').innerHTML=html;
+}
+
+function renderPar(){
+  const html=PAR.map(p=>{
+    const ch=lsGet('sdv_par_'+p.id)==='1'?'1':'0';
+    return `<div class="par-item">
+      <div class="par-check" data-par-id="${p.id}" data-checked="${ch}"></div>
+      <span>${p.label}</span>
+      <span class="par-day">${p.target}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('par-content').innerHTML=html;
+}
+
+function renderCarry(){
+  const html=Object.entries(CARRY).map(([sec,items])=>`
+    <div class="carry-section">
+      <div class="carry-title">${sec}</div>
+      ${items.map(item=>{
+        const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
+        return `<div class="carry-item">
+          <div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div>
+          <span>${item.label}</span>
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+  document.getElementById('carry-content').innerHTML=html;
+}
+
+function renderFromData(data){
+  if(!data) return;
+  const sea=(data.season||'').toLowerCase();
+  if(['spring','summer','fall','winter'].includes(sea)) S.season=sea;
+  const d=parseInt(data.day);
+  if(d>=1&&d<=28) S.day=d;
+  document.documentElement.dataset.season=S.season;
+  renderTicker(); renderRoute(); renderCal();
+}
+
+async function fetchBridge(){
+  const ip=S.bridgeIP;
+  if(!ip) return;
+  const dot=document.getElementById('bridge-dot');
+  const status=document.getElementById('bridge-status');
+  try{
+    const base=ip.startsWith('http')?ip:`https://${ip}`;
+    const res=await fetch(`${base}:${BRIDGE_PORT}/data`,{signal:AbortSignal.timeout(8000)});
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data=await res.json();
+    S.bridge=data; dot.className='ok';
+    status.textContent=JSON.stringify(data,null,2);
+    renderFromData(data);
+  }catch(e){
+    dot.className=''; status.textContent=`Error: ${e.message}`;
+  }
+  S.retryTimer=setTimeout(fetchBridge,RETRY_MS);
+}
+
+function goPanel(tab){
+  S.tab=tab;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  const panel=document.getElementById('p-'+tab);
+  if(panel) panel.classList.add('active');
+  const btn=document.querySelector(`.nav-btn[data-tab="${tab}"]`);
+  if(btn) btn.classList.add('active');
+}
+
+const junimoSVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="32" height="32">
+<circle cx="8" cy="9" r="6" fill="#7ec850"/>
+<circle cx="6" cy="8" r="1" fill="#222"/>
+<circle cx="10" cy="8" r="1" fill="#222"/>
+<ellipse cx="8" cy="11" rx="2" ry="1" fill="#5aaa30"/>
+<circle cx="4" cy="6" r="2" fill="#7ec850"/>
+<circle cx="12" cy="6" r="2" fill="#7ec850"/>
+</svg>`;
+
+function spawnJunimo(){
+  const el=document.createElement('div');
+  el.className='junimo'; el.innerHTML=junimoSVG;
+  el.style.left=Math.random()*(window.innerWidth-40)+'px';
+  el.style.top=Math.random()*(window.innerHeight*0.5)+20+'px';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),4000+Math.random()*3000);
+}
+function startJunimos(){spawnJunimo();setInterval(()=>{if(Math.random()<0.3)spawnJunimo();},9000);}
+
+function spawnParticles(el){
+  const r=el.getBoundingClientRect();
+  const cols=['#7ec850','#f5a623','#c85fa8','#4a90d9','#e53935'];
+  for(let i=0;i<6;i++){
+    const p=document.createElement('div'); p.className='particle';
+    p.style.cssText=`left:${r.x+r.width/2}px;top:${r.y}px;background:${cols[i%cols.length]};--tx:${(Math.random()-.5)*60}px;--ty:${-(20+Math.random()*40)}px`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(),800);
+  }
+}
+
+document.addEventListener('click',e=>{
+  const tab=e.target.closest('.nav-btn[data-tab]');
+  if(tab){goPanel(tab.dataset.tab);return;}
+
+  const hdr=e.target.closest('.day-header');
+  if(hdr){
+    const card=hdr.closest('.route-day');
+    card.dataset.open=card.dataset.open==='true'?'false':'true';
+    return;
+  }
+
+  const tc=e.target.closest('.task-check[data-id]');
+  if(tc){
+    e.stopPropagation();
+    const ch=lsTgl('sdv_t_'+tc.dataset.id)?'1':'0';
+    tc.dataset.checked=ch;
+    const row=tc.closest('.task-row'); if(row) row.dataset.checked=ch;
+    if(ch==='1') spawnParticles(tc);
+    return;
+  }
+
+  const pc=e.target.closest('.par-check[data-par-id]');
+  if(pc){
+    const ch=lsTgl('sdv_par_'+pc.dataset.parId)?'1':'0';
+    pc.dataset.checked=ch; if(ch==='1') spawnParticles(pc);
+    return;
+  }
+
+  const cc=e.target.closest('.carry-check[data-carry-id]');
+  if(cc){
+    const ch=lsTgl('sdv_c_'+cc.dataset.carryId)?'1':'0';
+    cc.dataset.checked=ch; if(ch==='1') spawnParticles(cc);
+    return;
+  }
+
+  if(e.target.closest('#dark-btn')){
+    S.dark=!S.dark; lsSet('sdv_dark',S.dark?'1':'0');
+    document.documentElement.dataset.dark=S.dark; return;
+  }
+
+  if(e.target.closest('#bridge-connect')){
+    const ip=document.getElementById('bridge-ip').value.trim();
+    if(!ip) return;
+    S.bridgeIP=ip; lsSet('sdv_ip',ip);
+    clearTimeout(S.retryTimer); fetchBridge(); return;
+  }
+
+  const cd=e.target.closest('.cal-day[data-cal-d]');
+  if(cd){
+    const d=parseInt(cd.dataset.calD);
+    const evts=(EVENTS[S.season]||[]).filter(ev=>ev.d===d);
+    if(evts.length) alert(evts.map(ev=>ev.name).join('\n'));
+    return;
+  }
+});
+
+function init(){
+  const dark=lsGet('sdv_dark');
+  if(dark==='1'){S.dark=true;document.documentElement.dataset.dark='true';}
+  const ip=lsGet('sdv_ip');
+  if(ip){S.bridgeIP=ip;document.getElementById('bridge-ip').value=ip;fetchBridge();}
+  renderTicker(); renderRoute(); renderCal(); renderPar(); renderCarry();
+  startJunimos();
+}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
 </body>
 </html>

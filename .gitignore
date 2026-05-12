@@ -4,6 +4,7 @@ bridge-key.pem
 stardew-bridge.pem
 *.pem
 *.key
+*.crt
 *.p12
 *.mobileconfig
 
