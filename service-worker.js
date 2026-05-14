@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hoedown-v4';
+const CACHE_NAME = 'hoedown-v5';
 const ASSETS = [
   './index.html',
   './manifest.json',
@@ -32,20 +32,37 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
+
+  // Only handle same-origin GET requests — skip bridge and any cross-origin fetches
   if (e.request.method !== 'GET') return;
-  if (url.pathname.endsWith('.html') || url.pathname === '/') {
+  if (url.origin !== self.location.origin) return;
+
+  if (url.pathname.endsWith('.html') || url.pathname === '/' || url.pathname.endsWith('/Stardew-Valley/')) {
+    // Network-first for HTML
     e.respondWith(
       fetch(e.request)
         .then((response) => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          }
           return response;
         })
-        .catch(() => caches.match(e.request))
+        .catch(() =>
+          caches.match(e.request).then(
+            (r) => r || new Response('App is offline — open once with internet to cache it.', {
+              status: 503,
+              headers: { 'Content-Type': 'text/plain' }
+            })
+          )
+        )
     );
   } else {
+    // Cache-first for static assets
     e.respondWith(
-      caches.match(e.request).then((response) => response || fetch(e.request))
+      caches.match(e.request)
+        .then((response) => response || fetch(e.request))
+        .catch(() => new Response('Offline', { status: 503 }))
     );
   }
 });
