@@ -159,6 +159,67 @@ CC_BUNDLE_MAP = {
 
 SEASONS = ["spring", "summer", "fall", "winter"]
 
+BUNDLE_NAMES = {
+    0:"Spring Crops", 1:"Summer Crops", 2:"Fall Crops", 3:"Quality Crops",
+    4:"Animal", 5:"Artisan",
+    6:"River Fish", 7:"Lake Fish", 8:"Ocean Fish", 9:"Night Fishing",
+    10:"Specialty Fish", 11:"Crab Pot",
+    13:"Spring Foraging", 14:"Summer Foraging", 15:"Fall Foraging",
+    16:"Winter Foraging", 17:"Construction", 19:"Exotic Foraging",
+    20:"Blacksmith's", 21:"Geologist's", 22:"Adventurer's",
+    23:"2,500g", 24:"5,000g", 25:"10,000g", 26:"25,000g",
+    31:"Chef's", 32:"Field Research", 33:"Enchanter's", 34:"Dye", 35:"Fodder",
+}
+BUNDLE_ROOMS = {
+    0:"Pantry",1:"Pantry",2:"Pantry",3:"Pantry",4:"Pantry",5:"Pantry",
+    6:"Fish Tank",7:"Fish Tank",8:"Fish Tank",9:"Fish Tank",10:"Fish Tank",11:"Fish Tank",
+    13:"Crafts Room",14:"Crafts Room",15:"Crafts Room",16:"Crafts Room",17:"Crafts Room",19:"Crafts Room",
+    20:"Boiler Room",21:"Boiler Room",22:"Boiler Room",
+    23:"Vault",24:"Vault",25:"Vault",26:"Vault",
+    31:"Bulletin Board",32:"Bulletin Board",33:"Bulletin Board",34:"Bulletin Board",35:"Bulletin Board",
+}
+ROOM_ORDER = ["Pantry","Crafts Room","Fish Tank","Boiler Room","Bulletin Board","Vault"]
+ROOM_EMOJI = {"Pantry":"🌽","Crafts Room":"🌲","Fish Tank":"🐟",
+              "Boiler Room":"⚒️","Bulletin Board":"📋","Vault":"💰"}
+
+HOARD_CODE_NAMES = {
+    "sp_parsnip":"Parsnip","sp_greenbean":"Green Bean","sp_cauliflower":"Cauliflower",
+    "sp_potato":"Potato","sp_catfish":"Catfish","sp_eel":"Eel",
+    "sp_horseradish":"Wild Horseradish","sp_daffodil":"Daffodil","sp_leek":"Leek","sp_dandelion":"Dandelion",
+    "su_tomato":"Tomato","su_hotpepper":"Hot Pepper","su_blueberry":"Blueberry","su_melon":"Melon",
+    "su_corn":"Corn","su_spiceberry":"Spice Berry","su_grape":"Grape","su_sweetpea":"Sweet Pea",
+    "su_fiddlehead":"Fiddlehead Fern","su_tuna":"Tuna","su_tilapia":"Tilapia",
+    "su_redsnapper":"Red Snapper","su_pufferfish":"Pufferfish","su_sunflower":"Sunflower",
+    "su_poppy":"Poppy","su_wheat10":"Wheat",
+    "fa_eggplant":"Eggplant","fa_pumpkin":"Pumpkin","fa_yam":"Yam","fa_apple":"Apple",
+    "fa_pomegranate":"Pomegranate","fa_mushroom":"Common Mushroom","fa_plum":"Wild Plum",
+    "fa_hazelnut":"Hazelnut","fa_blackberry":"Blackberry","fa_tigertrout":"Tiger Trout",
+    "wi_winterroot":"Winter Root","wi_crystalfruit":"Crystal Fruit",
+    "wi_snowyam":"Snow Yam","wi_crocus":"Crocus","wi_nautilus":"Nautilus Shell",
+    "any_wood":"Wood (99)","any_stone":"Stone (99)","any_hardwood":"Hardwood (10)",
+    "any_hay":"Hay (10)","any_maplesyrup":"Maple Syrup","any_oakresin":"Oak Resin",
+    "any_pinetar":"Pine Tar","any_cavecarrot":"Cave Carrot","any_redmush":"Red Mushroom",
+    "any_purpmush":"Purple Mushroom","any_coconut":"Coconut","any_cactus":"Cactus Fruit",
+    "any_frozengeode":"Frozen Geode","any_chub":"Chub","any_aquamarine":"Aquamarine",
+    "any_seaurchin":"Sea Urchin","any_sunfish":"Sunfish","any_shad":"Shad",
+    "any_bream":"Bream","any_ghostfish":"Ghostfish","any_woodskip":"Woodskip",
+    "any_bass":"Largemouth Bass","any_carp":"Carp","any_bullhead":"Bullhead",
+    "any_sardine":"Sardine","any_quartz":"Quartz","any_earthcrystal":"Earth Crystal",
+    "any_firequartz":"Fire Quartz","any_ironbar":"Iron Bar","any_copperbar":"Copper Bar",
+    "any_goldbar":"Gold Bar","any_slime":"Slime (99)","any_batwing":"Bat Wing (10)",
+    "any_solar":"Solar Essence","any_void":"Void Essence","any_wine":"Wine",
+    "any_jelly":"Jelly","any_cheese":"Cheese","any_honey":"Honey",
+    "any_friedegg":"Fried Egg","any_makiroll":"Maki Roll","any_cloth":"Cloth",
+    "any_goatcheese":"Goat Cheese","any_crab":"Crab","any_lobster":"Lobster",
+    "any_crayfish":"Crayfish","any_snail":"Snail","any_periwinkle":"Periwinkle",
+    "any_shrimp":"Shrimp","any_mussel":"Mussel","any_clam":"Clam","any_oyster":"Oyster",
+    "hard_largemilk":"Large Milk","hard_largeeggw":"Large Egg (W)","hard_largeeggb":"Large Egg (B)",
+    "hard_duckegg":"Duck Egg","hard_wool":"Wool","hard_goatmilk":"Goat Milk",
+    "hard_redcabbage":"Red Cabbage","hard_duckfeather":"Duck Feather","hard_truffle":"Truffle",
+    "truffle_oil":"Truffle Oil","q_rabbitsfoot":"Rabbit's Foot","q_sweetgemberry":"Sweet Gem Berry",
+    "vault_2500":"2,500g","vault_5000":"5,000g","vault_10000":"10,000g","vault_25000":"25,000g",
+}
+
 
 def parse_save():
     try:
@@ -328,6 +389,37 @@ def parse_save():
             if int(pts_el.text or 0) >= 2000:
                 hearts8plus += 1
     out["npcsAt8Hearts"] = hearts8plus
+
+    # ── CC BUNDLES (structured for Junimo Feed) ──────────────────────────────
+    bundle_done = {}
+    for bundle_el in root.findall(".//bundles/item"):
+        key_el  = bundle_el.find("key/int")
+        val_els = bundle_el.findall("value/ArrayOfBoolean/boolean")
+        if key_el is None or not val_els: continue
+        bid = int(key_el.text or -1)
+        bundle_done[bid] = all(v.text == 'true' for v in val_els)
+
+    hoard_have_set = set(out["hoard_have"])
+    room_map = {r: {"name": r, "emoji": ROOM_EMOJI[r], "bundles": [], "done": 0} for r in ROOM_ORDER}
+
+    for bid in sorted(BUNDLE_ROOMS.keys()):
+        room = BUNDLE_ROOMS[bid]
+        completed = bundle_done.get(bid, False)
+        items = CC_BUNDLE_MAP.get(bid, [])
+        # Vault bundles: show gold amount as a single slot
+        if not items and bid in vault_map:
+            amt = {23:2500, 24:5000, 25:10000, 26:25000}[bid]
+            items = [vault_map[bid]]
+        slots = [{"code": c, "name": HOARD_CODE_NAMES.get(c, c), "have": c in hoard_have_set}
+                 for c in items]
+        room_map[room]["bundles"].append({
+            "id": bid, "name": BUNDLE_NAMES.get(bid, f"Bundle {bid}"),
+            "completed": completed, "slots": slots,
+        })
+        if completed:
+            room_map[room]["done"] += 1
+
+    out["cc_bundles"] = [room_map[r] for r in ROOM_ORDER]
 
     return out
 

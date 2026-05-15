@@ -222,6 +222,36 @@ body{display:flex;flex-direction:column;overflow:hidden;}
   padding:10px 14px;font-size:12px;text-align:left;color:var(--muted);}
 .cs-tab strong{display:block;color:var(--text);font-size:12.5px;margin-bottom:1px;}
 
+/* ── JUNIMO FEED ── */
+.room-card{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);
+  margin-bottom:12px;overflow:hidden;}
+.room-header{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));
+  cursor:pointer;border-bottom:1.5px solid var(--border);}
+.room-title{font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;}
+.room-progress{font-size:11px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;}
+.room-complete-badge{background:var(--t-gather);color:#fff;font-size:10px;font-weight:800;
+  padding:2px 7px;border-radius:20px;}
+.room-body{padding:4px 8px 8px;}
+.room-card[data-open=false] .room-body{display:none;}
+.bundle-row{display:flex;flex-direction:column;gap:4px;padding:7px 6px;
+  border-radius:10px;margin-top:4px;}
+.bundle-row.done{opacity:.55;}
+.bundle-top{display:flex;align-items:center;gap:8px;}
+.bundle-name{font-size:12.5px;font-weight:700;flex:1;}
+.bundle-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);
+  background:var(--bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  font-size:11px;}
+.bundle-check.done{background:var(--t-gather);border-color:var(--t-gather);color:#fff;}
+.bundle-chips{display:flex;flex-wrap:wrap;gap:4px;padding-left:26px;}
+.chip{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap;
+  border:1.5px solid var(--border);}
+.chip.have{background:#d4f5e0;border-color:#8ed4a8;color:#1a6636;}
+.chip.missing{background:var(--surf);color:var(--muted);}
+html[data-dark=true] .chip.have{background:#1a3d2a;border-color:#2a6040;color:#6fe0a0;}
+html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
+.junimo-offline{padding:24px;text-align:center;color:var(--muted);font-size:13px;}
+
 /* ── JUNIMOS & PARTICLES ── */
 .junimo{position:fixed;pointer-events:none;z-index:1000;width:32px;height:32px;
   animation:jh .6s ease-in-out infinite alternate;}
@@ -294,18 +324,18 @@ body{display:flex;flex-direction:column;overflow:hidden;}
   <!-- 🔴 THE HOARD -->
   <div class="panel" id="p-hoard">
     <div class="panel-title">🔴 The Hoard — Items &amp; Unlocks Tracker</div>
-    <div class="coming-soon">
-      <div class="cs-emoji">🌽</div>
-      <h2>Coming Soon!</h2>
-      <p>Track your Community Center progress, quests, museum donations, tool unlocks, and NPC relationships.</p>
-      <div class="cs-tabs">
-        <div class="cs-tab"><strong>🌽 Junimo Feed</strong>CC bundles by room</div>
-        <div class="cs-tab"><strong>📋 Take This Job And Shove It</strong>Journal quests + special orders</div>
-        <div class="cs-tab"><strong>✨ Omg Look Something Shiny</strong>Museum donations</div>
-        <div class="cs-tab"><strong>🔨 I Made It Myself</strong>Tools, buildings, recipes, milestones</div>
-        <div class="cs-tab"><strong>💌 Covenant of the Rock</strong>NPC hearts + birthdays</div>
-      </div>
+    <div class="sub-nav" id="hoard-sub-nav">
+      <button class="sub-btn active" data-hsub="junimo">🌽 Junimo Feed</button>
+      <button class="sub-btn" data-hsub="quests">📋 Take This Job</button>
+      <button class="sub-btn" data-hsub="museum">✨ Look Shiny</button>
+      <button class="sub-btn" data-hsub="unlocks">🔨 I Made It</button>
+      <button class="sub-btn" data-hsub="npcs">💌 Covenant</button>
     </div>
+    <div class="sub-panel active" id="hsp-junimo"><div id="junimo-content"></div></div>
+    <div class="sub-panel" id="hsp-quests"><div class="coming-soon"><div class="cs-emoji">📋</div><h2>Coming Soon!</h2><p>Journal quests + special orders.</p></div></div>
+    <div class="sub-panel" id="hsp-museum"><div class="coming-soon"><div class="cs-emoji">✨</div><h2>Coming Soon!</h2><p>Museum donations (Gunther) — X/95.</p></div></div>
+    <div class="sub-panel" id="hsp-unlocks"><div class="coming-soon"><div class="cs-emoji">🔨</div><h2>Coming Soon!</h2><p>Buildings, tool upgrades, skill milestones.</p></div></div>
+    <div class="sub-panel" id="hsp-npcs"><div class="coming-soon"><div class="cs-emoji">💌</div><h2>Coming Soon!</h2><p>NPC hearts, birthdays, gifts.</p></div></div>
   </div>
 
   <!-- ✨ STORY TIME -->
@@ -1138,6 +1168,71 @@ function renderCarry(){
   document.getElementById('carry-content').innerHTML=html;
 }
 
+const ROOM_EMOJI_JS = {
+  "Pantry":"🌽","Crafts Room":"🌲","Fish Tank":"🐟",
+  "Boiler Room":"⚒️","Bulletin Board":"📋","Vault":"💰"
+};
+
+function renderJunimo(){
+  const el=document.getElementById('junimo-content');
+  if(!el) return;
+  const data=S.bridge;
+  if(!data||!data.cc_bundles){
+    el.innerHTML='<div class="junimo-offline">Connect the bridge to sync Community Center progress — or load will happen automatically when bridge is online ✨</div>';
+    return;
+  }
+  const frag=document.createDocumentFragment();
+  data.cc_bundles.forEach(room=>{
+    const allDone=room.done===room.bundles.length;
+    const card=document.createElement('div');
+    card.className='room-card';
+    card.dataset.open='true';
+    const hdr=document.createElement('div'); hdr.className='room-header';
+    const badge=allDone?`<span class="room-complete-badge">✓ DONE</span>`:
+      `<span style="font-size:11px;color:var(--muted)">${room.done}/${room.bundles.length}</span>`;
+    hdr.innerHTML=`<span class="room-title">${ROOM_EMOJI_JS[room.name]||'📦'} ${room.name}</span>
+      <div class="room-progress">${badge}</div>`;
+    const body=document.createElement('div'); body.className='room-body';
+    room.bundles.forEach(bundle=>{
+      const haveCount=bundle.slots.filter(s=>s.have).length;
+      const brow=document.createElement('div');
+      brow.className='bundle-row'+(bundle.completed?' done':'');
+      const checkIcon=bundle.completed?'✓':'';
+      brow.innerHTML=`<div class="bundle-top">
+        <div class="bundle-check${bundle.completed?' done':''}">${checkIcon}</div>
+        <span class="bundle-name">${bundle.name}</span>
+        ${!bundle.completed?`<span style="font-size:10px;color:var(--muted)">${haveCount}/${bundle.slots.length}</span>`:''}
+      </div>`;
+      if(bundle.slots.length){
+        const chips=document.createElement('div'); chips.className='bundle-chips';
+        bundle.slots.forEach(slot=>{
+          const c=document.createElement('span');
+          c.className='chip '+(slot.have?'have':'missing');
+          c.textContent=(slot.have?'✓ ':'')+slot.name;
+          chips.appendChild(c);
+        });
+        brow.appendChild(chips);
+      }
+      body.appendChild(brow);
+    });
+    card.appendChild(hdr); card.appendChild(body);
+    frag.appendChild(card);
+  });
+  el.innerHTML='';
+  el.appendChild(frag);
+}
+
+function goHoardSub(sub){
+  document.querySelectorAll('#hoard-sub-nav .sub-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#p-hoard .sub-panel').forEach(p=>p.classList.remove('active'));
+  const btn=document.querySelector(`#hoard-sub-nav .sub-btn[data-hsub="${sub}"]`);
+  const panel=document.getElementById('hsp-'+sub);
+  if(btn) btn.classList.add('active');
+  if(panel) panel.classList.add('active');
+  lsSet('sdv_hsub',sub);
+  if(sub==='junimo') renderJunimo();
+}
+
 function renderFromData(data){
   if(!data) return;
   const sea=(data.season||'').toLowerCase();
@@ -1146,6 +1241,8 @@ function renderFromData(data){
   if(d>=1&&d<=28) S.day=d;
   document.documentElement.dataset.season=S.season;
   renderTicker(); renderRoute(); renderCal(); renderHome();
+  // Re-render live tools if their panel is visible
+  if(S.tab==='hoard') renderJunimo();
 }
 
 function updateSyncDot(){
@@ -1199,6 +1296,7 @@ function goPanel(tab){
   if(panel) panel.classList.add('active');
   const btn=document.querySelector(`.nav-btn[data-tab="${tab}"]`);
   if(btn) btn.classList.add('active');
+  if(tab==='hoard') renderJunimo();
 }
 
 function goSubPanel(sub){
@@ -1248,9 +1346,19 @@ document.addEventListener('click',e=>{
   const sub=e.target.closest('.sub-btn[data-sub]');
   if(sub){goSubPanel(sub.dataset.sub);return;}
 
+  const hsub=e.target.closest('.sub-btn[data-hsub]');
+  if(hsub){goHoardSub(hsub.dataset.hsub);return;}
+
   const hdr=e.target.closest('.day-header');
   if(hdr){
     const card=hdr.closest('.route-day');
+    card.dataset.open=card.dataset.open==='true'?'false':'true';
+    return;
+  }
+
+  const rhdr=e.target.closest('.room-header');
+  if(rhdr){
+    const card=rhdr.closest('.room-card');
     card.dataset.open=card.dataset.open==='true'?'false':'true';
     return;
   }
@@ -1310,11 +1418,13 @@ function init(){
 
   const savedTab=lsGet('sdv_tab')||'home';
   const savedSub=lsGet('sdv_rsub')||'tasks';
+  const savedHSub=lsGet('sdv_hsub')||'junimo';
 
   renderTicker(); renderRoute(); renderCal(); renderPar(); renderCarry(); renderHome();
 
   goPanel(savedTab);
   goSubPanel(savedSub);
+  goHoardSub(savedHSub);
 
   startJunimos();
 }
