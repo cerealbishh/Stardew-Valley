@@ -486,11 +486,15 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
       <button class="sub-btn" data-stab="lore">📜 The Lore</button>
       <button class="sub-btn" data-stab="covenant">💌 Covenant</button>
       <button class="sub-btn" data-stab="milestones">🏆 Milestones</button>
+      <button class="sub-btn" data-stab="mainquest">📋 Quest</button>
+      <button class="sub-btn" data-stab="odds">🎲 Odds</button>
     </div>
     <div class="sub-panel active" id="stp-previously"><div id="previously-content"></div></div>
     <div class="sub-panel" id="stp-lore"><div id="lore-content"></div></div>
     <div class="sub-panel" id="stp-covenant"><div id="story-covenant-content"></div></div>
     <div class="sub-panel" id="stp-milestones"><div id="milestones-content"></div></div>
+    <div class="sub-panel" id="stp-mainquest"><div id="mainquest-content"></div></div>
+    <div class="sub-panel" id="stp-odds"><div id="odds-content"></div></div>
   </div>
 
   <!-- 💜 BIG DADDY NIGHTLOCK -->
@@ -1741,6 +1745,140 @@ function renderMilestones(){
   el.innerHTML=html;
 }
 
+// ── STORY TIME: MAIN QUEST + ODDS ────────────────────────────────────────────
+const MAIN_QUEST_ARC=[
+  {g:'🌱 Prologue',label:"Arrived at Grandpa's Farm",auto:()=>true},
+  {g:'🌱 Prologue',label:'Bamboo Rod from Willy (Day 2)',ev:1400094},
+  {g:'🌱 Prologue',label:'The Mines opened (Spring 5)',ev:60367},
+  {g:'🌱 Prologue',label:"Wizard's Tower — CC Junimo note revealed",ev:3910975},
+  {g:'⚒️ Mining Arc',label:'Copper tools unlocked (Mine 40)',mk:'mq_copper'},
+  {g:'⚒️ Mining Arc',label:'Iron tools unlocked (Mine 80)',mk:'mq_iron'},
+  {g:'⚒️ Mining Arc',label:'Skull Key 💀 — Mine Level 100',c:b=>!!b.hasSkullKey},
+  {g:'⚒️ Mining Arc',label:'Skull Cavern entered 🌵',mk:'mq_skull'},
+  {g:'🎣 Fishing Arc',label:'Fiberglass Rod from Willy (1800g, Spring 6+)',mk:'mq_fgrod'},
+  {g:'🎣 Fishing Arc',label:'Iridium Rod from Willy (7500g, Fishing 6+)',mk:'mq_irod'},
+  {g:'🎣 Fishing Arc',label:'Fishing Level 10 ⭐',c:b=>(b.skills||{}).fish>=10},
+  {g:'🏠 Homestead',label:'Kitchen — House Upgrade 1',houseMin:1},
+  {g:'🏠 Homestead',label:"Kids' Room — House Upgrade 2",houseMin:2},
+  {g:'🏠 Homestead',label:'Cellar — House Upgrade 3',houseMin:3},
+  {g:'🏛️ CC Oath',label:'Pantry complete',ccRoom:'Pantry'},
+  {g:'🏛️ CC Oath',label:'Crafts Room complete',ccRoom:'Crafts Room'},
+  {g:'🏛️ CC Oath',label:'Fish Tank complete',ccRoom:'Fish Tank'},
+  {g:'🏛️ CC Oath',label:'Boiler Room complete',ccRoom:'Boiler Room'},
+  {g:'🏛️ CC Oath',label:'Bulletin Board complete',ccRoom:'Bulletin Board'},
+  {g:'🏛️ CC Oath',label:'Vault complete — Bus Repaired! 🚌',ccRoom:'Vault'},
+  {g:'🏛️ CC Oath',label:'🎉 Community Center COMPLETE',ccAll:true},
+  {g:'🌵 Desert Run',label:'Calico Desert — first trip',mk:'mq_desert'},
+  {g:'🌵 Desert Run',label:'First Iridium Bar smelted 💜',mk:'mq_ibar'},
+  {g:'🌵 Desert Run',label:'Club Card from Qi 🃏',c:b=>!!b.hasClubCard},
+  {g:'🌵 Desert Run',label:'Rusty Key — Sewers unlocked 🗝️',c:b=>!!b.hasRustyKey},
+  {g:'💰 Year 1 Mission',label:'100k gold total earned',c:b=>(b.totalMoneyEarned||0)>=100000},
+  {g:'💰 Year 1 Mission',label:'500k gold total earned',c:b=>(b.totalMoneyEarned||0)>=500000},
+  {g:'💰 Year 1 Mission',label:'1M gold total earned 🌟',c:b=>(b.totalMoneyEarned||0)>=1000000},
+  {g:'💰 Year 1 Mission',label:'First Starfruit Wine kegged 🍷',mk:'mq_starwine'},
+  {g:'💰 Year 1 Mission',label:'5M gold total earned 🏆',c:b=>(b.totalMoneyEarned||0)>=5000000},
+];
+
+function checkMQ(f){
+  if(f.auto) return f.auto();
+  if(f.mk) return nsGet(f.mk)==='1';
+  const b=S.bridge;
+  if(!b) return false;
+  if(f.ev) return (b.events||[]).includes(f.ev);
+  if(f.c) return f.c(b);
+  if(f.houseMin) return (b.houseUpgradeLevel||0)>=f.houseMin;
+  if(f.ccRoom){const r=(b.cc_bundles||[]).find(x=>x.name===f.ccRoom);return r?r.done===r.bundles.length:false;}
+  if(f.ccAll) return (b.cc_bundles||[]).length>0&&b.cc_bundles.every(r=>r.done===r.bundles.length);
+  return false;
+}
+
+function renderMainQuest(){
+  const el=document.getElementById('mainquest-content');
+  if(!el) return;
+  const b=S.bridge;
+  const aq=b&&b.activeQuests;
+  let html='<div class="unlock-section"><div class="unlock-sec-title">📋 Active Journal</div>';
+  if(!b){
+    html+='<div style="font-size:12px;color:var(--muted);padding:8px 0">Connect bridge for live journal</div>';
+  } else if(aq&&aq.length){
+    aq.forEach(q=>{
+      html+=`<div class="quest-row"><span class="quest-status ${q.done?'qs-done':'qs-active'}">${q.done?'Done':'Active'}</span><span>${q.title}</span></div>`;
+    });
+  } else {
+    html+='<div style="font-size:12px;color:var(--muted);padding:8px 0">Journal empty — go talk to some townsfolk!</div>';
+  }
+  html+='</div>';
+  const groups={};
+  MAIN_QUEST_ARC.forEach(f=>{if(!groups[f.g])groups[f.g]=[];groups[f.g].push(f);});
+  Object.entries(groups).forEach(([g,flags])=>{
+    const doneCount=flags.filter(f=>checkMQ(f)).length;
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">${g}<span style="margin-left:auto;color:var(--acc);font-size:10px">${doneCount}/${flags.length}</span></div>`;
+    flags.forEach(f=>{
+      const checked=checkMQ(f);
+      if(f.mk){
+        html+=`<div class="timeline-row"><div class="quest-check" data-qm="${f.mk}" data-checked="${checked?'1':'0'}">${checked?'✓':''}</div><span style="flex:1">${f.label}</span></div>`;
+      } else {
+        const badge=b?`<span class="timeline-badge${checked?' auto':''}">${checked?'✓':'AUTO'}</span>`:'';
+        html+=`<div class="timeline-row"><div class="timeline-dot${checked?' yes':''}"></div><span style="flex:1">${f.label}</span>${badge}</div>`;
+      }
+    });
+    html+='</div>';
+  });
+  if(!b) html='<div class="junimo-offline">Connect bridge for auto-detection ✨</div>'+html;
+  el.innerHTML=html;
+}
+
+function renderOdds(){
+  const el=document.getElementById('odds-content');
+  if(!el) return;
+  const b=S.bridge;
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge for your stats 🎲</div>';return;}
+  const stats=b.stats||{};
+  const days=stats.daysPlayed||0;
+  const totalEarned=b.totalMoneyEarned||0;
+  function srow(label,val,suffix,quip){
+    const v=typeof val==='number'?val.toLocaleString():String(val);
+    let h=`<div class="unlock-row"><span>${label}</span><span class="stat-val">${v}${suffix||''}</span></div>`;
+    if(quip) h+=`<div style="font-size:11px;color:var(--acc);padding:0 12px 6px;margin-top:-4px">${quip}</div>`;
+    return h;
+  }
+  const passOut=stats.timesUnconscious||0;
+  const monsters=stats.monstersKilled||0;
+  const fish=stats.fishCaught||0;
+  const goldPerDay=days>0?Math.round(totalEarned/days):0;
+  const fishPerDay=days>0?(fish/days).toFixed(1):null;
+  const html=`
+  <div class="unlock-section"><div class="unlock-sec-title">📅 Farm Life</div>
+    ${srow('📅 Days Played',days,'',days>=112?'🌟 Year 1 complete!':days>=84?'❄️ Winter is here':days>=56?'🍂 Fall vibes':days>=28?'☀️ Summer sun':'🌱 Spring baby')}
+    ${srow('👣 Steps Taken',stats.stepsTaken||0,'',null)}
+    ${srow('🛏️ Times Slept',stats.timesSleep||0,'',null)}
+    ${srow('💀 Passed Out',passOut,'',passOut>=10?'🥴 Please eat something!!':passOut>=5?'😅 Touch some grass':passOut>=1?'Oops 😬':null)}
+  </div>
+  <div class="unlock-section"><div class="unlock-sec-title">🎣 The Fishing Life</div>
+    ${srow('🎣 Times Cast',stats.timesFished||0,'',null)}
+    ${srow('🐟 Fish Caught',fish,'',fish>=1000?'🏆 Master Angler!':fish>=500?'Willy is so proud 🎣':fish>=100?'Getting there!':'Just warming up')}
+    ${fishPerDay!==null?srow('📊 Fish Per Day',fishPerDay,'/day',null):''}
+  </div>
+  <div class="unlock-section"><div class="unlock-sec-title">⚒️ The Grind</div>
+    ${srow('🪨 Rocks Smashed',stats.rocksCrushed||0,'',null)}
+    ${srow('⚔️ Monsters Killed',monsters,'',monsters>=5000?'💀 Skull Cavern legend':monsters>=1000?'⚔️ Slayer supreme':monsters>=100?'Getting dangerous':'Still a rookie')}
+    ${srow('🌿 Items Foraged',stats.itemsForaged||0,'',null)}
+    ${srow('🌾 Crops Shipped',stats.cropsShipped||0,'',null)}
+  </div>
+  <div class="unlock-section"><div class="unlock-sec-title">💰 Gold Flow</div>
+    ${srow('💰 In Wallet',b.gold||0,'g',null)}
+    ${srow('📈 Total Earned',totalEarned,'g',null)}
+    ${goldPerDay>0?srow('⚡ Per-Day Rate',goldPerDay,'g/day',null):''}
+    ${srow('🎯 Year 1 Progress',Math.min(100,Math.round(totalEarned/5000000*100)),'%',totalEarned>=5000000?'🏆 DONE!':totalEarned>0?`${(5000000-totalEarned).toLocaleString()}g to go`:null)}
+  </div>
+  <div class="unlock-section"><div class="unlock-sec-title">🏛️ Collection</div>
+    ${srow('🏛️ Museum Donations',b.museumDonations||0,' / 95',null)}
+    ${srow('🍳 Cooking Recipes',(b.cookingRecipes||[]).length,' known',null)}
+    ${srow('🔨 Crafting Recipes',(b.craftingRecipes||[]).length,' known',null)}
+  </div>`;
+  el.innerHTML=html;
+}
+
 // ── NIGHTLOCK DATA ────────────────────────────────────────────────────────────
 const XP_THRESH=[0,100,380,770,1300,2150,3300,4800,6900,10000,15000];
 const SKILL_META={
@@ -2045,6 +2183,8 @@ function renderStoryTab(sub){
   else if(sub==='lore') renderLore();
   else if(sub==='covenant') renderStoryCovenant();
   else if(sub==='milestones') renderMilestones();
+  else if(sub==='mainquest') renderMainQuest();
+  else if(sub==='odds') renderOdds();
 }
 
 function goStoryTab(sub){
