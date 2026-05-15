@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='utf-8'?>
+<SaveGame xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <currentSeason>summer</currentSeason>
+  <dayOfMonth>1</dayOfMonth>
+  <year>1</year>
+  <dailyLuck>-0.021</dailyLuck>
+  <weatherForTomorrow />
+  <isRaining>false</isRaining>
+  <isSnowing>false</isSnowing>
+  <isLightning>false</isLightning>
+  <isDebrisWeather>false</isDebrisWeather>
+  <player>
+    <money>21683</money>
+    <totalMoneyEarned>57618</totalMoneyEarned>
+    <houseUpgradeLevel>0</houseUpgradeLevel>
+    <experiencePoints>
+      <int>1948</int>
+      <int>11059</int>
+      <int>1940</int>
+      <int>850</int>
+      <int>830</int>
+      <int>0</int>
+    </experiencePoints>
+    <items>
+      <Item>
+        <name>Copper Ore</name>
+        <Stack>5</Stack>
+      </Item>
+      <Item>
+        <name>Parsnip</name>
+        <Stack>3</Stack>
+      </Item>
+    </items>
+    <friendships>
+      <item>
+        <key>
+          <string>Abigail</string>
+        </key>
+        <value>
+          <Friendship>
+            <Points>250</Points>
+          </Friendship>
+        </value>
+      </item>
+      <item>
+        <key>
+          <string>Harvey</string>
+        </key>
+        <value>
+          <Friendship>
+            <Points>100</Points>
+          </Friendship>
+        </value>
+      </item>
+    </friendships>
+    <mailReceived>
+      <string>Robin_NewHouse</string>
+      <string>spring_1_2</string>
+    </mailReceived>
+    <eventsSeen>
+      <int>60367</int>
+      <int>13</int>
+    </eventsSeen>
+    <stats>
+      <specificMonstersKilled />
+      <Values />
+      <averageBedtime />
+      <beveragesMade />
+      <caveCarrotsFound />
+      <cheeseMade />
+      <chickenEggsLayed />
+      <copperFound />
+      <cowMilkProduced />
+      <cropsShipped />
+    </stats>
+    <questLog>
+      <Quest>
+        <id>1</id>
+        <completed>false</completed>
+      </Quest>
+    </questLog>
+  </player>
+  <locations>
+    <GameLocation xsi:type="LibraryMuseum">
+      <museumPieces>
+        <item>
+          <key>
+            <Vector2>
+              <X>26</X>
+              <Y>11</Y>
+            </Vector2>
+          </key>
+          <value>
+            <string>116</string>
+          </value>
+        </item>
+        <item>
+          <key>
+            <Vector2>
+              <X>26</X>
+              <Y>10</Y>
+            </Vector2>
+          </key>
+          <value>
+            <string>114</string>
+          </value>
+        </item>
+        <item>
+          <key>
+            <Vector2>
+              <X>26</X>
+              <Y>9</Y>
+            </Vector2>
+          </key>
+          <value>
+            <string>60</string>
+          </value>
+        </item>
+      </museumPieces>
+    </GameLocation>
+    <GameLocation xsi:type="Farm">
+      <buildings>
+        <Building>
+          <buildingType>Coop</buildingType>
+        </Building>
+      </buildings>
+    </GameLocation>
+  </locations>
+  <farmerFriendships />
+  <bundles>
+    <item>
+      <key>
+        <int>0</int>
+      </key>
+      <value>
+        <ArrayOfBoolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+          <boolean>true</boolean>
+        </ArrayOfBoolean>
+      </value>
+    </item>
+    <item>
+      <key>
+        <int>1</int>
+      </key>
+      <value>
+        <ArrayOfBoolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+          <boolean>false</boolean>
+        </ArrayOfBoolean>
+      </value>
+    </item>
+  </bundles>
+</SaveGame>

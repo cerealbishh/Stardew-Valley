@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hoedown-v5';
+const CACHE_NAME = 'hoedown-v6';
 const ASSETS = [
   './index.html',
   './manifest.json',

@@ -53,8 +53,12 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 #ticker-right{display:flex;gap:10px;align-items:center;}
 #dark-btn{background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;padding:0;line-height:1;}
 #bridge-dot{width:10px;height:10px;border-radius:50%;background:#e06868;flex-shrink:0;
-  box-shadow:0 0 0 2px rgba(255,255,255,0.45);}
+  box-shadow:0 0 0 2px rgba(255,255,255,0.45);transition:background .4s;}
 #bridge-dot.ok{background:#58c880;}
+#bridge-dot.stale{background:#e0b040;}
+#bridge-sync-time{font-size:9px;color:var(--muted);letter-spacing:-.2px;}
+#schema-banner{display:none;background:#e0b040;color:#3a1f3a;font-size:11px;font-weight:700;
+  text-align:center;padding:4px 12px;flex-shrink:0;}
 
 /* ── PANELS ── */
 #main{flex:1;overflow:hidden;position:relative;}
@@ -230,10 +234,11 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 </style>
 </head>
 <body>
-
+<div id="schema-banner">⚠️ Bridge data format changed — please restart stardew-bridge.py</div>
 <div id="ticker">
   <span id="ticker-text">🌱 Spring 1 · Year 1</span>
   <div id="ticker-right">
+    <span id="bridge-sync-time"></span>
     <div id="bridge-dot" title="Bridge"></div>
     <button id="dark-btn" aria-label="Toggle dark mode">🌙</button>
   </div>
@@ -348,8 +353,9 @@ body{display:flex;flex-direction:column;overflow:hidden;}
 </nav>
 
 <script>
-const BRIDGE_PORT=8742,RETRY_MS=30000;
-const S={season:'spring',day:1,dark:false,tab:'home',sub:'tasks',bridgeIP:'',retryTimer:null,bridge:null};
+const BRIDGE_PORT=8742;
+const BRIDGE_SCHEMA_VER=1;
+const S={season:'spring',day:1,dark:false,tab:'home',sub:'tasks',bridgeIP:'',bridge:null,lastSyncMs:0};
 
 const RD={
 spring:[
@@ -1012,6 +1018,13 @@ const lsGet=k=>localStorage.getItem(k);
 const lsSet=(k,v)=>localStorage.setItem(k,v);
 const lsTgl=k=>{const v=lsGet(k)==='1';lsSet(k,v?'0':'1');return !v;};
 
+// Namespaced storage for new tools — key: sdv:<saveHash>:<name>
+function saveHash(){return S.bridge?(S.bridge.farm||'hoedown').replace(/\s+/g,'').toLowerCase():'hoedown';}
+const nsKey=(k)=>`sdv:${saveHash()}:${k}`;
+const nsGet=k=>localStorage.getItem(nsKey(k));
+const nsSet=(k,v)=>localStorage.setItem(nsKey(k),v);
+const nsTgl=k=>{const v=nsGet(k)==='1';nsSet(k,v?'0':'1');return !v;};
+
 function seasonLabel(){
   return {spring:'🌱 Spring',summer:'☀️ Summer',fall:'🍂 Fall',winter:'❄️ Winter'}[S.season];
 }
@@ -1135,27 +1148,47 @@ function renderFromData(data){
   renderTicker(); renderRoute(); renderCal(); renderHome();
 }
 
+function updateSyncDot(){
+  const dot=document.getElementById('bridge-dot');
+  const lbl=document.getElementById('bridge-sync-time');
+  if(!S.lastSyncMs){dot.className='';if(lbl)lbl.textContent='';return;}
+  const age=Date.now()-S.lastSyncMs;
+  const mm=String(new Date(S.lastSyncMs).getMinutes()).padStart(2,'0');
+  const ss=String(new Date(S.lastSyncMs).getSeconds()).padStart(2,'0');
+  const hh=String(new Date(S.lastSyncMs).getHours()).padStart(2,'0');
+  if(lbl) lbl.textContent=`${hh}:${mm}:${ss}`;
+  if(age<30000)      dot.className='ok';
+  else if(age<120000) dot.className='stale';
+  else               dot.className='';
+}
+setInterval(updateSyncDot,5000);
+
 async function fetchBridge(){
   const ip=S.bridgeIP;
   if(!ip) return;
-  const dot=document.getElementById('bridge-dot');
   const status=document.getElementById('bridge-status');
   try{
     const base=ip.startsWith('http')?ip:`https://${ip}`;
     const res=await fetch(`${base}:${BRIDGE_PORT}/save`,{signal:AbortSignal.timeout(8000)});
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
-    S.bridge=data; dot.className='ok';
+    S.bridge=data; S.lastSyncMs=Date.now(); updateSyncDot();
+    // Schema version check
+    const banner=document.getElementById('schema-banner');
+    if(banner) banner.style.display=(data.schema_version&&data.schema_version!==BRIDGE_SCHEMA_VER)?'block':'none';
     status.textContent=JSON.stringify(data,null,2);
     document.getElementById('home-bridge').textContent='Connected ✓';
     renderFromData(data);
   }catch(e){
-    dot.className='';
+    updateSyncDot();
     status.textContent=`Error: ${e.message}`;
     document.getElementById('home-bridge').textContent='Error';
   }
-  S.retryTimer=setTimeout(fetchBridge,RETRY_MS);
 }
+
+// Fetch on visibility/focus — not on an interval (iOS Safari throttles background tabs)
+document.addEventListener('visibilitychange',()=>{if(!document.hidden) fetchBridge();});
+window.addEventListener('focus',fetchBridge);
 
 function goPanel(tab){
   S.tab=tab;
@@ -1256,7 +1289,7 @@ document.addEventListener('click',e=>{
     const ip=document.getElementById('bridge-ip').value.trim();
     if(!ip) return;
     S.bridgeIP=ip; lsSet('sdv_ip',ip);
-    clearTimeout(S.retryTimer); fetchBridge(); return;
+    fetchBridge(); return;
   }
 
   const cd=e.target.closest('.cal-day[data-cal-d]');

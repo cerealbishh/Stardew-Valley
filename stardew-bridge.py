@@ -108,35 +108,53 @@ HOARD_ITEM_MAP = {
     "Jade": "ds_jade", "Diamond": "ds_diamond", "Iridium Ore": "ds_iridiumore",
     "Gold Bar": "ds_goldbar", "Refined Quartz": "ds_refinedquartz",
     "Coal": "ds_coal", "Fiber": "ds_fiber",
+    # Crab Pot bundle items
+    "Crab": "any_crab", "Lobster": "any_lobster", "Crayfish": "any_crayfish",
+    "Snail": "any_snail", "Periwinkle": "any_periwinkle", "Shrimp": "any_shrimp",
+    "Mussel": "any_mussel", "Clam": "any_clam", "Oyster": "any_oyster",
+    # Artisan / Enchanter's bundle items
+    "Cloth": "any_cloth", "Goat Cheese": "any_goatcheese",
+    "Sweet Gem Berry": "q_sweetgemberry",
 }
 
 CC_BUNDLE_MAP = {
-    0:  ["sp_parsnip","sp_greenbean","sp_cauliflower","sp_potato"],
-    1:  ["su_tomato","su_hotpepper","su_blueberry","su_melon"],
-    2:  ["fa_eggplant","fa_pumpkin","fa_yam","su_corn"],
-    3:  ["wi_winterroot","wi_crystalfruit","wi_snowyam","wi_crocus"],
-    4:  ["sp_horseradish","sp_daffodil","sp_leek","sp_dandelion"],
-    5:  ["su_spiceberry","su_grape","su_sweetpea","su_fiddlehead"],
-    6:  ["fa_mushroom","fa_plum","fa_hazelnut","fa_blackberry"],
-    7:  ["wi_winterroot","wi_crystalfruit","wi_snowyam","wi_crocus"],
-    8:  ["any_catfish","sp_eel","any_shad","any_sunfish"],
-    9:  ["su_pufferfish","su_tuna","su_redsnapper","su_tilapia"],
-    10: ["any_woodskip","any_cavecarrot","any_ghostfish","any_sandfish"],
-    11: ["any_bream","any_chub","wi_squid"],
-    13: ["sp_catfish","fa_walleye","fa_tigertrout","sp_eel"],
-    14: ["any_maplesyrup","any_oakresin","any_pinetar"],
-    15: ["any_hardwood"],
-    17: ["any_wood","any_stone","any_hay"],
-    19: ["any_redmush","any_seaurchin","any_cavecarrot"],
-    20: ["any_coconut","any_cactus"],
-    21: ["any_frozengeode","any_aquamarine"],
-    23: ["any_wine","any_jelly","any_cheese","any_honey"],
-    24: ["any_makiroll","any_friedegg"],
-    26: ["hard_largemilk","hard_largeeggw","hard_goatmilk","hard_wool","hard_duckegg","hard_largeeggb"],
-    31: ["su_poppy","su_sunflower","hard_redcabbage","hard_duckfeather"],
-    32: ["any_woodskip"],
-    33: ["fa_pomegranate","fa_apple"],
-    34: ["any_maplesyrup","any_oakresin","any_pinetar","su_wheat10"],
+    # ── PANTRY ──────────────────────────────────────────────────────────────
+    0:  ["sp_parsnip","sp_greenbean","sp_cauliflower","sp_potato"],     # Spring Crops
+    1:  ["su_tomato","su_hotpepper","su_blueberry","su_melon"],         # Summer Crops
+    2:  ["su_corn","fa_eggplant","fa_pumpkin","fa_yam"],                # Fall Crops
+    3:  ["sp_parsnip","su_melon","fa_pumpkin","su_corn"],               # Quality Crops (⚠ gold quality not tracked)
+    4:  ["hard_largeeggw","hard_largemilk","hard_largeeggb",            # Animal
+         "hard_goatmilk","hard_wool","hard_duckegg"],
+    5:  ["truffle_oil","any_cloth","any_goatcheese","any_cheese",       # Artisan (need 4 of listed)
+         "any_honey","any_jelly","fa_apple","fa_pomegranate","q_sweetgemberry"],
+    # ── FISH TANK ────────────────────────────────────────────────────────────
+    6:  ["any_sunfish","sp_catfish","any_shad"],                        # River Fish
+    7:  ["any_bass","any_carp","any_bullhead","any_woodskip"],          # Lake Fish
+    8:  ["any_sardine","su_tuna","su_redsnapper","su_tilapia"],         # Ocean Fish
+    9:  ["sp_catfish","any_bream","sp_eel"],                            # Night Fishing
+    10: ["su_pufferfish","any_woodskip","any_ghostfish","fa_tigertrout"], # Specialty Fish
+    11: ["any_crab","any_lobster","any_crayfish","any_snail",           # Crab Pot
+         "any_periwinkle","any_shrimp","any_mussel","any_clam","any_oyster"],
+    # ── CRAFTS ROOM ──────────────────────────────────────────────────────────
+    13: ["sp_horseradish","sp_daffodil","sp_leek","sp_dandelion"],      # Spring Foraging
+    14: ["su_spiceberry","su_grape","su_sweetpea"],                     # Summer Foraging
+    15: ["fa_mushroom","fa_plum","fa_hazelnut","fa_blackberry"],        # Fall Foraging
+    16: ["wi_winterroot","wi_crystalfruit","wi_snowyam","wi_crocus"],   # Winter Foraging
+    17: ["any_wood","any_stone","any_hardwood"],                        # Construction
+    19: ["any_coconut","any_cactus","any_cavecarrot","any_redmush",    # Exotic Foraging (need 5 of listed)
+         "any_purpmush","any_maplesyrup","any_oakresin","any_pinetar"],
+    # ── BOILER ROOM ──────────────────────────────────────────────────────────
+    20: ["any_copperbar","any_ironbar","any_goldbar"],                  # Blacksmith's
+    21: ["any_quartz","any_earthcrystal","any_aquamarine","any_firequartz"],  # Geologist's
+    22: ["any_slime","any_batwing","any_solar","any_void"],             # Adventurer's
+    # ── BULLETIN BOARD ───────────────────────────────────────────────────────
+    31: ["any_maplesyrup","su_fiddlehead","hard_truffle","su_poppy",   # Chef's
+         "any_makiroll","any_friedegg"],
+    32: ["any_purpmush","wi_nautilus","any_chub","any_frozengeode"],   # Field Research
+    33: ["any_oakresin","any_wine","q_rabbitsfoot","q_sweetgemberry"],  # Enchanter's
+    34: ["any_redmush","any_seaurchin","su_sunflower","hard_duckfeather",  # Dye
+         "any_aquamarine","hard_redcabbage"],
+    35: ["su_wheat10","any_hay","fa_apple"],                           # Fodder
 }
 
 SEASONS = ["spring", "summer", "fall", "winter"]
@@ -150,9 +168,12 @@ def parse_save():
         return {"error": f"Failed to parse save: {e}"}
 
     out = {
+        "schema_version": 1,
         "farm": "Hoe Down Farms",
         "updated": datetime.now().strftime("%H:%M:%S"),
         "gold": 0, "season": "spring", "day": 1, "year": 1,
+        "isRaining": False, "isSnowing": False, "isLightning": False,
+        "isDebrisWeather": False, "dailyLuck": 0.0, "weatherTomorrow": "Sun",
         "skills": {}, "friendship": {}, "inventory": {}, "chest_ore": {},
         "hoard_have": [], "hoard_done": [],
     }
@@ -166,6 +187,14 @@ def parse_save():
     if season_el is not None: out["season"] = season_el.text.lower()
     if day_el    is not None: out["day"]    = int(day_el.text or 1)
     if year_el   is not None: out["year"]   = int(year_el.text or 1)
+
+    for key in ("isRaining", "isSnowing", "isLightning", "isDebrisWeather"):
+        el = root.find(f".//{key}")
+        if el is not None: out[key] = (el.text == "true")
+    luck_el = root.find(".//dailyLuck")
+    if luck_el is not None: out["dailyLuck"] = float(luck_el.text or 0)
+    wtmr = root.find(".//weatherForTomorrow")
+    if wtmr is not None: out["weatherTomorrow"] = wtmr.text or "Sun"
 
     exp_list = root.findall(".//player/experiencePoints/int")
     if exp_list:
@@ -229,6 +258,7 @@ def parse_save():
                 hoard_have.add(HOARD_ITEM_MAP[name])
     out["hoard_have"] = list(hoard_have)
 
+    vault_map = {23:"vault_2500", 24:"vault_5000", 25:"vault_10000", 26:"vault_25000"}
     hoard_done = set()
     for bundle_el in root.findall(".//bundles/item"):
         key_el  = bundle_el.find("key/int")
@@ -240,7 +270,6 @@ def parse_save():
         if all_done and bundle_id in CC_BUNDLE_MAP:
             for hid in CC_BUNDLE_MAP[bundle_id]:
                 hoard_done.add(hid)
-        vault_map = {36:"vault_2500",37:"vault_5000",38:"vault_10000",39:"vault_25000"}
         if bundle_id in vault_map and all_done:
             hoard_done.add(vault_map[bundle_id])
     out["hoard_done"] = list(hoard_done)
@@ -272,7 +301,7 @@ def parse_save():
     completed_quests = set()
     for q in root.findall(".//player/questLog/Quest"):
         completed_el = q.find("completed")
-        id_el = q.find("id") or q.find("questID")
+        id_el = q.find("id") if q.find("id") is not None else q.find("questID")
         if completed_el is not None and completed_el.text == 'true' and id_el is not None:
             completed_quests.add(int(id_el.text or 0))
     out["completedQuests"] = list(completed_quests)
@@ -287,7 +316,7 @@ def parse_save():
 
     buildings = []
     for b in root.findall(".//locations/GameLocation/buildings/Building"):
-        t = b.find("buildingType") or b.find("name")
+        t = b.find("buildingType") if b.find("buildingType") is not None else b.find("name")
         if t is not None and t.text:
             buildings.append(t.text)
     out["buildings"] = buildings
