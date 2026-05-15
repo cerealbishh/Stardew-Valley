@@ -323,6 +323,47 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .gpa-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);background:var(--surf);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;transition:all .15s;margin-left:auto;}
 .gpa-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);color:#fff;}
 
+/* ── NIGHTLOCK ── */
+.inv-grid{display:flex;flex-direction:column;gap:0;}
+.inv-item{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.inv-item:last-child{border-bottom:none;}
+.inv-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.inv-meta{font-size:11px;color:var(--muted);flex-shrink:0;}
+.inv-qual{font-size:12px;flex-shrink:0;}
+.davy-gold{font-size:26px;font-weight:800;color:var(--acc);}
+.equip-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px;}
+.equip-slot{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:8px 10px;}
+.equip-slot-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+.equip-slot-val{font-size:12px;color:var(--text);font-weight:600;}
+.equip-slot-val.empty{color:var(--muted);font-style:italic;font-weight:400;}
+.skill-card{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;}
+.skill-card-hdr{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--border);}
+.skill-icon{font-size:18px;flex-shrink:0;}
+.skill-name{font-weight:800;font-size:13px;flex:1;}
+.skill-level{font-size:13px;font-weight:800;color:var(--acc);}
+.skill-card-body{padding:10px 14px;}
+.xp-bar-track{height:8px;background:var(--bg);border-radius:4px;overflow:hidden;margin:4px 0 6px;}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:4px;transition:width .5s;}
+.xp-label{font-size:10px;color:var(--muted);margin-bottom:6px;}
+.prof-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.prof-tag{font-size:10px;padding:3px 9px;border-radius:20px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);}
+.prof-tag.chosen{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));border-color:var(--acc);font-weight:700;}
+.grass-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.grass-row:last-child{border-bottom:none;}
+.grass-name{font-weight:700;flex:1;}
+.grass-hearts{display:flex;gap:1px;}
+.grass-pts{font-size:10px;color:var(--muted);min-width:45px;text-align:right;}
+.recipe-section-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:8px 14px;background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));border-bottom:1px solid var(--border);}
+.recipe-grid{display:flex;flex-wrap:wrap;gap:5px;padding:10px 14px;}
+.recipe-chip{font-size:11px;padding:3px 9px;border-radius:20px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);}
+.animal-row{display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.animal-row:last-child{border-bottom:none;}
+.animal-name{font-weight:700;flex:1;}
+.animal-type{font-size:11px;color:var(--muted);}
+.animal-hearts{display:flex;gap:1px;}
+.flag-count{font-size:11px;color:var(--acc);font-weight:700;margin-left:auto;}
+.stat-val{font-size:11px;font-weight:700;color:var(--acc);margin-left:auto;}
+
 /* ── JUNIMOS & PARTICLES ── */
 .junimo{position:fixed;pointer-events:none;z-index:1000;width:32px;height:32px;
   animation:jh .6s ease-in-out infinite alternate;}
@@ -426,19 +467,25 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- 💜 BIG DADDY NIGHTLOCK -->
   <div class="panel" id="p-nightlock">
-    <div class="panel-title">💜 Big Daddy Nightlock — Game Menu E-Screen + All Chests</div>
-    <div class="coming-soon">
-      <div class="cs-emoji">🌀</div>
-      <h2>Coming Soon!</h2>
-      <p>Your full inventory, chest contents, gear, skills, animals, recipes, and special flags — live from the bridge.</p>
-      <div class="cs-tabs">
-        <div class="cs-tab"><strong>🌀 The Tardis</strong>Backpack inventory (live)</div>
-        <div class="cs-tab"><strong>🏴‍☠️ Davy Jones' Locker</strong>All chests by location</div>
-        <div class="cs-tab"><strong>👗 Fit Check</strong>Equipped gear (live)</div>
-        <div class="cs-tab"><strong>📈 Skillmaxxing</strong>All 5 skills + XP bars</div>
-        <div class="cs-tab"><strong>🛡️ Plot Armor</strong>Special flags from bridge</div>
-      </div>
+    <div class="panel-title">💜 Big Daddy Nightlock — Game Menu E-Screen</div>
+    <div class="sub-nav" id="nightlock-sub-nav">
+      <button class="sub-btn active" data-nsub="tardis">🌀 Tardis</button>
+      <button class="sub-btn" data-nsub="davy">🏴‍☠️ Davy's</button>
+      <button class="sub-btn" data-nsub="fitcheck">👗 Fit</button>
+      <button class="sub-btn" data-nsub="skills">📈 Skills</button>
+      <button class="sub-btn" data-nsub="grass">🌿 Grass</button>
+      <button class="sub-btn" data-nsub="recipes">📺 Recipes</button>
+      <button class="sub-btn" data-nsub="cast">🐄 Cast</button>
+      <button class="sub-btn" data-nsub="plot">🛡️ Plot</button>
     </div>
+    <div class="sub-panel active" id="nlp-tardis"><div id="tardis-content"></div></div>
+    <div class="sub-panel" id="nlp-davy"><div id="davy-content"></div></div>
+    <div class="sub-panel" id="nlp-fitcheck"><div id="fitcheck-content"></div></div>
+    <div class="sub-panel" id="nlp-skills"><div id="skills-content"></div></div>
+    <div class="sub-panel" id="nlp-grass"><div id="grass-content"></div></div>
+    <div class="sub-panel" id="nlp-recipes"><div id="recipes-content"></div></div>
+    <div class="sub-panel" id="nlp-cast"><div id="cast-content"></div></div>
+    <div class="sub-panel" id="nlp-plot"><div id="plot-content"></div></div>
   </div>
 
 </main>
@@ -1666,6 +1713,305 @@ function renderMilestones(){
   el.innerHTML=html;
 }
 
+// ── NIGHTLOCK DATA ────────────────────────────────────────────────────────────
+const XP_THRESH=[0,100,380,770,1300,2150,3300,4800,6900,10000,15000];
+const SKILL_META={
+  farm:{e:'🌾',n:'Farming'},fish:{e:'🎣',n:'Fishing'},
+  forage:{e:'🌿',n:'Foraging'},mine:{e:'⛏️',n:'Mining'},combat:{e:'⚔️',n:'Combat'}
+};
+const PROF_DATA={
+  0:{n:'Rancher',d:'Animal products +20%'},1:{n:'Tiller',d:'Crops +10%'},
+  2:{n:'Coopmaster',d:'Coop animals befriend faster'},3:{n:'Shepherd',d:'Barn animals befriend faster'},
+  4:{n:'Artisan',d:'Artisan goods +40%'},5:{n:'Agriculturist',d:'Crops grow 10% faster'},
+  6:{n:'Fisher',d:'Fish +25%'},7:{n:'Trapper',d:'Crab pots cost less'},
+  8:{n:'Angler',d:'Fish +50%'},9:{n:'Pirate',d:'More treasure'},
+  10:{n:'Mariner',d:'No junk in crab pots'},11:{n:'Luremaster',d:'Crab pots need no bait'},
+  12:{n:'Forester',d:'Wood +50%'},13:{n:'Gatherer',d:'Chance to double-harvest'},
+  14:{n:'Lumberjack',d:'Trees drop hardwood'},15:{n:'Tapper',d:'Syrups +25%'},
+  16:{n:'Botanist',d:'Foraged items always iridium quality'},17:{n:'Tracker',d:'Forageables shown on map'},
+  18:{n:'Miner',d:'+1 ore per vein'},19:{n:'Geologist',d:'Gems appear in pairs'},
+  20:{n:'Blacksmith',d:'Metal bars worth more'},21:{n:'Prospector',d:'Coal 2× more often'},
+  22:{n:'Excavator',d:'Geodes doubled'},23:{n:'Gemologist',d:'Gems +30%'},
+  24:{n:'Fighter',d:'Hits +10% dmg, +15 HP'},25:{n:'Scout',d:'Crit chance +50%'},
+  26:{n:'Brute',d:'Kills boost speed + damage'},27:{n:'Defender',d:'+25 max HP'},
+  28:{n:'Acrobat',d:'Special cooldown halved'},29:{n:'Desperado',d:'Crits can insta-kill'},
+};
+const SKILL_PROFS={
+  farm:[0,1,2,3,4,5],fish:[6,7,8,9,10,11],
+  forage:[12,13,14,15,16,17],mine:[18,19,20,21,22,23],combat:[24,25,26,27,28,29]
+};
+const SPECIAL_FLAGS=[
+  {k:'hasSkullKey',l:'Skull Key 💀',d:'Access Skull Cavern'},
+  {k:'hasRustyKey',l:'Rusty Key 🗝️',d:'Access Sewers'},
+  {k:'hasClubCard',l:'Club Card 🃏',d:'Saloon card room'},
+  {k:'hasDarkTalisman',l:'Dark Talisman 🔮',d:'Sewers quest reward'},
+  {k:'hasMagicInk',l:'Magic Ink ✨',d:'Wizard quest reward'},
+  {k:'hasMagnifyingGlass',l:'Magnifying Glass 🔍',d:'Find secret notes'},
+  {k:'canUnderstandDwarves',l:'Dwarf Language 📜',d:'4 dwarf scrolls donated'},
+  {k:'hasGaloshes',l:'Galoshes 🥾',d:'Rainy day speed boost'},
+  {k:'hasSpecialCharm',l:'Special Charm 🍀',d:'Daily luck +0.025'},
+];
+
+function heartBar(pts,max){
+  const full=Math.floor(pts/250);
+  const half=pts%250>=125?1:0;
+  const empty=max-full-half;
+  return '❤️'.repeat(Math.max(0,full))+(half?'🩷':'')+'🖤'.repeat(Math.max(0,empty));
+}
+function qualBadge(q){return q>=4?'💎':q>=2?'🌟':q>=1?'⭐':'';}
+
+function renderTardis(){
+  const el=document.getElementById('tardis-content');
+  if(!el) return;
+  const b=S.bridge;
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your backpack 🌀</div>';return;}
+  const items=b.backpack||[];
+  if(!items.length){el.innerHTML='<div class="junimo-offline">Backpack is empty!</div>';return;}
+  let html=`<div class="unlock-section"><div class="unlock-sec-title">🌀 Backpack — ${items.length} item${items.length!==1?'s':''}</div><div class="inv-grid">`;
+  items.forEach(it=>{
+    const q=qualBadge(it.quality);
+    html+=`<div class="inv-item"><span class="inv-name">${it.name}</span><span class="inv-meta">${it.count>1?'×'+it.count:''}</span>${q?`<span class="inv-qual">${q}</span>`:''}</div>`;
+  });
+  html+='</div></div>';
+  el.innerHTML=html;
+}
+
+function renderDavy(){
+  const el=document.getElementById('davy-content');
+  if(!el) return;
+  const b=S.bridge;
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your haul 🏴‍☠️</div>';return;}
+  const gold=b.gold||0;
+  const total=b.totalMoneyEarned||0;
+  let html=`<div class="card"><div class="card-header">💰 Wallet</div><div class="card-body">
+    <div class="davy-gold">${gold.toLocaleString()}g</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px">Total earned: ${total.toLocaleString()}g · Goal: 5,000,000g</div>
+    <div class="museum-bar-track" style="margin:8px 0 0"><div class="museum-bar-fill" style="width:${Math.min(100,Math.round(total/5000000*100))}%"></div></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:4px">${Math.round(total/5000000*100)}% of Year 1 target</div>
+  </div></div>`;
+  // Tracked resources
+  const inv=b.inventory||{};
+  const RESOURCE_ROWS=[
+    ['⛏️ Copper Ore',b.copperOre||0],['⛏️ Iron Ore',b.ironOre||0],
+    ['⛏️ Gold Ore',b.goldOre||0],['⛏️ Coal',b.coal||0],
+    ['🔴 Iridium Ore',inv.iridium||0],
+    ['🔶 Copper Bar',inv.copper_bar||0],['🔷 Iron Bar',inv.iron_bar||0],
+    ['🟡 Gold Bar',inv.gold_bar||0],['💎 Iridium Bar',inv.iridium_bar||0],
+    ['🪵 Wood',inv.wood||0],['🪨 Stone',inv.stone||0],['🌲 Hardwood',inv.hardwood||0],
+  ].filter(r=>r[1]>0);
+  if(RESOURCE_ROWS.length){
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">⛏️ Resources (Backpack + Chests)</div>`;
+    RESOURCE_ROWS.forEach(([name,count])=>{
+      html+=`<div class="unlock-row"><span>${name}</span><span class="flag-count">${count.toLocaleString()}</span></div>`;
+    });
+    html+='</div>';
+  }
+  el.innerHTML=html;
+}
+
+function renderFitCheck(){
+  const el=document.getElementById('fitcheck-content');
+  if(!el) return;
+  const b=S.bridge;
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your gear 👗</div>';return;}
+  const eq=b.equipment||{};
+  const ap=b.appearance||{};
+  const slots=[
+    ['👒 Hat','hat'],['👟 Boots','boots'],['💍 Left Ring','leftRing'],
+    ['💍 Right Ring','rightRing'],['👕 Shirt','shirt'],['👖 Pants','pants'],
+  ];
+  let html=`<div class="card"><div class="card-header">👗 Equipment</div><div class="equip-grid">`;
+  slots.forEach(([label,key])=>{
+    const val=eq[key];
+    html+=`<div class="equip-slot"><div class="equip-slot-label">${label}</div><div class="equip-slot-val${val?'':' empty'}">${val||'None'}</div></div>`;
+  });
+  html+='</div></div>';
+  // Appearance
+  html+=`<div class="card"><div class="card-header">🪞 Appearance</div><div class="card-body">`;
+  const apRows=[['Hair Style',ap.hair],['Skin Tone',ap.skin],['Shoe Color',ap.shoeColor]];
+  apRows.forEach(([lbl,val])=>{
+    if(val!=null) html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>${lbl}</span><span class="stat-val">${val}</span></div>`;
+  });
+  const cave=b.caveChoice||0;
+  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Cave Choice</span><span class="stat-val">${cave===1?'🦇 Bats':cave===2?'🍄 Mushrooms':'Not chosen'}</span></div>`;
+  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Pet Preference</span><span class="stat-val">${b.catPerson?'🐱 Cat':'🐶 Dog'}</span></div>`;
+  html+='</div></div>';
+  if(b.spouse){
+    html+=`<div class="card"><div class="card-header">💕 Household</div><div class="card-body"><span style="font-size:14px">Married to <strong>${b.spouse}</strong></span></div></div>`;
+  }
+  el.innerHTML=html;
+}
+
+function renderSkillmaxxing(){
+  const el=document.getElementById('skills-content');
+  if(!el) return;
+  const b=S.bridge;
+  const profs=new Set(b?(b.professions||[]):[]);
+  let html='';
+  ['farm','fish','forage','mine','combat'].forEach(id=>{
+    const meta=SKILL_META[id];
+    const level=b?(b.skills||{})[id]||0:0;
+    const xp=b?(b.skillsXP||{})[id]||0:0;
+    const isMax=level>=10;
+    const xpCur=isMax?XP_THRESH[10]:xp-XP_THRESH[level];
+    const xpNxt=isMax?XP_THRESH[10]:XP_THRESH[level+1]-XP_THRESH[level];
+    const pct=isMax?100:Math.round(xpCur/xpNxt*100);
+    const myProfs=SKILL_PROFS[id].filter(p=>profs.has(p));
+    html+=`<div class="skill-card">
+      <div class="skill-card-hdr">
+        <span class="skill-icon">${meta.e}</span>
+        <span class="skill-name">${meta.n}</span>
+        <span class="skill-level">Lv ${level}${isMax?' ★':''}</span>
+      </div>
+      <div class="skill-card-body">
+        ${!b?'<div style="font-size:12px;color:var(--muted)">Connect bridge for XP data</div>':`
+        <div class="xp-label">${isMax?'MAX — '+xp.toLocaleString()+' total XP':`${xpCur.toLocaleString()} / ${xpNxt.toLocaleString()} XP to Lv ${level+1}`}</div>
+        <div class="xp-bar-track"><div class="xp-bar-fill" style="width:${pct}%"></div></div>
+        `}
+        ${myProfs.length?`<div class="prof-tags">${myProfs.map(p=>`<div class="prof-tag chosen" title="${PROF_DATA[p].d}">${PROF_DATA[p].n}</div>`).join('')}</div>`
+        :(level>=5&&b?'<div style="font-size:11px;color:var(--muted);margin-top:4px">No profession chosen yet (need Lv 5)</div>':'')}
+      </div>
+    </div>`;
+  });
+  el.innerHTML=html||'<div class="junimo-offline">Connect bridge for skill data 📈</div>';
+}
+
+function renderTouchingGrass(){
+  const el=document.getElementById('grass-content');
+  if(!el) return;
+  const friendship=S.bridge?(S.bridge.friendship||{}):{};
+  const sorted=[...NPC_DATA].sort((a,b)=>(friendship[b.k]||0)-(friendship[a.k]||0));
+  let html='<div class="unlock-section"><div class="unlock-sec-title">🌿 Friendship — sorted by hearts</div>';
+  sorted.forEach(npc=>{
+    const pts=friendship[npc.k]||0;
+    const hearts=Math.min(8,Math.floor(pts/250));
+    const halfH=pts%250>=125;
+    const filled='❤️'.repeat(hearts)+(halfH&&hearts<8?'🩷':'');
+    const empty='🖤'.repeat(8-hearts-(halfH&&hearts<8?1:0));
+    html+=`<div class="grass-row">
+      <span style="font-size:16px;flex-shrink:0">${npc.e}</span>
+      <span class="grass-name">${npc.n}</span>
+      <span class="grass-hearts">${filled}${empty}</span>
+      <span class="grass-pts">${pts.toLocaleString()}/${(8*250).toLocaleString()}</span>
+    </div>`;
+  });
+  html+='</div>';
+  if(!S.bridge) html='<div class="junimo-offline">Connect bridge for live friendship data 🌿</div>'+html;
+  el.innerHTML=html;
+}
+
+function renderRecipes(){
+  const el=document.getElementById('recipes-content');
+  if(!el) return;
+  const b=S.bridge;
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your recipe book 📺</div>';return;}
+  const cooking=b.cookingRecipes||[];
+  const crafting=b.craftingRecipes||[];
+  let html=`<div class="unlock-section">
+    <div class="recipe-section-title">🍳 Cooking — ${cooking.length} known</div>
+    <div class="recipe-grid">${cooking.sort().map(r=>`<span class="recipe-chip">${r}</span>`).join('')||'<span style="font-size:12px;color:var(--muted);padding:4px">None yet</span>'}</div>
+  </div>
+  <div class="unlock-section">
+    <div class="recipe-section-title">🔨 Crafting — ${crafting.length} known</div>
+    <div class="recipe-grid">${crafting.sort().map(r=>`<span class="recipe-chip">${r}</span>`).join('')||'<span style="font-size:12px;color:var(--muted);padding:4px">None yet</span>'}</div>
+  </div>`;
+  el.innerHTML=html;
+}
+
+function renderSupportingCast(){
+  const el=document.getElementById('cast-content');
+  if(!el) return;
+  const b=S.bridge;
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your animals 🐄</div>';return;}
+  const animals=b.animals||[];
+  const pets=b.pets||[];
+  let html='';
+  if(pets.length){
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">🐾 Pets</div>`;
+    pets.forEach(p=>{
+      const hearts=Math.min(5,Math.floor((p.friendship||0)/200));
+      html+=`<div class="animal-row"><span style="font-size:18px">${p.type==='Cat'?'🐱':'🐶'}</span><span class="animal-name">${p.name}</span><span class="animal-type">${p.type}</span><span class="animal-hearts">${'❤️'.repeat(hearts)}${'🖤'.repeat(5-hearts)}</span></div>`;
+    });
+    html+='</div>';
+  }
+  // Group animals by building
+  const byBuilding={};
+  animals.forEach(a=>{
+    (byBuilding[a.building]||(byBuilding[a.building]=[])).push(a);
+  });
+  Object.entries(byBuilding).forEach(([bname,anims])=>{
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">🏠 ${bname} (${anims.length})</div>`;
+    anims.forEach(a=>{
+      const hearts=Math.min(5,Math.floor((a.friendship||0)/200));
+      const emoji=a.type.includes('Chicken')?'🐔':a.type.includes('Cow')?'🐄':a.type.includes('Pig')?'🐷':a.type.includes('Sheep')?'🐑':a.type.includes('Goat')?'🐐':a.type.includes('Duck')?'🦆':a.type.includes('Rabbit')?'🐰':'🐾';
+      html+=`<div class="animal-row"><span style="font-size:18px">${emoji}</span><span class="animal-name">${a.name}</span><span class="animal-type">${a.type}</span><span class="animal-hearts">${'❤️'.repeat(hearts)}${'🖤'.repeat(5-hearts)}</span></div>`;
+    });
+    html+='</div>';
+  });
+  if(!pets.length&&!animals.length) html='<div class="junimo-offline">No animals on the farm yet 🐄</div>';
+  el.innerHTML=html;
+}
+
+function renderPlotArmor(){
+  const el=document.getElementById('plot-content');
+  if(!el) return;
+  const b=S.bridge;
+  // Special flags
+  let html=`<div class="unlock-section"><div class="unlock-sec-title">🛡️ Special Items &amp; Flags</div>`;
+  SPECIAL_FLAGS.forEach(f=>{
+    const have=b?!!b[f.k]:false;
+    html+=`<div class="unlock-row"><div class="unlock-dot${have?' yes':''}"></div><span style="flex:1">${f.l}</span><span style="font-size:11px;color:var(--muted)">${f.d}</span></div>`;
+  });
+  // Cave + pet choices (already in Fit Check, summarise here too)
+  if(b){
+    const cave=b.caveChoice||0;
+    html+=`<div class="unlock-row"><div class="unlock-dot${cave>0?' yes':''}"></div><span style="flex:1">Cave Choice</span><span style="font-size:11px;color:var(--muted)">${cave===1?'🦇 Bats':cave===2?'🍄 Mushrooms':'Not made'}</span></div>`;
+  }
+  html+='</div>';
+  // Stats / Collections
+  const stats=b?b.stats||{}:{};
+  const statRows=[
+    ['👣 Steps Taken','stepsTaken'],['📅 Days Played','daysPlayed'],
+    ['🎣 Times Fished','timesFished'],['💀 Times Passed Out','timesUnconscious'],
+    ['🛏️ Times Slept','timesSleep'],['🪨 Stones Broken','rocksCrushed'],
+    ['🌾 Crops Shipped','cropsShipped'],['🌿 Items Foraged','itemsForaged'],
+    ['🐟 Fish Caught','fishCaught'],['⚔️ Monsters Killed','monstersKilled'],
+    ['💰 Gold Earned','moneyEarned'],
+  ].filter(([,k])=>stats[k]>0);
+  if(statRows.length){
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">📊 Stats &amp; Records</div>`;
+    statRows.forEach(([label,k])=>{
+      html+=`<div class="unlock-row"><span>${label}</span><span class="stat-val">${(stats[k]||0).toLocaleString()}</span></div>`;
+    });
+    html+=`<div class="unlock-row"><span>🏛️ Museum Donations</span><span class="stat-val">${b?b.museumDonations||0:0} / 95</span></div>`;
+    html+='</div>';
+  }
+  if(!b) html='<div class="junimo-offline">Connect bridge for live flags 🛡️</div>'+html;
+  el.innerHTML=html;
+}
+
+function renderNightlockSub(sub){
+  if(sub==='tardis') renderTardis();
+  else if(sub==='davy') renderDavy();
+  else if(sub==='fitcheck') renderFitCheck();
+  else if(sub==='skills') renderSkillmaxxing();
+  else if(sub==='grass') renderTouchingGrass();
+  else if(sub==='recipes') renderRecipes();
+  else if(sub==='cast') renderSupportingCast();
+  else if(sub==='plot') renderPlotArmor();
+}
+
+function goNightlockSub(sub){
+  document.querySelectorAll('#nightlock-sub-nav .sub-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#p-nightlock .sub-panel').forEach(p=>p.classList.remove('active'));
+  const btn=document.querySelector(`#nightlock-sub-nav .sub-btn[data-nsub="${sub}"]`);
+  const panel=document.getElementById('nlp-'+sub);
+  if(btn) btn.classList.add('active');
+  if(panel) panel.classList.add('active');
+  lsSet('sdv_nsub',sub);
+  renderNightlockSub(sub);
+}
+
 function renderStoryTab(sub){
   if(sub==='previously') renderPreviouslyOn();
   else if(sub==='lore') renderLore();
@@ -1695,6 +2041,7 @@ function renderFromData(data){
   // Re-render live tools if their panel is visible
   if(S.tab==='hoard') renderHoardSub(lsGet('sdv_hsub')||'junimo');
   if(S.tab==='story') renderStoryTab(lsGet('sdv_stab')||'previously');
+  if(S.tab==='nightlock') renderNightlockSub(lsGet('sdv_nsub')||'tardis');
 }
 
 function updateSyncDot(){
@@ -1750,6 +2097,7 @@ function goPanel(tab){
   if(btn) btn.classList.add('active');
   if(tab==='hoard') goHoardSub(lsGet('sdv_hsub')||'junimo');
   if(tab==='story') goStoryTab(lsGet('sdv_stab')||'previously');
+  if(tab==='nightlock') goNightlockSub(lsGet('sdv_nsub')||'tardis');
 }
 
 function goSubPanel(sub){
@@ -1804,6 +2152,9 @@ document.addEventListener('click',e=>{
 
   const stab=e.target.closest('.sub-btn[data-stab]');
   if(stab){goStoryTab(stab.dataset.stab);return;}
+
+  const nsub=e.target.closest('.sub-btn[data-nsub]');
+  if(nsub){goNightlockSub(nsub.dataset.nsub);return;}
 
   const gpk=e.target.closest('.gpa-check[data-gpk]');
   if(gpk){
@@ -1907,8 +2258,10 @@ function init(){
 
   goPanel(savedTab);
   goSubPanel(savedSub);
+  const savedNSub=lsGet('sdv_nsub')||'tardis';
   if(savedTab!=='hoard') goHoardSub(savedHSub);
   if(savedTab!=='story') goStoryTab(savedStab);
+  if(savedTab!=='nightlock') goNightlockSub(savedNSub);
 
   startJunimos();
 }

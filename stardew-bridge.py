@@ -449,6 +449,113 @@ def parse_save():
 
     out["cc_bundles"] = [room_map[r] for r in ROOM_ORDER]
 
+    # ── FULL BACKPACK ─────────────────────────────────────────────────────────
+    backpack = []
+    for item in root.findall(".//player/items/Item"):
+        n_el = item.find("name")
+        s_el = item.find("Stack") or item.find("stack")
+        q_el = item.find("quality")
+        if n_el is None or not n_el.text or n_el.text in ("null", "Empty", "(Empty)"):
+            continue
+        count = int(s_el.text or 1) if s_el is not None else 1
+        if count <= 0:
+            continue
+        backpack.append({
+            "name": n_el.text,
+            "count": count,
+            "quality": int(q_el.text or 0) if q_el is not None else 0,
+        })
+    out["backpack"] = backpack
+
+    # ── SKILLS XP (raw values for progress bars) ──────────────────────────────
+    xp_list = root.findall(".//player/experiencePoints/int")
+    out["skillsXP"] = {SKILL_IDS[i]: int(xp_list[i].text or 0)
+                       for i in range(min(5, len(xp_list)))}
+
+    # ── PROFESSIONS ───────────────────────────────────────────────────────────
+    profs = []
+    for p in root.findall(".//player/professions/int"):
+        try: profs.append(int(p.text))
+        except: pass
+    out["professions"] = profs
+
+    # ── EQUIPMENT ─────────────────────────────────────────────────────────────
+    def _item_name(path):
+        el = root.find(path)
+        n = el.find("name") if el is not None else None
+        return n.text if n is not None else None
+
+    out["equipment"] = {
+        "hat":       _item_name(".//player/hat/Hat"),
+        "boots":     _item_name(".//player/boots/Boots"),
+        "leftRing":  _item_name(".//player/leftRing/Ring"),
+        "rightRing": _item_name(".//player/rightRing/Ring"),
+        "shirt":     _item_name(".//player/shirtItem/Clothing"),
+        "pants":     _item_name(".//player/pantsItem/Clothing"),
+    }
+
+    # ── APPEARANCE ────────────────────────────────────────────────────────────
+    appear = {}
+    for field in ("hair", "skin", "shoeColor"):
+        el = root.find(f".//player/{field}")
+        if el is not None and el.text:
+            appear[field] = el.text
+    out["appearance"] = appear
+
+    # ── RECIPES ───────────────────────────────────────────────────────────────
+    cooking = []
+    for item in root.findall(".//player/cookingRecipes/item"):
+        k = item.find("key/string")
+        if k is not None and k.text: cooking.append(k.text)
+    out["cookingRecipes"] = cooking
+
+    crafting = []
+    for item in root.findall(".//player/craftingRecipes/item"):
+        k = item.find("key/string")
+        if k is not None and k.text: crafting.append(k.text)
+    out["craftingRecipes"] = crafting
+
+    # ── SPECIAL FLAGS ─────────────────────────────────────────────────────────
+    for flag in ("hasSkullKey", "hasClubCard", "hasDarkTalisman", "hasMagicInk",
+                 "hasMagnifyingGlass", "hasRustyKey", "canUnderstandDwarves",
+                 "hasGaloshes", "hasSpecialCharm", "catPerson"):
+        el = root.find(f".//player/{flag}")
+        out[flag] = (el is not None and el.text == "true")
+    cave_el = root.find(".//player/caveChoice")
+    out["caveChoice"] = int(cave_el.text or 0) if cave_el is not None else 0
+
+    # ── ANIMALS ───────────────────────────────────────────────────────────────
+    animals = []
+    for b in root.findall(".//locations/GameLocation/buildings/Building"):
+        bt = b.find("buildingType") or b.find("name")
+        bname = bt.text if bt is not None else "Building"
+        for a in b.findall(".//indoors/characters/FarmAnimal"):
+            a_name = a.find("name")
+            a_type = a.find("type")
+            a_friend = a.find("friendshipTowardFarmer")
+            animals.append({
+                "name": a_name.text if a_name is not None else "?",
+                "type": a_type.text if a_type is not None else "Animal",
+                "building": bname,
+                "friendship": int(a_friend.text or 0) if a_friend is not None else 0,
+            })
+    out["animals"] = animals
+
+    # ── PETS ──────────────────────────────────────────────────────────────────
+    pets = []
+    _ns = "http://www.w3.org/2001/XMLSchema-instance"
+    for char in root.findall(".//locations/GameLocation/characters/NPC"):
+        char_type = char.get(f"{{{_ns}}}type", "")
+        if char_type in ("Dog", "Cat"):
+            cn = char.find("name")
+            cf = char.find("friendshipTowardFarmer")
+            pets.append({
+                "name": cn.text if cn is not None else "Pet",
+                "type": char_type,
+                "friendship": int(cf.text or 0) if cf is not None else 0,
+            })
+    out["pets"] = pets
+
     return out
 
 
