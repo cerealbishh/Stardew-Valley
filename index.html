@@ -252,6 +252,51 @@ html[data-dark=true] .chip.have{background:#1a3d2a;border-color:#2a6040;color:#6
 html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .junimo-offline{padding:24px;text-align:center;color:var(--muted);font-size:13px;}
 
+/* ── QUESTS / UNLOCKS ── */
+.unlock-section{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden;}
+.unlock-sec-title{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;padding:7px 14px;border-bottom:1px solid var(--border);}
+.unlock-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.unlock-row:last-child{border-bottom:none;}
+.unlock-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:var(--surf);flex-shrink:0;}
+.unlock-dot.yes{background:var(--acc);border-color:var(--acc);}
+.unlock-level{font-size:10px;background:var(--bg);color:var(--acc);padding:2px 7px;border-radius:10px;margin-left:auto;font-weight:700;flex-shrink:0;}
+.quest-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.quest-row:last-child{border-bottom:none;}
+.quest-status{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;flex-shrink:0;white-space:nowrap;}
+.qs-active{background:#5898e018;color:#4480c8;border:1px solid #5898e040;}
+.qs-done{background:#58c08018;color:#1a6636;border:1px solid #58c08040;}
+.quest-check{width:20px;height:20px;border-radius:5px;border:2px solid var(--border);background:var(--surf);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;transition:all .15s;}
+.quest-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);color:#fff;}
+
+/* ── MUSEUM ── */
+.museum-header{text-align:center;padding:16px 14px 8px;}
+.museum-count{font-size:32px;font-weight:800;color:var(--acc);}
+.museum-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.museum-bar-track{height:10px;background:var(--bg);border-radius:5px;overflow:hidden;margin:0 14px 12px;}
+.museum-bar-fill{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));border-radius:5px;transition:width .5s;}
+.museum-ms{display:flex;align-items:center;gap:10px;padding:7px 14px;border-bottom:1px solid var(--border);font-size:12px;}
+.museum-ms:last-child{border-bottom:none;}
+.museum-ms-dot{width:8px;height:8px;border-radius:50%;background:var(--border);flex-shrink:0;}
+.museum-ms-dot.reached{background:var(--acc);}
+
+/* ── COVENANT ── */
+.npc-card{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;}
+.npc-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));cursor:pointer;border-bottom:1.5px solid var(--border);}
+.npc-card[data-open=false] .npc-header{border-bottom:none;}
+.npc-card[data-open=false] .npc-body{display:none;}
+.npc-emoji{font-size:20px;flex-shrink:0;line-height:1;}
+.npc-name{font-weight:800;font-size:13px;flex:1;}
+.npc-bday-tag{font-size:10px;color:var(--muted);flex-shrink:0;text-align:right;}
+.npc-hearts-mini{display:flex;gap:1px;flex-shrink:0;}
+.heart-sm{font-size:9px;line-height:1;}
+.npc-body{padding:10px 14px;}
+.npc-hearts-row{display:flex;align-items:center;flex-wrap:wrap;gap:2px;margin-bottom:8px;}
+.heart-lg{font-size:16px;line-height:1;}
+.npc-pts{font-size:11px;color:var(--muted);margin-left:6px;}
+.npc-gift-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.npc-gifts{display:flex;flex-wrap:wrap;gap:4px;}
+.gift-chip{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);}
+
 /* ── JUNIMOS & PARTICLES ── */
 .junimo{position:fixed;pointer-events:none;z-index:1000;width:32px;height:32px;
   animation:jh .6s ease-in-out infinite alternate;}
@@ -332,10 +377,10 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
       <button class="sub-btn" data-hsub="npcs">💌 Covenant</button>
     </div>
     <div class="sub-panel active" id="hsp-junimo"><div id="junimo-content"></div></div>
-    <div class="sub-panel" id="hsp-quests"><div class="coming-soon"><div class="cs-emoji">📋</div><h2>Coming Soon!</h2><p>Journal quests + special orders.</p></div></div>
-    <div class="sub-panel" id="hsp-museum"><div class="coming-soon"><div class="cs-emoji">✨</div><h2>Coming Soon!</h2><p>Museum donations (Gunther) — X/95.</p></div></div>
-    <div class="sub-panel" id="hsp-unlocks"><div class="coming-soon"><div class="cs-emoji">🔨</div><h2>Coming Soon!</h2><p>Buildings, tool upgrades, skill milestones.</p></div></div>
-    <div class="sub-panel" id="hsp-npcs"><div class="coming-soon"><div class="cs-emoji">💌</div><h2>Coming Soon!</h2><p>NPC hearts, birthdays, gifts.</p></div></div>
+    <div class="sub-panel" id="hsp-quests"><div id="quests-content"></div></div>
+    <div class="sub-panel" id="hsp-museum"><div id="museum-content"></div></div>
+    <div class="sub-panel" id="hsp-unlocks"><div id="unlocks-content"></div></div>
+    <div class="sub-panel" id="hsp-npcs"><div id="npcs-content"></div></div>
   </div>
 
   <!-- ✨ STORY TIME -->
@@ -1173,6 +1218,210 @@ const ROOM_EMOJI_JS = {
   "Boiler Room":"⚒️","Bulletin Board":"📋","Vault":"💰"
 };
 
+const NPC_DATA=[
+  {n:'Abigail',k:'abigail',e:'💜',bs:'fall',bd:13,g:['Amethyst','Blackberry Cobbler','Pumpkin','Spicy Eel']},
+  {n:'Alex',k:'alex',e:'🏈',bs:'summer',bd:13,g:['Complete Breakfast','Salmon Dinner']},
+  {n:'Caroline',k:'caroline',e:'🌿',bs:'winter',bd:7,g:['Green Tea','Fish Taco','Summer Spangle']},
+  {n:'Clint',k:'clint',e:'⚒️',bs:'winter',bd:26,g:['Amethyst','Gold Bar','Omni Geode']},
+  {n:'Demetrius',k:'demetrius',e:'🔬',bs:'summer',bd:19,g:['Bean Hotpot','Strawberry']},
+  {n:'Elliott',k:'elliott',e:'📖',bs:'fall',bd:5,g:['Lobster','Duck Feather','Pomegranate']},
+  {n:'Emily',k:'emily',e:'🌈',bs:'spring',bd:27,g:['Amethyst','Cloth','Aquamarine']},
+  {n:'Evelyn',k:'evelyn',e:'🌷',bs:'winter',bd:20,g:['Beet','Chocolate Cake','Diamond']},
+  {n:'George',k:'george',e:'👴',bs:'winter',bd:24,g:['Fried Mushroom','Leek']},
+  {n:'Gus',k:'gus',e:'🍕',bs:'summer',bd:8,g:['Diamond','Orange']},
+  {n:'Harvey',k:'harvey',e:'🩺',bs:'fall',bd:14,g:['Coffee','Truffle Oil','Wine']},
+  {n:'Haley',k:'haley',e:'📸',bs:'spring',bd:14,g:['Sunflower','Coconut','Pink Cake']},
+  {n:'Jas',k:'jas',e:'🌸',bs:'summer',bd:4,g:['Fairy Rose','Pink Cake','Plum Pudding']},
+  {n:'Jodi',k:'jodi',e:'🍰',bs:'fall',bd:11,g:['Chocolate Cake','Diamond','Crispy Bass']},
+  {n:'Kent',k:'kent',e:'🪖',bs:'spring',bd:4,g:['Fiddlehead Risotto','Roasted Hazelnuts']},
+  {n:'Krobus',k:'krobus',e:'🖤',bs:'winter',bd:1,g:['Diamond','Iridium Bar','Void Egg']},
+  {n:'Leah',k:'leah',e:'🎨',bs:'winter',bd:23,g:['Salad','Truffle','Wine','Goat Cheese']},
+  {n:'Lewis',k:'lewis',e:'🏛️',bs:'spring',bd:7,g:['Hot Pepper','Glazed Yams',"Autumn's Bounty"]},
+  {n:'Linus',k:'linus',e:'⛺',bs:'winter',bd:3,g:['Blueberry Tart','Yam','Cactus Fruit']},
+  {n:'Marnie',k:'marnie',e:'🐄',bs:'fall',bd:18,g:['Diamond','Pink Cake','Pumpkin Pie']},
+  {n:'Maru',k:'maru',e:'🔭',bs:'summer',bd:10,g:['Diamond','Gold Bar','Battery Pack','Strawberry']},
+  {n:'Pam',k:'pam',e:'🚌',bs:'spring',bd:18,g:['Parsnip','Pale Ale','Glazed Yams']},
+  {n:'Penny',k:'penny',e:'📚',bs:'fall',bd:2,g:['Melon','Poppy','Diamond','Tom Kha Soup']},
+  {n:'Pierre',k:'pierre',e:'🌱',bs:'spring',bd:26,g:['Fried Calamari','Daffodil']},
+  {n:'Robin',k:'robin',e:'🪵',bs:'fall',bd:21,g:['Goat Cheese','Peach','Spaghetti']},
+  {n:'Sam',k:'sam',e:'🎸',bs:'summer',bd:17,g:['Pizza','Cactus Fruit','Maple Bar']},
+  {n:'Sandy',k:'sandy',e:'🌵',bs:'fall',bd:15,g:['Crocus','Maki Roll','Roots Platter']},
+  {n:'Sebastian',k:'sebastian',e:'🏍️',bs:'winter',bd:10,g:['Frozen Tear','Void Egg','Pumpkin Soup']},
+  {n:'Shane',k:'shane',e:'🐔',bs:'spring',bd:20,g:['Beer','Hot Pepper','Pepper Poppers']},
+  {n:'Vincent',k:'vincent',e:'🍭',bs:'spring',bd:10,g:['Grape','Pink Cake','Cranberry Candy']},
+  {n:'Willy',k:'willy',e:'🎣',bs:'fall',bd:24,g:['Catfish','Diamond','Iridium Bar']},
+  {n:'Wizard',k:'wizard',e:'🔮',bs:'winter',bd:17,g:['Purple Mushroom','Solar Essence','Void Essence']},
+];
+
+const SORD={spring:0,summer:1,fall:2,winter:3};
+function daysUntil(bs,bd){
+  const ci=SORD[S.season]||0,bi=SORD[bs]||0;
+  let d=(bi-ci)*28+(bd-S.day);
+  if(d<=0) d+=112;
+  return d;
+}
+
+function renderHoardSub(sub){
+  if(sub==='junimo') renderJunimo();
+  else if(sub==='quests') renderQuests();
+  else if(sub==='museum') renderMuseum();
+  else if(sub==='unlocks') renderUnlocks();
+  else if(sub==='npcs') renderCovenant();
+}
+
+function renderQuests(){
+  const el=document.getElementById('quests-content');
+  if(!el) return;
+  let html='';
+
+  // Live: active quests from questLog
+  const aq=S.bridge&&S.bridge.activeQuests;
+  html+='<div class="unlock-section"><div class="unlock-sec-title">📋 Active Journal</div>';
+  if(!S.bridge){
+    html+='<div class="quest-row" style="color:var(--muted);font-size:12px">Connect bridge to see active quests</div>';
+  } else if(aq&&aq.length){
+    aq.forEach(q=>{
+      const cls=q.done?'qs-done':'qs-active';
+      html+=`<div class="quest-row"><span class="quest-status ${cls}">${q.done?'Done':'Active'}</span><span>${q.title}</span></div>`;
+    });
+  } else {
+    html+='<div class="quest-row" style="color:var(--muted);font-size:12px">No active quests in journal</div>';
+  }
+  html+='</div>';
+
+  // Manual milestone checklist
+  const MS=[
+    {id:'qm_fiberglass',l:'Fiberglass Rod from Willy (1800g, Sp 6+)'},
+    {id:'qm_irod',l:'Iridium Rod from Willy (7500g, Fishing 6+)'},
+    {id:'qm_knapsack',l:'Large Pack from Pierre (2000g)'},
+    {id:'qm_skull',l:'Skull Key — Mine Level 100'},
+    {id:'qm_bus',l:'Bus Repaired (Vault bundles + 40,000g)'},
+    {id:'qm_ghouse',l:'Greenhouse (Pantry bundles complete)'},
+    {id:'qm_sewers',l:'Sewers Unlocked (60 museum donations → Rusty Key)'},
+    {id:'qm_desert',l:'Calico Desert Access (bus repaired)'},
+    {id:'qm_clubcard',l:"Club Card (from Mr. Qi's quest)"},
+    {id:'qm_dwarflang',l:"Dwarf Language (60 donations → Translation Guide)"},
+  ];
+  html+='<div class="unlock-section"><div class="unlock-sec-title">🗺️ Year 1 Milestones</div>';
+  MS.forEach(m=>{
+    const ch=nsGet(m.id)==='1'?'1':'0';
+    html+=`<div class="quest-row"><div class="quest-check" data-qm="${m.id}" data-checked="${ch}">${ch==='1'?'✓':''}</div><span>${m.l}</span></div>`;
+  });
+  html+='</div>';
+
+  el.innerHTML=html;
+}
+
+function renderMuseum(){
+  const el=document.getElementById('museum-content');
+  if(!el) return;
+  const n=S.bridge?S.bridge.museumDonations||0:0;
+  const pct=Math.min(100,Math.round(n/95*100));
+  const MS=[
+    {at:1,r:'Cauliflower Seeds ×9'},
+    {at:5,r:'Elf Root plant'},
+    {at:11,r:'Bone Flute'},
+    {at:21,r:'Chicken Statue'},
+    {at:40,r:'⭐ Stardrop (max energy!)'},
+    {at:60,r:'🗣️ Dwarvish Translation Guide'},
+    {at:80,r:'🔑 Rusty Key (Sewers → Krobus)'},
+    {at:95,r:'🏆 Museum Complete!'},
+  ];
+  let html=`<div class="unlock-section">
+    <div class="museum-header">
+      <div class="museum-count">${n}<span style="font-size:18px;color:var(--muted)">/95</span></div>
+      <div class="museum-sub">${S.bridge?'Live from bridge':'Connect bridge for live count'}</div>
+    </div>
+    <div class="museum-bar-track"><div class="museum-bar-fill" style="width:${pct}%"></div></div>
+    ${MS.map(m=>`<div class="museum-ms"><div class="museum-ms-dot${n>=m.at?' reached':''}"></div><span style="min-width:26px;font-weight:700;color:var(--acc)">${m.at}</span><span>${m.r}</span></div>`).join('')}
+  </div>`;
+  el.innerHTML=html;
+}
+
+function renderUnlocks(){
+  const el=document.getElementById('unlocks-content');
+  if(!el) return;
+  const b=S.bridge;
+  const TLVL=['Basic','Copper','Iron','Gold','Iridium'];
+  let html='';
+
+  // Tools
+  html+='<div class="unlock-section"><div class="unlock-sec-title">🔨 Tool Upgrades</div>';
+  ['Pickaxe','Axe','Hoe','Watering Can'].forEach(t=>{
+    const lvl=b&&b.toolLevels?b.toolLevels[t]||0:null;
+    const label=lvl!==null?TLVL[lvl]||'Basic':'—';
+    const yes=lvl!==null&&lvl>0;
+    html+=`<div class="unlock-row"><div class="unlock-dot${yes?' yes':''}"></div><span>${t}</span><span class="unlock-level">${label}</span></div>`;
+  });
+  if(!b) html+='<div class="unlock-row" style="color:var(--muted);font-size:12px">Connect bridge for live data</div>';
+  html+='</div>';
+
+  // Buildings + House
+  html+='<div class="unlock-section"><div class="unlock-sec-title">🏗️ Farm Buildings</div>';
+  if(b&&b.buildings&&b.buildings.length){
+    const cnt={};
+    b.buildings.forEach(bd=>{cnt[bd]=(cnt[bd]||0)+1;});
+    Object.entries(cnt).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([name,c])=>{
+      html+=`<div class="unlock-row"><div class="unlock-dot yes"></div><span>${name}</span>${c>1?`<span class="unlock-level">×${c}</span>`:''}</div>`;
+    });
+  } else {
+    html+='<div class="unlock-row" style="color:var(--muted);font-size:12px">'+(b?'No farm buildings yet':'Connect bridge for live data')+'</div>';
+  }
+  const houseNames=['Starter House','Kitchen Added','Kids Room Added','Cellar Added'];
+  const houseLvl=b?b.houseUpgradeLevel||0:null;
+  if(houseLvl!==null) html+=`<div class="unlock-row"><div class="unlock-dot${houseLvl>0?' yes':''}"></div><span>Farmhouse</span><span class="unlock-level">${houseNames[houseLvl]||'Starter'}</span></div>`;
+  html+='</div>';
+
+  // Skills
+  html+='<div class="unlock-section"><div class="unlock-sec-title">📈 Skills</div>';
+  const SK=[{id:'farm',l:'Farming'},{id:'fish',l:'Fishing'},{id:'forage',l:'Foraging'},{id:'mine',l:'Mining'},{id:'combat',l:'Combat'}];
+  if(b&&b.skills){
+    SK.forEach(sk=>{
+      const lvl=b.skills[sk.id]||0;
+      const bar=`<div style="flex:1;height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-left:4px"><div style="width:${lvl*10}%;height:100%;background:var(--acc);border-radius:3px"></div></div>`;
+      html+=`<div class="unlock-row"><div class="unlock-dot${lvl>=5?' yes':''}"></div><span>${sk.l}</span>${bar}<span class="unlock-level">Lv ${lvl}</span></div>`;
+    });
+  } else {
+    html+='<div class="unlock-row" style="color:var(--muted);font-size:12px">'+(b?'No skill data':'Connect bridge for live data')+'</div>';
+  }
+  html+='</div>';
+
+  el.innerHTML=html;
+}
+
+function renderCovenant(){
+  const el=document.getElementById('npcs-content');
+  if(!el) return;
+  const sorted=[...NPC_DATA].sort((a,b)=>daysUntil(a.bs,a.bd)-daysUntil(b.bs,b.bd));
+  const frag=document.createDocumentFragment();
+  sorted.forEach(npc=>{
+    const pts=S.bridge&&S.bridge.friendship?S.bridge.friendship[npc.k]:null;
+    const hearts=pts!==null&&pts!==undefined?Math.floor(pts/250):null;
+    const untilD=daysUntil(npc.bs,npc.bd);
+    const bLabel=npc.bs.charAt(0).toUpperCase()+npc.bs.slice(1)+' '+npc.bd;
+    const urgent=untilD<=3?' ⚠️':'';
+    const miniH=Array.from({length:8},(_,i)=>`<span class="heart-sm">${hearts!==null&&i<hearts?'❤️':'🤍'}</span>`).join('');
+    const card=document.createElement('div');
+    card.className='npc-card'; card.dataset.open='false';
+    const heartRow=Array.from({length:8},(_,i)=>`<span class="heart-lg">${hearts!==null&&i<hearts?'❤️':'🤍'}</span>`).join('');
+    const ptsLine=pts!==null&&pts!==undefined?`<span class="npc-pts">${pts} pts — ${hearts||0}♥</span>`:'<span class="npc-pts" style="font-style:italic">No bridge data</span>';
+    card.innerHTML=`<div class="npc-header">
+      <span class="npc-emoji">${npc.e}</span>
+      <span class="npc-name">${npc.n}</span>
+      <span class="npc-bday-tag">${bLabel}${urgent}<br><span style="color:var(--acc)">${untilD}d away</span></span>
+      <div class="npc-hearts-mini">${miniH}</div>
+    </div>
+    <div class="npc-body">
+      <div class="npc-hearts-row">${heartRow}${ptsLine}</div>
+      <div class="npc-gift-label">Loved Gifts</div>
+      <div class="npc-gifts">${npc.g.map(g=>`<span class="gift-chip">🎁 ${g}</span>`).join('')}</div>
+    </div>`;
+    frag.appendChild(card);
+  });
+  el.innerHTML='';
+  el.appendChild(frag);
+}
+
 function renderJunimo(){
   const el=document.getElementById('junimo-content');
   if(!el) return;
@@ -1230,7 +1479,7 @@ function goHoardSub(sub){
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
   lsSet('sdv_hsub',sub);
-  if(sub==='junimo') renderJunimo();
+  renderHoardSub(sub);
 }
 
 function renderFromData(data){
@@ -1242,7 +1491,7 @@ function renderFromData(data){
   document.documentElement.dataset.season=S.season;
   renderTicker(); renderRoute(); renderCal(); renderHome();
   // Re-render live tools if their panel is visible
-  if(S.tab==='hoard') renderJunimo();
+  if(S.tab==='hoard') renderHoardSub(lsGet('sdv_hsub')||'junimo');
 }
 
 function updateSyncDot(){
@@ -1296,7 +1545,7 @@ function goPanel(tab){
   if(panel) panel.classList.add('active');
   const btn=document.querySelector(`.nav-btn[data-tab="${tab}"]`);
   if(btn) btn.classList.add('active');
-  if(tab==='hoard') renderJunimo();
+  if(tab==='hoard') goHoardSub(lsGet('sdv_hsub')||'junimo');
 }
 
 function goSubPanel(sub){
@@ -1360,6 +1609,22 @@ document.addEventListener('click',e=>{
   if(rhdr){
     const card=rhdr.closest('.room-card');
     card.dataset.open=card.dataset.open==='true'?'false':'true';
+    return;
+  }
+
+  const nhdr=e.target.closest('.npc-header');
+  if(nhdr){
+    const card=nhdr.closest('.npc-card');
+    card.dataset.open=card.dataset.open==='true'?'false':'true';
+    return;
+  }
+
+  const qm=e.target.closest('.quest-check[data-qm]');
+  if(qm){
+    e.stopPropagation();
+    const ch=nsTgl(qm.dataset.qm)?'1':'0';
+    qm.dataset.checked=ch; qm.textContent=ch==='1'?'✓':'';
+    if(ch==='1') spawnParticles(qm);
     return;
   }
 

@@ -27,7 +27,7 @@ SKILL_IDS   = ["farm",    "fish",    "forage",   "mine",   "combat"]
 
 FRIENDSHIP_NPCS = [
     "Abigail","Alex","Caroline","Clint","Demetrius","Elliott","Emily",
-    "Evelyn","George","Gus","Harvey","Haley","Jas","Jodi","Kent","Leah",
+    "Evelyn","George","Gus","Harvey","Haley","Jas","Jodi","Kent","Krobus","Leah",
     "Lewis","Linus","Marnie","Maru","Pam","Penny","Pierre","Robin",
     "Sam","Sandy","Sebastian","Shane","Vincent","Willy","Wizard"
 ]
@@ -371,6 +371,31 @@ def parse_save():
     for item in root.findall(".//locations/GameLocation/museumPieces/item"):
         donated += 1
     out["museumDonations"] = donated
+
+    # Active quests currently in questLog
+    active_quests = []
+    for q in root.findall(".//player/questLog/Quest"):
+        id_el = q.find("id") if q.find("id") is not None else q.find("questID")
+        title_el = q.find("questTitle") or q.find("title")
+        completed_el = q.find("completed")
+        if title_el is not None and title_el.text:
+            active_quests.append({
+                "id": int(id_el.text or 0) if id_el is not None else 0,
+                "title": title_el.text,
+                "done": completed_el is not None and completed_el.text == "true"
+            })
+    out["activeQuests"] = active_quests
+
+    # Tool upgrade levels: 0=Basic 1=Copper 2=Iron 3=Gold 4=Iridium
+    tool_levels = {}
+    for item in root.findall(".//player/items/Item"):
+        name_el = item.find("name")
+        upgrade_el = item.find("upgradeLevel")
+        if name_el is not None and name_el.text and upgrade_el is not None:
+            n = name_el.text
+            if n in ("Pickaxe", "Axe", "Hoe", "Watering Can"):
+                tool_levels[n] = int(upgrade_el.text or 0)
+    out["toolLevels"] = tool_levels
 
     house_el = root.find(".//player/houseUpgradeLevel")
     out["houseUpgradeLevel"] = int(house_el.text or 0) if house_el is not None else 0
