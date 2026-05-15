@@ -400,6 +400,9 @@ def parse_save():
     house_el = root.find(".//player/houseUpgradeLevel")
     out["houseUpgradeLevel"] = int(house_el.text or 0) if house_el is not None else 0
 
+    spouse_el = root.find(".//player/spouse")
+    out["spouse"] = spouse_el.text.strip() if spouse_el is not None and spouse_el.text else None
+
     buildings = []
     for b in root.findall(".//locations/GameLocation/buildings/Building"):
         t = b.find("buildingType") if b.find("buildingType") is not None else b.find("name")

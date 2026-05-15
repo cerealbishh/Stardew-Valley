@@ -297,6 +297,32 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .npc-gifts{display:flex;flex-wrap:wrap;gap:4px;}
 .gift-chip{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);}
 
+/* ── TIMELINE / LORE ── */
+.timeline-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:12.5px;}
+.timeline-row:last-child{border-bottom:none;}
+.timeline-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:var(--surf);flex-shrink:0;}
+.timeline-dot.yes{background:var(--t-gather);border-color:var(--t-gather);}
+.timeline-badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;flex-shrink:0;background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.timeline-badge.auto{background:#5898e018;color:#4480c8;border-color:#5898e040;}
+
+/* ── GRANDPA MILESTONES ── */
+.y1-target{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));border:2px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;}
+.y1-target-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.y1-target-val{font-size:20px;font-weight:800;color:var(--acc);}
+.y1-target-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.gpa-summary{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;text-align:center;}
+.gpa-candles{font-size:28px;letter-spacing:4px;margin-bottom:4px;}
+.gpa-score{font-size:18px;font-weight:800;color:var(--acc);}
+.gpa-label{font-size:11px;color:var(--muted);margin-top:2px;}
+.milestone-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:12.5px;}
+.milestone-row:last-child{border-bottom:none;}
+.milestone-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:var(--surf);flex-shrink:0;}
+.milestone-dot.yes{background:var(--t-gather);border-color:var(--t-gather);}
+.milestone-bar{flex:1;height:5px;background:var(--bg);border-radius:3px;overflow:hidden;}
+.milestone-bar-fill{height:100%;background:var(--acc);border-radius:3px;transition:width .4s;}
+.gpa-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--border);background:var(--surf);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;transition:all .15s;margin-left:auto;}
+.gpa-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);color:#fff;}
+
 /* ── JUNIMOS & PARTICLES ── */
 .junimo{position:fixed;pointer-events:none;z-index:1000;width:32px;height:32px;
   animation:jh .6s ease-in-out infinite alternate;}
@@ -386,18 +412,16 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
   <!-- ✨ STORY TIME -->
   <div class="panel" id="p-story">
     <div class="panel-title">✨ Story Time — Events, Cutscenes, Lore, Progression</div>
-    <div class="coming-soon">
-      <div class="cs-emoji">🎬</div>
-      <h2>Coming Soon!</h2>
-      <p>All your cutscenes, world flags, main quest tracking, and Grandpa milestones.</p>
-      <div class="cs-tabs">
-        <div class="cs-tab"><strong>🎬 Previously On</strong>Cutscenes in chronological order</div>
-        <div class="cs-tab"><strong>📜 The Lore</strong>World flags + unlocks</div>
-        <div class="cs-tab"><strong>💌 Covenant of the Rock</strong>NPC portraits + romance progress</div>
-        <div class="cs-tab"><strong>📋 Main Quest</strong>Journal + special orders</div>
-        <div class="cs-tab"><strong>🏆 Milestones</strong>Grandpa criteria + progress bars</div>
-      </div>
+    <div class="sub-nav" id="story-sub-nav">
+      <button class="sub-btn active" data-stab="previously">🎬 Previously On</button>
+      <button class="sub-btn" data-stab="lore">📜 The Lore</button>
+      <button class="sub-btn" data-stab="covenant">💌 Covenant</button>
+      <button class="sub-btn" data-stab="milestones">🏆 Milestones</button>
     </div>
+    <div class="sub-panel active" id="stp-previously"><div id="previously-content"></div></div>
+    <div class="sub-panel" id="stp-lore"><div id="lore-content"></div></div>
+    <div class="sub-panel" id="stp-covenant"><div id="story-covenant-content"></div></div>
+    <div class="sub-panel" id="stp-milestones"><div id="milestones-content"></div></div>
   </div>
 
   <!-- 💜 BIG DADDY NIGHTLOCK -->
@@ -1389,8 +1413,8 @@ function renderUnlocks(){
   el.innerHTML=html;
 }
 
-function renderCovenant(){
-  const el=document.getElementById('npcs-content');
+function renderCovenant(targetEl){
+  const el=targetEl||document.getElementById('npcs-content');
   if(!el) return;
   const sorted=[...NPC_DATA].sort((a,b)=>daysUntil(a.bs,a.bd)-daysUntil(b.bs,b.bd));
   const frag=document.createDocumentFragment();
@@ -1482,6 +1506,184 @@ function goHoardSub(sub){
   renderHoardSub(sub);
 }
 
+// ── STORY TIME ─────────────────────────────────────────────────────────────
+const STORY_EVENTS=[
+  {g:'🌱 Spring',label:'First Day — arrived at the farm',auto:()=>true},
+  {g:'🌱 Spring',label:'Bamboo Fishing Rod from Willy (Day 2)',ev:1400094},
+  {g:'🌱 Spring',label:'The Mines open — Adventurers Guild unlocked',ev:60367},
+  {g:'🌱 Spring',label:"Wizard's Tower — Junimo Note revealed",ev:3910975},
+  {g:'🌱 Spring',label:'Skull Key obtained (Mine Level 100)',mail:'hasSkullKey'},
+  {g:'☀️ Summer',label:'Luau attended (Summer 11)',day:{s:'summer',d:11}},
+  {g:'☀️ Summer',label:'Dance of the Moonlight Jellies (Summer 28)',day:{s:'summer',d:28}},
+  {g:'🍂 Fall',label:'Stardew Valley Fair attended (Fall 16)',day:{s:'fall',d:16}},
+  {g:'🍂 Fall',label:"Spirit's Eve attended (Fall 26)",day:{s:'fall',d:26}},
+  {g:'❄️ Winter',label:'Festival of Ice (Winter 8)',day:{s:'winter',d:8}},
+  {g:'❄️ Winter',label:'Night Market final night (Winter 17)',day:{s:'winter',d:17}},
+  {g:'❄️ Winter',label:'Feast of the Winter Star (Winter 25)',day:{s:'winter',d:25}},
+  {g:'🏛️ Community Center',label:'Pantry — crops & animal products',ccRoom:'Pantry'},
+  {g:'🏛️ Community Center',label:'Crafts Room — foraging & wood',ccRoom:'Crafts Room'},
+  {g:'🏛️ Community Center',label:'Fish Tank — all fish types',ccRoom:'Fish Tank'},
+  {g:'🏛️ Community Center',label:'Boiler Room — minerals & bars',ccRoom:'Boiler Room'},
+  {g:'🏛️ Community Center',label:'Bulletin Board — misc & artisan',ccRoom:'Bulletin Board'},
+  {g:'🏛️ Community Center',label:'Vault complete — Bus Repaired! 🚌',ccRoom:'Vault'},
+  {g:'🏛️ Community Center',label:'🎉 Community Center COMPLETE',ccAll:true},
+];
+
+const LORE_FLAGS=[
+  {g:'🗺️ Unlocked Areas',label:'The Mines (Spring 5, Marlon intro)',ev:60367},
+  {g:'🗺️ Unlocked Areas',label:'Skull Cavern (Skull Key — Mine 100)',mail:'hasSkullKey'},
+  {g:'🗺️ Unlocked Areas',label:'Calico Desert (Bus Repaired via Vault)',ccRoom:'Vault'},
+  {g:'🗺️ Unlocked Areas',label:'The Sewers (Rusty Key from Gunther)',mail:'rustyKey'},
+  {g:'🗺️ Unlocked Areas',label:'Beach Tide Pools (bridge fixed)',mail:'beachBridge'},
+  {g:'✨ Magic & Lore',label:'Wizard met — magic & CC explained',ev:3910975},
+  {g:'✨ Magic & Lore',label:'Community Center Restored',ccAll:true},
+  {g:'✨ Magic & Lore',label:'Joja Mart Member (CC route abandoned)',mail:'JojaMember'},
+  {g:'🏠 Farm Life',label:'House: Kitchen added (Upgrade 1)',houseMin:1},
+  {g:'🏠 Farm Life',label:'House: Kids Room (Upgrade 2)',houseMin:2},
+  {g:'🏠 Farm Life',label:'House: Cellar — keg aging (Upgrade 3)',houseMin:3},
+  {g:'🏠 Farm Life',label:'Married ♥',spouse:true},
+  {g:'🏛️ Museum Milestones',label:'40 donations — ⭐ Stardrop',musMin:40},
+  {g:'🏛️ Museum Milestones',label:'60 donations — Dwarvish Translation Guide',musMin:60},
+  {g:'🏛️ Museum Milestones',label:'80 donations — 🔑 Rusty Key (Sewers)',musMin:80},
+  {g:'🏛️ Museum Milestones',label:'95 donations — Museum Complete!',musMin:95},
+];
+
+function checkStoryFlag(f,b){
+  if(f.auto) return f.auto();
+  if(!b) return false;
+  if(f.ev) return (b.events||[]).includes(f.ev);
+  if(f.mail) return (b.mail||[]).includes(f.mail);
+  if(f.day){const so={spring:0,summer:1,fall:2,winter:3};return so[S.season]*28+S.day>so[f.day.s]*28+f.day.d;}
+  if(f.ccRoom){const r=(b.cc_bundles||[]).find(x=>x.name===f.ccRoom);return r?r.done===r.bundles.length:false;}
+  if(f.ccAll) return (b.cc_bundles||[]).length>0&&b.cc_bundles.every(r=>r.done===r.bundles.length);
+  if(f.houseMin) return (b.houseUpgradeLevel||0)>=f.houseMin;
+  if(f.spouse) return !!(b.spouse);
+  if(f.musMin) return (b.museumDonations||0)>=f.musMin;
+  return false;
+}
+
+function renderGroupedFlags(items,checkFn,b){
+  const groups={};
+  items.forEach(f=>{if(!groups[f.g])groups[f.g]=[];groups[f.g].push(f);});
+  return Object.entries(groups).map(([g,flags])=>{
+    const doneCount=flags.filter(f=>checkFn(f,b)).length;
+    const rows=flags.map(f=>{
+      const done=checkFn(f,b);
+      const badge=b?`<span class="timeline-badge${done?' auto':''}">${done?'✓':'AUTO'}</span>`:'';
+      return `<div class="timeline-row"><div class="timeline-dot${done?' yes':''}"></div><span style="flex:1">${f.label}</span>${badge}</div>`;
+    }).join('');
+    return `<div class="unlock-section"><div class="unlock-sec-title">${g}<span style="margin-left:auto;color:var(--acc);font-size:10px">${doneCount}/${flags.length}</span></div>${rows}</div>`;
+  }).join('');
+}
+
+const GRANDPA=[
+  {l:'50,000g Total Earned',p:b=>b.totalMoneyEarned||0,m:50000},
+  {l:'100,000g Total Earned',p:b=>b.totalMoneyEarned||0,m:100000},
+  {l:'200,000g Total Earned',p:b=>b.totalMoneyEarned||0,m:200000},
+  {l:'300,000g Total Earned',p:b=>b.totalMoneyEarned||0,m:300000},
+  {l:'500,000g Total Earned',p:b=>b.totalMoneyEarned||0,m:500000},
+  {l:'1,000,000g Total Earned',p:b=>b.totalMoneyEarned||0,m:1000000},
+  {l:'Farming Level 10',p:b=>(b.skills||{}).farm||0,m:10},
+  {l:'Fishing Level 10',p:b=>(b.skills||{}).fish||0,m:10},
+  {l:'Foraging Level 10',p:b=>(b.skills||{}).forage||0,m:10},
+  {l:'Mining Level 10',p:b=>(b.skills||{}).mine||0,m:10},
+  {l:'Combat Level 10',p:b=>(b.skills||{}).combat||0,m:10},
+  {l:'Community Center Complete',c:b=>b.cc_bundles&&b.cc_bundles.every(r=>r.done===r.bundles.length)},
+  {l:'Museum Complete (95/95)',c:b=>(b.museumDonations||0)>=95},
+  {l:'5+ Villagers at 8 Hearts',c:b=>(b.npcsAt8Hearts||0)>=5},
+  {l:'House Fully Upgraded (Cellar)',c:b=>(b.houseUpgradeLevel||0)>=3},
+  {l:'Married (12+ Hearts)',c:b=>!!(b.spouse)&&(b.friendship||{})[(b.spouse||'').toLowerCase()]>=3000},
+  {l:'Monster Eradication Goals complete',manual:true,mk:'gpa_monster'},
+];
+
+function grandpaScore(b){
+  if(!b) return 0;
+  return GRANDPA.reduce((sum,g)=>{
+    let done=false;
+    if(g.c) done=!!g.c(b);
+    else if(g.p) done=g.p(b)>=g.m;
+    else if(g.manual) done=nsGet(g.mk)==='1';
+    return sum+(done?1:0);
+  },0);
+}
+
+function fmtGold(n){return n>=1000000?(n/1000000).toFixed(2)+'M':n>=1000?Math.round(n/1000)+'K':String(n);}
+
+function renderPreviouslyOn(){
+  const el=document.getElementById('previously-content');
+  if(!el) return;
+  const warn=!S.bridge?'<div class="junimo-offline" style="padding:12px 14px;text-align:left">💡 Festival events auto-detect from in-game date. Connect bridge for event ID detection.</div>':'';
+  el.innerHTML=warn+renderGroupedFlags(STORY_EVENTS,checkStoryFlag,S.bridge);
+}
+
+function renderLore(){
+  const el=document.getElementById('lore-content');
+  if(!el) return;
+  const warn=!S.bridge?'<div class="junimo-offline">Connect bridge for live world flag detection ✨</div>':'';
+  el.innerHTML=warn+renderGroupedFlags(LORE_FLAGS,checkStoryFlag,S.bridge);
+}
+
+function renderStoryCovenant(){
+  renderCovenant(document.getElementById('story-covenant-content'));
+}
+
+function renderMilestones(){
+  const el=document.getElementById('milestones-content');
+  if(!el) return;
+  const b=S.bridge;
+  const score=grandpaScore(b);
+  const candles=score>=12?4:score>=8?3:score>=4?2:1;
+  const candleStr='🕯️'.repeat(candles)+'○'.repeat(4-candles);
+  const totalEarned=b?b.totalMoneyEarned||0:0;
+  const Y1=5000000;
+  const goldPct=Math.min(100,Math.round(totalEarned/Y1*100));
+
+  let html=`<div class="y1-target">
+    <div class="y1-target-label">🎯 Year 1 Gold Target</div>
+    <div class="y1-target-val">${fmtGold(totalEarned)}g <span style="font-size:13px;color:var(--muted)">/ 5M</span></div>
+    <div class="museum-bar-track" style="margin:6px 0 0"><div class="museum-bar-fill" style="width:${goldPct}%"></div></div>
+    <div class="y1-target-sub">${goldPct}% of target${b&&b.gold?' · '+b.gold.toLocaleString()+'g in wallet':!b?' — connect bridge':''}</div>
+  </div>
+  <div class="gpa-summary">
+    <div class="gpa-candles">${candleStr}</div>
+    <div class="gpa-score">${score} / ${GRANDPA.length} pts</div>
+    <div class="gpa-label">Grandpa's Evaluation — ${candles} of 4 candles (12+ = perfect)${!b?' · connect bridge':''}</div>
+  </div>
+  <div class="unlock-section"><div class="unlock-sec-title">📋 Criteria</div>`;
+
+  GRANDPA.forEach(g=>{
+    let done=false,pct=0,extra='';
+    if(g.manual){
+      const ch=nsGet(g.mk)==='1';
+      html+=`<div class="milestone-row"><div class="milestone-dot${ch?' yes':''}"></div><span style="flex:1">${g.l}</span><div class="gpa-check" data-gpk="${g.mk}" data-checked="${ch?'1':'0'}">${ch?'✓':''}</div></div>`;
+      return;
+    }
+    if(g.c){done=b?!!g.c(b):false;}
+    else if(g.p){const v=b?g.p(b):0;done=v>=g.m;pct=Math.min(100,Math.round(v/g.m*100));extra=`<div class="milestone-bar"><div class="milestone-bar-fill" style="width:${pct}%"></div></div><span style="font-size:10px;color:var(--muted);flex-shrink:0;min-width:52px;text-align:right">${fmtGold(b?g.p(b):0)}/${fmtGold(g.m)}</span>`;}
+    html+=`<div class="milestone-row"><div class="milestone-dot${done?' yes':''}"></div><span style="flex:1">${g.l}</span>${extra}</div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function renderStoryTab(sub){
+  if(sub==='previously') renderPreviouslyOn();
+  else if(sub==='lore') renderLore();
+  else if(sub==='covenant') renderStoryCovenant();
+  else if(sub==='milestones') renderMilestones();
+}
+
+function goStoryTab(sub){
+  document.querySelectorAll('#story-sub-nav .sub-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#p-story .sub-panel').forEach(p=>p.classList.remove('active'));
+  const btn=document.querySelector(`#story-sub-nav .sub-btn[data-stab="${sub}"]`);
+  const panel=document.getElementById('stp-'+sub);
+  if(btn) btn.classList.add('active');
+  if(panel) panel.classList.add('active');
+  lsSet('sdv_stab',sub);
+  renderStoryTab(sub);
+}
+
 function renderFromData(data){
   if(!data) return;
   const sea=(data.season||'').toLowerCase();
@@ -1492,6 +1694,7 @@ function renderFromData(data){
   renderTicker(); renderRoute(); renderCal(); renderHome();
   // Re-render live tools if their panel is visible
   if(S.tab==='hoard') renderHoardSub(lsGet('sdv_hsub')||'junimo');
+  if(S.tab==='story') renderStoryTab(lsGet('sdv_stab')||'previously');
 }
 
 function updateSyncDot(){
@@ -1546,6 +1749,7 @@ function goPanel(tab){
   const btn=document.querySelector(`.nav-btn[data-tab="${tab}"]`);
   if(btn) btn.classList.add('active');
   if(tab==='hoard') goHoardSub(lsGet('sdv_hsub')||'junimo');
+  if(tab==='story') goStoryTab(lsGet('sdv_stab')||'previously');
 }
 
 function goSubPanel(sub){
@@ -1597,6 +1801,19 @@ document.addEventListener('click',e=>{
 
   const hsub=e.target.closest('.sub-btn[data-hsub]');
   if(hsub){goHoardSub(hsub.dataset.hsub);return;}
+
+  const stab=e.target.closest('.sub-btn[data-stab]');
+  if(stab){goStoryTab(stab.dataset.stab);return;}
+
+  const gpk=e.target.closest('.gpa-check[data-gpk]');
+  if(gpk){
+    e.stopPropagation();
+    const ch=nsTgl(gpk.dataset.gpk)?'1':'0';
+    gpk.dataset.checked=ch; gpk.textContent=ch==='1'?'✓':'';
+    if(ch==='1') spawnParticles(gpk);
+    renderMilestones();
+    return;
+  }
 
   const hdr=e.target.closest('.day-header');
   if(hdr){
@@ -1684,12 +1901,14 @@ function init(){
   const savedTab=lsGet('sdv_tab')||'home';
   const savedSub=lsGet('sdv_rsub')||'tasks';
   const savedHSub=lsGet('sdv_hsub')||'junimo';
+  const savedStab=lsGet('sdv_stab')||'previously';
 
   renderTicker(); renderRoute(); renderCal(); renderPar(); renderCarry(); renderHome();
 
   goPanel(savedTab);
   goSubPanel(savedSub);
-  goHoardSub(savedHSub);
+  if(savedTab!=='hoard') goHoardSub(savedHSub);
+  if(savedTab!=='story') goStoryTab(savedStab);
 
   startJunimos();
 }
