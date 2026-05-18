@@ -5,42 +5,42 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Stardew or Dew Not 🌾</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#e0c4f8">
+<meta name="theme-color" content="#F4C1CB">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 /* ── KAWAII Y2K PASTEL THEME ── */
 :root{
-  --bg:#fde8f4;--surf:#fff8fc;--text:#3a1f3a;--muted:#9a7098;
-  --border:#f0c0de;--acc:#b898e0;--acc2:#e870b8;
-  --hdr-a:#edd8fc;--hdr-b:#fad4f0;
-  --nav-bg:rgba(255,242,252,0.97);--nav-act:#b898e0;
+  --bg:#F4DBE8;--surf:#FFF5F8;--text:#3d1f3d;--muted:#A07888;
+  --border:#F4C1CB;--acc:#EF94A7;--acc2:#B29EF0;
+  --hdr-a:#F4C1CB;--hdr-b:#DCBFF2;
+  --nav-bg:rgba(252,242,248,0.97);--nav-act:#EF94A7;
   --r:18px;--gap:12px;
-  --t-fire:#e06868;--t-prep:#e09858;--t-gather:#58c080;
-  --t-plate:#b858d0;--t-purchase:#5898e0;--t-par:#c8a820;--t-tomorrow:#8888a0;
-  --shadow-bubble:0 4px 20px rgba(184,152,224,.18),0 1px 5px rgba(184,152,224,.12);
-  --shadow-card:0 2px 12px rgba(140,70,180,.08);
-  --shadow-glow:0 0 14px rgba(184,152,224,.5);
+  --t-fire:#F1948F;--t-prep:#EFCEAA;--t-gather:#AABFB0;
+  --t-plate:#DCBFF2;--t-purchase:#AAC0E0;--t-par:#D4A820;--t-tomorrow:#C7D3E0;
+  --shadow-bubble:0 4px 20px rgba(239,148,167,.18),0 1px 5px rgba(239,148,167,.12);
+  --shadow-card:0 2px 12px rgba(239,148,167,.08);
+  --shadow-glow:0 0 14px rgba(239,148,167,.5);
   --inset-shine:inset 0 1px 0 rgba(255,255,255,.7);
 }
 html[data-season=summer]{
-  --bg:#edfdf6;--surf:#f4fef9;--acc:#3aaa88;--acc2:#d8a030;
-  --hdr-a:#b0f0da;--hdr-b:#eef8b0;--nav-act:#3aaa88;
-  --shadow-bubble:0 4px 20px rgba(58,170,136,.15),0 1px 5px rgba(58,170,136,.09);
-  --shadow-glow:0 0 14px rgba(58,170,136,.45);
+  --bg:#ecfdf6;--surf:#f4fef9;--acc:#AABFB0;--acc2:#EFCEAA;
+  --hdr-a:#CFDFE6;--hdr-b:#EFCEAA;--nav-act:#AABFB0;
+  --shadow-bubble:0 4px 20px rgba(170,191,176,.15),0 1px 5px rgba(170,191,176,.09);
+  --shadow-glow:0 0 14px rgba(170,191,176,.45);
 }
 html[data-season=fall]{
-  --bg:#fef5e8;--surf:#fffaf4;--acc:#c87040;--acc2:#a84820;
-  --hdr-a:#f8d8a8;--hdr-b:#f0c090;--nav-act:#c87040;
-  --shadow-bubble:0 4px 20px rgba(200,112,64,.15),0 1px 5px rgba(200,112,64,.09);
-  --shadow-glow:0 0 14px rgba(200,112,64,.45);
+  --bg:#fef5e8;--surf:#fffaf4;--acc:#F1948F;--acc2:#EFCEAA;
+  --hdr-a:#EFCEAA;--hdr-b:#F4C1CB;--nav-act:#F1948F;
+  --shadow-bubble:0 4px 20px rgba(241,148,143,.15),0 1px 5px rgba(241,148,143,.09);
+  --shadow-glow:0 0 14px rgba(241,148,143,.45);
 }
 html[data-season=winter]{
-  --bg:#eef4ff;--surf:#f6f9ff;--acc:#5080c8;--acc2:#8850c0;
-  --hdr-a:#c0d8f8;--hdr-b:#d0c0f8;--nav-act:#5080c8;
-  --shadow-bubble:0 4px 20px rgba(80,128,200,.15),0 1px 5px rgba(80,128,200,.09);
-  --shadow-glow:0 0 14px rgba(80,128,200,.45);
+  --bg:#F0EEFF;--surf:#F8F5FF;--acc:#89A6D3;--acc2:#B29EF0;
+  --hdr-a:#C7D3E0;--hdr-b:#DCBFF2;--nav-act:#89A6D3;
+  --shadow-bubble:0 4px 20px rgba(137,166,211,.15),0 1px 5px rgba(137,166,211,.09);
+  --shadow-glow:0 0 14px rgba(137,166,211,.45);
 }
 html[data-dark=true]{
   --bg:#160c26;--surf:#201038;--text:#f4e8ff;--muted:#9878c0;
@@ -66,7 +66,7 @@ body{display:flex;flex-direction:column;overflow:hidden;
   font-weight:700;font-size:15px;flex-shrink:0;
   padding-top:calc(10px + env(safe-area-inset-top));
   border-bottom:2px solid var(--border);
-  box-shadow:0 2px 12px rgba(184,152,224,.15);
+  box-shadow:0 2px 12px rgba(239,148,167,.15);
 }
 #ticker-text{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:.3px;line-height:1.6;}
 #ticker-right{display:flex;gap:10px;align-items:center;}
@@ -109,10 +109,10 @@ body{display:flex;flex-direction:column;overflow:hidden;
 .sub-btn{flex-shrink:0;background:var(--surf);border:1.5px solid var(--border);
   border-radius:20px;padding:6px 14px;font-size:11px;font-weight:600;
   color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit;
-  box-shadow:0 2px 6px rgba(184,152,224,.08),var(--inset-shine);}
+  box-shadow:0 2px 6px rgba(239,148,167,.08),var(--inset-shine);}
 .sub-btn.active{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));
   color:var(--text);border-color:var(--acc);font-weight:700;
-  box-shadow:0 3px 12px rgba(184,152,224,.28),var(--inset-shine);}
+  box-shadow:0 3px 12px rgba(239,148,167,.28),var(--inset-shine);}
 .sub-btn:active{transform:scale(0.94);}
 .sub-panel{display:none;}
 .sub-panel.active{display:block;}
@@ -152,7 +152,7 @@ body{display:flex;flex-direction:column;overflow:hidden;
   background:var(--surf);flex-shrink:0;cursor:pointer;margin-top:1px;
   display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .task-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);
-  box-shadow:0 0 8px rgba(184,152,224,.5);}
+  box-shadow:0 0 8px rgba(239,148,167,.5);}
 .task-check[data-checked="1"]::after{content:'✦';color:#fff;font-size:11px;}
 .task-check:active{transform:scale(0.88);}
 .task-label{flex:1;font-size:13px;line-height:1.45;}
@@ -207,7 +207,7 @@ body{display:flex;flex-direction:column;overflow:hidden;
 .carry-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);
   flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .carry-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);
-  box-shadow:0 0 8px rgba(184,152,224,.5);}
+  box-shadow:0 0 8px rgba(239,148,167,.5);}
 .carry-check[data-checked="1"]::after{content:'✦';color:#fff;font-size:11px;}
 .carry-check:active{transform:scale(0.88);}
 
@@ -2280,12 +2280,12 @@ function goSubPanel(sub){
 }
 
 const junimoSVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="32" height="32">
-<circle cx="8" cy="9" r="6" fill="#b898e0"/>
+<circle cx="8" cy="9" r="6" fill="#EF94A7"/>
 <circle cx="6" cy="8" r="1" fill="#3a1f3a"/>
 <circle cx="10" cy="8" r="1" fill="#3a1f3a"/>
-<ellipse cx="8" cy="11" rx="2" ry="1" fill="#9070c0"/>
-<circle cx="4" cy="6" r="2" fill="#b898e0"/>
-<circle cx="12" cy="6" r="2" fill="#b898e0"/>
+<ellipse cx="8" cy="11" rx="2" ry="1" fill="#E07090"/>
+<circle cx="4" cy="6" r="2" fill="#EF94A7"/>
+<circle cx="12" cy="6" r="2" fill="#EF94A7"/>
 </svg>`;
 
 function spawnJunimo(){
@@ -2300,7 +2300,7 @@ function startJunimos(){spawnJunimo();setInterval(()=>{if(Math.random()<0.3)spaw
 
 function spawnParticles(el){
   const r=el.getBoundingClientRect();
-  const cols=['#b898e0','#e870b8','#58c080','#ffd6f0','#c0f0e8','#ffe090','#d4a8ff'];
+  const cols=['#EF94A7','#B29EF0','#AABFB0','#F4C1CB','#CFDFE6','#EFCEAA','#DCBFF2'];
   for(let i=0;i<8;i++){
     const p=document.createElement('div'); p.className='particle';
     const sz=4+Math.random()*6;
