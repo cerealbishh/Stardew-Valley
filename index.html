@@ -52,6 +52,36 @@ html[data-dark=true]{
   --inset-shine:inset 0 1px 0 rgba(255,255,255,.1);
 }
 
+/* ── PER-TAB COLOR THEMES ── */
+/* Route 66 — warm gold/butter */
+html[data-tab=route]{
+  --acc:#CAAF77;--acc2:#f3d98f;--nav-act:#CAAF77;
+  --hdr-a:#f3d98f;--hdr-b:#EFCEAA;
+  --shadow-bubble:0 8px 32px rgba(202,175,119,.16),0 2px 8px rgba(202,175,119,.08);
+  --shadow-glow:0 0 18px rgba(202,175,119,.5);
+}
+/* The Hoard — sage green */
+html[data-tab=hoard]{
+  --acc:#AABFB0;--acc2:#91D5D8;--nav-act:#AABFB0;
+  --hdr-a:#C5DDD6;--hdr-b:#ADE6DC;
+  --shadow-bubble:0 8px 32px rgba(170,191,176,.16),0 2px 8px rgba(170,191,176,.08);
+  --shadow-glow:0 0 18px rgba(170,191,176,.5);
+}
+/* Story Time — soft lavender */
+html[data-tab=story]{
+  --acc:#B29EF0;--acc2:#DCBFF2;--nav-act:#B29EF0;
+  --hdr-a:#DCBFF2;--hdr-b:#C1C1E4;
+  --shadow-bubble:0 8px 32px rgba(178,158,240,.16),0 2px 8px rgba(178,158,240,.08);
+  --shadow-glow:0 0 18px rgba(178,158,240,.5);
+}
+/* Big Daddy Nightlock — blush rose */
+html[data-tab=nightlock]{
+  --acc:#e36887;--acc2:#F4C1CB;--nav-act:#e36887;
+  --hdr-a:#F4C1CB;--hdr-b:#EDBDBC;
+  --shadow-bubble:0 8px 32px rgba(227,104,135,.16),0 2px 8px rgba(227,104,135,.08);
+  --shadow-glow:0 0 18px rgba(227,104,135,.5);
+}
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 *{-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
@@ -428,17 +458,17 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 
 <!-- floating background sprites -->
 <div id="bg-sprites" aria-hidden="true">
-  <img class="bg-sprite" src="assets/icons/crop-starfruit.png" style="left:5%;top:8%;width:56px;--dur:22s;--dy:-28px;--rot:-5deg;--rot2:5deg;">
+  <img class="bg-sprite" src="assets/icons/item-starfruit.png" style="left:5%;top:8%;width:56px;--dur:22s;--dy:-28px;--rot:-5deg;--rot2:5deg;">
   <img class="bg-sprite" src="assets/icons/emoji-sunflower.png" style="left:18%;top:55%;width:44px;--dur:17s;--dy:-20px;--rot:3deg;--rot2:-3deg;">
   <img class="bg-sprite" src="assets/icons/watering-can.png" style="left:30%;top:18%;width:52px;--dur:25s;--dy:-32px;--rot:-8deg;--rot2:4deg;">
   <img class="bg-sprite" src="assets/icons/chest-wood.png" style="left:45%;top:70%;width:60px;--dur:19s;--dy:-24px;--rot:2deg;--rot2:-6deg;">
   <img class="bg-sprite" src="assets/icons/emoji-mushroom.png" style="left:60%;top:12%;width:48px;--dur:21s;--dy:-18px;--rot:6deg;--rot2:-2deg;">
-  <img class="bg-sprite" src="assets/icons/emoji-strawberry.png" style="left:72%;top:48%;width:44px;--dur:16s;--dy:-26px;--rot:-4deg;--rot2:8deg;">
+  <img class="bg-sprite" src="assets/icons/item-strawberry.png" style="left:72%;top:48%;width:56px;--dur:16s;--dy:-26px;--rot:-4deg;--rot2:8deg;">
   <img class="bg-sprite" src="assets/icons/galaxy-sword.png" style="left:83%;top:22%;width:50px;--dur:23s;--dy:-22px;--rot:10deg;--rot2:-5deg;">
   <img class="bg-sprite" src="assets/icons/emoji-heart.png" style="left:90%;top:68%;width:40px;--dur:14s;--dy:-16px;--rot:-3deg;--rot2:6deg;">
-  <img class="bg-sprite" src="assets/icons/crop-pumpkin.png" style="left:8%;top:80%;width:52px;--dur:20s;--dy:-30px;--rot:5deg;--rot2:-8deg;">
+  <img class="bg-sprite" src="assets/icons/item-pumpkin.png" style="left:8%;top:80%;width:56px;--dur:20s;--dy:-30px;--rot:5deg;--rot2:-8deg;">
   <img class="bg-sprite" src="assets/icons/fishing-rod.png" style="left:55%;top:35%;width:56px;--dur:26s;--dy:-20px;--rot:-6deg;--rot2:3deg;">
-  <img class="bg-sprite" src="assets/icons/emoji-sparkle.png" style="left:35%;top:88%;width:40px;--dur:18s;--dy:-22px;--rot:4deg;--rot2:-4deg;">
+  <img class="bg-sprite" src="assets/icons/item-gold-bar.png" style="left:35%;top:88%;width:56px;--dur:18s;--dy:-22px;--rot:4deg;--rot2:-4deg;">
   <img class="bg-sprite" src="assets/icons/keg.png" style="left:78%;top:82%;width:56px;--dur:24s;--dy:-28px;--rot:-2deg;--rot2:7deg;">
 </div>
 
@@ -2298,6 +2328,7 @@ window.addEventListener('focus',fetchBridge);
 function goPanel(tab){
   S.tab=tab;
   lsSet('sdv_tab',tab);
+  document.documentElement.dataset.tab=tab;
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   const panel=document.getElementById('p-'+tab);
