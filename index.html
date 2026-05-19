@@ -5,42 +5,43 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Stardew or Dew Not 🌾</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#e0c4f8">
+<meta name="theme-color" content="#F4C1CB">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 /* ── KAWAII Y2K PASTEL THEME ── */
 :root{
-  --bg:#fde8f4;--surf:#fff8fc;--text:#3a1f3a;--muted:#9a7098;
-  --border:#f0c0de;--acc:#b898e0;--acc2:#e870b8;
-  --hdr-a:#edd8fc;--hdr-b:#fad4f0;
-  --nav-bg:rgba(255,242,252,0.97);--nav-act:#b898e0;
-  --r:18px;--gap:12px;
-  --t-fire:#e06868;--t-prep:#e09858;--t-gather:#58c080;
-  --t-plate:#b858d0;--t-purchase:#5898e0;--t-par:#c8a820;--t-tomorrow:#8888a0;
-  --shadow-bubble:0 4px 20px rgba(184,152,224,.18),0 1px 5px rgba(184,152,224,.12);
-  --shadow-card:0 2px 12px rgba(140,70,180,.08);
-  --shadow-glow:0 0 14px rgba(184,152,224,.5);
+  --bg:#F4DBE8;--surf:#FFF5F8;--text:#3d1f3d;--muted:#A07888;
+  --border:#F4C1CB;--acc:#EF94A7;--acc2:#B29EF0;
+  --blush:#e36887;--butter:#f3d98f;
+  --hdr-a:#F4C1CB;--hdr-b:#DCBFF2;
+  --nav-bg:rgba(252,242,248,0.97);--nav-act:#EF94A7;
+  --r:20px;--gap:12px;
+  --t-fire:#e36887;--t-prep:#f3d98f;--t-gather:#AABFB0;
+  --t-plate:#DCBFF2;--t-purchase:#AAC0E0;--t-par:#D4A820;--t-tomorrow:#C7D3E0;
+  --shadow-bubble:0 8px 32px rgba(239,148,167,.16),0 2px 8px rgba(239,148,167,.08);
+  --shadow-card:0 4px 16px rgba(239,148,167,.10);
+  --shadow-glow:0 0 18px rgba(239,148,167,.5);
   --inset-shine:inset 0 1px 0 rgba(255,255,255,.7);
 }
 html[data-season=summer]{
-  --bg:#edfdf6;--surf:#f4fef9;--acc:#3aaa88;--acc2:#d8a030;
-  --hdr-a:#b0f0da;--hdr-b:#eef8b0;--nav-act:#3aaa88;
-  --shadow-bubble:0 4px 20px rgba(58,170,136,.15),0 1px 5px rgba(58,170,136,.09);
-  --shadow-glow:0 0 14px rgba(58,170,136,.45);
+  --bg:#ecfdf6;--surf:#f4fef9;--acc:#AABFB0;--acc2:#EFCEAA;
+  --hdr-a:#CFDFE6;--hdr-b:#EFCEAA;--nav-act:#AABFB0;
+  --shadow-bubble:0 4px 20px rgba(170,191,176,.15),0 1px 5px rgba(170,191,176,.09);
+  --shadow-glow:0 0 14px rgba(170,191,176,.45);
 }
 html[data-season=fall]{
-  --bg:#fef5e8;--surf:#fffaf4;--acc:#c87040;--acc2:#a84820;
-  --hdr-a:#f8d8a8;--hdr-b:#f0c090;--nav-act:#c87040;
-  --shadow-bubble:0 4px 20px rgba(200,112,64,.15),0 1px 5px rgba(200,112,64,.09);
-  --shadow-glow:0 0 14px rgba(200,112,64,.45);
+  --bg:#fef5e8;--surf:#fffaf4;--acc:#F1948F;--acc2:#EFCEAA;
+  --hdr-a:#EFCEAA;--hdr-b:#F4C1CB;--nav-act:#F1948F;
+  --shadow-bubble:0 4px 20px rgba(241,148,143,.15),0 1px 5px rgba(241,148,143,.09);
+  --shadow-glow:0 0 14px rgba(241,148,143,.45);
 }
 html[data-season=winter]{
-  --bg:#eef4ff;--surf:#f6f9ff;--acc:#5080c8;--acc2:#8850c0;
-  --hdr-a:#c0d8f8;--hdr-b:#d0c0f8;--nav-act:#5080c8;
-  --shadow-bubble:0 4px 20px rgba(80,128,200,.15),0 1px 5px rgba(80,128,200,.09);
-  --shadow-glow:0 0 14px rgba(80,128,200,.45);
+  --bg:#F0EEFF;--surf:#F8F5FF;--acc:#89A6D3;--acc2:#B29EF0;
+  --hdr-a:#C7D3E0;--hdr-b:#DCBFF2;--nav-act:#89A6D3;
+  --shadow-bubble:0 4px 20px rgba(137,166,211,.15),0 1px 5px rgba(137,166,211,.09);
+  --shadow-glow:0 0 14px rgba(137,166,211,.45);
 }
 html[data-dark=true]{
   --bg:#160c26;--surf:#201038;--text:#f4e8ff;--muted:#9878c0;
@@ -49,6 +50,36 @@ html[data-dark=true]{
   --shadow-bubble:0 4px 20px rgba(120,60,200,.28),0 1px 5px rgba(120,60,200,.18);
   --shadow-glow:0 0 16px rgba(184,152,224,.6);
   --inset-shine:inset 0 1px 0 rgba(255,255,255,.1);
+}
+
+/* ── PER-TAB COLOR THEMES ── */
+/* Route 66 — warm gold/butter */
+html[data-tab=route]{
+  --acc:#CAAF77;--acc2:#f3d98f;--nav-act:#CAAF77;
+  --hdr-a:#f3d98f;--hdr-b:#EFCEAA;
+  --shadow-bubble:0 8px 32px rgba(202,175,119,.16),0 2px 8px rgba(202,175,119,.08);
+  --shadow-glow:0 0 18px rgba(202,175,119,.5);
+}
+/* The Hoard — sage green */
+html[data-tab=hoard]{
+  --acc:#AABFB0;--acc2:#91D5D8;--nav-act:#AABFB0;
+  --hdr-a:#C5DDD6;--hdr-b:#ADE6DC;
+  --shadow-bubble:0 8px 32px rgba(170,191,176,.16),0 2px 8px rgba(170,191,176,.08);
+  --shadow-glow:0 0 18px rgba(170,191,176,.5);
+}
+/* Story Time — soft lavender */
+html[data-tab=story]{
+  --acc:#B29EF0;--acc2:#DCBFF2;--nav-act:#B29EF0;
+  --hdr-a:#DCBFF2;--hdr-b:#C1C1E4;
+  --shadow-bubble:0 8px 32px rgba(178,158,240,.16),0 2px 8px rgba(178,158,240,.08);
+  --shadow-glow:0 0 18px rgba(178,158,240,.5);
+}
+/* Big Daddy Nightlock — blush rose */
+html[data-tab=nightlock]{
+  --acc:#e36887;--acc2:#F4C1CB;--nav-act:#e36887;
+  --hdr-a:#F4C1CB;--hdr-b:#EDBDBC;
+  --shadow-bubble:0 8px 32px rgba(227,104,135,.16),0 2px 8px rgba(227,104,135,.08);
+  --shadow-glow:0 0 18px rgba(227,104,135,.5);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -65,11 +96,18 @@ body{display:flex;flex-direction:column;overflow:hidden;
   padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
   font-weight:700;font-size:15px;flex-shrink:0;
   padding-top:calc(10px + env(safe-area-inset-top));
-  border-bottom:2px solid var(--border);
-  box-shadow:0 2px 12px rgba(184,152,224,.15);
+  border-bottom:none;
+  box-shadow:0 4px 20px rgba(239,148,167,.18);
+  position:relative;z-index:2;
 }
-#ticker-text{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:.3px;line-height:1.6;}
+#ticker-left{display:flex;align-items:center;gap:8px;}
+#ticker-logo{height:34px;width:auto;}
+#ticker-subtitle{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text);opacity:.8;white-space:nowrap;}
+#ticker-text{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:.3px;line-height:1.6;}
 #ticker-right{display:flex;gap:10px;align-items:center;}
+img.sdv-icon{image-rendering:pixelated;display:block;}
+.nav-btn .icon.sdv-icon{width:26px;height:26px;margin:0 auto;}
+.sub-btn .sdv-icon{width:14px;height:14px;margin-right:4px;display:inline-block;vertical-align:middle;}
 #dark-btn{background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;padding:0;line-height:1;}
 #bridge-dot{width:10px;height:10px;border-radius:50%;background:#e06868;flex-shrink:0;
   box-shadow:0 0 0 2px rgba(255,255,255,0.45);transition:background .4s;}
@@ -80,7 +118,7 @@ body{display:flex;flex-direction:column;overflow:hidden;
   text-align:center;padding:4px 12px;flex-shrink:0;}
 
 /* ── PANELS ── */
-#main{flex:1;overflow:hidden;position:relative;}
+#main{flex:1;overflow:hidden;position:relative;z-index:1;}
 .panel{position:absolute;inset:0;overflow-y:auto;padding:var(--gap);display:none;
   -webkit-overflow-scrolling:touch;}
 .panel.active{display:block;}
@@ -88,9 +126,11 @@ body{display:flex;flex-direction:column;overflow:hidden;
   margin-bottom:14px;color:var(--acc);letter-spacing:.5px;line-height:1.9;}
 
 /* ── BOTTOM NAV ── */
-#nav{display:flex;background:var(--nav-bg);border-top:2px solid var(--border);
+#nav{display:flex;background:var(--nav-bg);border-top:none;
   padding-bottom:env(safe-area-inset-bottom);flex-shrink:0;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 -4px 20px rgba(239,148,167,.14);
+  position:relative;z-index:2;}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;
   padding:7px 2px 8px;background:none;border:none;cursor:pointer;color:var(--muted);
   font-size:9px;font-weight:600;position:relative;transition:color .2s;}
@@ -109,30 +149,29 @@ body{display:flex;flex-direction:column;overflow:hidden;
 .sub-btn{flex-shrink:0;background:var(--surf);border:1.5px solid var(--border);
   border-radius:20px;padding:6px 14px;font-size:11px;font-weight:600;
   color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit;
-  box-shadow:0 2px 6px rgba(184,152,224,.08),var(--inset-shine);}
+  box-shadow:0 2px 6px rgba(239,148,167,.08),var(--inset-shine);}
 .sub-btn.active{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));
   color:var(--text);border-color:var(--acc);font-weight:700;
-  box-shadow:0 3px 12px rgba(184,152,224,.28),var(--inset-shine);}
+  box-shadow:0 3px 12px rgba(239,148,167,.28),var(--inset-shine);}
 .sub-btn:active{transform:scale(0.94);}
 .sub-panel{display:none;}
 .sub-panel.active{display:block;}
 
 /* ── SHARED CARD ── */
-.card{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);
-  overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow-bubble);}
-.card-header{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));
-  padding:9px 14px;font-weight:700;font-size:13px;border-bottom:1.5px solid var(--border);
-  box-shadow:var(--inset-shine);}
+.card{background:var(--surf);border:none;border-radius:var(--r);
+  overflow:hidden;margin-bottom:14px;box-shadow:var(--shadow-bubble);}
+.card-header{background:var(--surf);
+  padding:14px 16px 6px;font-weight:800;font-size:13px;color:var(--acc);}
 .card-body{padding:12px 14px;}
 
 /* ── ROUTE DAY CARDS ── */
-.route-day{background:var(--surf);border-radius:var(--r);border:2px solid var(--border);
-  margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-bubble);}
-.route-day.today{border-color:var(--acc);box-shadow:var(--shadow-glow),var(--shadow-bubble);}
-.day-header{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;
-  user-select:none;background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));
-  border-bottom:1.5px solid var(--border);}
-.route-day[data-open=false] .day-header{border-bottom:none;}
+.route-day{background:var(--surf);border-radius:var(--r);border:none;
+  margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-bubble);}
+.route-day.today{box-shadow:var(--shadow-glow),var(--shadow-bubble);}
+.day-header{display:flex;align-items:center;gap:8px;padding:12px 16px;cursor:pointer;
+  user-select:none;background:var(--surf);
+  border-bottom:none;}
+.route-day[data-open=true] .day-header{border-bottom:1px solid rgba(0,0,0,.04);}
 .day-num{background:var(--acc);color:#fff;border-radius:8px;padding:2px 8px;
   font-size:12px;font-weight:800;flex-shrink:0;font-variant-numeric:tabular-nums;}
 .route-day.today .day-num{background:var(--acc2);}
@@ -141,18 +180,18 @@ body{display:flex;flex-direction:column;overflow:hidden;
   padding:2px 7px;flex-shrink:0;font-weight:600;}
 .day-arrow{color:var(--muted);font-size:11px;transition:transform .25s;flex-shrink:0;}
 .route-day[data-open=true] .day-arrow{transform:rotate(90deg);}
-.day-body{display:none;border-top:1.5px solid var(--border);}
+.day-body{display:none;}
 .route-day[data-open=true] .day-body{display:block;}
 
 /* ── TASK ROWS ── */
 .task-row{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;
-  border-bottom:1px solid var(--border);}
+  border-bottom:1px solid rgba(239,148,167,.12);}
 .task-row:last-child{border-bottom:none;}
 .task-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);
   background:var(--surf);flex-shrink:0;cursor:pointer;margin-top:1px;
   display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .task-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);
-  box-shadow:0 0 8px rgba(184,152,224,.5);}
+  box-shadow:0 0 8px rgba(239,148,167,.5);}
 .task-check[data-checked="1"]::after{content:'✦';color:#fff;font-size:11px;}
 .task-check:active{transform:scale(0.88);}
 .task-label{flex:1;font-size:13px;line-height:1.45;}
@@ -160,7 +199,7 @@ body{display:flex;flex-direction:column;overflow:hidden;
 .type-badge{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:6px;
   color:#fff;flex-shrink:0;margin-top:3px;text-transform:uppercase;letter-spacing:.5px;}
 .tb-fire{background:var(--t-fire);}
-.tb-prep{background:var(--t-prep);}
+.tb-prep{background:var(--t-prep);color:#3a2800;}
 .tb-gather{background:var(--t-gather);}
 .tb-plate{background:var(--t-plate);}
 .tb-purchase{background:var(--t-purchase);}
@@ -196,18 +235,18 @@ body{display:flex;flex-direction:column;overflow:hidden;
   background:var(--bg);padding:2px 8px;border-radius:10px;}
 
 /* ── CARRY ── */
-.carry-section{background:var(--surf);border:2px solid var(--border);
-  border-radius:var(--r);overflow:hidden;margin-bottom:10px;}
-.carry-title{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));
-  font-size:12px;font-weight:700;color:var(--text);text-transform:uppercase;
-  letter-spacing:.6px;padding:8px 14px;border-bottom:1px solid var(--border);}
+.carry-section{background:var(--surf);border:none;
+  border-radius:var(--r);overflow:hidden;margin-bottom:10px;box-shadow:var(--shadow-bubble);}
+.carry-title{background:var(--surf);
+  font-size:12px;font-weight:800;color:var(--acc);text-transform:uppercase;
+  letter-spacing:.6px;padding:12px 16px 6px;}
 .carry-item{display:flex;align-items:center;gap:10px;padding:9px 14px;
-  border-bottom:1px solid var(--border);font-size:13px;}
+  border-bottom:1px solid rgba(239,148,167,.12);font-size:13px;}
 .carry-item:last-child{border-bottom:none;}
 .carry-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);
   flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .carry-check[data-checked="1"]{background:var(--acc);border-color:var(--acc);
-  box-shadow:0 0 8px rgba(184,152,224,.5);}
+  box-shadow:0 0 8px rgba(239,148,167,.5);}
 .carry-check[data-checked="1"]::after{content:'✦';color:#fff;font-size:11px;}
 .carry-check:active{transform:scale(0.88);}
 
@@ -251,11 +290,12 @@ body{display:flex;flex-direction:column;overflow:hidden;
 .cs-tab strong{display:block;color:var(--text);font-size:12.5px;margin-bottom:1px;}
 
 /* ── JUNIMO FEED ── */
-.room-card{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);
-  margin-bottom:12px;overflow:hidden;}
+.room-card{background:var(--surf);border:none;border-radius:var(--r);
+  margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-bubble);}
 .room-header{display:flex;align-items:center;justify-content:space-between;
-  padding:10px 14px;background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));
-  cursor:pointer;border-bottom:1.5px solid var(--border);}
+  padding:12px 16px;background:var(--surf);
+  cursor:pointer;border-bottom:none;}
+.room-card[data-open=true] .room-header{border-bottom:1px solid rgba(239,148,167,.12);}
 .room-title{font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;}
 .room-progress{font-size:11px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;}
 .room-complete-badge{background:var(--t-gather);color:#fff;font-size:10px;font-weight:800;
@@ -281,9 +321,9 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .junimo-offline{padding:24px;text-align:center;color:var(--muted);font-size:13px;}
 
 /* ── QUESTS / UNLOCKS ── */
-.unlock-section{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-bubble);}
-.unlock-sec-title{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));font-family:'Press Start 2P',monospace;font-size:7px;font-weight:400;color:var(--muted);letter-spacing:.4px;padding:8px 14px;border-bottom:1px solid var(--border);line-height:1.9;box-shadow:var(--inset-shine);}
-.unlock-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);font-size:13px;}
+.unlock-section{background:var(--surf);border:none;border-radius:var(--r);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-bubble);}
+.unlock-sec-title{background:var(--surf);font-family:'Press Start 2P',monospace;font-size:7px;font-weight:400;color:var(--acc);letter-spacing:.4px;padding:12px 16px 6px;border-bottom:none;line-height:1.9;}
+.unlock-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid rgba(239,148,167,.12);font-size:13px;}
 .unlock-row:last-child{border-bottom:none;}
 .unlock-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:var(--surf);flex-shrink:0;}
 .unlock-dot.yes{background:var(--acc);border-color:var(--acc);}
@@ -308,9 +348,9 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .museum-ms-dot.reached{background:var(--acc);}
 
 /* ── COVENANT ── */
-.npc-card{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;}
-.npc-header{display:flex;align-items:center;gap:8px;padding:10px 14px;background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));cursor:pointer;border-bottom:1.5px solid var(--border);}
-.npc-card[data-open=false] .npc-header{border-bottom:none;}
+.npc-card{background:var(--surf);border:none;border-radius:var(--r);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-bubble);}
+.npc-header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--surf);cursor:pointer;border-bottom:none;}
+.npc-card[data-open=true] .npc-header{border-bottom:1px solid rgba(239,148,167,.12);}
 .npc-card[data-open=false] .npc-body{display:none;}
 .npc-emoji{font-size:20px;flex-shrink:0;line-height:1;}
 .npc-name{font-weight:800;font-size:13px;flex:1;}
@@ -364,8 +404,8 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .equip-slot-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
 .equip-slot-val{font-size:12px;color:var(--text);font-weight:600;}
 .equip-slot-val.empty{color:var(--muted);font-style:italic;font-weight:400;}
-.skill-card{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);margin-bottom:10px;overflow:hidden;}
-.skill-card-hdr{background:linear-gradient(135deg,var(--hdr-a),var(--hdr-b));padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1.5px solid var(--border);}
+.skill-card{background:var(--surf);border:none;border-radius:var(--r);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-bubble);}
+.skill-card-hdr{background:var(--surf);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(239,148,167,.12);}
 .skill-icon{font-size:18px;flex-shrink:0;}
 .skill-name{font-weight:800;font-size:13px;flex:1;}
 .skill-level{font-size:13px;font-weight:800;color:var(--acc);}
@@ -392,6 +432,16 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .flag-count{font-size:11px;color:var(--acc);font-weight:700;margin-left:auto;}
 .stat-val{font-size:11px;font-weight:700;color:var(--acc);margin-left:auto;}
 
+/* ── BACKGROUND FLOATING SPRITES ── */
+#bg-sprites{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-sprite{position:absolute;image-rendering:pixelated;opacity:.07;
+  animation:bgfloat var(--dur,18s) ease-in-out infinite alternate;
+  will-change:transform;}
+@keyframes bgfloat{
+  from{transform:translateY(0) rotate(var(--rot,0deg));}
+  to{transform:translateY(var(--dy,-24px)) rotate(var(--rot2,4deg));}}
+html[data-dark=true] .bg-sprite{opacity:.05;}
+
 /* ── JUNIMOS & PARTICLES ── */
 .junimo{position:fixed;pointer-events:none;z-index:1000;width:32px;height:32px;
   animation:jh .6s ease-in-out infinite alternate;}
@@ -405,9 +455,30 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 </head>
 <body>
 <div id="schema-banner">⚠️ Bridge data format changed — please restart stardew-bridge.py</div>
+
+<!-- floating background sprites -->
+<div id="bg-sprites" aria-hidden="true">
+  <img class="bg-sprite" src="assets/icons/item-starfruit.png" style="left:5%;top:8%;width:56px;--dur:22s;--dy:-28px;--rot:-5deg;--rot2:5deg;">
+  <img class="bg-sprite" src="assets/icons/emoji-sunflower.png" style="left:18%;top:55%;width:44px;--dur:17s;--dy:-20px;--rot:3deg;--rot2:-3deg;">
+  <img class="bg-sprite" src="assets/icons/watering-can.png" style="left:30%;top:18%;width:52px;--dur:25s;--dy:-32px;--rot:-8deg;--rot2:4deg;">
+  <img class="bg-sprite" src="assets/icons/chest-wood.png" style="left:45%;top:70%;width:60px;--dur:19s;--dy:-24px;--rot:2deg;--rot2:-6deg;">
+  <img class="bg-sprite" src="assets/icons/emoji-mushroom.png" style="left:60%;top:12%;width:48px;--dur:21s;--dy:-18px;--rot:6deg;--rot2:-2deg;">
+  <img class="bg-sprite" src="assets/icons/item-strawberry.png" style="left:72%;top:48%;width:56px;--dur:16s;--dy:-26px;--rot:-4deg;--rot2:8deg;">
+  <img class="bg-sprite" src="assets/icons/galaxy-sword.png" style="left:83%;top:22%;width:50px;--dur:23s;--dy:-22px;--rot:10deg;--rot2:-5deg;">
+  <img class="bg-sprite" src="assets/icons/emoji-heart.png" style="left:90%;top:68%;width:40px;--dur:14s;--dy:-16px;--rot:-3deg;--rot2:6deg;">
+  <img class="bg-sprite" src="assets/icons/item-pumpkin.png" style="left:8%;top:80%;width:56px;--dur:20s;--dy:-30px;--rot:5deg;--rot2:-8deg;">
+  <img class="bg-sprite" src="assets/icons/fishing-rod.png" style="left:55%;top:35%;width:56px;--dur:26s;--dy:-20px;--rot:-6deg;--rot2:3deg;">
+  <img class="bg-sprite" src="assets/icons/item-gold-bar.png" style="left:35%;top:88%;width:56px;--dur:18s;--dy:-22px;--rot:4deg;--rot2:-4deg;">
+  <img class="bg-sprite" src="assets/icons/keg.png" style="left:78%;top:82%;width:56px;--dur:24s;--dy:-28px;--rot:-2deg;--rot2:7deg;">
+</div>
+
 <div id="ticker">
-  <span id="ticker-text">🌱 Spring 1 · Year 1</span>
+  <div id="ticker-left">
+    <img id="ticker-logo" src="assets/logo.png" alt="Stardew Valley">
+    <span id="ticker-subtitle">or Dew Not</span>
+  </div>
   <div id="ticker-right">
+    <span id="ticker-text"></span>
     <span id="bridge-sync-time"></span>
     <div id="bridge-dot" title="Bridge"></div>
     <button id="dark-btn" aria-label="Toggle dark mode">🌙</button>
@@ -448,12 +519,12 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- 🔵 ROUTE 66 -->
   <div class="panel" id="p-route">
-    <div class="panel-title">🔵 Route 66 — Daily Efficiency Checklist</div>
+    <div class="panel-title">Route 66 — Daily Efficiency Checklist</div>
     <div class="sub-nav" id="route-sub-nav">
-      <button class="sub-btn active" data-sub="tasks">📋 Prep/Fire/Plate</button>
-      <button class="sub-btn" data-sub="cal">🐸 It Is Wednesday My Dudes</button>
-      <button class="sub-btn" data-sub="par">🗺️ Are We There Yet?</button>
-      <button class="sub-btn" data-sub="carry">🚨 Never Forget</button>
+      <button class="sub-btn active" data-sub="tasks"><img class="sdv-icon" src="assets/icons/pickaxe.png" alt="">Prep/Fire/Plate</button>
+      <button class="sub-btn" data-sub="cal"><img class="sdv-icon" src="assets/icons/emoji-cake.png" alt="">It Is Wednesday My Dudes</button>
+      <button class="sub-btn" data-sub="par"><img class="sdv-icon" src="assets/icons/emoji-money.png" alt="">Are We There Yet?</button>
+      <button class="sub-btn" data-sub="carry"><img class="sdv-icon" src="assets/icons/emoji-question.png" alt="">Never Forget</button>
     </div>
     <div class="sub-panel active" id="sp-tasks"><div id="route-list"></div></div>
     <div class="sub-panel" id="sp-cal"><div id="cal-content"></div></div>
@@ -463,13 +534,13 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- 🔴 THE HOARD -->
   <div class="panel" id="p-hoard">
-    <div class="panel-title">🔴 The Hoard — Items &amp; Unlocks Tracker</div>
+    <div class="panel-title">The Hoard — Items &amp; Unlocks Tracker</div>
     <div class="sub-nav" id="hoard-sub-nav">
-      <button class="sub-btn active" data-hsub="junimo">🌽 Junimo Feed</button>
-      <button class="sub-btn" data-hsub="quests">📋 Take This Job</button>
-      <button class="sub-btn" data-hsub="museum">✨ Look Shiny</button>
-      <button class="sub-btn" data-hsub="unlocks">🔨 I Made It</button>
-      <button class="sub-btn" data-hsub="npcs">💌 Covenant</button>
+      <button class="sub-btn active" data-hsub="junimo"><img class="sdv-icon" src="assets/icons/emoji-strawberry.png" alt="">Junimo Feed</button>
+      <button class="sub-btn" data-hsub="quests"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Take This Job</button>
+      <button class="sub-btn" data-hsub="museum"><img class="sdv-icon" src="assets/icons/emoji-sparkle.png" alt="">Look Shiny</button>
+      <button class="sub-btn" data-hsub="unlocks"><img class="sdv-icon" src="assets/icons/furnace.png" alt="">I Made It</button>
+      <button class="sub-btn" data-hsub="npcs"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant</button>
     </div>
     <div class="sub-panel active" id="hsp-junimo"><div id="junimo-content"></div></div>
     <div class="sub-panel" id="hsp-quests"><div id="quests-content"></div></div>
@@ -480,14 +551,14 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- ✨ STORY TIME -->
   <div class="panel" id="p-story">
-    <div class="panel-title">✨ Story Time — Events, Cutscenes, Lore, Progression</div>
+    <div class="panel-title">Story Time — Events, Cutscenes, Lore, Progression</div>
     <div class="sub-nav" id="story-sub-nav">
-      <button class="sub-btn active" data-stab="previously">🎬 Previously On</button>
-      <button class="sub-btn" data-stab="lore">📜 The Lore</button>
-      <button class="sub-btn" data-stab="covenant">💌 Covenant</button>
-      <button class="sub-btn" data-stab="milestones">🏆 Milestones</button>
-      <button class="sub-btn" data-stab="mainquest">📋 Quest</button>
-      <button class="sub-btn" data-stab="odds">🎲 Odds</button>
+      <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="assets/icons/emoji-star.png" alt="">Previously On</button>
+      <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="assets/icons/emoji-mushroom.png" alt="">The Lore</button>
+      <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant</button>
+      <button class="sub-btn" data-stab="milestones"><img class="sdv-icon" src="assets/icons/emoji-checkmark.png" alt="">Milestones</button>
+      <button class="sub-btn" data-stab="mainquest"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Quest</button>
+      <button class="sub-btn" data-stab="odds"><img class="sdv-icon" src="assets/icons/emoji-lightning.png" alt="">Odds</button>
     </div>
     <div class="sub-panel active" id="stp-previously"><div id="previously-content"></div></div>
     <div class="sub-panel" id="stp-lore"><div id="lore-content"></div></div>
@@ -499,16 +570,16 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- 💜 BIG DADDY NIGHTLOCK -->
   <div class="panel" id="p-nightlock">
-    <div class="panel-title">💜 Big Daddy Nightlock — Game Menu E-Screen</div>
+    <div class="panel-title">Big Daddy Nightlock — Game Menu E-Screen</div>
     <div class="sub-nav" id="nightlock-sub-nav">
-      <button class="sub-btn active" data-nsub="tardis">🌀 Tardis</button>
-      <button class="sub-btn" data-nsub="davy">🏴‍☠️ Davy's</button>
-      <button class="sub-btn" data-nsub="fitcheck">👗 Fit</button>
-      <button class="sub-btn" data-nsub="skills">📈 Skills</button>
-      <button class="sub-btn" data-nsub="grass">🌿 Grass</button>
-      <button class="sub-btn" data-nsub="recipes">📺 Recipes</button>
-      <button class="sub-btn" data-nsub="cast">🐄 Cast</button>
-      <button class="sub-btn" data-nsub="plot">🛡️ Plot</button>
+      <button class="sub-btn active" data-nsub="tardis"><img class="sdv-icon" src="assets/icons/chest-wood.png" alt="">Tardis</button>
+      <button class="sub-btn" data-nsub="davy"><img class="sdv-icon" src="assets/icons/chest-stone.png" alt="">Davy's</button>
+      <button class="sub-btn" data-nsub="fitcheck"><img class="sdv-icon" src="assets/icons/boots.png" alt="">Fit</button>
+      <button class="sub-btn" data-nsub="skills"><img class="sdv-icon" src="assets/icons/buff-farming.png" alt="">Skills</button>
+      <button class="sub-btn" data-nsub="grass"><img class="sdv-icon" src="assets/icons/emoji-tulip.png" alt="">Grass</button>
+      <button class="sub-btn" data-nsub="recipes"><img class="sdv-icon" src="assets/icons/keg.png" alt="">Recipes</button>
+      <button class="sub-btn" data-nsub="cast"><img class="sdv-icon" src="assets/icons/emoji-cat.png" alt="">Cast</button>
+      <button class="sub-btn" data-nsub="plot"><img class="sdv-icon" src="assets/icons/galaxy-sword.png" alt="">Plot</button>
     </div>
     <div class="sub-panel active" id="nlp-tardis"><div id="tardis-content"></div></div>
     <div class="sub-panel" id="nlp-davy"><div id="davy-content"></div></div>
@@ -523,11 +594,11 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 </main>
 
 <nav id="nav">
-  <button class="nav-btn active" data-tab="home"><span class="icon">🏠</span>Home</button>
-  <button class="nav-btn" data-tab="route"><span class="icon">🔵</span>Route 66</button>
-  <button class="nav-btn" data-tab="hoard"><span class="icon">🔴</span>The Hoard</button>
-  <button class="nav-btn" data-tab="story"><span class="icon">✨</span>Story Time</button>
-  <button class="nav-btn" data-tab="nightlock"><span class="icon">💜</span>Nightlock</button>
+  <button class="nav-btn active" data-tab="home"><img class="icon sdv-icon" src="assets/icons/emoji-star.png" alt="Home">Home</button>
+  <button class="nav-btn" data-tab="route"><img class="icon sdv-icon" src="assets/icons/watering-can.png" alt="Route 66">Route 66</button>
+  <button class="nav-btn" data-tab="hoard"><img class="icon sdv-icon" src="assets/icons/chest-wood.png" alt="The Hoard">The Hoard</button>
+  <button class="nav-btn" data-tab="story"><img class="icon sdv-icon" src="assets/icons/emoji-notes.png" alt="Story Time">Story Time</button>
+  <button class="nav-btn" data-tab="nightlock"><img class="icon sdv-icon" src="assets/icons/galaxy-sword.png" alt="Nightlock">Nightlock</button>
 </nav>
 
 <script>
@@ -2257,6 +2328,7 @@ window.addEventListener('focus',fetchBridge);
 function goPanel(tab){
   S.tab=tab;
   lsSet('sdv_tab',tab);
+  document.documentElement.dataset.tab=tab;
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   const panel=document.getElementById('p-'+tab);
@@ -2280,12 +2352,12 @@ function goSubPanel(sub){
 }
 
 const junimoSVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="32" height="32">
-<circle cx="8" cy="9" r="6" fill="#b898e0"/>
+<circle cx="8" cy="9" r="6" fill="#EF94A7"/>
 <circle cx="6" cy="8" r="1" fill="#3a1f3a"/>
 <circle cx="10" cy="8" r="1" fill="#3a1f3a"/>
-<ellipse cx="8" cy="11" rx="2" ry="1" fill="#9070c0"/>
-<circle cx="4" cy="6" r="2" fill="#b898e0"/>
-<circle cx="12" cy="6" r="2" fill="#b898e0"/>
+<ellipse cx="8" cy="11" rx="2" ry="1" fill="#E07090"/>
+<circle cx="4" cy="6" r="2" fill="#EF94A7"/>
+<circle cx="12" cy="6" r="2" fill="#EF94A7"/>
 </svg>`;
 
 function spawnJunimo(){
@@ -2300,7 +2372,7 @@ function startJunimos(){spawnJunimo();setInterval(()=>{if(Math.random()<0.3)spaw
 
 function spawnParticles(el){
   const r=el.getBoundingClientRect();
-  const cols=['#b898e0','#e870b8','#58c080','#ffd6f0','#c0f0e8','#ffe090','#d4a8ff'];
+  const cols=['#EF94A7','#B29EF0','#AABFB0','#F4C1CB','#CFDFE6','#EFCEAA','#DCBFF2'];
   for(let i=0;i<8;i++){
     const p=document.createElement('div'); p.className='particle';
     const sz=4+Math.random()*6;
