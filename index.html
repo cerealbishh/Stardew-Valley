@@ -406,7 +406,8 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .equip-slot-val.empty{color:var(--muted);font-style:italic;font-weight:400;}
 .skill-card{background:var(--surf);border:none;border-radius:var(--r);margin-bottom:10px;overflow:hidden;box-shadow:var(--shadow-bubble);}
 .skill-card-hdr{background:var(--surf);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(239,148,167,.12);}
-.skill-icon{font-size:18px;flex-shrink:0;}
+.skill-icon{width:26px;height:26px;flex-shrink:0;image-rendering:pixelated;display:block;}
+.skill-icon.emoji{width:auto;height:auto;font-size:18px;}
 .skill-name{font-weight:800;font-size:13px;flex:1;}
 .skill-level{font-size:13px;font-weight:800;color:var(--acc);}
 .skill-card-body{padding:10px 14px;}
@@ -580,6 +581,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
       <button class="sub-btn" data-nsub="recipes"><img class="sdv-icon" src="assets/icons/keg.png" alt="">Recipes</button>
       <button class="sub-btn" data-nsub="cast"><img class="sdv-icon" src="assets/icons/emoji-cat.png" alt="">Cast</button>
       <button class="sub-btn" data-nsub="plot"><img class="sdv-icon" src="assets/icons/galaxy-sword.png" alt="">Plot</button>
+      <button class="sub-btn" data-nsub="holocron"><img class="sdv-icon" src="assets/icons/emoji-fish.png" alt="">Holocron</button>
     </div>
     <div class="sub-panel active" id="nlp-tardis"><div id="tardis-content"></div></div>
     <div class="sub-panel" id="nlp-davy"><div id="davy-content"></div></div>
@@ -589,6 +591,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
     <div class="sub-panel" id="nlp-recipes"><div id="recipes-content"></div></div>
     <div class="sub-panel" id="nlp-cast"><div id="cast-content"></div></div>
     <div class="sub-panel" id="nlp-plot"><div id="plot-content"></div></div>
+    <div class="sub-panel" id="nlp-holocron"><div id="holocron-content"></div></div>
   </div>
 
 </main>
@@ -1215,22 +1218,22 @@ winter:[
 };
 
 const PAR=[
-  {id:'furnace',label:'Furnace built',target:'Sp5'},
-  {id:'mine40',label:'Mine Level 40',target:'Sp9'},
-  {id:'mine80',label:'Mine Level 80',target:'Sp17'},
-  {id:'skullkey',label:'Skull Key (Mine 100)',target:'Sp19'},
-  {id:'strawberry',label:'Strawberries planted after Egg Festival',target:'Sp14'},
-  {id:'sumseeds',label:'Summer seeds purchased',target:'Sp28'},
-  {id:'keg1',label:'First Keg crafted',target:'Su7'},
-  {id:'blueberry',label:'Blueberries harvested',target:'Su8'},
-  {id:'melon',label:'Melons harvested',target:'Su17'},
-  {id:'iridbar',label:'First Iridium Bar smelted',target:'Su10'},
-  {id:'fallseeds',label:'Fall crops planted on Fall 1',target:'Fa1'},
-  {id:'blackberry',label:'100+ Blackberries foraged',target:'Fa11'},
-  {id:'grange',label:'Grange Display 90+ points',target:'Fa16'},
-  {id:'fishing10',label:'Fishing Skill Level 10',target:'Wi1'},
-  {id:'minebundles',label:'All Boiler Room bundles complete',target:'Wi14'},
-  {id:'cc',label:'Community Center complete!',target:'Wi28'},
+  {id:'furnace',label:'Furnace built',target:'Sp5',icon:'furnace'},
+  {id:'mine40',label:'Mine Level 40',target:'Sp9',icon:'pickaxe'},
+  {id:'mine80',label:'Mine Level 80',target:'Sp17',icon:'pickaxe-copper'},
+  {id:'skullkey',label:'Skull Key (Mine 100)',target:'Sp19',icon:'pickaxe-steel'},
+  {id:'strawberry',label:'Strawberries planted after Egg Festival',target:'Sp14',icon:'item-strawberry'},
+  {id:'sumseeds',label:'Summer seeds purchased',target:'Sp28',icon:'item-melon'},
+  {id:'keg1',label:'First Keg crafted',target:'Su7',icon:'keg'},
+  {id:'blueberry',label:'Blueberries harvested',target:'Su8',icon:'item-blueberry'},
+  {id:'melon',label:'Melons harvested',target:'Su17',icon:'item-melon'},
+  {id:'iridbar',label:'First Iridium Bar smelted',target:'Su10',icon:'item-iridium-bar'},
+  {id:'fallseeds',label:'Fall crops planted on Fall 1',target:'Fa1',icon:'item-pumpkin'},
+  {id:'blackberry',label:'100+ Blackberries foraged',target:'Fa11',icon:'emoji-bug'},
+  {id:'grange',label:'Grange Display 90+ points',target:'Fa16',icon:'item-starfruit'},
+  {id:'fishing10',label:'Fishing Skill Level 10',target:'Wi1',icon:'fishing-rod'},
+  {id:'minebundles',label:'All Boiler Room bundles complete',target:'Wi14',icon:'furnace'},
+  {id:'cc',label:'Community Center complete!',target:'Wi28',icon:'emoji-sparkle'},
 ];
 
 const CARRY={
@@ -1363,8 +1366,10 @@ function renderCal(){
 function renderPar(){
   const html=PAR.map(p=>{
     const ch=lsGet('sdv_par_'+p.id)==='1'?'1':'0';
+    const iconHtml=p.icon?`<img src="assets/icons/${p.icon}.png" style="width:20px;height:20px;image-rendering:pixelated;flex-shrink:0" onerror="this.style.display='none'">`:'';
     return `<div class="par-item">
       <div class="par-check" data-par-id="${p.id}" data-checked="${ch}"></div>
+      ${iconHtml}
       <span>${p.label}</span>
       <span class="par-day">${p.target}</span>
     </div>`;
@@ -1387,9 +1392,13 @@ function renderCarry(){
   document.getElementById('carry-content').innerHTML=html;
 }
 
-const ROOM_EMOJI_JS = {
-  "Pantry":"🌽","Crafts Room":"🌲","Fish Tank":"🐟",
-  "Boiler Room":"⚒️","Bulletin Board":"📋","Vault":"💰"
+const ROOM_ICON_JS={
+  "Pantry":'<img src="assets/icons/item-corn.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
+  "Crafts Room":'<img src="assets/icons/axe.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
+  "Fish Tank":'<img src="assets/icons/emoji-fish.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
+  "Boiler Room":'<img src="assets/icons/furnace.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
+  "Bulletin Board":'<img src="assets/icons/emoji-flag.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
+  "Vault":'<img src="assets/icons/item-gold-bar.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
 };
 
 const NPC_DATA=[
@@ -1574,10 +1583,14 @@ function renderCovenant(targetEl){
     const untilD=daysUntil(npc.bs,npc.bd);
     const bLabel=npc.bs.charAt(0).toUpperCase()+npc.bs.slice(1)+' '+npc.bd;
     const urgent=untilD<=3?' ⚠️':'';
-    const miniH=Array.from({length:8},(_,i)=>`<span class="heart-sm">${hearts!==null&&i<hearts?'❤️':'🤍'}</span>`).join('');
+    const hFull2=`<img src="assets/icons/emoji-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle">`;
+    const hEmpty2=`<img src="assets/icons/emoji-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+    const hFull2Lg=`<img src="assets/icons/emoji-heart.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle">`;
+    const hEmpty2Lg=`<img src="assets/icons/emoji-heart.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+    const miniH=Array.from({length:8},(_,i)=>`<span class="heart-sm">${hearts!==null&&i<hearts?hFull2:hEmpty2}</span>`).join('');
     const card=document.createElement('div');
     card.className='npc-card'; card.dataset.open='false';
-    const heartRow=Array.from({length:8},(_,i)=>`<span class="heart-lg">${hearts!==null&&i<hearts?'❤️':'🤍'}</span>`).join('');
+    const heartRow=Array.from({length:8},(_,i)=>`<span class="heart-lg">${hearts!==null&&i<hearts?hFull2Lg:hEmpty2Lg}</span>`).join('');
     const ptsLine=pts!==null&&pts!==undefined?`<span class="npc-pts">${pts} pts — ${hearts||0}♥</span>`:'<span class="npc-pts" style="font-style:italic">No bridge data</span>';
     card.innerHTML=`<div class="npc-header">
       <span class="npc-emoji">${npc.e}</span>
@@ -1613,7 +1626,7 @@ function renderJunimo(){
     const hdr=document.createElement('div'); hdr.className='room-header';
     const badge=allDone?`<span class="room-complete-badge">✓ DONE</span>`:
       `<span style="font-size:11px;color:var(--muted)">${room.done}/${room.bundles.length}</span>`;
-    hdr.innerHTML=`<span class="room-title">${ROOM_EMOJI_JS[room.name]||'📦'} ${room.name}</span>
+    hdr.innerHTML=`<span class="room-title">${ROOM_ICON_JS[room.name]||'📦'} ${room.name}</span>
       <div class="room-progress">${badge}</div>`;
     const body=document.createElement('div'); body.className='room-body';
     room.bundles.forEach(bundle=>{
@@ -1953,8 +1966,11 @@ function renderOdds(){
 // ── NIGHTLOCK DATA ────────────────────────────────────────────────────────────
 const XP_THRESH=[0,100,380,770,1300,2150,3300,4800,6900,10000,15000];
 const SKILL_META={
-  farm:{e:'🌾',n:'Farming'},fish:{e:'🎣',n:'Fishing'},
-  forage:{e:'🌿',n:'Foraging'},mine:{e:'⛏️',n:'Mining'},combat:{e:'⚔️',n:'Combat'}
+  farm:{e:'<img class="skill-icon" src="assets/icons/buff-farming.png">',n:'Farming'},
+  fish:{e:'<img class="skill-icon" src="assets/icons/buff-fishing.png">',n:'Fishing'},
+  forage:{e:'<img class="skill-icon" src="assets/icons/buff-foraging.png">',n:'Foraging'},
+  mine:{e:'<img class="skill-icon" src="assets/icons/buff-mining.png">',n:'Mining'},
+  combat:{e:'<img class="skill-icon" src="assets/icons/buff-combat.png">',n:'Combat'},
 };
 const PROF_DATA={
   0:{n:'Rancher',d:'Animal products +20%'},1:{n:'Tiller',d:'Crops +10%'},
@@ -1992,8 +2008,11 @@ const SPECIAL_FLAGS=[
 function heartBar(pts,max){
   const full=Math.floor(pts/250);
   const half=pts%250>=125?1:0;
-  const empty=max-full-half;
-  return '❤️'.repeat(Math.max(0,full))+(half?'🩷':'')+'🖤'.repeat(Math.max(0,empty));
+  const empty=Math.max(0,max-full-half);
+  const hF=`<img src="assets/icons/emoji-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+  const hH=`<img src="assets/icons/emoji-love.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+  const hE=`<img src="assets/icons/emoji-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+  return hF.repeat(Math.max(0,full))+(half?hH:'')+hE.repeat(empty);
 }
 function qualBadge(q){return q>=4?'💎':q>=2?'🌟':q>=1?'⭐':'';}
 
@@ -2096,7 +2115,7 @@ function renderSkillmaxxing(){
     const myProfs=SKILL_PROFS[id].filter(p=>profs.has(p));
     html+=`<div class="skill-card">
       <div class="skill-card-hdr">
-        <span class="skill-icon">${meta.e}</span>
+        ${meta.e}
         <span class="skill-name">${meta.n}</span>
         <span class="skill-level">Lv ${level}${isMax?' ★':''}</span>
       </div>
@@ -2123,12 +2142,15 @@ function renderTouchingGrass(){
     const pts=friendship[npc.k]||0;
     const hearts=Math.min(8,Math.floor(pts/250));
     const halfH=pts%250>=125;
-    const filled='❤️'.repeat(hearts)+(halfH&&hearts<8?'🩷':'');
-    const empty='🖤'.repeat(8-hearts-(halfH&&hearts<8?1:0));
+    const hFull=`<img src="assets/icons/emoji-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+    const hHalf=`<img src="assets/icons/emoji-love.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+    const hEmpty=`<img src="assets/icons/emoji-x.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.3">`;
+    const filledH=hFull.repeat(hearts)+(halfH&&hearts<8?hHalf:'');
+    const emptyH=hEmpty.repeat(8-hearts-(halfH&&hearts<8?1:0));
     html+=`<div class="grass-row">
       <span style="font-size:16px;flex-shrink:0">${npc.e}</span>
       <span class="grass-name">${npc.n}</span>
-      <span class="grass-hearts">${filled}${empty}</span>
+      <span class="grass-hearts">${filledH}${emptyH}</span>
       <span class="grass-pts">${pts.toLocaleString()}/${(8*250).toLocaleString()}</span>
     </div>`;
   });
@@ -2167,7 +2189,9 @@ function renderSupportingCast(){
     html+=`<div class="unlock-section"><div class="unlock-sec-title">🐾 Pets</div>`;
     pets.forEach(p=>{
       const hearts=Math.min(5,Math.floor((p.friendship||0)/200));
-      html+=`<div class="animal-row"><span style="font-size:18px">${p.type==='Cat'?'🐱':'🐶'}</span><span class="animal-name">${p.name}</span><span class="animal-type">${p.type}</span><span class="animal-hearts">${'❤️'.repeat(hearts)}${'🖤'.repeat(5-hearts)}</span></div>`;
+      const aHF=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
+      const aHE=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+      html+=`<div class="animal-row"><span style="font-size:18px">${p.type==='Cat'?'🐱':'🐶'}</span><span class="animal-name">${p.name}</span><span class="animal-type">${p.type}</span><span class="animal-hearts">${aHF.repeat(hearts)}${aHE.repeat(5-hearts)}</span></div>`;
     });
     html+='</div>';
   }
@@ -2181,7 +2205,9 @@ function renderSupportingCast(){
     anims.forEach(a=>{
       const hearts=Math.min(5,Math.floor((a.friendship||0)/200));
       const emoji=a.type.includes('Chicken')?'🐔':a.type.includes('Cow')?'🐄':a.type.includes('Pig')?'🐷':a.type.includes('Sheep')?'🐑':a.type.includes('Goat')?'🐐':a.type.includes('Duck')?'🦆':a.type.includes('Rabbit')?'🐰':'🐾';
-      html+=`<div class="animal-row"><span style="font-size:18px">${emoji}</span><span class="animal-name">${a.name}</span><span class="animal-type">${a.type}</span><span class="animal-hearts">${'❤️'.repeat(hearts)}${'🖤'.repeat(5-hearts)}</span></div>`;
+      const bHF=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
+      const bHE=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+      html+=`<div class="animal-row"><span style="font-size:18px">${emoji}</span><span class="animal-name">${a.name}</span><span class="animal-type">${a.type}</span><span class="animal-hearts">${bHF.repeat(hearts)}${bHE.repeat(5-hearts)}</span></div>`;
     });
     html+='</div>';
   });
@@ -2227,6 +2253,178 @@ function renderPlotArmor(){
   el.innerHTML=html;
 }
 
+// ── HOLOCRON DATA ─────────────────────────────────────────────────────────────
+const FISH_LIST=[
+  // Spring
+  {id:'catfish',n:'Catfish',src:'River/Forest (rainy)',season:'spring'},
+  {id:'shad',n:'Shad',src:'River',season:'spring'},
+  {id:'sardine',n:'Sardine',src:'Ocean',season:'spring'},
+  {id:'eel',n:'Eel',src:'Ocean (rainy)',season:'spring'},
+  {id:'smallmouth_bass',n:'Smallmouth Bass',src:'River/Mountain',season:'spring'},
+  {id:'sunfish',n:'Sunfish',src:'River (sunny)',season:'spring'},
+  {id:'pufferfish',n:'Pufferfish',src:'Ocean (sunny)',season:'summer'},
+  {id:'tuna',n:'Tuna',src:'Ocean',season:'summer'},
+  {id:'red_snapper',n:'Red Snapper',src:'Ocean (rainy)',season:'summer'},
+  {id:'pike',n:'Pike',src:'River/Mountain (rainy)',season:'summer'},
+  {id:'super_cucumber',n:'Super Cucumber',src:'Ocean (night)',season:'summer'},
+  {id:'octopus',n:'Octopus',src:'Ocean (day)',season:'summer'},
+  {id:'tigertrout',n:'Tiger Trout',src:'River',season:'fall'},
+  {id:'walleye',n:'Walleye',src:'River/Lake (rainy)',season:'fall'},
+  {id:'salmon',n:'Salmon',src:'River',season:'fall'},
+  {id:'albacore',n:'Albacore',src:'Ocean',season:'fall'},
+  {id:'tiger_trout',n:'Tiger Trout',src:'River (fall)',season:'fall'},
+  {id:'woodskip',n:'Woodskip',src:'Secret Woods',season:'all'},
+  {id:'lingcod',n:'Lingcod',src:'River (winter)',season:'winter'},
+  {id:'squid',n:'Squid',src:'Ocean (night, winter)',season:'winter'},
+  {id:'midnight_carp',n:'Midnight Carp',src:'Mountain/Forest/Desert (night)',season:'winter'},
+  {id:'angler',n:'Angler',src:'Town River (fall 3+)',season:'fall'},
+  {id:'crimsonfish',n:'Crimsonfish',src:'East Pier (summer)',season:'summer'},
+  {id:'legend',n:'Legend',src:'Mountain Lake (spring)',season:'spring'},
+  {id:'mutant_carp',n:'Mutant Carp',src:'Sewers',season:'all'},
+  {id:'glacierfish',n:'Glacierfish',src:'Arrowhead Island (winter)',season:'winter'},
+  {id:'largemouth_bass',n:'Largemouth Bass',src:'Mountain',season:'all'},
+  {id:'carp',n:'Carp',src:'Mountain/Sewers',season:'all'},
+  {id:'bullhead',n:'Bullhead',src:'Mountain',season:'all'},
+  {id:'chub',n:'Chub',src:'Mountain/Forest',season:'all'},
+  {id:'bream',n:'Bream',src:'River (night)',season:'all'},
+  {id:'ghostfish',n:'Ghostfish',src:'Mine (floors 20/60)',season:'all'},
+  {id:'ice_pip',n:'Ice Pip',src:'Mine (floor 60)',season:'all'},
+  {id:'lava_eel',n:'Lava Eel',src:'Mine (floor 100)',season:'all'},
+  {id:'void_salmon',n:'Void Salmon',src:'Witch Swamp',season:'all'},
+  {id:'slimejack',n:'Slimejack',src:'Slime Hutch',season:'all'},
+  {id:'crayfish',n:'Crayfish',src:'Crab Pot',season:'all'},
+  {id:'crab',n:'Crab',src:'Crab Pot (ocean)',season:'all'},
+  {id:'lobster',n:'Lobster',src:'Crab Pot (ocean)',season:'all'},
+  {id:'clam',n:'Clam',src:'Crab Pot (ocean)',season:'all'},
+  {id:'cockle',n:'Cockle',src:'Crab Pot (ocean)',season:'all'},
+  {id:'mussel',n:'Mussel',src:'Crab Pot (ocean)',season:'all'},
+  {id:'oyster',n:'Oyster',src:'Crab Pot (ocean)',season:'all'},
+  {id:'shrimp',n:'Shrimp',src:'Crab Pot (ocean)',season:'all'},
+  {id:'snail',n:'Snail',src:'Crab Pot (fresh)',season:'all'},
+  {id:'periwinkle',n:'Periwinkle',src:'Crab Pot (fresh)',season:'all'},
+  {id:'spook_fish',n:'Spook Fish',src:'Night Market submarine',season:'winter'},
+  {id:'blobfish',n:'Blobfish',src:'Night Market submarine',season:'winter'},
+  {id:'midnight_squid',n:'Midnight Squid',src:'Night Market submarine',season:'winter'},
+];
+
+const ARTIFACT_LIST=[
+  'Dwarvish Helm','Dwarf Gadget','Ancient Sword','Rusty Spoon','Rusty Spur',
+  'Rusty Cog','Chicken Statue','Ancient Seed','Prehistoric Tool','Dried Starfish',
+  'Anchor','Glass Shards','Bone Flute','Prehistoric Handaxe','Dwarvish Sentry',
+  'Chub','Amphibian Fossil','Palm Fossil','Trilobite','Arrowhead',
+  'Ancient Doll','Elvish Jewelry','Chewing Stone','Ornamental Fan','Dinosaur Egg',
+  'Rare Disc','Ancient Drum','Golden Mask','Golden Relic','Strange Doll (Green)',
+  'Strange Doll (Yellow)','Prehistoric Skull','Skeletal Hand','Prehistoric Rib',
+  'Prehistoric Vertebra','Skeletal Tail','Nautilus Fossil','Nautilus Shell',
+  'Amphibian Fossil','Shadow Brooch','Ancient Sword (2)','Lucky Purple Shorts',
+];
+
+const MINERAL_LIST=[
+  'Quartz','Earth Crystal','Frozen Tear','Fire Quartz','Alamite','Bixite',
+  'Baryte','Aerinite','Calcite','Dolomite','Esperite','Fluorapatite','Geminite',
+  'Helvite','Jamborite','Jagoite','Kyanite','Lunarite','Malachite','Neptunite',
+  'Lemon Stone','Nekoite','Orpiment','Petrified Slime','Thunder Egg','Pyrite',
+  'Ocean Stone','Ghost Crystal','Tigerseye','Jasper','Opal','Fire Opal',
+  'Celestine','Marble','Sandstone','Granite','Basalt','Limestone','Soapstone',
+  'Mudstone','Obsidian','Slate','Fairy Stone','Star Shards','Aquamarine',
+  'Emerald','Amethyst','Topaz','Jade','Diamond','Ruby','Prismatic Shard',
+  'Copper Ore','Iron Ore','Gold Ore','Iridium Ore',
+];
+
+function renderHolocron(){
+  const el=document.getElementById('holocron-content');
+  if(!el) return;
+  const b=S.bridge;
+  const stats=b?b.stats||{}:{};
+  const fishCount=stats.fishCaught||0;
+  const donations=b?b.museumDonations||0:0;
+
+  function pbar(done,total,color){
+    const pct=total>0?Math.min(100,Math.round(done/total*100)):0;
+    return `<div style="background:rgba(0,0,0,.08);border-radius:8px;height:8px;overflow:hidden;margin:4px 0 8px">
+      <div style="height:100%;width:${pct}%;background:${color};border-radius:8px;transition:width .4s"></div></div>
+      <div style="font-size:11px;color:var(--muted);text-align:right;margin-top:-6px;margin-bottom:8px">${done} / ${total}</div>`;
+  }
+
+  // Fish tab uses bridge count; individual species are manual checkboxes
+  let html='';
+
+  // ── Fish ─────────────────────────────────────────────────────────────────────
+  const fishChecked=FISH_LIST.filter(f=>nsGet('holo_fish_'+f.id)==='1').length;
+  html+=`<div class="unlock-section">
+    <div class="unlock-sec-title"><img src="assets/icons/emoji-fish.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Fish Caught</div>
+    ${pbar(fishCount,b?Math.max(fishCount,80):80,'#5bb8e8')}
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Species logged manually · ${fishChecked}/${FISH_LIST.length} species</div>`;
+  // Group by season
+  const seasons=['spring','summer','fall','winter','all'];
+  const seasonLabel2={spring:'🌱 Spring',summer:'☀️ Summer',fall:'🍂 Fall',winter:'❄️ Winter',all:'🗓 Year-Round'};
+  seasons.forEach(s=>{
+    const group=FISH_LIST.filter(f=>f.season===s);
+    if(!group.length) return;
+    html+=`<div style="font-size:11px;font-weight:600;color:var(--acc);margin:8px 0 4px">${seasonLabel2[s]}</div>`;
+    group.forEach(f=>{
+      const ch=nsGet('holo_fish_'+f.id)==='1';
+      html+=`<div class="unlock-row" style="cursor:pointer" onclick="const v=nsTgl('holo_fish_${f.id}');this.querySelector('.unlock-dot').classList.toggle('yes',v);renderHolocron()">
+        <div class="unlock-dot${ch?' yes':''}"></div>
+        <span style="flex:1">${f.n}</span>
+        <span style="font-size:10px;color:var(--muted)">${f.src}</span>
+      </div>`;
+    });
+  });
+  html+='</div>';
+
+  // ── Artifacts ────────────────────────────────────────────────────────────────
+  const artChecked=ARTIFACT_LIST.filter((_,i)=>nsGet('holo_art_'+i)==='1').length;
+  html+=`<div class="unlock-section">
+    <div class="unlock-sec-title"><img src="assets/icons/emoji-sparkle.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Artifacts (${artChecked}/${ARTIFACT_LIST.length})</div>
+    ${pbar(artChecked,ARTIFACT_LIST.length,'#e8b55b')}`;
+  ARTIFACT_LIST.forEach((name,i)=>{
+    const ch=nsGet('holo_art_'+i)==='1';
+    html+=`<div class="unlock-row" style="cursor:pointer" onclick="const v=nsTgl('holo_art_${i}');this.querySelector('.unlock-dot').classList.toggle('yes',v)">
+      <div class="unlock-dot${ch?' yes':''}"></div>
+      <span>${name}</span>
+    </div>`;
+  });
+  html+='</div>';
+
+  // ── Minerals ────────────────────────────────────────────────────────────────
+  const minChecked=MINERAL_LIST.filter((_,i)=>nsGet('holo_min_'+i)==='1').length;
+  html+=`<div class="unlock-section">
+    <div class="unlock-sec-title"><img src="assets/icons/item-amethyst.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px" onerror="this.outerHTML='💎'"> Minerals (${minChecked}/${MINERAL_LIST.length})</div>
+    ${pbar(minChecked,MINERAL_LIST.length,'#c47bdb')}`;
+  MINERAL_LIST.forEach((name,i)=>{
+    const ch=nsGet('holo_min_'+i)==='1';
+    html+=`<div class="unlock-row" style="cursor:pointer" onclick="const v=nsTgl('holo_min_${i}');this.querySelector('.unlock-dot').classList.toggle('yes',v)">
+      <div class="unlock-dot${ch?' yes':''}"></div>
+      <span>${name}</span>
+    </div>`;
+  });
+  html+='</div>';
+
+  // ── Cooking ─────────────────────────────────────────────────────────────────
+  const cooking=b?b.cookingRecipes||[]:[];
+  html+=`<div class="unlock-section">
+    <div class="unlock-sec-title"><img src="assets/icons/keg.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Cooking (${cooking.length} / 80 recipes)</div>
+    ${pbar(cooking.length,80,'#e86fad')}`;
+  if(cooking.length){
+    cooking.forEach(name=>{
+      html+=`<div class="unlock-row"><div class="unlock-dot yes"></div><span>${name}</span></div>`;
+    });
+  } else {
+    html+='<div style="font-size:12px;color:var(--muted);padding:8px 0">Connect bridge to see your recipe book 📺</div>';
+  }
+  html+='</div>';
+
+  // ── Museum ──────────────────────────────────────────────────────────────────
+  html+=`<div class="unlock-section">
+    <div class="unlock-sec-title"><img src="assets/icons/emoji-sparkle.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Museum Donations (${donations} / 95)</div>
+    ${pbar(donations,95,'#7ba8e8')}
+  </div>`;
+
+  if(!b) html='<div class="junimo-offline">Connect bridge for live fish count, cooking recipes &amp; museum data 🔮</div>'+html;
+  el.innerHTML=html;
+}
+
 function renderNightlockSub(sub){
   if(sub==='tardis') renderTardis();
   else if(sub==='davy') renderDavy();
@@ -2236,6 +2434,7 @@ function renderNightlockSub(sub){
   else if(sub==='recipes') renderRecipes();
   else if(sub==='cast') renderSupportingCast();
   else if(sub==='plot') renderPlotArmor();
+  else if(sub==='holocron') renderHolocron();
 }
 
 function goNightlockSub(sub){
