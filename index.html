@@ -68,8 +68,14 @@ body{display:flex;flex-direction:column;overflow:hidden;
   border-bottom:2px solid var(--border);
   box-shadow:0 2px 12px rgba(239,148,167,.15);
 }
-#ticker-text{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:.3px;line-height:1.6;}
+#ticker-left{display:flex;align-items:center;gap:8px;}
+#ticker-logo{height:34px;width:auto;}
+#ticker-subtitle{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text);opacity:.8;white-space:nowrap;}
+#ticker-text{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:.3px;line-height:1.6;}
 #ticker-right{display:flex;gap:10px;align-items:center;}
+img.sdv-icon{image-rendering:pixelated;display:block;}
+.nav-btn .icon.sdv-icon{width:26px;height:26px;margin:0 auto;}
+.sub-btn .sdv-icon{width:14px;height:14px;margin-right:4px;display:inline-block;vertical-align:middle;}
 #dark-btn{background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;padding:0;line-height:1;}
 #bridge-dot{width:10px;height:10px;border-radius:50%;background:#e06868;flex-shrink:0;
   box-shadow:0 0 0 2px rgba(255,255,255,0.45);transition:background .4s;}
@@ -406,8 +412,12 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 <body>
 <div id="schema-banner">⚠️ Bridge data format changed — please restart stardew-bridge.py</div>
 <div id="ticker">
-  <span id="ticker-text">🌱 Spring 1 · Year 1</span>
+  <div id="ticker-left">
+    <img id="ticker-logo" src="assets/logo.png" alt="Stardew Valley">
+    <span id="ticker-subtitle">or Dew Not</span>
+  </div>
   <div id="ticker-right">
+    <span id="ticker-text"></span>
     <span id="bridge-sync-time"></span>
     <div id="bridge-dot" title="Bridge"></div>
     <button id="dark-btn" aria-label="Toggle dark mode">🌙</button>
@@ -448,12 +458,12 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- 🔵 ROUTE 66 -->
   <div class="panel" id="p-route">
-    <div class="panel-title">🔵 Route 66 — Daily Efficiency Checklist</div>
+    <div class="panel-title">Route 66 — Daily Efficiency Checklist</div>
     <div class="sub-nav" id="route-sub-nav">
-      <button class="sub-btn active" data-sub="tasks">📋 Prep/Fire/Plate</button>
-      <button class="sub-btn" data-sub="cal">🐸 It Is Wednesday My Dudes</button>
-      <button class="sub-btn" data-sub="par">🗺️ Are We There Yet?</button>
-      <button class="sub-btn" data-sub="carry">🚨 Never Forget</button>
+      <button class="sub-btn active" data-sub="tasks"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/CopperBar.png" alt="">Prep/Fire/Plate</button>
+      <button class="sub-btn" data-sub="cal"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Daffodil.png" alt="">It Is Wednesday My Dudes</button>
+      <button class="sub-btn" data-sub="par"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Aquamarine.png" alt="">Are We There Yet?</button>
+      <button class="sub-btn" data-sub="carry"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/EarthCrystal.png" alt="">Never Forget</button>
     </div>
     <div class="sub-panel active" id="sp-tasks"><div id="route-list"></div></div>
     <div class="sub-panel" id="sp-cal"><div id="cal-content"></div></div>
@@ -463,13 +473,13 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- 🔴 THE HOARD -->
   <div class="panel" id="p-hoard">
-    <div class="panel-title">🔴 The Hoard — Items &amp; Unlocks Tracker</div>
+    <div class="panel-title">The Hoard — Items &amp; Unlocks Tracker</div>
     <div class="sub-nav" id="hoard-sub-nav">
-      <button class="sub-btn active" data-hsub="junimo">🌽 Junimo Feed</button>
-      <button class="sub-btn" data-hsub="quests">📋 Take This Job</button>
-      <button class="sub-btn" data-hsub="museum">✨ Look Shiny</button>
-      <button class="sub-btn" data-hsub="unlocks">🔨 I Made It</button>
-      <button class="sub-btn" data-hsub="npcs">💌 Covenant</button>
+      <button class="sub-btn active" data-hsub="junimo"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Junimo.png" alt="">Junimo Feed</button>
+      <button class="sub-btn" data-hsub="quests"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/IronBar.png" alt="">Take This Job</button>
+      <button class="sub-btn" data-hsub="museum"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/FireQuartz.png" alt="">Look Shiny</button>
+      <button class="sub-btn" data-hsub="unlocks"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/rewards/Furnace.png" alt="">I Made It</button>
+      <button class="sub-btn" data-hsub="npcs"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Honey.png" alt="">Covenant</button>
     </div>
     <div class="sub-panel active" id="hsp-junimo"><div id="junimo-content"></div></div>
     <div class="sub-panel" id="hsp-quests"><div id="quests-content"></div></div>
@@ -480,14 +490,14 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- ✨ STORY TIME -->
   <div class="panel" id="p-story">
-    <div class="panel-title">✨ Story Time — Events, Cutscenes, Lore, Progression</div>
+    <div class="panel-title">Story Time — Events, Cutscenes, Lore, Progression</div>
     <div class="sub-nav" id="story-sub-nav">
-      <button class="sub-btn active" data-stab="previously">🎬 Previously On</button>
-      <button class="sub-btn" data-stab="lore">📜 The Lore</button>
-      <button class="sub-btn" data-stab="covenant">💌 Covenant</button>
-      <button class="sub-btn" data-stab="milestones">🏆 Milestones</button>
-      <button class="sub-btn" data-stab="mainquest">📋 Quest</button>
-      <button class="sub-btn" data-stab="odds">🎲 Odds</button>
+      <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/CommonMushroom.png" alt="">Previously On</button>
+      <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/MapleSyrup.png" alt="">The Lore</button>
+      <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Honey.png" alt="">Covenant</button>
+      <button class="sub-btn" data-stab="milestones"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/GoldBar.png" alt="">Milestones</button>
+      <button class="sub-btn" data-stab="mainquest"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Parsnip.png" alt="">Quest</button>
+      <button class="sub-btn" data-stab="odds"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Aquamarine.png" alt="">Odds</button>
     </div>
     <div class="sub-panel active" id="stp-previously"><div id="previously-content"></div></div>
     <div class="sub-panel" id="stp-lore"><div id="lore-content"></div></div>
@@ -499,16 +509,16 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 
   <!-- 💜 BIG DADDY NIGHTLOCK -->
   <div class="panel" id="p-nightlock">
-    <div class="panel-title">💜 Big Daddy Nightlock — Game Menu E-Screen</div>
+    <div class="panel-title">Big Daddy Nightlock — Game Menu E-Screen</div>
     <div class="sub-nav" id="nightlock-sub-nav">
-      <button class="sub-btn active" data-nsub="tardis">🌀 Tardis</button>
-      <button class="sub-btn" data-nsub="davy">🏴‍☠️ Davy's</button>
-      <button class="sub-btn" data-nsub="fitcheck">👗 Fit</button>
-      <button class="sub-btn" data-nsub="skills">📈 Skills</button>
-      <button class="sub-btn" data-nsub="grass">🌿 Grass</button>
-      <button class="sub-btn" data-nsub="recipes">📺 Recipes</button>
-      <button class="sub-btn" data-nsub="cast">🐄 Cast</button>
-      <button class="sub-btn" data-nsub="plot">🛡️ Plot</button>
+      <button class="sub-btn active" data-nsub="tardis"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/rewards/Keg.png" alt="">Tardis</button>
+      <button class="sub-btn" data-nsub="davy"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/FrozenTear.png" alt="">Davy's</button>
+      <button class="sub-btn" data-nsub="fitcheck"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/IronBar.png" alt="">Fit</button>
+      <button class="sub-btn" data-nsub="skills"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/CopperBar.png" alt="">Skills</button>
+      <button class="sub-btn" data-nsub="grass"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Daffodil.png" alt="">Grass</button>
+      <button class="sub-btn" data-nsub="recipes"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/MapleSyrup.png" alt="">Recipes</button>
+      <button class="sub-btn" data-nsub="cast"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Cheese.png" alt="">Cast</button>
+      <button class="sub-btn" data-nsub="plot"><img class="sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/EarthCrystal.png" alt="">Plot</button>
     </div>
     <div class="sub-panel active" id="nlp-tardis"><div id="tardis-content"></div></div>
     <div class="sub-panel" id="nlp-davy"><div id="davy-content"></div></div>
@@ -523,11 +533,11 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 </main>
 
 <nav id="nav">
-  <button class="nav-btn active" data-tab="home"><span class="icon">🏠</span>Home</button>
-  <button class="nav-btn" data-tab="route"><span class="icon">🔵</span>Route 66</button>
-  <button class="nav-btn" data-tab="hoard"><span class="icon">🔴</span>The Hoard</button>
-  <button class="nav-btn" data-tab="story"><span class="icon">✨</span>Story Time</button>
-  <button class="nav-btn" data-tab="nightlock"><span class="icon">💜</span>Nightlock</button>
+  <button class="nav-btn active" data-tab="home"><img class="icon sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Junimo.png" alt="Home">Home</button>
+  <button class="nav-btn" data-tab="route"><img class="icon sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Parsnip.png" alt="Route 66">Route 66</button>
+  <button class="nav-btn" data-tab="hoard"><img class="icon sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/GoldBar.png" alt="The Hoard">The Hoard</button>
+  <button class="nav-btn" data-tab="story"><img class="icon sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/Hazelnut.png" alt="Story Time">Story Time</button>
+  <button class="nav-btn" data-tab="nightlock"><img class="icon sdv-icon" src="https://raw.githubusercontent.com/IsaacSmith13/stardew-tracker/master/www/img/items/FireQuartz.png" alt="Nightlock">Nightlock</button>
 </nav>
 
 <script>
