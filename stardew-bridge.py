@@ -590,6 +590,14 @@ def watch_loop():
 
 
 class Handler(http.server.BaseHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Private-Network", "true")
+        self.end_headers()
+
     def do_GET(self):
         if self.path == "/save":
             body = json.dumps(latest_data, indent=2).encode()
@@ -716,10 +724,13 @@ if __name__ == "__main__":
     t = threading.Thread(target=watch_loop, daemon=True)
     t.start()
 
-    http_server = http.server.HTTPServer(("0.0.0.0", 8743), Handler)
-    http_thread = threading.Thread(target=http_server.serve_forever, daemon=True)
-    http_thread.start()
-    print(f"[bridge] Cert download (HTTP): http://10.0.0.70:8743/cert")
+    try:
+        http_server = http.server.HTTPServer(("0.0.0.0", 8743), Handler)
+        http_thread = threading.Thread(target=http_server.serve_forever, daemon=True)
+        http_thread.start()
+        print(f"[bridge] Cert download (HTTP): http://10.0.0.70:8743/cert")
+    except OSError:
+        print("[bridge] Port 8743 in use — cert download server skipped")
 
     server = http.server.HTTPServer(("0.0.0.0", PORT), Handler)
     ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(openssl x509 *)",
+      "Bash(tailscale status *)",
+      "Bash(tailscale ip *)",
+      "Bash(pgrep *)"
+    ]
+  }
+}
