@@ -93,13 +93,41 @@ html[data-tab=nightlock]{
   --shadow-glow:0 0 18px rgba(227,104,135,.5);
 }
 
+/* ── Per-sub-tab color overrides ──────────────────────────────────────────── */
+/* Route 66 sub-tabs */
+html[data-tab=route][data-sub=prep]{--bg:#F4C1CB;--surf:#EF94A7;--acc:#e36887;--nav-bg:rgba(239,148,167,.97);}
+html[data-tab=route][data-sub=cal]{--bg:#EFCEAA;--surf:#f3d98f;--acc:#CAAF77;--nav-bg:rgba(243,217,143,.97);}
+html[data-tab=route][data-sub=par]{--bg:#C5DDD6;--surf:#ADE6DC;--acc:#AABFB0;--nav-bg:rgba(173,230,220,.97);}
+html[data-tab=route][data-sub=forget]{--bg:#C1C1E4;--surf:#DCBFF2;--acc:#B29EF0;--nav-bg:rgba(220,191,242,.97);}
+/* Hoard sub-tabs */
+html[data-tab=hoard][data-sub=junimo]{--bg:#C5DDD6;--surf:#ADE6DC;--acc:#AABFB0;--nav-bg:rgba(173,230,220,.97);}
+html[data-tab=hoard][data-sub=quests]{--bg:#EFCEAA;--surf:#f3d98f;--acc:#CAAF77;--nav-bg:rgba(243,217,143,.97);}
+html[data-tab=hoard][data-sub=museum]{--bg:#DCBFF2;--surf:#B29EF0;--acc:#8B70D8;--nav-bg:rgba(178,158,240,.97);}
+html[data-tab=hoard][data-sub=unlocks]{--bg:#AABFB0;--surf:#C5DDD6;--acc:#7AA08A;--nav-bg:rgba(197,221,214,.97);}
+html[data-tab=hoard][data-sub=covenant]{--bg:#F4DBE8;--surf:#F4C1CB;--acc:#EF94A7;--nav-bg:rgba(244,193,203,.97);}
+/* Story sub-tabs */
+html[data-tab=story][data-sub=previously]{--bg:#C1C1E4;--surf:#DCBFF2;--acc:#B29EF0;--nav-bg:rgba(220,191,242,.97);}
+html[data-tab=story][data-sub=lore]{--bg:#C7D3E0;--surf:#AAC0E0;--acc:#89A6D3;--nav-bg:rgba(170,192,224,.97);}
+html[data-tab=story][data-sub=covenant]{--bg:#F4DBE8;--surf:#F4C1CB;--acc:#EF94A7;--nav-bg:rgba(244,193,203,.97);}
+html[data-tab=story][data-sub=mainquest]{--bg:#F4C1CB;--surf:#EF94A7;--acc:#e36887;--nav-bg:rgba(239,148,167,.97);}
+html[data-tab=story][data-sub=milestones]{--bg:#EFCEAA;--surf:#f3d98f;--acc:#CAAF77;--nav-bg:rgba(243,217,143,.97);}
+html[data-tab=story][data-sub=odds]{--bg:#AABFB0;--surf:#C5DDD6;--acc:#7AA08A;--nav-bg:rgba(197,221,214,.97);}
+/* Nightlock sub-tabs */
+html[data-tab=nightlock][data-sub=tardis]{--bg:#DCBFF2;--surf:#B29EF0;--acc:#8B70D8;--nav-bg:rgba(178,158,240,.97);}
+html[data-tab=nightlock][data-sub=davy]{--bg:#C7D3E0;--surf:#AAC0E0;--acc:#89A6D3;--nav-bg:rgba(170,192,224,.97);}
+html[data-tab=nightlock][data-sub=fit]{--bg:#F4C1CB;--surf:#EF94A7;--acc:#e36887;--nav-bg:rgba(239,148,167,.97);}
+html[data-tab=nightlock][data-sub=skills]{--bg:#C5DDD6;--surf:#ADE6DC;--acc:#AABFB0;--nav-bg:rgba(173,230,220,.97);}
+html[data-tab=nightlock][data-sub=grass]{--bg:#AABFB0;--surf:#C5DDD6;--acc:#7AA08A;--nav-bg:rgba(197,221,214,.97);}
+html[data-tab=nightlock][data-sub=recipes]{--bg:#EFCEAA;--surf:#f3d98f;--acc:#CAAF77;--nav-bg:rgba(243,217,143,.97);}
+html[data-tab=nightlock][data-sub=cast]{--bg:#F4DBE8;--surf:#F4C1CB;--acc:#EF94A7;--nav-bg:rgba(244,193,203,.97);}
+html[data-tab=nightlock][data-sub=plot]{--bg:#C1C1E4;--surf:#DCBFF2;--acc:#B29EF0;--nav-bg:rgba(220,191,242,.97);}
+html[data-tab=nightlock][data-sub=holocron]{--bg:#AAC0E0;--surf:#C7D3E0;--acc:#89A6D3;--nav-bg:rgba(199,211,224,.97);}
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 *{-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   background:var(--bg);color:var(--text);}
-body{display:flex;flex-direction:column;overflow:hidden;
-  background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);
-  background-size:22px 22px;}
+body{display:flex;flex-direction:column;overflow:hidden;}
 
 /* ── TICKER ── */
 #ticker{
@@ -137,7 +165,9 @@ img.sdv-icon{image-rendering:pixelated;display:block;}
   -webkit-overflow-scrolling:touch;}
 .panel.active{display:block;}
 .panel-title{font-family:'Press Start 2P',monospace;font-size:9px;font-weight:400;
-  margin-bottom:14px;color:var(--acc);letter-spacing:.5px;line-height:1.9;}
+  margin-bottom:14px;color:var(--acc);letter-spacing:.5px;line-height:1.9;
+  display:flex;align-items:center;gap:8px;}
+.panel-title img{width:22px;height:22px;image-rendering:pixelated;flex-shrink:0;}
 
 /* ── BOTTOM NAV ── */
 #nav{display:flex;background:var(--nav-bg);border-top:none;
@@ -450,6 +480,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 </style>
 </head>
 <body>
+<div id="bg-sprites"></div>
 <div id="schema-banner">⚠️ Bridge data format changed — please restart stardew-bridge.py</div>
 
 <!-- floating background sprites -->
@@ -490,7 +521,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
       <div class="home-subtitle">or Dew Not</div>
     </div>
     <div class="card">
-      <div class="card-header">📅 Today</div>
+      <div class="card-header"><img src="assets/icons/emoji-star.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Today</div>
       <div class="card-body">
         <div class="home-stat"><span>Season &amp; Day</span><span class="home-stat-val" id="home-day">Spring 1 · Year 1</span></div>
         <div class="home-stat"><span>Tasks Today</span><span class="home-stat-val" id="home-tasks">—</span></div>
@@ -498,11 +529,11 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
       </div>
     </div>
     <div class="card">
-      <div class="card-header">🗓️ Upcoming Events</div>
+      <div class="card-header"><img src="assets/icons/emoji-cake.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Upcoming Events</div>
       <div class="card-body" id="home-events"></div>
     </div>
     <div class="card">
-      <div class="card-header">🌉 Bridge Connection</div>
+      <div class="card-header"><img src="assets/icons/emoji-lightning.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Bridge Connection</div>
       <div class="card-body">
         <div class="bridge-row">
           <label>Mac IP or Tailscale hostname</label>
@@ -518,7 +549,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 
   <!-- 🔵 ROUTE 66 -->
   <div class="panel" id="p-route">
-    <div class="panel-title">Route 66 — Daily Efficiency Checklist</div>
+    <div class="panel-title"><img src="assets/icons/watering-can.png">Route 66 — Daily Efficiency</div>
     <div class="sub-nav" id="route-sub-nav">
       <button class="sub-btn active" data-sub="tasks"><img class="sdv-icon" src="assets/icons/pickaxe.png" alt="">Prep/Fire/Plate</button>
       <button class="sub-btn" data-sub="cal"><img class="sdv-icon" src="assets/icons/emoji-cake.png" alt="">It Is Wednesday My Dudes</button>
@@ -533,7 +564,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 
   <!-- 🔴 THE HOARD -->
   <div class="panel" id="p-hoard">
-    <div class="panel-title">The Hoard — Items &amp; Unlocks Tracker</div>
+    <div class="panel-title"><img src="assets/icons/chest-wood.png">The Hoard</div>
     <div class="sub-nav" id="hoard-sub-nav">
       <button class="sub-btn active" data-hsub="junimo"><img class="sdv-icon" src="assets/icons/emoji-strawberry.png" alt="">Junimo Feed</button>
       <button class="sub-btn" data-hsub="quests"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Take This Job And Shove It</button>
@@ -550,7 +581,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 
   <!-- ✨ STORY TIME -->
   <div class="panel" id="p-story">
-    <div class="panel-title">Story Time — Events, Cutscenes, Lore, Progression</div>
+    <div class="panel-title"><img src="assets/icons/emoji-notes.png">Story Time</div>
     <div class="sub-nav" id="story-sub-nav">
       <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="assets/icons/emoji-star.png" alt="">Previously On</button>
       <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="assets/icons/emoji-mushroom.png" alt="">The Lore</button>
@@ -569,7 +600,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 
   <!-- 💜 BIG DADDY NIGHTLOCK -->
   <div class="panel" id="p-nightlock">
-    <div class="panel-title">Big Daddy Nightlock — Game Menu E-Screen</div>
+    <div class="panel-title"><img src="assets/icons/galaxy-sword.png">Big Daddy Nightlock</div>
     <div class="sub-nav" id="nightlock-sub-nav">
       <button class="sub-btn active" data-nsub="tardis"><img class="sdv-icon" src="assets/icons/chest-wood.png" alt="">The Tardis</button>
       <button class="sub-btn" data-nsub="davy"><img class="sdv-icon" src="assets/icons/chest-stone.png" alt="">Davy Jones' Locker</button>
@@ -1264,6 +1295,9 @@ const CARRY={
   ],
 };
 
+// Sprite icon helper — inline img for section headers
+function si(name,size=16){return `<img src="assets/icons/${name}.png" style="width:${size}px;height:${size}px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;flex-shrink:0" onerror="this.style.display='none'">`;}
+
 const lsGet=k=>localStorage.getItem(k);
 const lsSet=(k,v)=>localStorage.setItem(k,v);
 const lsTgl=k=>{const v=lsGet(k)==='1';lsSet(k,v?'0':'1');return !v;};
@@ -1457,7 +1491,7 @@ function renderQuests(){
 
   // Live: active quests from questLog
   const aq=S.bridge&&S.bridge.activeQuests;
-  html+='<div class="unlock-section"><div class="unlock-sec-title">📋 Active Journal</div>';
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('emoji-flag')}Active Journal</div>`;
   if(!S.bridge){
     html+='<div class="quest-row" style="color:var(--muted);font-size:12px">Connect bridge to see active quests</div>';
   } else if(aq&&aq.length){
@@ -1483,7 +1517,7 @@ function renderQuests(){
     {id:'qm_clubcard',l:"Club Card (from Mr. Qi's quest)"},
     {id:'qm_dwarflang',l:"Dwarf Language (60 donations → Translation Guide)"},
   ];
-  html+='<div class="unlock-section"><div class="unlock-sec-title">🗺️ Year 1 Milestones</div>';
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('emoji-checkmark')}Year 1 Milestones</div>`;
   MS.forEach(m=>{
     const ch=nsGet(m.id)==='1'?'1':'0';
     html+=`<div class="quest-row"><div class="quest-check" data-qm="${m.id}" data-checked="${ch}">${ch==='1'?'✓':''}</div><span>${m.l}</span></div>`;
@@ -1527,7 +1561,7 @@ function renderUnlocks(){
   let html='';
 
   // Tools
-  html+='<div class="unlock-section"><div class="unlock-sec-title">🔨 Tool Upgrades</div>';
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe')}Tool Upgrades</div>`;
   ['Pickaxe','Axe','Hoe','Watering Can'].forEach(t=>{
     const lvl=b&&b.toolLevels?b.toolLevels[t]||0:null;
     const label=lvl!==null?TLVL[lvl]||'Basic':'—';
@@ -1538,7 +1572,7 @@ function renderUnlocks(){
   html+='</div>';
 
   // Buildings + House
-  html+='<div class="unlock-section"><div class="unlock-sec-title">🏗️ Farm Buildings</div>';
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood')}Farm Buildings</div>`;
   if(b&&b.buildings&&b.buildings.length){
     const cnt={};
     b.buildings.forEach(bd=>{cnt[bd]=(cnt[bd]||0)+1;});
@@ -1554,7 +1588,7 @@ function renderUnlocks(){
   html+='</div>';
 
   // Skills
-  html+='<div class="unlock-section"><div class="unlock-sec-title">📈 Skills</div>';
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('buff-farming')}Skills</div>`;
   const SK=[{id:'farm',l:'Farming'},{id:'fish',l:'Fishing'},{id:'forage',l:'Foraging'},{id:'mine',l:'Mining'},{id:'combat',l:'Combat'}];
   if(b&&b.skills){
     SK.forEach(sk=>{
@@ -1599,7 +1633,7 @@ function renderCovenant(targetEl){
     <div class="npc-body">
       <div class="npc-hearts-row">${heartRow}${ptsLine}</div>
       <div class="npc-gift-label">Loved Gifts</div>
-      <div class="npc-gifts">${npc.g.map(g=>`<span class="gift-chip">🎁 ${g}</span>`).join('')}</div>
+      <div class="npc-gifts">${npc.g.map(g=>`<span class="gift-chip">${g}</span>`).join('')}</div>
     </div>`;
     frag.appendChild(card);
   });
@@ -1664,6 +1698,7 @@ function goHoardSub(sub){
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
   lsSet('sdv_hsub',sub);
+  document.documentElement.dataset.sub=sub;
   renderHoardSub(sub);
 }
 
@@ -1723,17 +1758,20 @@ function checkStoryFlag(f,b){
   return false;
 }
 
+const GROUP_ICONS={'Spring':'crop-parsnip','Summer':'crop-melon','Fall':'crop-pumpkin','Winter':'emoji-snowflake','Community Center':'emoji-sparkle','Unlocked Areas':'buff-mining','Magic & Lore':'emoji-star','Farm Life':'chest-wood','Museum Milestones':'icon-chest'};
 function renderGroupedFlags(items,checkFn,b){
   const groups={};
   items.forEach(f=>{if(!groups[f.g])groups[f.g]=[];groups[f.g].push(f);});
   return Object.entries(groups).map(([g,flags])=>{
     const doneCount=flags.filter(f=>checkFn(f,b)).length;
+    const gClean=g.replace(/^[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}✨🗺️🏛️🏠❄️🍂☀️🌱]+\s*/u,'');
+    const icon=GROUP_ICONS[gClean]||flags[0]?.gi||'';
     const rows=flags.map(f=>{
       const done=checkFn(f,b);
       const badge=b?`<span class="timeline-badge${done?' auto':''}">${done?'✓':'AUTO'}</span>`:'';
       return `<div class="timeline-row"><div class="timeline-dot${done?' yes':''}"></div><span style="flex:1">${f.label}</span>${badge}</div>`;
     }).join('');
-    return `<div class="unlock-section"><div class="unlock-sec-title">${g}<span style="margin-left:auto;color:var(--acc);font-size:10px">${doneCount}/${flags.length}</span></div>${rows}</div>`;
+    return `<div class="unlock-section"><div class="unlock-sec-title">${icon?si(icon,18):''}${gClean}<span style="margin-left:auto;color:var(--acc);font-size:10px">${doneCount}/${flags.length}</span></div>${rows}</div>`;
   }).join('');
 }
 
@@ -1810,7 +1848,7 @@ function renderMilestones(){
     <div class="gpa-score">${score} / ${GRANDPA.length} pts</div>
     <div class="gpa-label">Grandpa's Evaluation — ${candles} of 4 candles (12+ = perfect)${!b?' · connect bridge':''}</div>
   </div>
-  <div class="unlock-section"><div class="unlock-sec-title">📋 Criteria</div>`;
+  <div class="unlock-section"><div class="unlock-sec-title">${si('emoji-checkmark',18)}Criteria</div>`;
 
   GRANDPA.forEach(g=>{
     let done=false,pct=0,extra='';
@@ -1829,36 +1867,36 @@ function renderMilestones(){
 
 // ── STORY TIME: MAIN QUEST + ODDS ────────────────────────────────────────────
 const MAIN_QUEST_ARC=[
-  {g:'🌱 Prologue',label:"Arrived at Grandpa's Farm",auto:()=>true},
-  {g:'🌱 Prologue',label:'Bamboo Rod from Willy (Day 2)',ev:1400094},
-  {g:'🌱 Prologue',label:'The Mines opened (Spring 5)',ev:60367},
-  {g:'🌱 Prologue',label:"Wizard's Tower — CC Junimo note revealed",ev:3910975},
-  {g:'⚒️ Mining Arc',label:'Copper tools unlocked (Mine 40)',mk:'mq_copper'},
-  {g:'⚒️ Mining Arc',label:'Iron tools unlocked (Mine 80)',mk:'mq_iron'},
-  {g:'⚒️ Mining Arc',label:'Skull Key 💀 — Mine Level 100',c:b=>!!b.hasSkullKey},
-  {g:'⚒️ Mining Arc',label:'Skull Cavern entered 🌵',mk:'mq_skull'},
-  {g:'🎣 Fishing Arc',label:'Fiberglass Rod from Willy (1800g, Spring 6+)',mk:'mq_fgrod'},
-  {g:'🎣 Fishing Arc',label:'Iridium Rod from Willy (7500g, Fishing 6+)',mk:'mq_irod'},
-  {g:'🎣 Fishing Arc',label:'Fishing Level 10 ⭐',c:b=>(b.skills||{}).fish>=10},
-  {g:'🏠 Homestead',label:'Kitchen — House Upgrade 1',houseMin:1},
-  {g:'🏠 Homestead',label:"Kids' Room — House Upgrade 2",houseMin:2},
-  {g:'🏠 Homestead',label:'Cellar — House Upgrade 3',houseMin:3},
-  {g:'🏛️ CC Oath',label:'Pantry complete',ccRoom:'Pantry'},
-  {g:'🏛️ CC Oath',label:'Crafts Room complete',ccRoom:'Crafts Room'},
-  {g:'🏛️ CC Oath',label:'Fish Tank complete',ccRoom:'Fish Tank'},
-  {g:'🏛️ CC Oath',label:'Boiler Room complete',ccRoom:'Boiler Room'},
-  {g:'🏛️ CC Oath',label:'Bulletin Board complete',ccRoom:'Bulletin Board'},
-  {g:'🏛️ CC Oath',label:'Vault complete — Bus Repaired! 🚌',ccRoom:'Vault'},
-  {g:'🏛️ CC Oath',label:'🎉 Community Center COMPLETE',ccAll:true},
-  {g:'🌵 Desert Run',label:'Calico Desert — first trip',mk:'mq_desert'},
-  {g:'🌵 Desert Run',label:'First Iridium Bar smelted 💜',mk:'mq_ibar'},
-  {g:'🌵 Desert Run',label:'Club Card from Qi 🃏',c:b=>!!b.hasClubCard},
-  {g:'🌵 Desert Run',label:'Rusty Key — Sewers unlocked 🗝️',c:b=>!!b.hasRustyKey},
-  {g:'💰 Year 1 Mission',label:'100k gold total earned',c:b=>(b.totalMoneyEarned||0)>=100000},
-  {g:'💰 Year 1 Mission',label:'500k gold total earned',c:b=>(b.totalMoneyEarned||0)>=500000},
-  {g:'💰 Year 1 Mission',label:'1M gold total earned 🌟',c:b=>(b.totalMoneyEarned||0)>=1000000},
-  {g:'💰 Year 1 Mission',label:'First Starfruit Wine kegged 🍷',mk:'mq_starwine'},
-  {g:'💰 Year 1 Mission',label:'5M gold total earned 🏆',c:b=>(b.totalMoneyEarned||0)>=5000000},
+  {g:'Prologue',gi:'item-parsnip',label:"Arrived at Grandpa's Farm",auto:()=>true},
+  {g:'Prologue',gi:'item-parsnip',label:'Bamboo Rod from Willy (Day 2)',ev:1400094},
+  {g:'Prologue',gi:'item-parsnip',label:'The Mines opened (Spring 5)',ev:60367},
+  {g:'Prologue',gi:'item-parsnip',label:"Wizard's Tower — CC Junimo note revealed",ev:3910975},
+  {g:'Mining Arc',gi:'pickaxe',label:'Copper tools unlocked (Mine 40)',mk:'mq_copper'},
+  {g:'Mining Arc',gi:'pickaxe',label:'Iron tools unlocked (Mine 80)',mk:'mq_iron'},
+  {g:'Mining Arc',gi:'pickaxe',label:'Skull Key — Mine Level 100',c:b=>!!b.hasSkullKey},
+  {g:'Mining Arc',gi:'pickaxe',label:'Skull Cavern entered',mk:'mq_skull'},
+  {g:'Fishing Arc',gi:'fishing-rod',label:'Fiberglass Rod from Willy (1800g, Spring 6+)',mk:'mq_fgrod'},
+  {g:'Fishing Arc',gi:'fishing-rod',label:'Iridium Rod from Willy (7500g, Fishing 6+)',mk:'mq_irod'},
+  {g:'Fishing Arc',gi:'fishing-rod',label:'Fishing Level 10',c:b=>(b.skills||{}).fish>=10},
+  {g:'Homestead',gi:'chest-wood',label:'Kitchen — House Upgrade 1',houseMin:1},
+  {g:'Homestead',gi:'chest-wood',label:"Kids' Room — House Upgrade 2",houseMin:2},
+  {g:'Homestead',gi:'chest-wood',label:'Cellar — House Upgrade 3',houseMin:3},
+  {g:'CC Oath',gi:'emoji-sparkle',label:'Pantry complete',ccRoom:'Pantry'},
+  {g:'CC Oath',gi:'emoji-sparkle',label:'Crafts Room complete',ccRoom:'Crafts Room'},
+  {g:'CC Oath',gi:'emoji-sparkle',label:'Fish Tank complete',ccRoom:'Fish Tank'},
+  {g:'CC Oath',gi:'emoji-sparkle',label:'Boiler Room complete',ccRoom:'Boiler Room'},
+  {g:'CC Oath',gi:'emoji-sparkle',label:'Bulletin Board complete',ccRoom:'Bulletin Board'},
+  {g:'CC Oath',gi:'emoji-sparkle',label:'Vault complete — Bus Repaired!',ccRoom:'Vault'},
+  {g:'CC Oath',gi:'emoji-sparkle',label:'Community Center COMPLETE',ccAll:true},
+  {g:'Desert Run',gi:'item-iridium-bar',label:'Calico Desert — first trip',mk:'mq_desert'},
+  {g:'Desert Run',gi:'item-iridium-bar',label:'First Iridium Bar smelted',mk:'mq_ibar'},
+  {g:'Desert Run',gi:'item-iridium-bar',label:'Club Card from Qi',c:b=>!!b.hasClubCard},
+  {g:'Desert Run',gi:'item-iridium-bar',label:'Rusty Key — Sewers unlocked',c:b=>!!b.hasRustyKey},
+  {g:'Year 1 Mission',gi:'item-gold-bar',label:'100k gold total earned',c:b=>(b.totalMoneyEarned||0)>=100000},
+  {g:'Year 1 Mission',gi:'item-gold-bar',label:'500k gold total earned',c:b=>(b.totalMoneyEarned||0)>=500000},
+  {g:'Year 1 Mission',gi:'item-gold-bar',label:'1M gold total earned',c:b=>(b.totalMoneyEarned||0)>=1000000},
+  {g:'Year 1 Mission',gi:'item-gold-bar',label:'First Starfruit Wine kegged',mk:'mq_starwine'},
+  {g:'Year 1 Mission',gi:'item-gold-bar',label:'5M gold total earned',c:b=>(b.totalMoneyEarned||0)>=5000000},
 ];
 
 function checkMQ(f){
@@ -1879,7 +1917,7 @@ function renderMainQuest(){
   if(!el) return;
   const b=S.bridge;
   const aq=b&&b.activeQuests;
-  let html='<div class="unlock-section"><div class="unlock-sec-title">📋 Active Journal</div>';
+  let html=`<div class="unlock-section"><div class="unlock-sec-title">${si('emoji-flag',18)}Active Journal</div>`;
   if(!b){
     html+='<div style="font-size:12px;color:var(--muted);padding:8px 0">Connect bridge for live journal</div>';
   } else if(aq&&aq.length){
@@ -1894,7 +1932,8 @@ function renderMainQuest(){
   MAIN_QUEST_ARC.forEach(f=>{if(!groups[f.g])groups[f.g]=[];groups[f.g].push(f);});
   Object.entries(groups).forEach(([g,flags])=>{
     const doneCount=flags.filter(f=>checkMQ(f)).length;
-    html+=`<div class="unlock-section"><div class="unlock-sec-title">${g}<span style="margin-left:auto;color:var(--acc);font-size:10px">${doneCount}/${flags.length}</span></div>`;
+    const gi=flags[0]?.gi;
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">${gi?si(gi,18):''}${g}<span style="margin-left:auto;color:var(--acc);font-size:10px">${doneCount}/${flags.length}</span></div>`;
     flags.forEach(f=>{
       const checked=checkMQ(f);
       if(f.mk){
@@ -1930,33 +1969,33 @@ function renderOdds(){
   const goldPerDay=days>0?Math.round(totalEarned/days):0;
   const fishPerDay=days>0?(fish/days).toFixed(1):null;
   const html=`
-  <div class="unlock-section"><div class="unlock-sec-title">📅 Farm Life</div>
-    ${srow('📅 Days Played',days,'',days>=112?'🌟 Year 1 complete!':days>=84?'❄️ Winter is here':days>=56?'🍂 Fall vibes':days>=28?'☀️ Summer sun':'🌱 Spring baby')}
-    ${srow('👣 Steps Taken',stats.stepsTaken||0,'',null)}
-    ${srow('🛏️ Times Slept',stats.timesSleep||0,'',null)}
-    ${srow('💀 Passed Out',passOut,'',passOut>=10?'🥴 Please eat something!!':passOut>=5?'😅 Touch some grass':passOut>=1?'Oops 😬':null)}
+  <div class="unlock-section"><div class="unlock-sec-title">${si('buff-farming',18)}Farm Life</div>
+    ${srow(`${si('emoji-sparkle',14)}Days Played`,days,'',days>=112?'Year 1 complete!':days>=84?'Winter is here':days>=56?'Fall vibes':days>=28?'Summer sun':'Spring baby')}
+    ${srow(`${si('buff-speed',14)}Steps Taken`,stats.stepsTaken||0,'',null)}
+    ${srow(`${si('emoji-zzz',14)}Times Slept`,stats.timesSleep||0,'',null)}
+    ${srow(`${si('icon-skull',14)}Passed Out`,passOut,'',passOut>=10?'Please eat something!!':passOut>=5?'Touch some grass':passOut>=1?'Oops':null)}
   </div>
-  <div class="unlock-section"><div class="unlock-sec-title">🎣 The Fishing Life</div>
-    ${srow('🎣 Times Cast',stats.timesFished||0,'',null)}
-    ${srow('🐟 Fish Caught',fish,'',fish>=1000?'🏆 Master Angler!':fish>=500?'Willy is so proud 🎣':fish>=100?'Getting there!':'Just warming up')}
-    ${fishPerDay!==null?srow('📊 Fish Per Day',fishPerDay,'/day',null):''}
+  <div class="unlock-section"><div class="unlock-sec-title">${si('fishing-rod',18)}The Fishing Life</div>
+    ${srow(`${si('fishing-rod',14)}Times Cast`,stats.timesFished||0,'',null)}
+    ${srow(`${si('emoji-fish',14)}Fish Caught`,fish,'',fish>=1000?'Master Angler!':fish>=500?'Willy is so proud':fish>=100?'Getting there!':'Just warming up')}
+    ${fishPerDay!==null?srow(`${si('buff-fishing',14)}Fish Per Day`,fishPerDay,'/day',null):''}
   </div>
-  <div class="unlock-section"><div class="unlock-sec-title">⚒️ The Grind</div>
-    ${srow('🪨 Rocks Smashed',stats.rocksCrushed||0,'',null)}
-    ${srow('⚔️ Monsters Killed',monsters,'',monsters>=5000?'💀 Skull Cavern legend':monsters>=1000?'⚔️ Slayer supreme':monsters>=100?'Getting dangerous':'Still a rookie')}
-    ${srow('🌿 Items Foraged',stats.itemsForaged||0,'',null)}
-    ${srow('🌾 Crops Shipped',stats.cropsShipped||0,'',null)}
+  <div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe',18)}The Grind</div>
+    ${srow(`${si('pickaxe',14)}Rocks Smashed`,stats.rocksCrushed||0,'',null)}
+    ${srow(`${si('galaxy-sword',14)}Monsters Killed`,monsters,'',monsters>=5000?'Skull Cavern legend':monsters>=1000?'Slayer supreme':monsters>=100?'Getting dangerous':'Still a rookie')}
+    ${srow(`${si('buff-foraging',14)}Items Foraged`,stats.itemsForaged||0,'',null)}
+    ${srow(`${si('crop-wheat',14)}Crops Shipped`,stats.cropsShipped||0,'',null)}
   </div>
-  <div class="unlock-section"><div class="unlock-sec-title">💰 Gold Flow</div>
-    ${srow('💰 In Wallet',b.gold||0,'g',null)}
-    ${srow('📈 Total Earned',totalEarned,'g',null)}
-    ${goldPerDay>0?srow('⚡ Per-Day Rate',goldPerDay,'g/day',null):''}
-    ${srow('🎯 Year 1 Progress',Math.min(100,Math.round(totalEarned/5000000*100)),'%',totalEarned>=5000000?'🏆 DONE!':totalEarned>0?`${(5000000-totalEarned).toLocaleString()}g to go`:null)}
+  <div class="unlock-section"><div class="unlock-sec-title">${si('icon-gold-coin',18)}Gold Flow</div>
+    ${srow(`${si('icon-gold-coin',14)}In Wallet`,b.gold||0,'g',null)}
+    ${srow(`${si('buff-luck',14)}Total Earned`,totalEarned,'g',null)}
+    ${goldPerDay>0?srow(`${si('buff-speed',14)}Per-Day Rate`,goldPerDay,'g/day',null):''}
+    ${srow(`${si('emoji-star',14)}Year 1 Progress`,Math.min(100,Math.round(totalEarned/5000000*100)),'%',totalEarned>=5000000?'DONE!':totalEarned>0?`${(5000000-totalEarned).toLocaleString()}g to go`:null)}
   </div>
-  <div class="unlock-section"><div class="unlock-sec-title">🏛️ Collection</div>
-    ${srow('🏛️ Museum Donations',b.museumDonations||0,' / 95',null)}
-    ${srow('🍳 Cooking Recipes',(b.cookingRecipes||[]).length,' known',null)}
-    ${srow('🔨 Crafting Recipes',(b.craftingRecipes||[]).length,' known',null)}
+  <div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood',18)}Collection</div>
+    ${srow(`${si('icon-chest',14)}Museum Donations`,b.museumDonations||0,' / 95',null)}
+    ${srow(`${si('emoji-mushroom',14)}Cooking Recipes`,(b.cookingRecipes||[]).length,' known',null)}
+    ${srow(`${si('furnace',14)}Crafting Recipes`,(b.craftingRecipes||[]).length,' known',null)}
   </div>`;
   el.innerHTML=html;
 }
@@ -1992,15 +2031,15 @@ const SKILL_PROFS={
   forage:[12,13,14,15,16,17],mine:[18,19,20,21,22,23],combat:[24,25,26,27,28,29]
 };
 const SPECIAL_FLAGS=[
-  {k:'hasSkullKey',l:'Skull Key 💀',d:'Access Skull Cavern'},
-  {k:'hasRustyKey',l:'Rusty Key 🗝️',d:'Access Sewers'},
-  {k:'hasClubCard',l:'Club Card 🃏',d:'Saloon card room'},
-  {k:'hasDarkTalisman',l:'Dark Talisman 🔮',d:'Sewers quest reward'},
-  {k:'hasMagicInk',l:'Magic Ink ✨',d:'Wizard quest reward'},
-  {k:'hasMagnifyingGlass',l:'Magnifying Glass 🔍',d:'Find secret notes'},
-  {k:'canUnderstandDwarves',l:'Dwarf Language 📜',d:'4 dwarf scrolls donated'},
-  {k:'hasGaloshes',l:'Galoshes 🥾',d:'Rainy day speed boost'},
-  {k:'hasSpecialCharm',l:'Special Charm 🍀',d:'Daily luck +0.025'},
+  {k:'hasSkullKey',l:'Skull Key',d:'Access Skull Cavern'},
+  {k:'hasRustyKey',l:'Rusty Key',d:'Access Sewers'},
+  {k:'hasClubCard',l:'Club Card',d:'Saloon card room'},
+  {k:'hasDarkTalisman',l:'Dark Talisman',d:'Sewers quest reward'},
+  {k:'hasMagicInk',l:'Magic Ink',d:'Wizard quest reward'},
+  {k:'hasMagnifyingGlass',l:'Magnifying Glass',d:'Find secret notes'},
+  {k:'canUnderstandDwarves',l:'Dwarf Language',d:'4 dwarf scrolls donated'},
+  {k:'hasGaloshes',l:'Galoshes',d:'Rainy day speed boost'},
+  {k:'hasSpecialCharm',l:'Special Charm',d:'Daily luck +0.025'},
 ];
 
 function heartBar(pts,max){
@@ -2021,7 +2060,7 @@ function renderTardis(){
   if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your backpack 🌀</div>';return;}
   const items=b.backpack||[];
   if(!items.length){el.innerHTML='<div class="junimo-offline">Backpack is empty!</div>';return;}
-  let html=`<div class="unlock-section"><div class="unlock-sec-title">🌀 Backpack — ${items.length} item${items.length!==1?'s':''}</div><div class="inv-grid">`;
+  let html=`<div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood',18)}Backpack — ${items.length} item${items.length!==1?'s':''}</div><div class="inv-grid">`;
   items.forEach(it=>{
     const q=qualBadge(it.quality);
     html+=`<div class="inv-item"><span class="inv-name">${it.name}</span><span class="inv-meta">${it.count>1?'×'+it.count:''}</span>${q?`<span class="inv-qual">${q}</span>`:''}</div>`;
@@ -2037,7 +2076,7 @@ function renderDavy(){
   if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your haul 🏴‍☠️</div>';return;}
   const gold=b.gold||0;
   const total=b.totalMoneyEarned||0;
-  let html=`<div class="card"><div class="card-header">💰 Wallet</div><div class="card-body">
+  let html=`<div class="card"><div class="card-header">${si('icon-gold-coin',14)}Wallet</div><div class="card-body">
     <div class="davy-gold">${gold.toLocaleString()}g</div>
     <div style="font-size:12px;color:var(--muted);margin-top:4px">Total earned: ${total.toLocaleString()}g · Goal: 5,000,000g</div>
     <div class="museum-bar-track" style="margin:8px 0 0"><div class="museum-bar-fill" style="width:${Math.min(100,Math.round(total/5000000*100))}%"></div></div>
@@ -2046,15 +2085,15 @@ function renderDavy(){
   // Tracked resources
   const inv=b.inventory||{};
   const RESOURCE_ROWS=[
-    ['⛏️ Copper Ore',b.copperOre||0],['⛏️ Iron Ore',b.ironOre||0],
-    ['⛏️ Gold Ore',b.goldOre||0],['⛏️ Coal',b.coal||0],
-    ['🔴 Iridium Ore',inv.iridium||0],
-    ['🔶 Copper Bar',inv.copper_bar||0],['🔷 Iron Bar',inv.iron_bar||0],
-    ['🟡 Gold Bar',inv.gold_bar||0],['💎 Iridium Bar',inv.iridium_bar||0],
-    ['🪵 Wood',inv.wood||0],['🪨 Stone',inv.stone||0],['🌲 Hardwood',inv.hardwood||0],
+    [`${si('pickaxe-copper',14)}Copper Ore`,b.copperOre||0],[`${si('pickaxe',14)}Iron Ore`,b.ironOre||0],
+    [`${si('pickaxe-gold',14)}Gold Ore`,b.goldOre||0],[`${si('buff-mining',14)}Coal`,b.coal||0],
+    [`${si('pickaxe-iridium',14)}Iridium Ore`,inv.iridium||0],
+    [`${si('pickaxe-copper',14)}Copper Bar`,inv.copper_bar||0],[`${si('pickaxe',14)}Iron Bar`,inv.iron_bar||0],
+    [`${si('pickaxe-gold',14)}Gold Bar`,inv.gold_bar||0],[`${si('pickaxe-iridium',14)}Iridium Bar`,inv.iridium_bar||0],
+    [`${si('axe',14)}Wood`,inv.wood||0],[`${si('buff-mining',14)}Stone`,inv.stone||0],[`${si('axe-iridium',14)}Hardwood`,inv.hardwood||0],
   ].filter(r=>r[1]>0);
   if(RESOURCE_ROWS.length){
-    html+=`<div class="unlock-section"><div class="unlock-sec-title">⛏️ Resources (Backpack + Chests)</div>`;
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe',18)}Resources (Backpack + Chests)</div>`;
     RESOURCE_ROWS.forEach(([name,count])=>{
       html+=`<div class="unlock-row"><span>${name}</span><span class="flag-count">${count.toLocaleString()}</span></div>`;
     });
@@ -2135,7 +2174,7 @@ function renderTouchingGrass(){
   if(!el) return;
   const friendship=S.bridge?(S.bridge.friendship||{}):{};
   const sorted=[...NPC_DATA].sort((a,b)=>(friendship[b.k]||0)-(friendship[a.k]||0));
-  let html='<div class="unlock-section"><div class="unlock-sec-title">🌿 Friendship — sorted by hearts</div>';
+  let html=`<div class="unlock-section"><div class="unlock-sec-title">${si('buff-foraging',18)}Friendship — sorted by hearts</div>`;
   sorted.forEach(npc=>{
     const pts=friendship[npc.k]||0;
     const hearts=Math.min(8,Math.floor(pts/250));
@@ -2184,7 +2223,7 @@ function renderSupportingCast(){
   const pets=b.pets||[];
   let html='';
   if(pets.length){
-    html+=`<div class="unlock-section"><div class="unlock-sec-title">🐾 Pets</div>`;
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('emoji-cat',18)}Pets</div>`;
     pets.forEach(p=>{
       const hearts=Math.min(5,Math.floor((p.friendship||0)/200));
       const aHF=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
@@ -2199,7 +2238,7 @@ function renderSupportingCast(){
     (byBuilding[a.building]||(byBuilding[a.building]=[])).push(a);
   });
   Object.entries(byBuilding).forEach(([bname,anims])=>{
-    html+=`<div class="unlock-section"><div class="unlock-sec-title">🏠 ${bname} (${anims.length})</div>`;
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood',18)}${bname} (${anims.length})</div>`;
     anims.forEach(a=>{
       const hearts=Math.min(5,Math.floor((a.friendship||0)/200));
       const emoji=a.type.includes('Chicken')?'🐔':a.type.includes('Cow')?'🐄':a.type.includes('Pig')?'🐷':a.type.includes('Sheep')?'🐑':a.type.includes('Goat')?'🐐':a.type.includes('Duck')?'🦆':a.type.includes('Rabbit')?'🐰':'🐾';
@@ -2218,7 +2257,7 @@ function renderPlotArmor(){
   if(!el) return;
   const b=S.bridge;
   // Special flags
-  let html=`<div class="unlock-section"><div class="unlock-sec-title">🛡️ Special Items &amp; Flags</div>`;
+  let html=`<div class="unlock-section"><div class="unlock-sec-title">${si('sword-tempered',18)}Special Items &amp; Flags</div>`;
   SPECIAL_FLAGS.forEach(f=>{
     const have=b?!!b[f.k]:false;
     html+=`<div class="unlock-row"><div class="unlock-dot${have?' yes':''}"></div><span style="flex:1">${f.l}</span><span style="font-size:11px;color:var(--muted)">${f.d}</span></div>`;
@@ -2232,19 +2271,19 @@ function renderPlotArmor(){
   // Stats / Collections
   const stats=b?b.stats||{}:{};
   const statRows=[
-    ['👣 Steps Taken','stepsTaken'],['📅 Days Played','daysPlayed'],
-    ['🎣 Times Fished','timesFished'],['💀 Times Passed Out','timesUnconscious'],
-    ['🛏️ Times Slept','timesSleep'],['🪨 Stones Broken','rocksCrushed'],
-    ['🌾 Crops Shipped','cropsShipped'],['🌿 Items Foraged','itemsForaged'],
-    ['🐟 Fish Caught','fishCaught'],['⚔️ Monsters Killed','monstersKilled'],
-    ['💰 Gold Earned','moneyEarned'],
+    [`${si('buff-speed',14)}Steps Taken`,'stepsTaken'],[`${si('buff-farming',14)}Days Played`,'daysPlayed'],
+    [`${si('fishing-rod',14)}Times Fished`,'timesFished'],[`${si('icon-skull',14)}Times Passed Out`,'timesUnconscious'],
+    [`${si('emoji-zzz',14)}Times Slept`,'timesSleep'],[`${si('pickaxe',14)}Stones Broken`,'rocksCrushed'],
+    [`${si('crop-wheat',14)}Crops Shipped`,'cropsShipped'],[`${si('buff-foraging',14)}Items Foraged`,'itemsForaged'],
+    [`${si('emoji-fish',14)}Fish Caught`,'fishCaught'],[`${si('galaxy-sword',14)}Monsters Killed`,'monstersKilled'],
+    [`${si('icon-gold-coin',14)}Gold Earned`,'moneyEarned'],
   ].filter(([,k])=>stats[k]>0);
   if(statRows.length){
-    html+=`<div class="unlock-section"><div class="unlock-sec-title">📊 Stats &amp; Records</div>`;
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('buff-luck',18)}Stats &amp; Records</div>`;
     statRows.forEach(([label,k])=>{
       html+=`<div class="unlock-row"><span>${label}</span><span class="stat-val">${(stats[k]||0).toLocaleString()}</span></div>`;
     });
-    html+=`<div class="unlock-row"><span>🏛️ Museum Donations</span><span class="stat-val">${b?b.museumDonations||0:0} / 95</span></div>`;
+    html+=`<div class="unlock-row"><span>${si('icon-chest',14)}Museum Donations</span><span class="stat-val">${b?b.museumDonations||0:0} / 95</span></div>`;
     html+='</div>';
   }
   if(!b) html='<div class="junimo-offline">Connect bridge for live flags 🛡️</div>'+html;
@@ -2443,6 +2482,7 @@ function goNightlockSub(sub){
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
   lsSet('sdv_nsub',sub);
+  document.documentElement.dataset.sub=sub;
   renderNightlockSub(sub);
 }
 
@@ -2463,6 +2503,7 @@ function goStoryTab(sub){
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
   lsSet('sdv_stab',sub);
+  document.documentElement.dataset.sub=sub;
   renderStoryTab(sub);
 }
 
@@ -2526,6 +2567,7 @@ function goPanel(tab){
   S.tab=tab;
   lsSet('sdv_tab',tab);
   document.documentElement.dataset.tab=tab;
+  document.documentElement.dataset.sub='';
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   const panel=document.getElementById('p-'+tab);
@@ -2546,6 +2588,7 @@ function goSubPanel(sub){
   const panel=document.getElementById('sp-'+sub);
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
+  document.documentElement.dataset.sub=sub;
 }
 
 const junimoSVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="32" height="32">
@@ -2705,6 +2748,37 @@ function init(){
 }
 
 document.addEventListener('DOMContentLoaded',init);
+
+(function initBgSprites(){
+  const ICONS=['watering-can','hoe','pickaxe','axe','fishing-rod','scythe',
+    'chest-wood','furnace','bee-house','keg','preserves-jar','crystalarium',
+    'sprinkler-iridium','scarecrow','galaxy-sword','lava-katana','sword-tempered',
+    'dagger-crystal','club-knight','crop-strawberry','crop-melon','crop-pumpkin',
+    'crop-sunflower','crop-starfruit','crop-blueberry','crop-corn','crop-ancient-fruit',
+    'crop-parsnip','buff-farming','buff-fishing','buff-foraging','buff-mining',
+    'buff-combat','buff-luck','emoji-heart','emoji-sparkle','emoji-star',
+    'emoji-tulip','emoji-strawberry','emoji-mushroom','emoji-rainbow',
+    'emoji-snowflake','emoji-moon','emoji-fish','boots','ring',
+    'watering-can-iridium','pickaxe-iridium','axe-iridium'];
+  const el=document.getElementById('bg-sprites');
+  if(!el) return;
+  const W=window.innerWidth, H=window.innerHeight;
+  const count=Math.min(55, Math.floor(W*H/6500));
+  for(let i=0;i<count;i++){
+    const img=document.createElement('img');
+    const name=ICONS[Math.floor(Math.random()*ICONS.length)];
+    img.src=`assets/icons/${name}.png`;
+    img.className='bg-sprite';
+    img.onerror=()=>{img.remove();};
+    const sz=Math.floor(22+Math.random()*28);
+    const rot=(Math.random()*30-15).toFixed(1);
+    const rot2=(rot*-1.5).toFixed(1);
+    const dur=(14+Math.random()*16).toFixed(1);
+    const dy=(-12-Math.random()*20).toFixed(0);
+    img.style.cssText=`width:${sz}px;height:${sz}px;left:${(Math.random()*102-1).toFixed(1)}%;top:${(Math.random()*102-1).toFixed(1)}%;--rot:${rot}deg;--rot2:${rot2}deg;--dur:${dur}s;--dy:${dy}px;`;
+    el.appendChild(img);
+  }
+})();
 </script>
 </body>
 </html>

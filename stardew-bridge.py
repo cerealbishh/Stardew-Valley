@@ -16,8 +16,9 @@ from datetime import datetime, timezone, timedelta
 SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/Hoedown_203853699/Hoedown_203853699"
 PORT = 8742
 POLL_INTERVAL = 5
-CERT_FILE = "/Users/roohi/roohis-macbook-air.tailcce197.ts.net.crt"
-KEY_FILE  = "/Users/roohi/roohis-macbook-air.tailcce197.ts.net.key"
+_BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
+CERT_FILE = os.path.join(_BRIDGE_DIR, "roohis-macbook-air.tailcce197.ts.net.crt")
+KEY_FILE  = os.path.join(_BRIDGE_DIR, "roohis-macbook-air.tailcce197.ts.net.key")
 
 latest_data = {}
 last_modified = 0
