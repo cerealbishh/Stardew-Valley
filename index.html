@@ -95,10 +95,10 @@ html[data-tab=nightlock]{
 
 /* ── Per-sub-tab color overrides ──────────────────────────────────────────── */
 /* Route 66 sub-tabs */
-html[data-tab=route][data-sub=prep]{--bg:#F4C1CB;--surf:#EF94A7;--acc:#e36887;--nav-bg:rgba(239,148,167,.97);}
+html[data-tab=route][data-sub=tasks]{--bg:#F4C1CB;--surf:#EF94A7;--acc:#e36887;--nav-bg:rgba(239,148,167,.97);}
 html[data-tab=route][data-sub=cal]{--bg:#EFCEAA;--surf:#f3d98f;--acc:#CAAF77;--nav-bg:rgba(243,217,143,.97);}
 html[data-tab=route][data-sub=par]{--bg:#C5DDD6;--surf:#ADE6DC;--acc:#AABFB0;--nav-bg:rgba(173,230,220,.97);}
-html[data-tab=route][data-sub=forget]{--bg:#C1C1E4;--surf:#DCBFF2;--acc:#B29EF0;--nav-bg:rgba(220,191,242,.97);}
+html[data-tab=route][data-sub=carry]{--bg:#C1C1E4;--surf:#DCBFF2;--acc:#B29EF0;--nav-bg:rgba(220,191,242,.97);}
 /* Hoard sub-tabs */
 html[data-tab=hoard][data-sub=junimo]{--bg:#C5DDD6;--surf:#ADE6DC;--acc:#AABFB0;--nav-bg:rgba(173,230,220,.97);}
 html[data-tab=hoard][data-sub=quests]{--bg:#EFCEAA;--surf:#f3d98f;--acc:#CAAF77;--nav-bg:rgba(243,217,143,.97);}
@@ -1698,7 +1698,7 @@ function goHoardSub(sub){
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
   lsSet('sdv_hsub',sub);
-  document.documentElement.dataset.sub=sub;
+  if(S.tab==='hoard') document.documentElement.dataset.sub=sub;
   renderHoardSub(sub);
 }
 
@@ -2482,7 +2482,7 @@ function goNightlockSub(sub){
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
   lsSet('sdv_nsub',sub);
-  document.documentElement.dataset.sub=sub;
+  if(S.tab==='nightlock') document.documentElement.dataset.sub=sub;
   renderNightlockSub(sub);
 }
 
@@ -2503,7 +2503,7 @@ function goStoryTab(sub){
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
   lsSet('sdv_stab',sub);
-  document.documentElement.dataset.sub=sub;
+  if(S.tab==='story') document.documentElement.dataset.sub=sub;
   renderStoryTab(sub);
 }
 
@@ -2574,6 +2574,7 @@ function goPanel(tab){
   if(panel) panel.classList.add('active');
   const btn=document.querySelector(`.nav-btn[data-tab="${tab}"]`);
   if(btn) btn.classList.add('active');
+  if(tab==='route') goSubPanel(lsGet('sdv_rsub')||'tasks');
   if(tab==='hoard') goHoardSub(lsGet('sdv_hsub')||'junimo');
   if(tab==='story') goStoryTab(lsGet('sdv_stab')||'previously');
   if(tab==='nightlock') goNightlockSub(lsGet('sdv_nsub')||'tardis');
@@ -2588,7 +2589,7 @@ function goSubPanel(sub){
   const panel=document.getElementById('sp-'+sub);
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
-  document.documentElement.dataset.sub=sub;
+  if(S.tab==='route') document.documentElement.dataset.sub=sub;
 }
 
 const junimoSVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="32" height="32">
