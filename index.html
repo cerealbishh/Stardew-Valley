@@ -103,6 +103,9 @@ body{display:flex;flex-direction:column;overflow:hidden;
 #ticker-left{display:flex;align-items:center;gap:8px;}
 #ticker-logo{height:34px;width:auto;}
 #ticker-subtitle{font-family:'Press Start 2P',monospace;font-size:6px;color:var(--text);opacity:.8;white-space:nowrap;}
+.home-hero{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 16px 8px;text-align:center;}
+.home-logo{width:min(320px,88vw);height:auto;image-rendering:pixelated;filter:drop-shadow(0 4px 12px rgba(0,0,0,.18));}
+.home-subtitle{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--acc);letter-spacing:1px;line-height:1.6;}
 #ticker-text{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:.3px;line-height:1.6;}
 #ticker-right{display:flex;gap:10px;align-items:center;}
 img.sdv-icon{image-rendering:pixelated;display:block;}
@@ -490,7 +493,10 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 
   <!-- 🏠 HOME -->
   <div class="panel active" id="p-home">
-    <div class="panel-title">🌾 Stardew or Dew Not</div>
+    <div class="home-hero">
+      <img class="home-logo" src="assets/logo.png" alt="Stardew Valley">
+      <div class="home-subtitle">or Dew Not</div>
+    </div>
     <div class="card">
       <div class="card-header">📅 Today</div>
       <div class="card-body">
