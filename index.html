@@ -352,7 +352,7 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .npc-header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--surf);cursor:pointer;border-bottom:none;}
 .npc-card[data-open=true] .npc-header{border-bottom:none;}
 .npc-card[data-open=false] .npc-body{display:none;}
-.npc-emoji{font-size:20px;flex-shrink:0;line-height:1;}
+.npc-portrait{width:44px;height:44px;flex-shrink:0;image-rendering:pixelated;border-radius:8px;object-fit:cover;}
 .npc-name{font-weight:800;font-size:13px;flex:1;}
 .npc-bday-tag{font-size:10px;color:var(--muted);flex-shrink:0;text-align:right;}
 .npc-hearts-mini{display:flex;gap:1px;flex-shrink:0;}
@@ -536,10 +536,10 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
     <div class="panel-title">The Hoard — Items &amp; Unlocks Tracker</div>
     <div class="sub-nav" id="hoard-sub-nav">
       <button class="sub-btn active" data-hsub="junimo"><img class="sdv-icon" src="assets/icons/emoji-strawberry.png" alt="">Junimo Feed</button>
-      <button class="sub-btn" data-hsub="quests"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Take This Job</button>
-      <button class="sub-btn" data-hsub="museum"><img class="sdv-icon" src="assets/icons/emoji-sparkle.png" alt="">Look Shiny</button>
-      <button class="sub-btn" data-hsub="unlocks"><img class="sdv-icon" src="assets/icons/furnace.png" alt="">I Made It</button>
-      <button class="sub-btn" data-hsub="npcs"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant</button>
+      <button class="sub-btn" data-hsub="quests"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Take This Job And Shove It</button>
+      <button class="sub-btn" data-hsub="museum"><img class="sdv-icon" src="assets/icons/emoji-sparkle.png" alt="">Omg Look Something Shiny</button>
+      <button class="sub-btn" data-hsub="unlocks"><img class="sdv-icon" src="assets/icons/furnace.png" alt="">I Made It Myself</button>
+      <button class="sub-btn" data-hsub="npcs"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant of the Rock</button>
     </div>
     <div class="sub-panel active" id="hsp-junimo"><div id="junimo-content"></div></div>
     <div class="sub-panel" id="hsp-quests"><div id="quests-content"></div></div>
@@ -554,10 +554,10 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
     <div class="sub-nav" id="story-sub-nav">
       <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="assets/icons/emoji-star.png" alt="">Previously On</button>
       <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="assets/icons/emoji-mushroom.png" alt="">The Lore</button>
-      <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant</button>
+      <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant of the Rock</button>
       <button class="sub-btn" data-stab="milestones"><img class="sdv-icon" src="assets/icons/emoji-checkmark.png" alt="">Milestones</button>
-      <button class="sub-btn" data-stab="mainquest"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Quest</button>
-      <button class="sub-btn" data-stab="odds"><img class="sdv-icon" src="assets/icons/emoji-lightning.png" alt="">Odds</button>
+      <button class="sub-btn" data-stab="mainquest"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Main Quest</button>
+      <button class="sub-btn" data-stab="odds"><img class="sdv-icon" src="assets/icons/emoji-lightning.png" alt="">Never Tell Me the Odds</button>
     </div>
     <div class="sub-panel active" id="stp-previously"><div id="previously-content"></div></div>
     <div class="sub-panel" id="stp-lore"><div id="lore-content"></div></div>
@@ -571,15 +571,15 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   <div class="panel" id="p-nightlock">
     <div class="panel-title">Big Daddy Nightlock — Game Menu E-Screen</div>
     <div class="sub-nav" id="nightlock-sub-nav">
-      <button class="sub-btn active" data-nsub="tardis"><img class="sdv-icon" src="assets/icons/chest-wood.png" alt="">Tardis</button>
-      <button class="sub-btn" data-nsub="davy"><img class="sdv-icon" src="assets/icons/chest-stone.png" alt="">Davy's</button>
-      <button class="sub-btn" data-nsub="fitcheck"><img class="sdv-icon" src="assets/icons/boots.png" alt="">Fit</button>
-      <button class="sub-btn" data-nsub="skills"><img class="sdv-icon" src="assets/icons/buff-farming.png" alt="">Skills</button>
-      <button class="sub-btn" data-nsub="grass"><img class="sdv-icon" src="assets/icons/emoji-tulip.png" alt="">Grass</button>
-      <button class="sub-btn" data-nsub="recipes"><img class="sdv-icon" src="assets/icons/keg.png" alt="">Recipes</button>
-      <button class="sub-btn" data-nsub="cast"><img class="sdv-icon" src="assets/icons/emoji-cat.png" alt="">Cast</button>
-      <button class="sub-btn" data-nsub="plot"><img class="sdv-icon" src="assets/icons/galaxy-sword.png" alt="">Plot</button>
-      <button class="sub-btn" data-nsub="holocron"><img class="sdv-icon" src="assets/icons/emoji-fish.png" alt="">Holocron</button>
+      <button class="sub-btn active" data-nsub="tardis"><img class="sdv-icon" src="assets/icons/chest-wood.png" alt="">The Tardis</button>
+      <button class="sub-btn" data-nsub="davy"><img class="sdv-icon" src="assets/icons/chest-stone.png" alt="">Davy Jones' Locker</button>
+      <button class="sub-btn" data-nsub="fitcheck"><img class="sdv-icon" src="assets/icons/boots.png" alt="">Fit Check</button>
+      <button class="sub-btn" data-nsub="skills"><img class="sdv-icon" src="assets/icons/buff-farming.png" alt="">Skillmaxxing</button>
+      <button class="sub-btn" data-nsub="grass"><img class="sdv-icon" src="assets/icons/emoji-tulip.png" alt="">Touching Grass</button>
+      <button class="sub-btn" data-nsub="recipes"><img class="sdv-icon" src="assets/icons/keg.png" alt="">I Watched One (1) Youtube Video</button>
+      <button class="sub-btn" data-nsub="cast"><img class="sdv-icon" src="assets/icons/emoji-cat.png" alt="">The Supporting Cast</button>
+      <button class="sub-btn" data-nsub="plot"><img class="sdv-icon" src="assets/icons/galaxy-sword.png" alt="">Plot Armor</button>
+      <button class="sub-btn" data-nsub="holocron"><img class="sdv-icon" src="assets/icons/emoji-fish.png" alt="">The Holocron</button>
     </div>
     <div class="sub-panel active" id="nlp-tardis"><div id="tardis-content"></div></div>
     <div class="sub-panel" id="nlp-davy"><div id="davy-content"></div></div>
@@ -1591,7 +1591,7 @@ function renderCovenant(targetEl){
     const heartRow=Array.from({length:8},(_,i)=>`<span class="heart-lg">${hearts!==null&&i<hearts?hFull2Lg:hEmpty2Lg}</span>`).join('');
     const ptsLine=pts!==null&&pts!==undefined?`<span class="npc-pts">${pts} pts — ${hearts||0}♥</span>`:'<span class="npc-pts" style="font-style:italic">No bridge data</span>';
     card.innerHTML=`<div class="npc-header">
-      <span class="npc-emoji">${npc.e}</span>
+      <img class="npc-portrait" src="assets/portraits/${npc.k}.png" alt="${npc.n}" onerror="this.outerHTML='<span style=font-size:20px>${npc.e}</span>'">
       <span class="npc-name">${npc.n}</span>
       <span class="npc-bday-tag">${bLabel}${urgent}<br><span style="color:var(--acc)">${untilD}d away</span></span>
       <div class="npc-hearts-mini">${miniH}</div>
@@ -2146,7 +2146,7 @@ function renderTouchingGrass(){
     const filledH=hFull.repeat(hearts)+(halfH&&hearts<8?hHalf:'');
     const emptyH=hEmpty.repeat(8-hearts-(halfH&&hearts<8?1:0));
     html+=`<div class="grass-row">
-      <span style="font-size:16px;flex-shrink:0">${npc.e}</span>
+      <img src="assets/portraits/${npc.k}.png" alt="${npc.n}" style="width:28px;height:28px;image-rendering:pixelated;border-radius:6px;flex-shrink:0" onerror="this.outerHTML='<span style=font-size:14px>${npc.e}</span>'">
       <span class="grass-name">${npc.n}</span>
       <span class="grass-hearts">${filledH}${emptyH}</span>
       <span class="grass-pts">${pts.toLocaleString()}/${(8*250).toLocaleString()}</span>
