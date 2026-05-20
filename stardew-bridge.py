@@ -682,11 +682,48 @@ if __name__ == "__main__":
     if not os.path.exists(CERT_FILE) or not os.path.exists(KEY_FILE):
         print("[bridge] Generating self-signed certificate...")
         try:
+            import socket, subprocess
             from cryptography import x509
             from cryptography.x509.oid import NameOID
             from cryptography.hazmat.primitives import hashes, serialization
             from cryptography.hazmat.primitives.asymmetric import rsa
             import ipaddress
+
+            # Collect every IP and hostname this Mac answers to
+            san_ips, san_dns = set(), {'localhost'}
+            san_ips.add(ipaddress.IPv4Address('127.0.0.1'))
+            try:
+                # All network interface IPs
+                import subprocess, re
+                out = subprocess.check_output(['ifconfig'], text=True)
+                for m in re.finditer(r'inet (\d+\.\d+\.\d+\.\d+)', out):
+                    ip = m.group(1)
+                    if ip != '127.0.0.1':
+                        san_ips.add(ipaddress.IPv4Address(ip))
+            except Exception:
+                pass
+            try:
+                ts_out = subprocess.check_output(['tailscale', 'status', '--json'], text=True)
+                import json as _j
+                ts = _j.loads(ts_out)
+                self_node = ts.get('Self', {})
+                for addr in self_node.get('TailscaleIPs', []):
+                    try: san_ips.add(ipaddress.IPv4Address(addr))
+                    except Exception: pass
+                dns = self_node.get('DNSName', '').rstrip('.')
+                if dns:
+                    san_dns.add(dns)
+                    # also add short hostname
+                    san_dns.add(dns.split('.')[0])
+            except Exception:
+                pass
+            # Always include the Tailscale FQDN from CERT_FILE name as fallback
+            ts_host = os.path.basename(CERT_FILE).replace('.crt', '')
+            if ts_host:
+                san_dns.add(ts_host)
+
+            san_entries = [x509.IPAddress(ip) for ip in san_ips]
+            san_entries += [x509.DNSName(d) for d in san_dns]
 
             key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
             name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, u"Stardew Bridge")])
@@ -698,10 +735,7 @@ if __name__ == "__main__":
                 .serial_number(x509.random_serial_number())
                 .not_valid_before(datetime.now(timezone.utc))
                 .not_valid_after(datetime.now(timezone.utc) + timedelta(days=3650))
-                .add_extension(x509.SubjectAlternativeName([
-                    x509.IPAddress(ipaddress.IPv4Address('10.0.0.70')),
-                    x509.DNSName('localhost'),
-                ]), critical=False)
+                .add_extension(x509.SubjectAlternativeName(san_entries), critical=False)
                 .sign(key, hashes.SHA256())
             )
             with open(KEY_FILE, 'wb') as f:
@@ -710,8 +744,13 @@ if __name__ == "__main__":
                     serialization.NoEncryption()))
             with open(CERT_FILE, 'wb') as f:
                 f.write(cert.public_bytes(serialization.Encoding.PEM))
+            print(f"[bridge] Certificate SANs: IPs={[str(i) for i in san_ips]} DNS={san_dns}")
             print(f"[bridge] Certificate saved to {CERT_FILE}")
-            print(f"[bridge] Install cert on iPhone: http://10.0.0.70:8743/cert")
+            # Announce cert download URL for every IP
+            for ip in san_ips:
+                s = str(ip)
+                if not s.startswith('127'):
+                    print(f"[bridge] Install cert on iPhone: http://{s}:8743/cert")
         except ImportError:
             print("[bridge] cryptography not installed. Run: pip3 install cryptography")
             exit(1)
