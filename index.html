@@ -2541,8 +2541,8 @@ async function fetchBridge(){
   if(!ip) return;
   const status=document.getElementById('bridge-status');
   try{
-    const base=ip.startsWith('http')?ip:`https://${ip}`;
-    const res=await fetch(`${base}:${BRIDGE_PORT}/save`,{signal:AbortSignal.timeout(8000)});
+    const url=window.location.port===String(BRIDGE_PORT)?'/save':`https://${ip.replace(/^https?:\/\//,'').replace(/:\d+$/,'')}:${BRIDGE_PORT}/save`;
+    const res=await fetch(url,{signal:AbortSignal.timeout(8000)});
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
     S.bridge=data; S.lastSyncMs=Date.now(); updateSyncDot();
@@ -2728,8 +2728,19 @@ function init(){
   const dark=lsGet('sdv_dark');
   if(dark==='1'){S.dark=true;document.documentElement.dataset.dark='true';}
 
-  const ip=lsGet('sdv_ip');
-  if(ip){S.bridgeIP=ip;document.getElementById('bridge-ip').value=ip;fetchBridge();}
+  const BRIDGE_HOST='roohis-macbook-air.tailcce197.ts.net';
+  // Auto-connect if app is served directly from the bridge
+  if(window.location.port===String(BRIDGE_PORT)){
+    S.bridgeIP=window.location.hostname;
+    lsSet('sdv_ip',S.bridgeIP);
+    document.getElementById('bridge-ip').value=S.bridgeIP;
+  } else {
+    let ip=lsGet('sdv_ip')||BRIDGE_HOST;
+    if(/^\d+\.\d+\.\d+\.\d+$/.test(ip)) ip=BRIDGE_HOST;
+    S.bridgeIP=ip; lsSet('sdv_ip',ip);
+    document.getElementById('bridge-ip').value=ip;
+  }
+  fetchBridge();
 
   const savedTab=lsGet('sdv_tab')||'home';
   const savedSub=lsGet('sdv_rsub')||'tasks';

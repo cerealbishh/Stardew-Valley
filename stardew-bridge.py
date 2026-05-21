@@ -665,15 +665,25 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
-        elif self.path == "/":
-            body = b"Stardew Bridge is running. GET /save for data."
-            self.send_response(200)
-            self.send_header("Content-Type", "text/plain")
-            self.end_headers()
-            self.wfile.write(body)
         else:
-            self.send_response(404)
-            self.end_headers()
+            # Serve static files from the project directory
+            import mimetypes
+            req = self.path.split('?')[0]
+            if req == '/':
+                req = '/index.html'
+            file_path = os.path.join(_BRIDGE_DIR, req.lstrip('/'))
+            if os.path.isfile(file_path):
+                mime, _ = mimetypes.guess_type(file_path)
+                with open(file_path, 'rb') as f:
+                    body = f.read()
+                self.send_response(200)
+                self.send_header("Content-Type", mime or "application/octet-stream")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            else:
+                self.send_response(404)
+                self.end_headers()
 
     def log_message(self, fmt, *args):
         pass
