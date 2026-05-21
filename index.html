@@ -104,7 +104,7 @@ html[data-tab=hoard][data-sub=junimo]{--bg:#C5DDD6;--surf:#ADE6DC;--acc:#AABFB0;
 html[data-tab=hoard][data-sub=quests]{--bg:#EFCEAA;--surf:#f3d98f;--acc:#CAAF77;--nav-bg:rgba(243,217,143,.97);}
 html[data-tab=hoard][data-sub=museum]{--bg:#DCBFF2;--surf:#B29EF0;--acc:#8B70D8;--nav-bg:rgba(178,158,240,.97);}
 html[data-tab=hoard][data-sub=unlocks]{--bg:#AABFB0;--surf:#C5DDD6;--acc:#7AA08A;--nav-bg:rgba(197,221,214,.97);}
-html[data-tab=hoard][data-sub=covenant]{--bg:#F4DBE8;--surf:#F4C1CB;--acc:#EF94A7;--nav-bg:rgba(244,193,203,.97);}
+html[data-tab=hoard][data-sub=npcs]{--bg:#F4DBE8;--surf:#F4C1CB;--acc:#EF94A7;--nav-bg:rgba(244,193,203,.97);}
 /* Story sub-tabs */
 html[data-tab=story][data-sub=previously]{--bg:#C1C1E4;--surf:#DCBFF2;--acc:#B29EF0;--nav-bg:rgba(220,191,242,.97);}
 html[data-tab=story][data-sub=lore]{--bg:#C7D3E0;--surf:#AAC0E0;--acc:#89A6D3;--nav-bg:rgba(170,192,224,.97);}
@@ -115,7 +115,7 @@ html[data-tab=story][data-sub=odds]{--bg:#AABFB0;--surf:#C5DDD6;--acc:#7AA08A;--
 /* Nightlock sub-tabs */
 html[data-tab=nightlock][data-sub=tardis]{--bg:#DCBFF2;--surf:#B29EF0;--acc:#8B70D8;--nav-bg:rgba(178,158,240,.97);}
 html[data-tab=nightlock][data-sub=davy]{--bg:#C7D3E0;--surf:#AAC0E0;--acc:#89A6D3;--nav-bg:rgba(170,192,224,.97);}
-html[data-tab=nightlock][data-sub=fit]{--bg:#F4C1CB;--surf:#EF94A7;--acc:#e36887;--nav-bg:rgba(239,148,167,.97);}
+html[data-tab=nightlock][data-sub=fitcheck]{--bg:#F4C1CB;--surf:#EF94A7;--acc:#e36887;--nav-bg:rgba(239,148,167,.97);}
 html[data-tab=nightlock][data-sub=skills]{--bg:#C5DDD6;--surf:#ADE6DC;--acc:#AABFB0;--nav-bg:rgba(173,230,220,.97);}
 html[data-tab=nightlock][data-sub=grass]{--bg:#AABFB0;--surf:#C5DDD6;--acc:#7AA08A;--nav-bg:rgba(197,221,214,.97);}
 html[data-tab=nightlock][data-sub=recipes]{--bg:#EFCEAA;--surf:#f3d98f;--acc:#CAAF77;--nav-bg:rgba(243,217,143,.97);}
@@ -469,9 +469,6 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 html[data-dark=true] .bg-sprite{opacity:.05;}
 
 /* ── JUNIMOS & PARTICLES ── */
-.junimo{position:fixed;pointer-events:none;z-index:1000;width:32px;height:32px;
-  animation:jh .6s ease-in-out infinite alternate;}
-@keyframes jh{from{transform:translateY(0);}to{transform:translateY(-6px);}}
 .particle{position:fixed;pointer-events:none;z-index:999;width:7px;height:7px;
   border-radius:50%;animation:pf .8s ease-out forwards;}
 @keyframes pf{
@@ -554,10 +551,10 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   <div class="panel" id="p-route">
     <div class="panel-title"><img src="assets/icons/watering-can.png">Route 66 — Daily Efficiency</div>
     <div class="sub-nav" id="route-sub-nav">
-      <button class="sub-btn active" data-sub="tasks"><img class="sdv-icon" src="assets/icons/pickaxe.png" alt="">Prep/Fire/Plate</button>
+      <button class="sub-btn active" data-sub="tasks"><img class="sdv-icon" src="assets/icons/watering-can.png" alt="">Prep/Fire/Plate</button>
       <button class="sub-btn" data-sub="cal"><img class="sdv-icon" src="assets/icons/emoji-cake.png" alt="">It Is Wednesday My Dudes</button>
-      <button class="sub-btn" data-sub="par"><img class="sdv-icon" src="assets/icons/emoji-money.png" alt="">Are We There Yet?</button>
-      <button class="sub-btn" data-sub="carry"><img class="sdv-icon" src="assets/icons/emoji-question.png" alt="">Never Forget</button>
+      <button class="sub-btn" data-sub="par"><img class="sdv-icon" src="assets/icons/icon-gold-coin.png" alt="">Are We There Yet?</button>
+      <button class="sub-btn" data-sub="carry"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Never Forget</button>
     </div>
     <div class="sub-panel active" id="sp-tasks"><div id="route-list"></div></div>
     <div class="sub-panel" id="sp-cal"><div id="cal-content"></div></div>
@@ -586,8 +583,8 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   <div class="panel" id="p-story">
     <div class="panel-title"><img src="assets/icons/emoji-notes.png">Story Time</div>
     <div class="sub-nav" id="story-sub-nav">
-      <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="assets/icons/emoji-star.png" alt="">Previously On</button>
-      <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="assets/icons/emoji-mushroom.png" alt="">The Lore</button>
+      <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="assets/icons/emoji-notes.png" alt="">Previously On</button>
+      <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="assets/icons/emoji-moon.png" alt="">The Lore</button>
       <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant of the Rock</button>
       <button class="sub-btn" data-stab="milestones"><img class="sdv-icon" src="assets/icons/emoji-checkmark.png" alt="">Milestones</button>
       <button class="sub-btn" data-stab="mainquest"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Main Quest</button>
@@ -633,7 +630,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   <button class="nav-btn" data-tab="route"><img class="icon sdv-icon" src="assets/icons/watering-can.png" alt="Route 66">Route 66</button>
   <button class="nav-btn" data-tab="hoard"><img class="icon sdv-icon" src="assets/icons/chest-wood.png" alt="The Hoard">The Hoard</button>
   <button class="nav-btn" data-tab="story"><img class="icon sdv-icon" src="assets/icons/emoji-notes.png" alt="Story Time">Story Time</button>
-  <button class="nav-btn" data-tab="nightlock"><img class="icon sdv-icon" src="assets/icons/galaxy-sword.png" alt="Nightlock">Nightlock</button>
+  <button class="nav-btn" data-tab="nightlock"><img class="icon sdv-icon" src="assets/icons/galaxy-sword.png" alt="Big Daddy Nightlock">Big Daddy Nightlock</button>
 </nav>
 
 <script>
@@ -2601,24 +2598,6 @@ function goSubPanel(sub){
   if(S.tab==='route') document.documentElement.dataset.sub=sub;
 }
 
-const junimoSVG=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="32" height="32">
-<circle cx="8" cy="9" r="6" fill="#EF94A7"/>
-<circle cx="6" cy="8" r="1" fill="#3a1f3a"/>
-<circle cx="10" cy="8" r="1" fill="#3a1f3a"/>
-<ellipse cx="8" cy="11" rx="2" ry="1" fill="#E07090"/>
-<circle cx="4" cy="6" r="2" fill="#EF94A7"/>
-<circle cx="12" cy="6" r="2" fill="#EF94A7"/>
-</svg>`;
-
-function spawnJunimo(){
-  const el=document.createElement('div');
-  el.className='junimo'; el.innerHTML=junimoSVG;
-  el.style.left=Math.random()*(window.innerWidth-40)+'px';
-  el.style.top=Math.random()*(window.innerHeight*0.5)+20+'px';
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),4000+Math.random()*3000);
-}
-function startJunimos(){spawnJunimo();setInterval(()=>{if(Math.random()<0.3)spawnJunimo();},9000);}
 
 function spawnParticles(el){
   const r=el.getBoundingClientRect();
@@ -2770,7 +2749,6 @@ function init(){
   if(savedTab!=='story') goStoryTab(savedStab);
   if(savedTab!=='nightlock') goNightlockSub(savedNSub);
 
-  startJunimos();
 }
 
 document.addEventListener('DOMContentLoaded',init);
