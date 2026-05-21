@@ -516,6 +516,9 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 
   <!-- 🏠 HOME -->
   <div class="panel active" id="p-home">
+    <div id="bridge-redirect-banner" style="display:none;background:var(--acc);color:#fff;border-radius:var(--r);padding:14px 16px;margin-bottom:14px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;box-shadow:var(--shadow-bubble)" onclick="window.location.href='https://roohis-macbook-air.tailcce197.ts.net:8742/'">
+      Open Live Tracker →<br><span style="font-size:11px;font-weight:400;opacity:.85">Tap to use the version that connects to your game</span>
+    </div>
     <div class="home-hero">
       <img class="home-logo" src="assets/logo.png" alt="Stardew Valley">
       <div class="home-subtitle">or Dew Not</div>
@@ -2735,12 +2738,17 @@ function init(){
   if(dark==='1'){S.dark=true;document.documentElement.dataset.dark='true';}
 
   const BRIDGE_HOST='roohis-macbook-air.tailcce197.ts.net';
-  // Auto-connect if app is served directly from the bridge
   if(window.location.port===String(BRIDGE_PORT)){
+    // Served from bridge — auto-connect, hide manual input
     S.bridgeIP=window.location.hostname;
     lsSet('sdv_ip',S.bridgeIP);
     document.getElementById('bridge-ip').value=S.bridgeIP;
+    const bc=document.querySelector('.card:has(#bridge-connect)');
+    if(bc) bc.style.display='none';
   } else {
+    // GitHub Pages — show redirect banner, auto-fill hostname
+    const banner=document.getElementById('bridge-redirect-banner');
+    if(banner) banner.style.display='block';
     let ip=lsGet('sdv_ip')||BRIDGE_HOST;
     if(/^\d+\.\d+\.\d+\.\d+$/.test(ip)) ip=BRIDGE_HOST;
     S.bridgeIP=ip; lsSet('sdv_ip',ip);
