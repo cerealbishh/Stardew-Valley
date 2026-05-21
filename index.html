@@ -505,7 +505,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
     <span id="ticker-text"></span>
     <span id="bridge-sync-time"></span>
     <div id="bridge-dot" title="Bridge"></div>
-    <button id="dark-btn" aria-label="Toggle dark mode">🌙</button>
+    <button id="dark-btn" aria-label="Toggle dark mode"><img src="assets/icons/emoji-moon.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle"></button>
   </div>
 </div>
 
@@ -566,7 +566,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   <div class="panel" id="p-hoard">
     <div class="panel-title"><img src="assets/icons/chest-wood.png">The Hoard</div>
     <div class="sub-nav" id="hoard-sub-nav">
-      <button class="sub-btn active" data-hsub="junimo"><img class="sdv-icon" src="assets/icons/emoji-strawberry.png" alt="">Junimo Feed</button>
+      <button class="sub-btn active" data-hsub="junimo"><img class="sdv-icon" src="assets/icons/emoji-corn.png" alt="">Junimo Feed</button>
       <button class="sub-btn" data-hsub="quests"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Take This Job And Shove It</button>
       <button class="sub-btn" data-hsub="museum"><img class="sdv-icon" src="assets/icons/emoji-sparkle.png" alt="">Omg Look Something Shiny</button>
       <button class="sub-btn" data-hsub="unlocks"><img class="sdv-icon" src="assets/icons/furnace.png" alt="">I Made It Myself</button>
@@ -610,7 +610,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
       <button class="sub-btn" data-nsub="recipes"><img class="sdv-icon" src="assets/icons/keg.png" alt="">I Watched One (1) Youtube Video</button>
       <button class="sub-btn" data-nsub="cast"><img class="sdv-icon" src="assets/icons/emoji-cat.png" alt="">The Supporting Cast</button>
       <button class="sub-btn" data-nsub="plot"><img class="sdv-icon" src="assets/icons/galaxy-sword.png" alt="">Plot Armor</button>
-      <button class="sub-btn" data-nsub="holocron"><img class="sdv-icon" src="assets/icons/emoji-fish.png" alt="">The Holocron</button>
+      <button class="sub-btn" data-nsub="holocron"><img class="sdv-icon" src="assets/icons/crystalarium.png" alt="">The Holocron</button>
     </div>
     <div class="sub-panel active" id="nlp-tardis"><div id="tardis-content"></div></div>
     <div class="sub-panel" id="nlp-davy"><div id="davy-content"></div></div>
@@ -1298,6 +1298,14 @@ const CARRY={
 // Sprite icon helper — inline img for section headers
 function si(name,size=16){return `<img src="assets/icons/${name}.png" style="width:${size}px;height:${size}px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;flex-shrink:0" onerror="this.style.display='none'">`;}
 
+const FESTIVAL_ICONS={'🥚':'emoji-strawberry','🔑':'pickaxe-steel','🌊':'emoji-fish','🫐':'item-blueberry','🎡':'emoji-sparkle','🎃':'crop-pumpkin','🎣':'fishing-rod','🌃':'emoji-moon','🎄':'emoji-snowflake','🍂':'crop-pumpkin','🌺':'crop-sunflower','💔':'emoji-heart-broken'};
+function fmtDayName(name){
+  for(const[emoji,icon]of Object.entries(FESTIVAL_ICONS)){
+    if(name.startsWith(emoji)) return si(icon,16)+name.slice(emoji.length).trim();
+  }
+  return name;
+}
+
 const lsGet=k=>localStorage.getItem(k);
 const lsSet=(k,v)=>localStorage.setItem(k,v);
 const lsTgl=k=>{const v=lsGet(k)==='1';lsSet(k,v?'0':'1');return !v;};
@@ -1310,11 +1318,13 @@ const nsSet=(k,v)=>localStorage.setItem(nsKey(k),v);
 const nsTgl=k=>{const v=nsGet(k)==='1';nsSet(k,v?'0':'1');return !v;};
 
 function seasonLabel(){
-  return {spring:'🌱 Spring',summer:'☀️ Summer',fall:'🍂 Fall',winter:'❄️ Winter'}[S.season];
+  return {spring:'Spring',summer:'Summer',fall:'Fall',winter:'Winter'}[S.season];
 }
+const SEASON_ICON={spring:'crop-parsnip',summer:'crop-sunflower',fall:'crop-pumpkin',winter:'emoji-snowflake'};
 
 function renderTicker(){
-  document.getElementById('ticker-text').textContent=`${seasonLabel()} ${S.day} · Year 1`;
+  const icon=SEASON_ICON[S.season]||'emoji-star';
+  document.getElementById('ticker-text').innerHTML=`<img src="assets/icons/${icon}.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:3px">${seasonLabel()} ${S.day} · Year 1`;
   document.documentElement.dataset.season=S.season;
 }
 
@@ -1361,7 +1371,7 @@ function renderRoute(){
     const evtHtml=evts.map(e=>`<span class="day-event">${e.name}</span>`).join('');
     card.innerHTML=`<div class="day-header">
       <span class="day-num">${day.d}</span>
-      <span class="day-name">${day.name}</span>
+      <span class="day-name">${fmtDayName(day.name)}</span>
       ${evtHtml}
       <span class="day-arrow">▶</span>
     </div>
@@ -1538,9 +1548,9 @@ function renderMuseum(){
     {at:11,r:'Bone Flute'},
     {at:21,r:'Chicken Statue'},
     {at:40,r:'Stardrop (max energy!)'},
-    {at:60,r:'🗣️ Dwarvish Translation Guide'},
-    {at:80,r:'🔑 Rusty Key (Sewers → Krobus)'},
-    {at:95,r:'🏆 Museum Complete!'},
+    {at:60,r:'Dwarvish Translation Guide'},
+    {at:80,r:'Rusty Key (Sewers → Krobus)'},
+    {at:95,r:'Museum Complete!'},
   ];
   let html=`<div class="unlock-section">
     <div class="museum-header">
@@ -1646,7 +1656,7 @@ function renderJunimo(){
   if(!el) return;
   const data=S.bridge;
   if(!data||!data.cc_bundles){
-    el.innerHTML='<div class="junimo-offline">Connect the bridge to sync Community Center progress — or load will happen automatically when bridge is online ✨</div>';
+    el.innerHTML='<div class="junimo-offline">Connect the bridge to sync Community Center progress — or load will happen automatically when bridge is online</div>';
     return;
   }
   const frag=document.createDocumentFragment();
@@ -1658,7 +1668,7 @@ function renderJunimo(){
     const hdr=document.createElement('div'); hdr.className='room-header';
     const badge=allDone?`<span class="room-complete-badge">✓ DONE</span>`:
       `<span style="font-size:11px;color:var(--muted)">${room.done}/${room.bundles.length}</span>`;
-    hdr.innerHTML=`<span class="room-title">${ROOM_ICON_JS[room.name]||'📦'} ${room.name}</span>
+    hdr.innerHTML=`<span class="room-title">${ROOM_ICON_JS[room.name]||'<img src="assets/icons/chest-wood.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">'} ${room.name}</span>
       <div class="room-progress">${badge}</div>`;
     const body=document.createElement('div'); body.className='room-body';
     room.bundles.forEach(bundle=>{
@@ -1811,14 +1821,14 @@ function fmtGold(n){return n>=1000000?(n/1000000).toFixed(2)+'M':n>=1000?Math.ro
 function renderPreviouslyOn(){
   const el=document.getElementById('previously-content');
   if(!el) return;
-  const warn=!S.bridge?'<div class="junimo-offline" style="padding:12px 14px;text-align:left">💡 Festival events auto-detect from in-game date. Connect bridge for event ID detection.</div>':'';
+  const warn=!S.bridge?'<div class="junimo-offline" style="padding:12px 14px;text-align:left">Festival events auto-detect from in-game date. Connect bridge for event ID detection.</div>':'';
   el.innerHTML=warn+renderGroupedFlags(STORY_EVENTS,checkStoryFlag,S.bridge);
 }
 
 function renderLore(){
   const el=document.getElementById('lore-content');
   if(!el) return;
-  const warn=!S.bridge?'<div class="junimo-offline">Connect bridge for live world flag detection ✨</div>':'';
+  const warn=!S.bridge?'<div class="junimo-offline">Connect bridge for live world flag detection</div>':'';
   el.innerHTML=warn+renderGroupedFlags(LORE_FLAGS,checkStoryFlag,S.bridge);
 }
 
@@ -1832,13 +1842,15 @@ function renderMilestones(){
   const b=S.bridge;
   const score=grandpaScore(b);
   const candles=score>=12?4:score>=8?3:score>=4?2:1;
-  const candleStr='🕯️'.repeat(candles)+'○'.repeat(4-candles);
+  const litCandle=`<img src="assets/icons/campfire.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle">`;
+  const darkCandle=`<img src="assets/icons/campfire.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+  const candleStr=litCandle.repeat(candles)+darkCandle.repeat(4-candles);
   const totalEarned=b?b.totalMoneyEarned||0:0;
   const Y1=5000000;
   const goldPct=Math.min(100,Math.round(totalEarned/Y1*100));
 
   let html=`<div class="y1-target">
-    <div class="y1-target-label">🎯 Year 1 Gold Target</div>
+    <div class="y1-target-label">${si('icon-gold-coin',16)}Year 1 Gold Target</div>
     <div class="y1-target-val">${fmtGold(totalEarned)}g <span style="font-size:13px;color:var(--muted)">/ 5M</span></div>
     <div class="museum-bar-track" style="margin:6px 0 0"><div class="museum-bar-fill" style="width:${goldPct}%"></div></div>
     <div class="y1-target-sub">${goldPct}% of target${b&&b.gold?' · '+b.gold.toLocaleString()+'g in wallet':!b?' — connect bridge':''}</div>
@@ -1945,7 +1957,7 @@ function renderMainQuest(){
     });
     html+='</div>';
   });
-  if(!b) html='<div class="junimo-offline">Connect bridge for auto-detection ✨</div>'+html;
+  if(!b) html='<div class="junimo-offline">Connect bridge for auto-detection</div>'+html;
   el.innerHTML=html;
 }
 
@@ -1953,7 +1965,7 @@ function renderOdds(){
   const el=document.getElementById('odds-content');
   if(!el) return;
   const b=S.bridge;
-  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge for your stats 🎲</div>';return;}
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge for your stats</div>';return;}
   const stats=b.stats||{};
   const days=stats.daysPlayed||0;
   const totalEarned=b.totalMoneyEarned||0;
@@ -2062,7 +2074,7 @@ function renderTardis(){
   const el=document.getElementById('tardis-content');
   if(!el) return;
   const b=S.bridge;
-  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your backpack 🌀</div>';return;}
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your backpack</div>';return;}
   const items=b.backpack||[];
   if(!items.length){el.innerHTML='<div class="junimo-offline">Backpack is empty!</div>';return;}
   let html=`<div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood',18)}Backpack — ${items.length} item${items.length!==1?'s':''}</div><div class="inv-grid">`;
@@ -2078,7 +2090,7 @@ function renderDavy(){
   const el=document.getElementById('davy-content');
   if(!el) return;
   const b=S.bridge;
-  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your haul 🏴‍☠️</div>';return;}
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your haul</div>';return;}
   const gold=b.gold||0;
   const total=b.totalMoneyEarned||0;
   let html=`<div class="card"><div class="card-header">${si('icon-gold-coin',14)}Wallet</div><div class="card-body">
@@ -2111,21 +2123,21 @@ function renderFitCheck(){
   const el=document.getElementById('fitcheck-content');
   if(!el) return;
   const b=S.bridge;
-  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your gear 👗</div>';return;}
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your gear</div>';return;}
   const eq=b.equipment||{};
   const ap=b.appearance||{};
   const slots=[
-    ['👒 Hat','hat'],['👟 Boots','boots'],['💍 Left Ring','leftRing'],
-    ['💍 Right Ring','rightRing'],['👕 Shirt','shirt'],['👖 Pants','pants'],
+    [si('emoji-sparkle',14)+'Hat','hat'],[si('boots',14)+'Boots','boots'],[si('ring',14)+'Left Ring','leftRing'],
+    [si('ring',14)+'Right Ring','rightRing'],[si('emoji-heart',14)+'Shirt','shirt'],[si('crop-wheat',14)+'Pants','pants'],
   ];
-  let html=`<div class="card"><div class="card-header">👗 Equipment</div><div class="equip-grid">`;
+  let html=`<div class="card"><div class="card-header">${si('boots',16)}Equipment</div><div class="equip-grid">`;
   slots.forEach(([label,key])=>{
     const val=eq[key];
     html+=`<div class="equip-slot"><div class="equip-slot-label">${label}</div><div class="equip-slot-val${val?'':' empty'}">${val||'None'}</div></div>`;
   });
   html+='</div></div>';
   // Appearance
-  html+=`<div class="card"><div class="card-header">🪞 Appearance</div><div class="card-body">`;
+  html+=`<div class="card"><div class="card-header">${si('emoji-sparkle',16)}Appearance</div><div class="card-body">`;
   const apRows=[['Hair Style',ap.hair],['Skin Tone',ap.skin],['Shoe Color',ap.shoeColor]];
   apRows.forEach(([lbl,val])=>{
     if(val!=null) html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>${lbl}</span><span class="stat-val">${val}</span></div>`;
@@ -2135,7 +2147,7 @@ function renderFitCheck(){
   html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Pet Preference</span><span class="stat-val">${b.catPerson?si('emoji-cat',14)+'Cat':si('emoji-fox',14)+'Dog'}</span></div>`;
   html+='</div></div>';
   if(b.spouse){
-    html+=`<div class="card"><div class="card-header">💕 Household</div><div class="card-body"><span style="font-size:14px">Married to <strong>${b.spouse}</strong></span></div></div>`;
+    html+=`<div class="card"><div class="card-header">${si('emoji-heart',16)}Household</div><div class="card-body"><span style="font-size:14px">Married to <strong>${b.spouse}</strong></span></div></div>`;
   }
   el.innerHTML=html;
 }
@@ -2171,7 +2183,7 @@ function renderSkillmaxxing(){
       </div>
     </div>`;
   });
-  el.innerHTML=html||'<div class="junimo-offline">Connect bridge for skill data 📈</div>';
+  el.innerHTML=html||'<div class="junimo-offline">Connect bridge for skill data</div>';
 }
 
 function renderTouchingGrass(){
@@ -2197,7 +2209,7 @@ function renderTouchingGrass(){
     </div>`;
   });
   html+='</div>';
-  if(!S.bridge) html='<div class="junimo-offline">Connect bridge for live friendship data 🌿</div>'+html;
+  if(!S.bridge) html='<div class="junimo-offline">Connect bridge for live friendship data</div>'+html;
   el.innerHTML=html;
 }
 
@@ -2205,15 +2217,15 @@ function renderRecipes(){
   const el=document.getElementById('recipes-content');
   if(!el) return;
   const b=S.bridge;
-  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your recipe book 📺</div>';return;}
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your recipe book</div>';return;}
   const cooking=b.cookingRecipes||[];
   const crafting=b.craftingRecipes||[];
   let html=`<div class="unlock-section">
-    <div class="recipe-section-title">🍳 Cooking — ${cooking.length} known</div>
+    <div class="recipe-section-title">${si('keg',16)}Cooking — ${cooking.length} known</div>
     <div class="recipe-grid">${cooking.sort().map(r=>`<span class="recipe-chip">${r}</span>`).join('')||'<span style="font-size:12px;color:var(--muted);padding:4px">None yet</span>'}</div>
   </div>
   <div class="unlock-section">
-    <div class="recipe-section-title">🔨 Crafting — ${crafting.length} known</div>
+    <div class="recipe-section-title">${si('furnace',16)}Crafting — ${crafting.length} known</div>
     <div class="recipe-grid">${crafting.sort().map(r=>`<span class="recipe-chip">${r}</span>`).join('')||'<span style="font-size:12px;color:var(--muted);padding:4px">None yet</span>'}</div>
   </div>`;
   el.innerHTML=html;
@@ -2223,7 +2235,7 @@ function renderSupportingCast(){
   const el=document.getElementById('cast-content');
   if(!el) return;
   const b=S.bridge;
-  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your animals 🐄</div>';return;}
+  if(!b){el.innerHTML='<div class="junimo-offline">Connect bridge to see your animals</div>';return;}
   const animals=b.animals||[];
   const pets=b.pets||[];
   let html='';
@@ -2254,7 +2266,7 @@ function renderSupportingCast(){
     });
     html+='</div>';
   });
-  if(!pets.length&&!animals.length) html='<div class="junimo-offline">No animals on the farm yet 🐄</div>';
+  if(!pets.length&&!animals.length) html='<div class="junimo-offline">No animals on the farm yet</div>';
   el.innerHTML=html;
 }
 
@@ -2292,7 +2304,7 @@ function renderPlotArmor(){
     html+=`<div class="unlock-row"><span>${si('icon-chest',14)}Museum Donations</span><span class="stat-val">${b?b.museumDonations||0:0} / 95</span></div>`;
     html+='</div>';
   }
-  if(!b) html='<div class="junimo-offline">Connect bridge for live flags 🛡️</div>'+html;
+  if(!b) html='<div class="junimo-offline">Connect bridge for live flags</div>'+html;
   el.innerHTML=html;
 }
 
@@ -2454,7 +2466,7 @@ function renderHolocron(){
       html+=`<div class="unlock-row"><div class="unlock-dot yes"></div><span>${name}</span></div>`;
     });
   } else {
-    html+='<div style="font-size:12px;color:var(--muted);padding:8px 0">Connect bridge to see your recipe book 📺</div>';
+    html+='<div style="font-size:12px;color:var(--muted);padding:8px 0">Connect bridge to see your recipe book</div>';
   }
   html+='</div>';
 
