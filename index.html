@@ -1537,7 +1537,7 @@ function renderMuseum(){
     {at:5,r:'Elf Root plant'},
     {at:11,r:'Bone Flute'},
     {at:21,r:'Chicken Statue'},
-    {at:40,r:'⭐ Stardrop (max energy!)'},
+    {at:40,r:'Stardrop (max energy!)'},
     {at:60,r:'🗣️ Dwarvish Translation Guide'},
     {at:80,r:'🔑 Rusty Key (Sewers → Krobus)'},
     {at:95,r:'🏆 Museum Complete!'},
@@ -1738,7 +1738,7 @@ const LORE_FLAGS=[
   {g:'🏠 Farm Life',label:'House: Kids Room (Upgrade 2)',houseMin:2},
   {g:'🏠 Farm Life',label:'House: Cellar — keg aging (Upgrade 3)',houseMin:3},
   {g:'🏠 Farm Life',label:'Married ♥',spouse:true},
-  {g:'🏛️ Museum Milestones',label:'40 donations — ⭐ Stardrop',musMin:40},
+  {g:'🏛️ Museum Milestones',label:'40 donations — Stardrop',musMin:40},
   {g:'🏛️ Museum Milestones',label:'60 donations — Dwarvish Translation Guide',musMin:60},
   {g:'🏛️ Museum Milestones',label:'80 donations — 🔑 Rusty Key (Sewers)',musMin:80},
   {g:'🏛️ Museum Milestones',label:'95 donations — Museum Complete!',musMin:95},
@@ -2051,7 +2051,12 @@ function heartBar(pts,max){
   const hE=`<img src="assets/icons/emoji-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
   return hF.repeat(Math.max(0,full))+(half?hH:'')+hE.repeat(empty);
 }
-function qualBadge(q){return q>=4?'💎':q>=2?'🌟':q>=1?'⭐':'';}
+function qualBadge(q){
+  if(q>=4) return `<img src="assets/icons/pickaxe-iridium.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle" title="Iridium">`;
+  if(q>=2) return `<img src="assets/icons/emoji-star.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle" title="Gold">`;
+  if(q>=1) return `<img src="assets/icons/buff-luck.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle" title="Silver">`;
+  return '';
+}
 
 function renderTardis(){
   const el=document.getElementById('tardis-content');
@@ -2126,8 +2131,8 @@ function renderFitCheck(){
     if(val!=null) html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>${lbl}</span><span class="stat-val">${val}</span></div>`;
   });
   const cave=b.caveChoice||0;
-  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Cave Choice</span><span class="stat-val">${cave===1?'🦇 Bats':cave===2?'🍄 Mushrooms':'Not chosen'}</span></div>`;
-  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Pet Preference</span><span class="stat-val">${b.catPerson?'🐱 Cat':'🐶 Dog'}</span></div>`;
+  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Cave Choice</span><span class="stat-val">${cave===1?si('emoji-moon',14)+'Bats':cave===2?si('emoji-mushroom',14)+'Mushrooms':'Not chosen'}</span></div>`;
+  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Pet Preference</span><span class="stat-val">${b.catPerson?si('emoji-cat',14)+'Cat':si('emoji-fox',14)+'Dog'}</span></div>`;
   html+='</div></div>';
   if(b.spouse){
     html+=`<div class="card"><div class="card-header">💕 Household</div><div class="card-body"><span style="font-size:14px">Married to <strong>${b.spouse}</strong></span></div></div>`;
@@ -2228,7 +2233,8 @@ function renderSupportingCast(){
       const hearts=Math.min(5,Math.floor((p.friendship||0)/200));
       const aHF=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
       const aHE=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
-      html+=`<div class="animal-row"><span style="font-size:18px">${p.type==='Cat'?'🐱':'🐶'}</span><span class="animal-name">${p.name}</span><span class="animal-type">${p.type}</span><span class="animal-hearts">${aHF.repeat(hearts)}${aHE.repeat(5-hearts)}</span></div>`;
+      const petIcon=p.type==='Cat'?si('emoji-cat',22):si('emoji-fox',22);
+      html+=`<div class="animal-row"><span style="line-height:1">${petIcon}</span><span class="animal-name">${p.name}</span><span class="animal-type">${p.type}</span><span class="animal-hearts">${aHF.repeat(hearts)}${aHE.repeat(5-hearts)}</span></div>`;
     });
     html+='</div>';
   }
@@ -2241,10 +2247,10 @@ function renderSupportingCast(){
     html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood',18)}${bname} (${anims.length})</div>`;
     anims.forEach(a=>{
       const hearts=Math.min(5,Math.floor((a.friendship||0)/200));
-      const emoji=a.type.includes('Chicken')?'🐔':a.type.includes('Cow')?'🐄':a.type.includes('Pig')?'🐷':a.type.includes('Sheep')?'🐑':a.type.includes('Goat')?'🐐':a.type.includes('Duck')?'🦆':a.type.includes('Rabbit')?'🐰':'🐾';
+      const animalIcon=a.type.includes('Chicken')?si('buff-farming',22):a.type.includes('Cow')?si('icon-gold-coin',22):a.type.includes('Pig')?si('emoji-mushroom',22):a.type.includes('Sheep')?si('crop-wheat',22):a.type.includes('Goat')?si('emoji-sparkle',22):a.type.includes('Duck')?si('emoji-fish',22):a.type.includes('Rabbit')?si('emoji-heart',22):si('buff-farming',22);
       const bHF=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
       const bHE=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
-      html+=`<div class="animal-row"><span style="font-size:18px">${emoji}</span><span class="animal-name">${a.name}</span><span class="animal-type">${a.type}</span><span class="animal-hearts">${bHF.repeat(hearts)}${bHE.repeat(5-hearts)}</span></div>`;
+      html+=`<div class="animal-row"><span style="line-height:1">${animalIcon}</span><span class="animal-name">${a.name}</span><span class="animal-type">${a.type}</span><span class="animal-hearts">${bHF.repeat(hearts)}${bHE.repeat(5-hearts)}</span></div>`;
     });
     html+='</div>';
   });
@@ -2265,7 +2271,7 @@ function renderPlotArmor(){
   // Cave + pet choices (already in Fit Check, summarise here too)
   if(b){
     const cave=b.caveChoice||0;
-    html+=`<div class="unlock-row"><div class="unlock-dot${cave>0?' yes':''}"></div><span style="flex:1">Cave Choice</span><span style="font-size:11px;color:var(--muted)">${cave===1?'🦇 Bats':cave===2?'🍄 Mushrooms':'Not made'}</span></div>`;
+    html+=`<div class="unlock-row"><div class="unlock-dot${cave>0?' yes':''}"></div><span style="flex:1">Cave Choice</span><span style="font-size:11px;color:var(--muted)">${cave===1?si('emoji-moon',14)+'Bats':cave===2?si('emoji-mushroom',14)+'Mushrooms':'Not made'}</span></div>`;
   }
   html+='</div>';
   // Stats / Collections
