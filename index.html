@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Stardew or Dew Not 🌾</title>
+<title>Stardew or Dew Not, There Is No Try</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#F4C1CB">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -468,6 +468,15 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
   to{transform:translateY(var(--dy,-24px)) rotate(var(--rot2,4deg));}}
 html[data-dark=true] .bg-sprite{opacity:.05;}
 
+/* ── LIVE BANNER (GitHub Pages only) ── */
+#live-banner{display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;
+  background:linear-gradient(135deg,#e36887,#B29EF0);
+  color:#fff;padding:12px 16px;padding-bottom:calc(12px + env(safe-area-inset-bottom));
+  text-align:center;cursor:pointer;box-shadow:0 -3px 16px rgba(0,0,0,.18);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+#live-banner-title{font-family:'Press Start 2P',monospace;font-size:8px;letter-spacing:.5px;margin-bottom:4px;}
+#live-banner-sub{font-size:12px;opacity:.9;}
+
 /* ── JUNIMOS & PARTICLES ── */
 .particle{position:fixed;pointer-events:none;z-index:999;width:7px;height:7px;
   border-radius:50%;animation:pf .8s ease-out forwards;}
@@ -477,19 +486,22 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 </style>
 </head>
 <body>
-<div id="bg-sprites"></div>
 <div id="schema-banner">⚠️ Bridge data format changed — please restart stardew-bridge.py</div>
+<div id="live-banner" onclick="window.location.href='https://roohis-macbook-air.tailcce197.ts.net:8742/'">
+  <div id="live-banner-title"><img src="assets/icons/item-starfruit.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px">Live Mode</div>
+  <div id="live-banner-sub">Safari blocks live data from GitHub Pages — tap to open the live tracker</div>
+</div>
 
 <!-- floating background sprites -->
 <div id="bg-sprites" aria-hidden="true">
   <img class="bg-sprite" src="assets/icons/item-starfruit.png" style="left:5%;top:8%;width:56px;--dur:22s;--dy:-28px;--rot:-5deg;--rot2:5deg;">
-  <img class="bg-sprite" src="assets/icons/emoji-sunflower.png" style="left:18%;top:55%;width:44px;--dur:17s;--dy:-20px;--rot:3deg;--rot2:-3deg;">
+  <img class="bg-sprite" src="assets/icons/item-sunflower.png" style="left:18%;top:55%;width:44px;--dur:17s;--dy:-20px;--rot:3deg;--rot2:-3deg;">
   <img class="bg-sprite" src="assets/icons/watering-can.png" style="left:30%;top:18%;width:52px;--dur:25s;--dy:-32px;--rot:-8deg;--rot2:4deg;">
   <img class="bg-sprite" src="assets/icons/chest-wood.png" style="left:45%;top:70%;width:60px;--dur:19s;--dy:-24px;--rot:2deg;--rot2:-6deg;">
-  <img class="bg-sprite" src="assets/icons/emoji-mushroom.png" style="left:60%;top:12%;width:48px;--dur:21s;--dy:-18px;--rot:6deg;--rot2:-2deg;">
+  <img class="bg-sprite" src="assets/icons/item-purple-mushroom.png" style="left:60%;top:12%;width:48px;--dur:21s;--dy:-18px;--rot:6deg;--rot2:-2deg;">
   <img class="bg-sprite" src="assets/icons/item-strawberry.png" style="left:72%;top:48%;width:56px;--dur:16s;--dy:-26px;--rot:-4deg;--rot2:8deg;">
   <img class="bg-sprite" src="assets/icons/galaxy-sword.png" style="left:83%;top:22%;width:50px;--dur:23s;--dy:-22px;--rot:10deg;--rot2:-5deg;">
-  <img class="bg-sprite" src="assets/icons/emoji-heart.png" style="left:90%;top:68%;width:40px;--dur:14s;--dy:-16px;--rot:-3deg;--rot2:6deg;">
+  <img class="bg-sprite" src="assets/icons/icon-heart.png" style="left:90%;top:68%;width:40px;--dur:14s;--dy:-16px;--rot:-3deg;--rot2:6deg;">
   <img class="bg-sprite" src="assets/icons/item-pumpkin.png" style="left:8%;top:80%;width:56px;--dur:20s;--dy:-30px;--rot:5deg;--rot2:-8deg;">
   <img class="bg-sprite" src="assets/icons/fishing-rod.png" style="left:55%;top:35%;width:56px;--dur:26s;--dy:-20px;--rot:-6deg;--rot2:3deg;">
   <img class="bg-sprite" src="assets/icons/item-gold-bar.png" style="left:35%;top:88%;width:56px;--dur:18s;--dy:-22px;--rot:4deg;--rot2:-4deg;">
@@ -499,13 +511,13 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 <div id="ticker">
   <div id="ticker-left">
     <img id="ticker-logo" src="assets/logo.png" alt="Stardew Valley">
-    <span id="ticker-subtitle">or Dew Not</span>
+    <span id="ticker-subtitle">or Dew Not, There Is No Try</span>
   </div>
   <div id="ticker-right">
     <span id="ticker-text"></span>
     <span id="bridge-sync-time"></span>
     <div id="bridge-dot" title="Bridge"></div>
-    <button id="dark-btn" aria-label="Toggle dark mode"><img src="assets/icons/emoji-moon.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle"></button>
+    <button id="dark-btn" aria-label="Toggle dark mode"><img src="assets/icons/icon-skull.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle"></button>
   </div>
 </div>
 
@@ -518,10 +530,10 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
     </div>
     <div class="home-hero">
       <img class="home-logo" src="assets/logo.png" alt="Stardew Valley">
-      <div class="home-subtitle">or Dew Not</div>
+      <div class="home-subtitle">or Dew Not, There Is No Try</div>
     </div>
     <div class="card">
-      <div class="card-header"><img src="assets/icons/emoji-star.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Today</div>
+      <div class="card-header"><img src="assets/icons/icon-star.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Today</div>
       <div class="card-body">
         <div class="home-stat"><span>Season &amp; Day</span><span class="home-stat-val" id="home-day">Spring 1 · Year 1</span></div>
         <div class="home-stat"><span>Tasks Today</span><span class="home-stat-val" id="home-tasks">—</span></div>
@@ -529,11 +541,11 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
       </div>
     </div>
     <div class="card">
-      <div class="card-header"><img src="assets/icons/emoji-cake.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Upcoming Events</div>
+      <div class="card-header"><img src="assets/icons/item-egg.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Upcoming Events</div>
       <div class="card-body" id="home-events"></div>
     </div>
     <div class="card">
-      <div class="card-header"><img src="assets/icons/emoji-lightning.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Bridge Connection</div>
+      <div class="card-header"><img src="assets/icons/buff-attack.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px"> Bridge Connection</div>
       <div class="card-body">
         <div class="bridge-row">
           <label>Mac IP or Tailscale hostname</label>
@@ -552,9 +564,9 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
     <div class="panel-title"><img src="assets/icons/watering-can.png">Route 66 — Daily Efficiency</div>
     <div class="sub-nav" id="route-sub-nav">
       <button class="sub-btn active" data-sub="tasks"><img class="sdv-icon" src="assets/icons/watering-can.png" alt="">Prep/Fire/Plate</button>
-      <button class="sub-btn" data-sub="cal"><img class="sdv-icon" src="assets/icons/emoji-cake.png" alt="">It Is Wednesday My Dudes</button>
+      <button class="sub-btn" data-sub="cal"><img class="sdv-icon" src="assets/icons/item-egg.png" alt="">It Is Wednesday My Dudes</button>
       <button class="sub-btn" data-sub="par"><img class="sdv-icon" src="assets/icons/icon-gold-coin.png" alt="">Are We There Yet?</button>
-      <button class="sub-btn" data-sub="carry"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Never Forget</button>
+      <button class="sub-btn" data-sub="carry"><img class="sdv-icon" src="assets/icons/sword-wood.png" alt="">Never Forget</button>
     </div>
     <div class="sub-panel active" id="sp-tasks"><div id="route-list"></div></div>
     <div class="sub-panel" id="sp-cal"><div id="cal-content"></div></div>
@@ -566,11 +578,11 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   <div class="panel" id="p-hoard">
     <div class="panel-title"><img src="assets/icons/chest-wood.png">The Hoard</div>
     <div class="sub-nav" id="hoard-sub-nav">
-      <button class="sub-btn active" data-hsub="junimo"><img class="sdv-icon" src="assets/icons/emoji-corn.png" alt="">Junimo Feed</button>
-      <button class="sub-btn" data-hsub="quests"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Take This Job And Shove It</button>
-      <button class="sub-btn" data-hsub="museum"><img class="sdv-icon" src="assets/icons/emoji-sparkle.png" alt="">Omg Look Something Shiny</button>
+      <button class="sub-btn active" data-hsub="junimo"><img class="sdv-icon" src="assets/icons/item-corn.png" alt="">Junimo Feed</button>
+      <button class="sub-btn" data-hsub="quests"><img class="sdv-icon" src="assets/icons/sword-wood.png" alt="">Take This Job And Shove It</button>
+      <button class="sub-btn" data-hsub="museum"><img class="sdv-icon" src="assets/icons/item-prismatic-shard.png" alt="">Omg Look Something Shiny</button>
       <button class="sub-btn" data-hsub="unlocks"><img class="sdv-icon" src="assets/icons/furnace.png" alt="">I Made It Myself</button>
-      <button class="sub-btn" data-hsub="npcs"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant of the Rock</button>
+      <button class="sub-btn" data-hsub="npcs"><img class="sdv-icon" src="assets/icons/icon-heart.png" alt="">Covenant of the Rock</button>
     </div>
     <div class="sub-panel active" id="hsp-junimo"><div id="junimo-content"></div></div>
     <div class="sub-panel" id="hsp-quests"><div id="quests-content"></div></div>
@@ -581,14 +593,14 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 
   <!-- ✨ STORY TIME -->
   <div class="panel" id="p-story">
-    <div class="panel-title"><img src="assets/icons/emoji-notes.png">Story Time</div>
+    <div class="panel-title"><img src="assets/icons/item-ancient-fruit.png">Story Time</div>
     <div class="sub-nav" id="story-sub-nav">
-      <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="assets/icons/emoji-notes.png" alt="">Previously On</button>
-      <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="assets/icons/emoji-moon.png" alt="">The Lore</button>
-      <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="assets/icons/emoji-heart.png" alt="">Covenant of the Rock</button>
-      <button class="sub-btn" data-stab="milestones"><img class="sdv-icon" src="assets/icons/emoji-checkmark.png" alt="">Milestones</button>
-      <button class="sub-btn" data-stab="mainquest"><img class="sdv-icon" src="assets/icons/emoji-flag.png" alt="">Main Quest</button>
-      <button class="sub-btn" data-stab="odds"><img class="sdv-icon" src="assets/icons/emoji-lightning.png" alt="">Never Tell Me the Odds</button>
+      <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="assets/icons/item-ancient-fruit.png" alt="">Previously On</button>
+      <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="assets/icons/icon-skull.png" alt="">The Lore</button>
+      <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="assets/icons/icon-heart.png" alt="">Covenant of the Rock</button>
+      <button class="sub-btn" data-stab="milestones"><img class="sdv-icon" src="assets/icons/icon-star.png" alt="">Milestones</button>
+      <button class="sub-btn" data-stab="mainquest"><img class="sdv-icon" src="assets/icons/sword-wood.png" alt="">Main Quest</button>
+      <button class="sub-btn" data-stab="odds"><img class="sdv-icon" src="assets/icons/buff-attack.png" alt="">Never Tell Me the Odds</button>
     </div>
     <div class="sub-panel active" id="stp-previously"><div id="previously-content"></div></div>
     <div class="sub-panel" id="stp-lore"><div id="lore-content"></div></div>
@@ -606,9 +618,9 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
       <button class="sub-btn" data-nsub="davy"><img class="sdv-icon" src="assets/icons/chest-stone.png" alt="">Davy Jones' Locker</button>
       <button class="sub-btn" data-nsub="fitcheck"><img class="sdv-icon" src="assets/icons/boots.png" alt="">Fit Check</button>
       <button class="sub-btn" data-nsub="skills"><img class="sdv-icon" src="assets/icons/buff-farming.png" alt="">Skillmaxxing</button>
-      <button class="sub-btn" data-nsub="grass"><img class="sdv-icon" src="assets/icons/emoji-tulip.png" alt="">Touching Grass</button>
+      <button class="sub-btn" data-nsub="grass"><img class="sdv-icon" src="assets/icons/item-honey.png" alt="">Touching Grass</button>
       <button class="sub-btn" data-nsub="recipes"><img class="sdv-icon" src="assets/icons/keg.png" alt="">I Watched One (1) Youtube Video</button>
-      <button class="sub-btn" data-nsub="cast"><img class="sdv-icon" src="assets/icons/emoji-cat.png" alt="">The Supporting Cast</button>
+      <button class="sub-btn" data-nsub="cast"><img class="sdv-icon" src="assets/icons/item-rabbit-foot.png" alt="">The Supporting Cast</button>
       <button class="sub-btn" data-nsub="plot"><img class="sdv-icon" src="assets/icons/galaxy-sword.png" alt="">Plot Armor</button>
       <button class="sub-btn" data-nsub="holocron"><img class="sdv-icon" src="assets/icons/crystalarium.png" alt="">The Holocron</button>
     </div>
@@ -626,10 +638,10 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 </main>
 
 <nav id="nav">
-  <button class="nav-btn active" data-tab="home"><img class="icon sdv-icon" src="assets/icons/emoji-star.png" alt="Home">Home</button>
+  <button class="nav-btn active" data-tab="home"><img class="icon sdv-icon" src="assets/icons/icon-star.png" alt="Home">Home</button>
   <button class="nav-btn" data-tab="route"><img class="icon sdv-icon" src="assets/icons/watering-can.png" alt="Route 66">Route 66</button>
   <button class="nav-btn" data-tab="hoard"><img class="icon sdv-icon" src="assets/icons/chest-wood.png" alt="The Hoard">The Hoard</button>
-  <button class="nav-btn" data-tab="story"><img class="icon sdv-icon" src="assets/icons/emoji-notes.png" alt="Story Time">Story Time</button>
+  <button class="nav-btn" data-tab="story"><img class="icon sdv-icon" src="assets/icons/item-ancient-fruit.png" alt="Story Time">Story Time</button>
   <button class="nav-btn" data-tab="nightlock"><img class="icon sdv-icon" src="assets/icons/galaxy-sword.png" alt="Big Daddy Nightlock">Big Daddy Nightlock</button>
 </nav>
 
@@ -1258,11 +1270,11 @@ const PAR=[
   {id:'melon',label:'Melons harvested',target:'Su17',icon:'item-melon'},
   {id:'iridbar',label:'First Iridium Bar smelted',target:'Su10',icon:'item-iridium-bar'},
   {id:'fallseeds',label:'Fall crops planted on Fall 1',target:'Fa1',icon:'item-pumpkin'},
-  {id:'blackberry',label:'100+ Blackberries foraged',target:'Fa11',icon:'emoji-bug'},
+  {id:'blackberry',label:'100+ Blackberries foraged',target:'Fa11',icon:'crop-cranberry'},
   {id:'grange',label:'Grange Display 90+ points',target:'Fa16',icon:'item-starfruit'},
   {id:'fishing10',label:'Fishing Skill Level 10',target:'Wi1',icon:'fishing-rod'},
   {id:'minebundles',label:'All Boiler Room bundles complete',target:'Wi14',icon:'furnace'},
-  {id:'cc',label:'Community Center complete!',target:'Wi28',icon:'emoji-sparkle'},
+  {id:'cc',label:'Community Center complete!',target:'Wi28',icon:'item-prismatic-shard'},
 ];
 
 const CARRY={
@@ -1298,7 +1310,7 @@ const CARRY={
 // Sprite icon helper — inline img for section headers
 function si(name,size=16){return `<img src="assets/icons/${name}.png" style="width:${size}px;height:${size}px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;flex-shrink:0" onerror="this.style.display='none'">`;}
 
-const FESTIVAL_ICONS={'🥚':'emoji-strawberry','🔑':'pickaxe-steel','🌊':'emoji-fish','🫐':'item-blueberry','🎡':'emoji-sparkle','🎃':'crop-pumpkin','🎣':'fishing-rod','🌃':'emoji-moon','🎄':'emoji-snowflake','🍂':'crop-pumpkin','🌺':'crop-sunflower','💔':'emoji-heart-broken'};
+const FESTIVAL_ICONS={'🥚':'item-strawberry','🔑':'pickaxe-steel','🌊':'item-catfish','🫐':'item-blueberry','🎡':'item-prismatic-shard','🎃':'crop-pumpkin','🎣':'fishing-rod','🌃':'icon-skull','🎄':'item-quartz','🍂':'crop-pumpkin','🌺':'crop-sunflower','💔':'icon-heart-broken'};
 function fmtDayName(name){
   for(const[emoji,icon]of Object.entries(FESTIVAL_ICONS)){
     if(name.startsWith(emoji)) return si(icon,16)+name.slice(emoji.length).trim();
@@ -1320,10 +1332,10 @@ const nsTgl=k=>{const v=nsGet(k)==='1';nsSet(k,v?'0':'1');return !v;};
 function seasonLabel(){
   return {spring:'Spring',summer:'Summer',fall:'Fall',winter:'Winter'}[S.season];
 }
-const SEASON_ICON={spring:'crop-parsnip',summer:'crop-sunflower',fall:'crop-pumpkin',winter:'emoji-snowflake'};
+const SEASON_ICON={spring:'crop-parsnip',summer:'crop-sunflower',fall:'crop-pumpkin',winter:'item-quartz'};
 
 function renderTicker(){
-  const icon=SEASON_ICON[S.season]||'emoji-star';
+  const icon=SEASON_ICON[S.season]||'icon-star';
   document.getElementById('ticker-text').innerHTML=`<img src="assets/icons/${icon}.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:3px">${seasonLabel()} ${S.day} · Year 1`;
   document.documentElement.dataset.season=S.season;
 }
@@ -1437,9 +1449,9 @@ function renderCarry(){
 const ROOM_ICON_JS={
   "Pantry":'<img src="assets/icons/item-corn.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
   "Crafts Room":'<img src="assets/icons/axe.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
-  "Fish Tank":'<img src="assets/icons/emoji-fish.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
+  "Fish Tank":'<img src="assets/icons/item-catfish.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
   "Boiler Room":'<img src="assets/icons/furnace.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
-  "Bulletin Board":'<img src="assets/icons/emoji-flag.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
+  "Bulletin Board":'<img src="assets/icons/sword-wood.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
   "Vault":'<img src="assets/icons/item-gold-bar.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle;margin-right:4px">',
 };
 
@@ -1501,7 +1513,7 @@ function renderQuests(){
 
   // Live: active quests from questLog
   const aq=S.bridge&&S.bridge.activeQuests;
-  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('emoji-flag')}Active Journal</div>`;
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('sword-wood')}Active Journal</div>`;
   if(!S.bridge){
     html+='<div class="quest-row" style="color:var(--muted);font-size:12px">Connect bridge to see active quests</div>';
   } else if(aq&&aq.length){
@@ -1527,7 +1539,7 @@ function renderQuests(){
     {id:'qm_clubcard',l:"Club Card (from Mr. Qi's quest)"},
     {id:'qm_dwarflang',l:"Dwarf Language (60 donations → Translation Guide)"},
   ];
-  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('emoji-checkmark')}Year 1 Milestones</div>`;
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('icon-star')}Year 1 Milestones</div>`;
   MS.forEach(m=>{
     const ch=nsGet(m.id)==='1'?'1':'0';
     html+=`<div class="quest-row"><div class="quest-check" data-qm="${m.id}" data-checked="${ch}">${ch==='1'?'✓':''}</div><span>${m.l}</span></div>`;
@@ -1625,10 +1637,10 @@ function renderCovenant(targetEl){
     const untilD=daysUntil(npc.bs,npc.bd);
     const bLabel=npc.bs.charAt(0).toUpperCase()+npc.bs.slice(1)+' '+npc.bd;
     const urgent=untilD<=3?' ⚠️':'';
-    const hFull2=`<img src="assets/icons/emoji-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle">`;
-    const hEmpty2=`<img src="assets/icons/emoji-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
-    const hFull2Lg=`<img src="assets/icons/emoji-heart.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle">`;
-    const hEmpty2Lg=`<img src="assets/icons/emoji-heart.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+    const hFull2=`<img src="assets/icons/icon-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle">`;
+    const hEmpty2=`<img src="assets/icons/icon-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+    const hFull2Lg=`<img src="assets/icons/icon-heart.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle">`;
+    const hEmpty2Lg=`<img src="assets/icons/icon-heart.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
     const miniH=Array.from({length:8},(_,i)=>`<span class="heart-sm">${hearts!==null&&i<hearts?hFull2:hEmpty2}</span>`).join('');
     const card=document.createElement('div');
     card.className='npc-card'; card.dataset.open='false';
@@ -1768,7 +1780,7 @@ function checkStoryFlag(f,b){
   return false;
 }
 
-const GROUP_ICONS={'Spring':'crop-parsnip','Summer':'crop-melon','Fall':'crop-pumpkin','Winter':'emoji-snowflake','Community Center':'emoji-sparkle','Unlocked Areas':'buff-mining','Magic & Lore':'emoji-star','Farm Life':'chest-wood','Museum Milestones':'icon-chest'};
+const GROUP_ICONS={'Spring':'crop-parsnip','Summer':'crop-melon','Fall':'crop-pumpkin','Winter':'item-quartz','Community Center':'item-prismatic-shard','Unlocked Areas':'buff-mining','Magic & Lore':'icon-star','Farm Life':'chest-wood','Museum Milestones':'icon-chest'};
 function renderGroupedFlags(items,checkFn,b){
   const groups={};
   items.forEach(f=>{if(!groups[f.g])groups[f.g]=[];groups[f.g].push(f);});
@@ -1860,7 +1872,7 @@ function renderMilestones(){
     <div class="gpa-score">${score} / ${GRANDPA.length} pts</div>
     <div class="gpa-label">Grandpa's Evaluation — ${candles} of 4 candles (12+ = perfect)${!b?' · connect bridge':''}</div>
   </div>
-  <div class="unlock-section"><div class="unlock-sec-title">${si('emoji-checkmark',18)}Criteria</div>`;
+  <div class="unlock-section"><div class="unlock-sec-title">${si('icon-star',18)}Criteria</div>`;
 
   GRANDPA.forEach(g=>{
     let done=false,pct=0,extra='';
@@ -1893,13 +1905,13 @@ const MAIN_QUEST_ARC=[
   {g:'Homestead',gi:'chest-wood',label:'Kitchen — House Upgrade 1',houseMin:1},
   {g:'Homestead',gi:'chest-wood',label:"Kids' Room — House Upgrade 2",houseMin:2},
   {g:'Homestead',gi:'chest-wood',label:'Cellar — House Upgrade 3',houseMin:3},
-  {g:'CC Oath',gi:'emoji-sparkle',label:'Pantry complete',ccRoom:'Pantry'},
-  {g:'CC Oath',gi:'emoji-sparkle',label:'Crafts Room complete',ccRoom:'Crafts Room'},
-  {g:'CC Oath',gi:'emoji-sparkle',label:'Fish Tank complete',ccRoom:'Fish Tank'},
-  {g:'CC Oath',gi:'emoji-sparkle',label:'Boiler Room complete',ccRoom:'Boiler Room'},
-  {g:'CC Oath',gi:'emoji-sparkle',label:'Bulletin Board complete',ccRoom:'Bulletin Board'},
-  {g:'CC Oath',gi:'emoji-sparkle',label:'Vault complete — Bus Repaired!',ccRoom:'Vault'},
-  {g:'CC Oath',gi:'emoji-sparkle',label:'Community Center COMPLETE',ccAll:true},
+  {g:'CC Oath',gi:'item-prismatic-shard',label:'Pantry complete',ccRoom:'Pantry'},
+  {g:'CC Oath',gi:'item-prismatic-shard',label:'Crafts Room complete',ccRoom:'Crafts Room'},
+  {g:'CC Oath',gi:'item-prismatic-shard',label:'Fish Tank complete',ccRoom:'Fish Tank'},
+  {g:'CC Oath',gi:'item-prismatic-shard',label:'Boiler Room complete',ccRoom:'Boiler Room'},
+  {g:'CC Oath',gi:'item-prismatic-shard',label:'Bulletin Board complete',ccRoom:'Bulletin Board'},
+  {g:'CC Oath',gi:'item-prismatic-shard',label:'Vault complete — Bus Repaired!',ccRoom:'Vault'},
+  {g:'CC Oath',gi:'item-prismatic-shard',label:'Community Center COMPLETE',ccAll:true},
   {g:'Desert Run',gi:'item-iridium-bar',label:'Calico Desert — first trip',mk:'mq_desert'},
   {g:'Desert Run',gi:'item-iridium-bar',label:'First Iridium Bar smelted',mk:'mq_ibar'},
   {g:'Desert Run',gi:'item-iridium-bar',label:'Club Card from Qi',c:b=>!!b.hasClubCard},
@@ -1929,7 +1941,7 @@ function renderMainQuest(){
   if(!el) return;
   const b=S.bridge;
   const aq=b&&b.activeQuests;
-  let html=`<div class="unlock-section"><div class="unlock-sec-title">${si('emoji-flag',18)}Active Journal</div>`;
+  let html=`<div class="unlock-section"><div class="unlock-sec-title">${si('sword-wood',18)}Active Journal</div>`;
   if(!b){
     html+='<div style="font-size:12px;color:var(--muted);padding:8px 0">Connect bridge for live journal</div>';
   } else if(aq&&aq.length){
@@ -1982,14 +1994,14 @@ function renderOdds(){
   const fishPerDay=days>0?(fish/days).toFixed(1):null;
   const html=`
   <div class="unlock-section"><div class="unlock-sec-title">${si('buff-farming',18)}Farm Life</div>
-    ${srow(`${si('emoji-sparkle',14)}Days Played`,days,'',days>=112?'Year 1 complete!':days>=84?'Winter is here':days>=56?'Fall vibes':days>=28?'Summer sun':'Spring baby')}
+    ${srow(`${si('item-prismatic-shard',14)}Days Played`,days,'',days>=112?'Year 1 complete!':days>=84?'Winter is here':days>=56?'Fall vibes':days>=28?'Summer sun':'Spring baby')}
     ${srow(`${si('buff-speed',14)}Steps Taken`,stats.stepsTaken||0,'',null)}
-    ${srow(`${si('emoji-zzz',14)}Times Slept`,stats.timesSleep||0,'',null)}
+    ${srow(`${si('item-beer',14)}Times Slept`,stats.timesSleep||0,'',null)}
     ${srow(`${si('icon-skull',14)}Passed Out`,passOut,'',passOut>=10?'Please eat something!!':passOut>=5?'Touch some grass':passOut>=1?'Oops':null)}
   </div>
   <div class="unlock-section"><div class="unlock-sec-title">${si('fishing-rod',18)}The Fishing Life</div>
     ${srow(`${si('fishing-rod',14)}Times Cast`,stats.timesFished||0,'',null)}
-    ${srow(`${si('emoji-fish',14)}Fish Caught`,fish,'',fish>=1000?'Master Angler!':fish>=500?'Willy is so proud':fish>=100?'Getting there!':'Just warming up')}
+    ${srow(`${si('item-catfish',14)}Fish Caught`,fish,'',fish>=1000?'Master Angler!':fish>=500?'Willy is so proud':fish>=100?'Getting there!':'Just warming up')}
     ${fishPerDay!==null?srow(`${si('buff-fishing',14)}Fish Per Day`,fishPerDay,'/day',null):''}
   </div>
   <div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe',18)}The Grind</div>
@@ -2002,11 +2014,11 @@ function renderOdds(){
     ${srow(`${si('icon-gold-coin',14)}In Wallet`,b.gold||0,'g',null)}
     ${srow(`${si('buff-luck',14)}Total Earned`,totalEarned,'g',null)}
     ${goldPerDay>0?srow(`${si('buff-speed',14)}Per-Day Rate`,goldPerDay,'g/day',null):''}
-    ${srow(`${si('emoji-star',14)}Year 1 Progress`,Math.min(100,Math.round(totalEarned/5000000*100)),'%',totalEarned>=5000000?'DONE!':totalEarned>0?`${(5000000-totalEarned).toLocaleString()}g to go`:null)}
+    ${srow(`${si('icon-star',14)}Year 1 Progress`,Math.min(100,Math.round(totalEarned/5000000*100)),'%',totalEarned>=5000000?'DONE!':totalEarned>0?`${(5000000-totalEarned).toLocaleString()}g to go`:null)}
   </div>
   <div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood',18)}Collection</div>
     ${srow(`${si('icon-chest',14)}Museum Donations`,b.museumDonations||0,' / 95',null)}
-    ${srow(`${si('emoji-mushroom',14)}Cooking Recipes`,(b.cookingRecipes||[]).length,' known',null)}
+    ${srow(`${si('item-purple-mushroom',14)}Cooking Recipes`,(b.cookingRecipes||[]).length,' known',null)}
     ${srow(`${si('furnace',14)}Crafting Recipes`,(b.craftingRecipes||[]).length,' known',null)}
   </div>`;
   el.innerHTML=html;
@@ -2058,14 +2070,14 @@ function heartBar(pts,max){
   const full=Math.floor(pts/250);
   const half=pts%250>=125?1:0;
   const empty=Math.max(0,max-full-half);
-  const hF=`<img src="assets/icons/emoji-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
-  const hH=`<img src="assets/icons/emoji-love.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
-  const hE=`<img src="assets/icons/emoji-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+  const hF=`<img src="assets/icons/icon-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+  const hH=`<img src="assets/icons/icon-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+  const hE=`<img src="assets/icons/icon-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
   return hF.repeat(Math.max(0,full))+(half?hH:'')+hE.repeat(empty);
 }
 function qualBadge(q){
   if(q>=4) return `<img src="assets/icons/pickaxe-iridium.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle" title="Iridium">`;
-  if(q>=2) return `<img src="assets/icons/emoji-star.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle" title="Gold">`;
+  if(q>=2) return `<img src="assets/icons/icon-star.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle" title="Gold">`;
   if(q>=1) return `<img src="assets/icons/buff-luck.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle" title="Silver">`;
   return '';
 }
@@ -2127,8 +2139,8 @@ function renderFitCheck(){
   const eq=b.equipment||{};
   const ap=b.appearance||{};
   const slots=[
-    [si('emoji-sparkle',14)+'Hat','hat'],[si('boots',14)+'Boots','boots'],[si('ring',14)+'Left Ring','leftRing'],
-    [si('ring',14)+'Right Ring','rightRing'],[si('emoji-heart',14)+'Shirt','shirt'],[si('crop-wheat',14)+'Pants','pants'],
+    [si('item-prismatic-shard',14)+'Hat','hat'],[si('boots',14)+'Boots','boots'],[si('ring',14)+'Left Ring','leftRing'],
+    [si('ring',14)+'Right Ring','rightRing'],[si('icon-heart',14)+'Shirt','shirt'],[si('crop-wheat',14)+'Pants','pants'],
   ];
   let html=`<div class="card"><div class="card-header">${si('boots',16)}Equipment</div><div class="equip-grid">`;
   slots.forEach(([label,key])=>{
@@ -2137,17 +2149,17 @@ function renderFitCheck(){
   });
   html+='</div></div>';
   // Appearance
-  html+=`<div class="card"><div class="card-header">${si('emoji-sparkle',16)}Appearance</div><div class="card-body">`;
+  html+=`<div class="card"><div class="card-header">${si('item-prismatic-shard',16)}Appearance</div><div class="card-body">`;
   const apRows=[['Hair Style',ap.hair],['Skin Tone',ap.skin],['Shoe Color',ap.shoeColor]];
   apRows.forEach(([lbl,val])=>{
     if(val!=null) html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>${lbl}</span><span class="stat-val">${val}</span></div>`;
   });
   const cave=b.caveChoice||0;
-  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Cave Choice</span><span class="stat-val">${cave===1?si('emoji-moon',14)+'Bats':cave===2?si('emoji-mushroom',14)+'Mushrooms':'Not chosen'}</span></div>`;
-  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Pet Preference</span><span class="stat-val">${b.catPerson?si('emoji-cat',14)+'Cat':si('emoji-fox',14)+'Dog'}</span></div>`;
+  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Cave Choice</span><span class="stat-val">${cave===1?si('icon-skull',14)+'Bats':cave===2?si('item-purple-mushroom',14)+'Mushrooms':'Not chosen'}</span></div>`;
+  html+=`<div class="flag-row" style="display:flex;padding:4px 0;font-size:13px"><span>Pet Preference</span><span class="stat-val">${b.catPerson?si('item-rabbit-foot',14)+'Cat':si('item-rabbit-foot',14)+'Dog'}</span></div>`;
   html+='</div></div>';
   if(b.spouse){
-    html+=`<div class="card"><div class="card-header">${si('emoji-heart',16)}Household</div><div class="card-body"><span style="font-size:14px">Married to <strong>${b.spouse}</strong></span></div></div>`;
+    html+=`<div class="card"><div class="card-header">${si('icon-heart',16)}Household</div><div class="card-body"><span style="font-size:14px">Married to <strong>${b.spouse}</strong></span></div></div>`;
   }
   el.innerHTML=html;
 }
@@ -2196,9 +2208,9 @@ function renderTouchingGrass(){
     const pts=friendship[npc.k]||0;
     const hearts=Math.min(8,Math.floor(pts/250));
     const halfH=pts%250>=125;
-    const hFull=`<img src="assets/icons/emoji-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
-    const hHalf=`<img src="assets/icons/emoji-love.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
-    const hEmpty=`<img src="assets/icons/emoji-x.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.3">`;
+    const hFull=`<img src="assets/icons/icon-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+    const hHalf=`<img src="assets/icons/icon-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+    const hEmpty=`<img src="assets/icons/icon-skull.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.3">`;
     const filledH=hFull.repeat(hearts)+(halfH&&hearts<8?hHalf:'');
     const emptyH=hEmpty.repeat(8-hearts-(halfH&&hearts<8?1:0));
     html+=`<div class="grass-row">
@@ -2240,12 +2252,12 @@ function renderSupportingCast(){
   const pets=b.pets||[];
   let html='';
   if(pets.length){
-    html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('emoji-cat',18)}Pets</div>`;
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('item-rabbit-foot',18)}Pets</div>`;
     pets.forEach(p=>{
       const hearts=Math.min(5,Math.floor((p.friendship||0)/200));
-      const aHF=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
-      const aHE=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
-      const petIcon=p.type==='Cat'?si('emoji-cat',22):si('emoji-fox',22);
+      const aHF=`<img src="assets/icons/icon-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
+      const aHE=`<img src="assets/icons/icon-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+      const petIcon=p.type==='Cat'?si('item-rabbit-foot',22):si('item-rabbit-foot',22);
       html+=`<div class="animal-row"><span style="line-height:1">${petIcon}</span><span class="animal-name">${p.name}</span><span class="animal-type">${p.type}</span><span class="animal-hearts">${aHF.repeat(hearts)}${aHE.repeat(5-hearts)}</span></div>`;
     });
     html+='</div>';
@@ -2259,9 +2271,9 @@ function renderSupportingCast(){
     html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood',18)}${bname} (${anims.length})</div>`;
     anims.forEach(a=>{
       const hearts=Math.min(5,Math.floor((a.friendship||0)/200));
-      const animalIcon=a.type.includes('Chicken')?si('buff-farming',22):a.type.includes('Cow')?si('icon-gold-coin',22):a.type.includes('Pig')?si('emoji-mushroom',22):a.type.includes('Sheep')?si('crop-wheat',22):a.type.includes('Goat')?si('emoji-sparkle',22):a.type.includes('Duck')?si('emoji-fish',22):a.type.includes('Rabbit')?si('emoji-heart',22):si('buff-farming',22);
-      const bHF=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
-      const bHE=`<img src="assets/icons/emoji-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+      const animalIcon=a.type.includes('Chicken')?si('buff-farming',22):a.type.includes('Cow')?si('icon-gold-coin',22):a.type.includes('Pig')?si('item-purple-mushroom',22):a.type.includes('Sheep')?si('crop-wheat',22):a.type.includes('Goat')?si('item-prismatic-shard',22):a.type.includes('Duck')?si('item-catfish',22):a.type.includes('Rabbit')?si('icon-heart',22):si('buff-farming',22);
+      const bHF=`<img src="assets/icons/icon-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
+      const bHE=`<img src="assets/icons/icon-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
       html+=`<div class="animal-row"><span style="line-height:1">${animalIcon}</span><span class="animal-name">${a.name}</span><span class="animal-type">${a.type}</span><span class="animal-hearts">${bHF.repeat(hearts)}${bHE.repeat(5-hearts)}</span></div>`;
     });
     html+='</div>';
@@ -2283,7 +2295,7 @@ function renderPlotArmor(){
   // Cave + pet choices (already in Fit Check, summarise here too)
   if(b){
     const cave=b.caveChoice||0;
-    html+=`<div class="unlock-row"><div class="unlock-dot${cave>0?' yes':''}"></div><span style="flex:1">Cave Choice</span><span style="font-size:11px;color:var(--muted)">${cave===1?si('emoji-moon',14)+'Bats':cave===2?si('emoji-mushroom',14)+'Mushrooms':'Not made'}</span></div>`;
+    html+=`<div class="unlock-row"><div class="unlock-dot${cave>0?' yes':''}"></div><span style="flex:1">Cave Choice</span><span style="font-size:11px;color:var(--muted)">${cave===1?si('icon-skull',14)+'Bats':cave===2?si('item-purple-mushroom',14)+'Mushrooms':'Not made'}</span></div>`;
   }
   html+='</div>';
   // Stats / Collections
@@ -2291,9 +2303,9 @@ function renderPlotArmor(){
   const statRows=[
     [`${si('buff-speed',14)}Steps Taken`,'stepsTaken'],[`${si('buff-farming',14)}Days Played`,'daysPlayed'],
     [`${si('fishing-rod',14)}Times Fished`,'timesFished'],[`${si('icon-skull',14)}Times Passed Out`,'timesUnconscious'],
-    [`${si('emoji-zzz',14)}Times Slept`,'timesSleep'],[`${si('pickaxe',14)}Stones Broken`,'rocksCrushed'],
+    [`${si('item-beer',14)}Times Slept`,'timesSleep'],[`${si('pickaxe',14)}Stones Broken`,'rocksCrushed'],
     [`${si('crop-wheat',14)}Crops Shipped`,'cropsShipped'],[`${si('buff-foraging',14)}Items Foraged`,'itemsForaged'],
-    [`${si('emoji-fish',14)}Fish Caught`,'fishCaught'],[`${si('galaxy-sword',14)}Monsters Killed`,'monstersKilled'],
+    [`${si('item-catfish',14)}Fish Caught`,'fishCaught'],[`${si('galaxy-sword',14)}Monsters Killed`,'monstersKilled'],
     [`${si('icon-gold-coin',14)}Gold Earned`,'moneyEarned'],
   ].filter(([,k])=>stats[k]>0);
   if(statRows.length){
@@ -2407,7 +2419,7 @@ function renderHolocron(){
   // ── Fish ─────────────────────────────────────────────────────────────────────
   const fishChecked=FISH_LIST.filter(f=>nsGet('holo_fish_'+f.id)==='1').length;
   html+=`<div class="unlock-section">
-    <div class="unlock-sec-title"><img src="assets/icons/emoji-fish.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Fish Caught</div>
+    <div class="unlock-sec-title"><img src="assets/icons/item-catfish.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Fish Caught</div>
     ${pbar(fishCount,b?Math.max(fishCount,80):80,'#5bb8e8')}
     <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Species logged manually · ${fishChecked}/${FISH_LIST.length} species</div>`;
   // Group by season
@@ -2431,7 +2443,7 @@ function renderHolocron(){
   // ── Artifacts ────────────────────────────────────────────────────────────────
   const artChecked=ARTIFACT_LIST.filter((_,i)=>nsGet('holo_art_'+i)==='1').length;
   html+=`<div class="unlock-section">
-    <div class="unlock-sec-title"><img src="assets/icons/emoji-sparkle.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Artifacts (${artChecked}/${ARTIFACT_LIST.length})</div>
+    <div class="unlock-sec-title"><img src="assets/icons/item-prismatic-shard.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Artifacts (${artChecked}/${ARTIFACT_LIST.length})</div>
     ${pbar(artChecked,ARTIFACT_LIST.length,'#e8b55b')}`;
   ARTIFACT_LIST.forEach((name,i)=>{
     const ch=nsGet('holo_art_'+i)==='1';
@@ -2472,7 +2484,7 @@ function renderHolocron(){
 
   // ── Museum ──────────────────────────────────────────────────────────────────
   html+=`<div class="unlock-section">
-    <div class="unlock-sec-title"><img src="assets/icons/emoji-sparkle.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Museum Donations (${donations} / 95)</div>
+    <div class="unlock-sec-title"><img src="assets/icons/item-prismatic-shard.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:4px"> Museum Donations (${donations} / 95)</div>
     ${pbar(donations,95,'#7ba8e8')}
   </div>`;
 
@@ -2737,9 +2749,16 @@ function init(){
     const bc=document.querySelector('.card:has(#bridge-connect)');
     if(bc) bc.style.display='none';
   } else {
-    // GitHub Pages — show redirect banner, auto-fill hostname
+    // GitHub Pages — show sticky live-mode banner + old redirect banner in home
     const banner=document.getElementById('bridge-redirect-banner');
     if(banner) banner.style.display='block';
+    const liveBanner=document.getElementById('live-banner');
+    if(liveBanner){
+      liveBanner.style.display='block';
+      // Pad nav so banner doesn't overlap it
+      const nav=document.getElementById('nav');
+      if(nav) nav.style.paddingBottom='calc(env(safe-area-inset-bottom) + 60px)';
+    }
     let ip=lsGet('sdv_ip')||BRIDGE_HOST;
     if(/^\d+\.\d+\.\d+\.\d+$/.test(ip)) ip=BRIDGE_HOST;
     S.bridgeIP=ip; lsSet('sdv_ip',ip);
@@ -2772,9 +2791,9 @@ document.addEventListener('DOMContentLoaded',init);
     'dagger-crystal','club-knight','crop-strawberry','crop-melon','crop-pumpkin',
     'crop-sunflower','crop-starfruit','crop-blueberry','crop-corn','crop-ancient-fruit',
     'crop-parsnip','buff-farming','buff-fishing','buff-foraging','buff-mining',
-    'buff-combat','buff-luck','emoji-heart','emoji-sparkle','emoji-star',
-    'emoji-tulip','emoji-strawberry','emoji-mushroom','emoji-rainbow',
-    'emoji-snowflake','emoji-moon','emoji-fish','boots','ring',
+    'buff-combat','buff-luck','icon-heart','item-prismatic-shard','icon-star',
+    'item-honey','item-strawberry','item-purple-mushroom','item-prismatic-shard',
+    'item-quartz','icon-skull','item-catfish','boots','ring',
     'watering-can-iridium','pickaxe-iridium','axe-iridium'];
   const el=document.getElementById('bg-sprites');
   if(!el) return;
