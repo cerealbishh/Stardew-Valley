@@ -667,23 +667,49 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.wfile.write(body)
         else:
             # Serve static files from the project directory
-            import mimetypes
+            import mimetypes, hashlib, gzip as gzip_mod
             req = self.path.split('?')[0]
             if req == '/':
                 req = '/index.html'
             file_path = os.path.join(_BRIDGE_DIR, req.lstrip('/'))
             if os.path.isfile(file_path):
                 mime, _ = mimetypes.guess_type(file_path)
+                mime = mime or "application/octet-stream"
                 with open(file_path, 'rb') as f:
-                    body = f.read()
+                    raw = f.read()
+
+                # ETag from content hash for cache validation
+                etag = '"' + hashlib.md5(raw).hexdigest()[:16] + '"'
+                if self.headers.get('If-None-Match') == etag:
+                    self.send_response(304)
+                    self.end_headers()
+                    return
+
+                # Gzip for text assets
+                accept_enc = self.headers.get('Accept-Encoding', '')
+                use_gzip = 'gzip' in accept_enc and mime.startswith(('text/', 'application/javascript', 'application/json'))
+                body = gzip_mod.compress(raw, compresslevel=6) if use_gzip else raw
+
+                # Cache policy: assets (images/fonts) → 7 days; HTML/JS → revalidate
+                is_asset = mime.startswith('image/') or 'font' in mime
+                cache = 'public, max-age=604800, immutable' if is_asset else 'no-cache'
+
                 self.send_response(200)
-                self.send_header("Content-Type", mime or "application/octet-stream")
+                self.send_header("Content-Type", mime)
                 self.send_header("Content-Length", str(len(body)))
+                self.send_header("Cache-Control", cache)
+                self.send_header("ETag", etag)
+                self.send_header("Access-Control-Allow-Origin", "*")
+                if use_gzip:
+                    self.send_header("Content-Encoding", "gzip")
                 self.end_headers()
                 self.wfile.write(body)
             else:
                 self.send_response(404)
                 self.end_headers()
+
+    def do_HEAD(self):
+        self.do_GET()
 
     def log_message(self, fmt, *args):
         pass
