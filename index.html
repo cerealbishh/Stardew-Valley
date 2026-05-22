@@ -585,7 +585,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
     <div class="sub-nav" id="story-sub-nav">
       <button class="sub-btn active" data-stab="previously"><img class="sdv-icon" src="assets/icons/item-ancient-fruit.png" alt="">Previously On</button>
       <button class="sub-btn" data-stab="lore"><img class="sdv-icon" src="assets/icons/icon-skull.png" alt="">The Lore</button>
-      <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="assets/icons/icon-heart.png" alt="">Covenant of the Rock</button>
+      <button class="sub-btn" data-stab="covenant"><img class="sdv-icon" src="assets/icons/icon-heart.png" alt="">Neighbors 2: Sorority Rising</button>
       <button class="sub-btn" data-stab="milestones"><img class="sdv-icon" src="assets/icons/icon-star.png" alt="">Milestones</button>
       <button class="sub-btn" data-stab="mainquest"><img class="sdv-icon" src="assets/icons/sword-wood.png" alt="">Main Quest</button>
       <button class="sub-btn" data-stab="odds"><img class="sdv-icon" src="assets/icons/buff-attack.png" alt="">Never Tell Me the Odds</button>
@@ -1420,18 +1420,36 @@ function renderPar(){
 }
 
 function renderCarry(){
-  const html=Object.entries(CARRY).map(([sec,items])=>`
+  const el=document.getElementById('carry-content');
+  if(!el) return;
+  const SORD_={spring:0,summer:1,fall:2,winter:3};
+  const curOrd=SORD_[S.season]*28+S.day;
+  const overdue=[];
+  ['spring','summer','fall','winter'].forEach(season=>{
+    (RD[season]||[]).forEach(day=>{
+      const dayOrd=SORD_[season]*28+day.d;
+      if(dayOrd>=curOrd) return;
+      const missed=day.tasks.filter(t=>lsGet('sdv_t_'+t.id)!=='1');
+      if(missed.length) overdue.push({season,d:day.d,name:day.name,tasks:missed});
+    });
+  });
+  const SL={spring:'Spring',summer:'Summer',fall:'Fall',winter:'Winter'};
+  if(!overdue.length){
+    el.innerHTML=`<div class="carry-section"><div style="color:var(--acc);font-size:14px;padding:20px 0;text-align:center">${si('icon-star',18)}All caught up! Nothing overdue.</div></div>`;
+    return;
+  }
+  el.innerHTML=`<div style="font-size:11px;color:var(--muted);padding:8px 14px 4px">Tasks from past days you haven't checked off yet</div>`+
+    overdue.map(({season,d,name,tasks})=>`
     <div class="carry-section">
-      <div class="carry-title">${sec}</div>
-      ${items.map(item=>{
-        const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
+      <div class="carry-title">${si('watering-can',14)}${SL[season]} ${d}${name?' · '+name:''}</div>
+      ${tasks.map(t=>{
+        const ch=lsGet('sdv_t_'+t.id)==='1'?'1':'0';
         return `<div class="carry-item">
-          <div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div>
-          <span>${item.label}</span>
+          <div class="task-check" data-id="${t.id}" data-checked="${ch}" style="flex-shrink:0;width:20px;height:20px;border-radius:50%;border:2px solid var(--acc);background:${ch==='1'?'var(--acc)':'var(--bg)'};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;transition:all .15s"></div>
+          <span>${t.label}</span>
         </div>`;
       }).join('')}
     </div>`).join('');
-  document.getElementById('carry-content').innerHTML=html;
 }
 
 const ROOM_ICON_JS={
@@ -1491,7 +1509,7 @@ function renderHoardSub(sub){
   else if(sub==='quests') renderQuests();
   else if(sub==='museum') renderMuseum();
   else if(sub==='unlocks') renderUnlocks();
-  else if(sub==='npcs') renderCovenant();
+  else if(sub==='npcs') renderHoardCovenant();
 }
 
 function renderQuests(){
@@ -1614,34 +1632,87 @@ function renderUnlocks(){
   el.innerHTML=html;
 }
 
-function renderCovenant(targetEl){
-  const el=targetEl||document.getElementById('npcs-content');
+// ── HOARD: Covenant of the Rock — heart milestone tracker ────────────────────
+function renderHoardCovenant(){
+  const el=document.getElementById('npcs-content');
   if(!el) return;
-  const sorted=[...NPC_DATA].sort((a,b)=>daysUntil(a.bs,a.bd)-daysUntil(b.bs,b.bd));
+  const b=S.bridge;
+  const sorted=[...NPC_DATA].sort((a,b_)=>daysUntil(a.bs,a.bd)-daysUntil(b_.bs,b_.bd));
   const frag=document.createDocumentFragment();
+  const MILESTONES=[{h:2,pts:500},{h:4,pts:1000},{h:6,pts:1500},{h:8,pts:2000}];
+  const hFull=`<img src="assets/icons/icon-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle">`;
+  const hEmpty=`<img src="assets/icons/icon-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
   sorted.forEach(npc=>{
-    const pts=S.bridge&&S.bridge.friendship?S.bridge.friendship[npc.k]:null;
+    const pts=b&&b.friendship?b.friendship[npc.k]:null;
     const hearts=pts!==null&&pts!==undefined?Math.floor(pts/250):null;
     const untilD=daysUntil(npc.bs,npc.bd);
     const bLabel=npc.bs.charAt(0).toUpperCase()+npc.bs.slice(1)+' '+npc.bd;
-    const urgent=untilD<=3?' ⚠️':'';
-    const hFull2=`<img src="assets/icons/icon-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle">`;
-    const hEmpty2=`<img src="assets/icons/icon-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
-    const hFull2Lg=`<img src="assets/icons/icon-heart.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle">`;
-    const hEmpty2Lg=`<img src="assets/icons/icon-heart.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
-    const miniH=Array.from({length:8},(_,i)=>`<span class="heart-sm">${hearts!==null&&i<hearts?hFull2:hEmpty2}</span>`).join('');
+    const miniH=Array.from({length:8},(_,i)=>`<span class="heart-sm">${hearts!==null&&i<hearts?hFull:hEmpty}</span>`).join('');
+    const milestones=MILESTONES.map(m=>{
+      const ok=pts!==null&&pts>=m.pts;
+      return `<span class="chip ${ok?'have':'missing'}" style="font-size:11px;padding:3px 8px">${m.h}♥${ok?' ✓':''}</span>`;
+    }).join('');
+    const ptsLine=pts!==null&&pts!==undefined?`<span class="npc-pts">${pts} pts — ${hearts||0}♥</span>`:'<span class="npc-pts" style="font-style:italic">No bridge data</span>';
     const card=document.createElement('div');
     card.className='npc-card'; card.dataset.open='false';
-    const heartRow=Array.from({length:8},(_,i)=>`<span class="heart-lg">${hearts!==null&&i<hearts?hFull2Lg:hEmpty2Lg}</span>`).join('');
-    const ptsLine=pts!==null&&pts!==undefined?`<span class="npc-pts">${pts} pts — ${hearts||0}♥</span>`:'<span class="npc-pts" style="font-style:italic">No bridge data</span>';
     card.innerHTML=`<div class="npc-header">
       <img class="npc-portrait" src="assets/portraits/${npc.k}.png" alt="${npc.n}" onerror="this.outerHTML='<span style=font-size:20px>${npc.e}</span>'">
       <span class="npc-name">${npc.n}</span>
-      <span class="npc-bday-tag">${bLabel}${urgent}<br><span style="color:var(--acc)">${untilD}d away</span></span>
+      <span class="npc-bday-tag">${bLabel}${untilD<=3?' ⚠️':''}<br><span style="color:var(--acc)">${untilD}d away</span></span>
+      <div class="npc-hearts-mini">${miniH}</div>
+    </div>
+    <div class="npc-body">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">${milestones}</div>
+      ${ptsLine}
+      <div class="npc-gift-label">Loved Gifts</div>
+      <div class="npc-gifts">${npc.g.map(g=>`<span class="gift-chip">${g}</span>`).join('')}</div>
+    </div>`;
+    frag.appendChild(card);
+  });
+  el.innerHTML='';
+  el.appendChild(frag);
+}
+
+// ── STORY TIME: Neighbors 2: Sorority Rising — friendship tracker ─────────────
+function renderNeighbors(){
+  const el=document.getElementById('story-covenant-content');
+  if(!el) return;
+  const b=S.bridge;
+  const sorted=[...NPC_DATA].sort((a,b_)=>{
+    const pA=b&&b.friendship?b.friendship[a.k]||0:0;
+    const pB=b&&b.friendship?b.friendship[b_.k]||0:0;
+    if(pA!==pB) return pA-pB;
+    return daysUntil(a.bs,a.bd)-daysUntil(b_.bs,b_.bd);
+  });
+  const frag=document.createDocumentFragment();
+  const hFull=`<img src="assets/icons/icon-heart.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle">`;
+  const hEmpty=`<img src="assets/icons/icon-heart.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+  const hFmini=`<img src="assets/icons/icon-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle">`;
+  const hEmini=`<img src="assets/icons/icon-heart.png" style="width:11px;height:11px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+  sorted.forEach(npc=>{
+    const pts=b&&b.friendship?b.friendship[npc.k]:null;
+    const hearts=pts!==null&&pts!==undefined?Math.floor(pts/250):null;
+    const givenThisWeek=b&&b.giftsThisWeek?b.giftsThisWeek[npc.k]||0:null;
+    const giftsLeft=givenThisWeek!==null?2-givenThisWeek:null;
+    const untilD=daysUntil(npc.bs,npc.bd);
+    const bLabel=npc.bs.charAt(0).toUpperCase()+npc.bs.slice(1)+' '+npc.bd;
+    const miniH=Array.from({length:8},(_,i)=>`<span class="heart-sm">${hearts!==null&&i<hearts?hFmini:hEmini}</span>`).join('');
+    const heartRow=Array.from({length:8},(_,i)=>hearts!==null&&i<hearts?hFull:hEmpty).join('');
+    const ptsLine=pts!==null&&pts!==undefined?`<span class="npc-pts">${pts} pts — ${hearts||0}♥</span>`:'<span class="npc-pts" style="font-style:italic">Connect bridge</span>';
+    const giftTag=giftsLeft!==null
+      ?`<span class="gift-chip" style="${giftsLeft===0?'opacity:.5':'font-weight:700;color:var(--acc)'}">${giftsLeft===0?'✓ Gifted':giftsLeft===1?'1 gift left':'2 gifts left'}</span>`
+      :'';
+    const card=document.createElement('div');
+    card.className='npc-card'; card.dataset.open='false';
+    card.innerHTML=`<div class="npc-header">
+      <img class="npc-portrait" src="assets/portraits/${npc.k}.png" alt="${npc.n}" onerror="this.outerHTML='<span style=font-size:20px>${npc.e}</span>'">
+      <span class="npc-name">${npc.n}</span>
+      <span class="npc-bday-tag">${bLabel}${untilD<=3?' ⚠️':''}<br><span style="color:var(--acc)">${untilD}d away</span></span>
       <div class="npc-hearts-mini">${miniH}</div>
     </div>
     <div class="npc-body">
       <div class="npc-hearts-row">${heartRow}${ptsLine}</div>
+      <div style="margin:6px 0 4px">${giftTag}</div>
       <div class="npc-gift-label">Loved Gifts</div>
       <div class="npc-gifts">${npc.g.map(g=>`<span class="gift-chip">${g}</span>`).join('')}</div>
     </div>`;
@@ -1829,11 +1900,24 @@ function renderLore(){
   const el=document.getElementById('lore-content');
   if(!el) return;
   const warn=!S.bridge?'<div class="junimo-offline">Connect bridge for live world flag detection</div>':'';
-  el.innerHTML=warn+renderGroupedFlags(LORE_FLAGS,checkStoryFlag,S.bridge);
+  let extra='';
+  extra+=`<div class="unlock-section"><div class="unlock-sec-title">${si('item-prismatic-shard',18)}Community Center Checklist</div>`;
+  CARRY['Community Center'].forEach(item=>{
+    const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
+    extra+=`<div class="carry-item"><div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div><span>${item.label}</span></div>`;
+  });
+  extra+='</div>';
+  extra+=`<div class="unlock-section"><div class="unlock-sec-title">${si('icon-heart',18)}NPC Gift Stockpile</div>`;
+  CARRY['NPC Gifts'].forEach(item=>{
+    const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
+    extra+=`<div class="carry-item"><div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div><span>${item.label}</span></div>`;
+  });
+  extra+='</div>';
+  el.innerHTML=warn+renderGroupedFlags(LORE_FLAGS,checkStoryFlag,S.bridge)+extra;
 }
 
 function renderStoryCovenant(){
-  renderCovenant(document.getElementById('story-covenant-content'));
+  renderNeighbors();
 }
 
 function renderMilestones(){
@@ -1957,6 +2041,20 @@ function renderMainQuest(){
     });
     html+='</div>';
   });
+  // Manual checklists: Tools & Upgrades + Mine Supplies
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe-iridium',18)}Tools & Upgrades</div>`;
+  CARRY['Tools & Upgrades'].forEach(item=>{
+    const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
+    html+=`<div class="carry-item"><div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div><span>${item.label}</span></div>`;
+  });
+  html+='</div>';
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe-steel',18)}Mine Supplies</div>`;
+  CARRY['Mine Supplies'].forEach(item=>{
+    const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
+    html+=`<div class="carry-item"><div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div><span>${item.label}</span></div>`;
+  });
+  html+='</div>';
+
   if(!b) html='<div class="junimo-offline">Connect bridge for auto-detection</div>'+html;
   el.innerHTML=html;
 }
@@ -2686,6 +2784,7 @@ document.addEventListener('click',e=>{
     const row=tc.closest('.task-row'); if(row) row.dataset.checked=ch;
     if(ch==='1') spawnParticles(tc);
     renderHome();
+    if(document.getElementById('sp-carry')?.classList.contains('active')) renderCarry();
     return;
   }
 

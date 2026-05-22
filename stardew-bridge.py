@@ -267,10 +267,14 @@ def parse_save():
     for entry in root.findall(".//friendships/item"):
         key_el = entry.find("key/string")
         pts_el = entry.find("value/Friendship/Points")
+        gifts_el = entry.find("value/Friendship/GiftsThisWeek")
         if key_el is not None and pts_el is not None:
             name = key_el.text
             if name in FRIENDSHIP_NPCS:
-                out["friendship"][name.lower()] = int(pts_el.text or 0)
+                nk = name.lower()
+                out["friendship"][nk] = int(pts_el.text or 0)
+                if gifts_el is not None:
+                    out.setdefault("giftsThisWeek", {})[nk] = int(gifts_el.text or 0)
 
     inv_counts = {}
     for item in root.findall(".//player/items/Item"):
