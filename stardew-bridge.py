@@ -7,18 +7,15 @@ Watches your Stardew save file and serves parsed data to the tracker on your iPh
 import http.server
 import json
 import os
-import ssl
 import threading
 import time
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
 
 SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/Hoedown_203853699/Hoedown_203853699"
 PORT = 8742
 POLL_INTERVAL = 5
 _BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
-CERT_FILE = os.path.join(_BRIDGE_DIR, "roohis-macbook-air.tailcce197.ts.net.crt")
-KEY_FILE  = os.path.join(_BRIDGE_DIR, "roohis-macbook-air.tailcce197.ts.net.key")
 
 latest_data = {}
 last_modified = 0
@@ -575,7 +572,6 @@ def xp_to_level(xp):
 def watch_loop():
     global latest_data, last_modified
     print(f"[bridge] Watching: {SAVE_PATH}")
-    print(f"[bridge] Serving on https://localhost:{PORT}/save")
     while True:
         try:
             mtime = os.path.getmtime(SAVE_PATH)
@@ -609,63 +605,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.send_header("Access-Control-Allow-Origin", "*")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-        elif self.path == "/cert":
-            import base64, uuid
-            with open(CERT_FILE, 'rb') as f:
-                cert_pem = f.read()
-            cert_b64_lines = [l for l in cert_pem.decode().splitlines()
-                              if not l.startswith('-----')]
-            cert_b64 = ''.join(cert_b64_lines)
-            profile_uuid = str(uuid.uuid4()).upper()
-            payload_uuid = str(uuid.uuid4()).upper()
-            mobileconfig = f"""<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>PayloadContent</key>
-    <array>
-        <dict>
-            <key>PayloadCertificateFileName</key>
-            <string>stardew-bridge.cer</string>
-            <key>PayloadContent</key>
-            <data>{cert_b64}</data>
-            <key>PayloadDescription</key>
-            <string>Trusts the Stardew Bridge local server certificate</string>
-            <key>PayloadDisplayName</key>
-            <string>Stardew Bridge CA</string>
-            <key>PayloadIdentifier</key>
-            <string>com.hoedownfarms.stardew.bridge.cert</string>
-            <key>PayloadType</key>
-            <string>com.apple.security.root</string>
-            <key>PayloadUUID</key>
-            <string>{payload_uuid}</string>
-            <key>PayloadVersion</key>
-            <integer>1</integer>
-        </dict>
-    </array>
-    <key>PayloadDescription</key>
-    <string>Allows your iPhone to connect to the Stardew Bridge on your Mac</string>
-    <key>PayloadDisplayName</key>
-    <string>Stardew Bridge</string>
-    <key>PayloadIdentifier</key>
-    <string>com.hoedownfarms.stardew.bridge</string>
-    <key>PayloadRemovalDisallowed</key>
-    <false/>
-    <key>PayloadType</key>
-    <string>Configuration</string>
-    <key>PayloadUUID</key>
-    <string>{profile_uuid}</string>
-    <key>PayloadVersion</key>
-    <integer>1</integer>
-</dict>
-</plist>"""
-            body = mobileconfig.encode('utf-8')
-            self.send_response(200)
-            self.send_header("Content-Type", "application/x-apple-aspen-config")
-            self.send_header("Content-Disposition", "attachment; filename=stardew-bridge.mobileconfig")
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
             self.wfile.write(body)
@@ -720,82 +659,6 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    if not os.path.exists(CERT_FILE) or not os.path.exists(KEY_FILE):
-        print("[bridge] Generating self-signed certificate...")
-        try:
-            import socket, subprocess
-            from cryptography import x509
-            from cryptography.x509.oid import NameOID
-            from cryptography.hazmat.primitives import hashes, serialization
-            from cryptography.hazmat.primitives.asymmetric import rsa
-            import ipaddress
-
-            # Collect every IP and hostname this Mac answers to
-            san_ips, san_dns = set(), {'localhost'}
-            san_ips.add(ipaddress.IPv4Address('127.0.0.1'))
-            try:
-                # All network interface IPs
-                import subprocess, re
-                out = subprocess.check_output(['ifconfig'], text=True)
-                for m in re.finditer(r'inet (\d+\.\d+\.\d+\.\d+)', out):
-                    ip = m.group(1)
-                    if ip != '127.0.0.1':
-                        san_ips.add(ipaddress.IPv4Address(ip))
-            except Exception:
-                pass
-            try:
-                ts_out = subprocess.check_output(['tailscale', 'status', '--json'], text=True)
-                import json as _j
-                ts = _j.loads(ts_out)
-                self_node = ts.get('Self', {})
-                for addr in self_node.get('TailscaleIPs', []):
-                    try: san_ips.add(ipaddress.IPv4Address(addr))
-                    except Exception: pass
-                dns = self_node.get('DNSName', '').rstrip('.')
-                if dns:
-                    san_dns.add(dns)
-                    # also add short hostname
-                    san_dns.add(dns.split('.')[0])
-            except Exception:
-                pass
-            # Always include the Tailscale FQDN from CERT_FILE name as fallback
-            ts_host = os.path.basename(CERT_FILE).replace('.crt', '')
-            if ts_host:
-                san_dns.add(ts_host)
-
-            san_entries = [x509.IPAddress(ip) for ip in san_ips]
-            san_entries += [x509.DNSName(d) for d in san_dns]
-
-            key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-            name = x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, u"Stardew Bridge")])
-            cert = (
-                x509.CertificateBuilder()
-                .subject_name(name)
-                .issuer_name(name)
-                .public_key(key.public_key())
-                .serial_number(x509.random_serial_number())
-                .not_valid_before(datetime.now(timezone.utc))
-                .not_valid_after(datetime.now(timezone.utc) + timedelta(days=3650))
-                .add_extension(x509.SubjectAlternativeName(san_entries), critical=False)
-                .sign(key, hashes.SHA256())
-            )
-            with open(KEY_FILE, 'wb') as f:
-                f.write(key.private_bytes(serialization.Encoding.PEM,
-                    serialization.PrivateFormat.TraditionalOpenSSL,
-                    serialization.NoEncryption()))
-            with open(CERT_FILE, 'wb') as f:
-                f.write(cert.public_bytes(serialization.Encoding.PEM))
-            print(f"[bridge] Certificate SANs: IPs={[str(i) for i in san_ips]} DNS={san_dns}")
-            print(f"[bridge] Certificate saved to {CERT_FILE}")
-            # Announce cert download URL for every IP
-            for ip in san_ips:
-                s = str(ip)
-                if not s.startswith('127'):
-                    print(f"[bridge] Install cert on iPhone: http://{s}:8743/cert")
-        except ImportError:
-            print("[bridge] cryptography not installed. Run: pip3 install cryptography")
-            exit(1)
-
     if os.path.exists(SAVE_PATH):
         latest_data = parse_save()
     else:
@@ -804,19 +667,23 @@ if __name__ == "__main__":
     t = threading.Thread(target=watch_loop, daemon=True)
     t.start()
 
+    import re, subprocess
+    ips = []
     try:
-        http_server = http.server.HTTPServer(("0.0.0.0", 8743), Handler)
-        http_thread = threading.Thread(target=http_server.serve_forever, daemon=True)
-        http_thread.start()
-        print(f"[bridge] Cert download (HTTP): http://10.0.0.70:8743/cert")
-    except OSError:
-        print("[bridge] Port 8743 in use — cert download server skipped")
+        out = subprocess.check_output(['ifconfig'], text=True, stderr=subprocess.DEVNULL)
+        for m in re.finditer(r'inet (\d+\.\d+\.\d+\.\d+)', out):
+            ip = m.group(1)
+            if not ip.startswith('127') and not ip.startswith('169'):
+                ips.append(ip)
+    except Exception:
+        pass
 
     server = http.server.HTTPServer(("0.0.0.0", PORT), Handler)
-    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-    ctx.load_cert_chain(CERT_FILE, KEY_FILE)
-    server.socket = ctx.wrap_socket(server.socket, server_side=True)
-    print(f"[bridge] HTTPS server running on port {PORT}")
+    print(f"[bridge] Running — open on iPhone (same WiFi):")
+    for ip in ips:
+        print(f"           http://{ip}:{PORT}")
+    if not ips:
+        print(f"           http://[your-mac-ip]:{PORT}")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
