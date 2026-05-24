@@ -1542,14 +1542,42 @@ function renderCal(){
 }
 
 function renderPar(){
+  const b=S.bridge;
+  const ccRooms=b?.cc_bundles;
+  function ccRoomDone(name){
+    if(!ccRooms) return null;
+    const r=ccRooms.find(r=>r.name===name);
+    if(!r) return null;
+    return r.bundles.every(bnd=>bnd.completed);
+  }
+  const AUTO_MAP={
+    mine120:()=>b?!!b.hasSkullKey:null,
+    goldpick:()=>b?((b.toolLevels?.Pickaxe||0)>=3):null,
+    vault42k:()=>ccRoomDone('Vault'),
+    fishtank:()=>ccRoomDone('Fish Tank'),
+    craftsroom:()=>ccRoomDone('Crafts Room'),
+    boilerroom:()=>ccRoomDone('Boiler Room'),
+    bulletin:()=>ccRoomDone('Bulletin Board'),
+    pantry:()=>ccRoomDone('Pantry'),
+    cc:()=>ccRooms?ccRooms.every(r=>r.bundles.every(bnd=>bnd.completed)):null,
+  };
   const html=PAR.map(p=>{
-    const ch=lsGet('sdv_par_'+p.id)==='1'?'1':'0';
+    const auto=AUTO_MAP[p.id]?.();
     const iconHtml=p.icon?`<img src="assets/icons/${p.icon}.png" style="width:20px;height:20px;image-rendering:pixelated;flex-shrink:0" onerror="this.style.display='none'">`:'';
+    if(auto===null||auto===undefined){
+      const ch=lsGet('sdv_par_'+p.id)==='1'?'1':'0';
+      return `<div class="par-item">
+        <div class="par-check" data-par-id="${p.id}" data-checked="${ch}"></div>
+        ${iconHtml}<span style="flex:1">${p.label}</span>
+        <span class="par-day">${p.target}</span>
+      </div>`;
+    }
+    const badge=`<span class="timeline-badge${auto?' auto':''}">${auto?'✓':'AUTO'}</span>`;
     return `<div class="par-item">
-      <div class="par-check" data-par-id="${p.id}" data-checked="${ch}"></div>
-      ${iconHtml}
-      <span>${p.label}</span>
+      <div class="timeline-dot${auto?' yes':''}"></div>
+      ${iconHtml}<span style="flex:1">${p.label}</span>
       <span class="par-day">${p.target}</span>
+      ${badge}
     </div>`;
   }).join('');
   document.getElementById('par-content').innerHTML=html;
@@ -2036,20 +2064,7 @@ function renderLore(){
   const el=document.getElementById('lore-content');
   if(!el) return;
   const warn=!S.bridge?'<div class="junimo-offline">Connect bridge for live world flag detection</div>':'';
-  let extra='';
-  extra+=`<div class="unlock-section"><div class="unlock-sec-title">${si('item-prismatic-shard',18)}Community Center Checklist</div>`;
-  CARRY['Community Center'].forEach(item=>{
-    const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
-    extra+=`<div class="carry-item"><div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div><span>${item.label}</span></div>`;
-  });
-  extra+='</div>';
-  extra+=`<div class="unlock-section"><div class="unlock-sec-title">${si('icon-heart',18)}NPC Gift Stockpile</div>`;
-  CARRY['NPC Gifts'].forEach(item=>{
-    const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
-    extra+=`<div class="carry-item"><div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div><span>${item.label}</span></div>`;
-  });
-  extra+='</div>';
-  el.innerHTML=warn+renderGroupedFlags(LORE_FLAGS,checkStoryFlag,S.bridge)+extra;
+  el.innerHTML=warn+renderGroupedFlags(LORE_FLAGS,checkStoryFlag,S.bridge);
 }
 
 function renderStoryCovenant(){
@@ -2177,15 +2192,9 @@ function renderMainQuest(){
     });
     html+='</div>';
   });
-  // Manual checklists: Tools & Upgrades + Mine Supplies
-  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe-iridium',18)}Tools & Upgrades</div>`;
-  CARRY['Tools & Upgrades'].forEach(item=>{
-    const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
-    html+=`<div class="carry-item"><div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div><span>${item.label}</span></div>`;
-  });
-  html+='</div>';
-  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe-steel',18)}Mine Supplies</div>`;
-  CARRY['Mine Supplies'].forEach(item=>{
+  // SC Prep checklist
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('pickaxe-iridium',18)}SC Prep Checklist</div>`;
+  CARRY['Tools & SC Prep 🛠️'].forEach(item=>{
     const ch=lsGet('sdv_c_'+item.id)==='1'?'1':'0';
     html+=`<div class="carry-item"><div class="carry-check" data-carry-id="${item.id}" data-checked="${ch}"></div><span>${item.label}</span></div>`;
   });
