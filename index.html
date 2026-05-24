@@ -234,6 +234,10 @@ img.sdv-icon{image-rendering:pixelated;display:block;}
   padding:2px 7px;flex-shrink:0;font-weight:600;}
 .day-arrow{color:var(--muted);font-size:11px;transition:transform .25s;flex-shrink:0;}
 .route-day[data-open=true] .day-arrow{transform:rotate(90deg);}
+.day-progress{font-size:11px;color:var(--muted);flex-shrink:0;}
+.route-day[data-status="done"]{border-left:3px solid #AABFB0;}
+.route-day[data-status="progress"]{border-left:3px solid var(--t-fire);}
+.route-day[data-status="none"]{border-left:3px solid transparent;}
 .day-body{display:none;}
 .route-day[data-open=true] .day-body{display:block;}
 
@@ -1505,10 +1509,17 @@ function renderRoute(){
     card.dataset.d=day.d;
     const evts=(EVENTS[S.season]||[]).filter(e=>e.d===day.d);
     const evtHtml=evts.map(e=>`<span class="day-event">${e.name}</span>`).join('');
+    const total=day.tasks.length;
+    const done=day.tasks.filter(t=>taskDone(t.id)).length;
+    const pct=total>0?done/total:0;
+    const statusIcon=pct===1?'✓':pct>0?'◐':'○';
+    const status=pct===1?'done':pct>0?'progress':'none';
+    card.dataset.status=status;
     card.innerHTML=`<div class="day-header">
       <span class="day-num">${day.d}</span>
       <span class="day-name">${fmtDayName(day.name)}</span>
       ${evtHtml}
+      <span class="day-progress">${statusIcon} ${done}/${total}</span>
       <span class="day-arrow">▶</span>
     </div>
     <div class="day-body">${day.tasks.map(t=>{
@@ -2970,6 +2981,16 @@ document.addEventListener('click',e=>{
     tc.dataset.checked=ch;
     const row=tc.closest('.task-row'); if(row) row.dataset.checked=ch;
     if(ch==='1') spawnParticles(tc);
+    const card=tc.closest('.route-day');
+    if(card){
+      const rows=card.querySelectorAll('.task-row');
+      const tot=rows.length;
+      const dn=[...rows].filter(r=>r.dataset.checked==='1').length;
+      const p=tot>0?dn/tot:0;
+      card.dataset.status=p===1?'done':p>0?'progress':'none';
+      const prog=card.querySelector('.day-progress');
+      if(prog) prog.textContent=`${p===1?'✓':p>=0.5?'◐':'○'} ${dn}/${tot}`;
+    }
     renderHome();
     if(document.getElementById('sp-carry')?.classList.contains('active')) renderCarry();
     return;
