@@ -1,3 +1,6 @@
+# Bridge script — contains secret token, runs locally only
+stardew-bridge.py
+
 # Certificates and keys — NEVER commit these
 bridge-cert.pem
 bridge-key.pem
