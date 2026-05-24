@@ -9,6 +9,8 @@ import json
 import os
 import threading
 import time
+import urllib.request
+import urllib.error
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
@@ -16,6 +18,13 @@ SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/Hoedown_203853699/Hoedown_
 PORT = 8742
 POLL_INTERVAL = 5
 _BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# ── GitHub Gist relay ──────────────────────────────────────────────────────────
+# 1. Go to github.com/settings/tokens → Generate new token (classic) → tick "gist" → copy
+# 2. Paste it below, then run the bridge — it creates the gist and prints the ID
+# 3. Paste Token + Gist ID into the app on your phone
+GIST_TOKEN = ""   # ghp_...
+GIST_ID    = ""   # filled automatically on first run, or paste an existing one
 
 latest_data = {}
 last_modified = 0
@@ -217,6 +226,38 @@ HOARD_CODE_NAMES = {
     "truffle_oil":"Truffle Oil","q_rabbitsfoot":"Rabbit's Foot","q_sweetgemberry":"Sweet Gem Berry",
     "vault_2500":"2,500g","vault_5000":"5,000g","vault_10000":"10,000g","vault_25000":"25,000g",
 }
+
+
+def push_to_gist(data):
+    global GIST_ID
+    if not GIST_TOKEN:
+        return
+    payload = json.dumps({
+        "description": "Stardew Valley Live Save",
+        "public": False,
+        "files": {"sdv-save.json": {"content": json.dumps(data, separators=(',', ':'))}}
+    }).encode('utf-8')
+    url    = f"https://api.github.com/gists/{GIST_ID}" if GIST_ID else "https://api.github.com/gists"
+    method = 'PATCH' if GIST_ID else 'POST'
+    req = urllib.request.Request(url, data=payload, method=method)
+    req.add_header("Authorization", f"Bearer {GIST_TOKEN}")
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("Content-Type", "application/json")
+    req.add_header("User-Agent", "stardew-bridge/1.0")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read())
+            if not GIST_ID:
+                GIST_ID = result["id"]
+                print(f"[bridge] Gist created!")
+                print(f"[bridge]   Token:   {GIST_TOKEN}")
+                print(f"[bridge]   Gist ID: {GIST_ID}")
+                print(f"[bridge] Paste both into the app on your phone.")
+    except urllib.error.HTTPError as e:
+        print(f"[bridge] Gist push error {e.code}: {e.read().decode('utf-8','ignore')[:80]}")
+    except Exception as e:
+        print(f"[bridge] Gist push failed: {e}")
 
 
 def parse_save():
@@ -583,6 +624,7 @@ def watch_loop():
                 day  = latest_data.get("day", "?")
                 season = latest_data.get("season", "?")
                 print(f"[bridge] {ts} — {season} {day} | {gold:,}g")
+                threading.Thread(target=push_to_gist, args=(latest_data,), daemon=True).start()
         except FileNotFoundError:
             latest_data = {"error": "Save file not found. Is Stardew running?"}
         except Exception as e:
