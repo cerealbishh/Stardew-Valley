@@ -1424,6 +1424,7 @@ const lsTgl=k=>{const v=lsGet(k)==='1';lsSet(k,v?'0':'1');return !v;};
 const taskStamp=()=>`${S.season}_${S.day}`;
 const taskDone=id=>lsGet('sdv_t_'+id)===taskStamp();
 const taskEverDone=id=>{const v=lsGet('sdv_t_'+id);return!!v&&v!=='0';};
+const taskPastDone=id=>lsGet('sdv_t_'+id)!=='0';
 const taskSet=(id,done)=>lsSet('sdv_t_'+id,done?taskStamp():'0');
 
 // Namespaced storage for new tools — key: sdv:<saveHash>:<name>
@@ -1522,7 +1523,7 @@ function renderRoute(){
     const evts=(EVENTS[S.season]||[]).filter(e=>e.d===day.d);
     const evtHtml=evts.map(e=>`<span class="day-event">${e.name}</span>`).join('');
     const isPast=day.d<S.day;
-    const doneCheck=isPast?taskEverDone:taskDone;
+    const doneCheck=isPast?taskPastDone:taskDone;
     const total=day.tasks.length;
     const done=day.tasks.filter(t=>doneCheck(t.id)).length;
     const pct=total>0?done/total:0;
