@@ -1519,8 +1519,10 @@ function renderRoute(){
     card.dataset.d=day.d;
     const evts=(EVENTS[S.season]||[]).filter(e=>e.d===day.d);
     const evtHtml=evts.map(e=>`<span class="day-event">${e.name}</span>`).join('');
+    const isPast=day.d<S.day;
+    const doneCheck=isPast?taskEverDone:taskDone;
     const total=day.tasks.length;
-    const done=day.tasks.filter(t=>taskDone(t.id)).length;
+    const done=day.tasks.filter(t=>doneCheck(t.id)).length;
     const pct=total>0?done/total:0;
     const statusIcon=pct===1?'✓':pct>0?'◐':'○';
     const status=pct===1?'done':pct>0?'progress':'none';
@@ -1533,7 +1535,7 @@ function renderRoute(){
       <span class="day-arrow">▶</span>
     </div>
     <div class="day-body">${day.tasks.map(t=>{
-      const ch=taskDone(t.id)?'1':'0';
+      const ch=doneCheck(t.id)?'1':'0';
       return `<div class="task-row" data-checked="${ch}">
         <div class="task-check" data-id="${t.id}" data-checked="${ch}"></div>
         <span class="type-badge tb-${t.type}">${t.type}</span>
