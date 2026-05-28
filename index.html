@@ -1509,13 +1509,15 @@ function renderHome(){
 
 function renderRoute(){
   const list=document.getElementById('route-list');
+  const openSet=new Set();
+  list.querySelectorAll('.route-day[data-open=true]').forEach(c=>openSet.add(Number(c.dataset.d)));
   const days=RD[S.season];
   const frag=document.createDocumentFragment();
   days.forEach(day=>{
     const isToday=day.d===S.day;
     const card=document.createElement('div');
     card.className='route-day'+(isToday?' today':'');
-    card.dataset.open=isToday?'true':'false';
+    card.dataset.open=(isToday||openSet.has(day.d))?'true':'false';
     card.dataset.d=day.d;
     const evts=(EVENTS[S.season]||[]).filter(e=>e.d===day.d);
     const evtHtml=evts.map(e=>`<span class="day-event">${e.name}</span>`).join('');
