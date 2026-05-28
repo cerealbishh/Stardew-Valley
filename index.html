@@ -3028,9 +3028,13 @@ document.addEventListener('click',e=>{
     const token=document.getElementById('gist-token').value.trim();
     const gistId=document.getElementById('gist-id').value.trim();
     if(!token||!gistId) return;
+    document.activeElement?.blur();
     lsSet('sdv_gist_token',token);
     lsSet('sdv_gist_id',gistId);
+    const status=document.getElementById('bridge-status');
+    if(status) status.textContent='Connecting…';
     fetchGist();
+    if(!window._gistPoll) window._gistPoll=setInterval(fetchGist,5000);
     return;
   }
 
@@ -3064,7 +3068,7 @@ function init(){
     if(gistId) document.getElementById('gist-id').value=gistId;
     if(token&&gistId){
       fetchGist();
-      setInterval(fetchGist, 5000);
+      if(!window._gistPoll) window._gistPoll=setInterval(fetchGist,5000);
     }
   }
 
