@@ -321,6 +321,7 @@ img.sdv-icon{image-rendering:pixelated;display:block;}
 .home-stat{display:flex;justify-content:space-between;align-items:center;
   padding:9px 0;font-size:13px;}
 .home-stat-val{font-weight:700;color:var(--acc);}
+.home-snap-row{display:flex;align-items:center;gap:6px;font-size:12px;padding:2px 0;color:var(--text);}
 .home-event-row{display:flex;align-items:center;gap:8px;font-size:13px;padding:7px 0;}
 .home-event-badge{background:var(--acc2);color:#fff;font-size:10px;font-weight:700;
   padding:2px 8px;border-radius:10px;flex-shrink:0;}
@@ -362,8 +363,10 @@ img.sdv-icon{image-rendering:pixelated;display:block;}
 .chip{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;white-space:nowrap;
   border:none;}
 .chip.have{background:#8ed4a8;color:#fff;}
+.chip.stored{background:#F5D87A;color:#5a4000;}
 .chip.missing{background:var(--bg);color:var(--muted);}
 html[data-dark=true] .chip.have{background:#1a3d2a;border-color:#2a6040;color:#6fe0a0;}
+html[data-dark=true] .chip.stored{background:#4a3800;color:#f5d87a;}
 html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .junimo-offline{padding:24px;text-align:center;color:var(--muted);font-size:13px;}
 
@@ -558,6 +561,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
         <div class="home-stat"><span>Season &amp; Day</span><span class="home-stat-val" id="home-day">Spring 1 · Year 1</span></div>
         <div class="home-stat"><span>Tasks Today</span><span class="home-stat-val" id="home-tasks">—</span></div>
         <div class="home-stat"><span>Bridge</span><span class="home-stat-val" id="home-bridge">Not connected</span></div>
+        <div id="home-snap" style="margin-top:8px;display:flex;flex-direction:column;gap:2px"></div>
       </div>
     </div>
     <div class="card">
@@ -675,6 +679,9 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 const BRIDGE_PORT=8742;
 const BRIDGE_SCHEMA_VER=1;
 const S={season:'spring',day:1,dark:false,tab:'home',sub:'tasks',bridgeIP:'',bridge:null,lastSyncMs:0};
+let _routeAutoOpenDay=null; // tracks which day we last auto-opened today's card
+let _routeScrolledDay=null; // tracks which day we last auto-scrolled to
+let _lastDataDay=null;      // tracks last day renderRoute was fully rebuilt
 
 const RD={
 spring:[
@@ -906,48 +913,56 @@ summer:[
   {type:'fire',label:'Mine push 105–110 after visiting Clint',id:'su13d'},
   {type:'gather',label:'Solar Essence + Void Essence from ghosts/shadows (mine 80+) — CC Adventurer bundle',id:'su13e'},
 ]},
-{d:14,name:'🌶️ Hot Pepper Harvest + Pick Up Pickaxe',tasks:[
+{d:14,name:'🏆 Mine Done + Build Coop',tasks:[
   {type:'fire',label:'HARVEST Hot Peppers (5-day grow from Day 9) — keep 1 for CC Summer Crops bundle',id:'su14a'},
   {type:'fire',label:'Water remaining crops',id:'su14b'},
-  {type:'fire',label:'⭐ Pick up Gold Pickaxe from Clint (submitted Day 13)',id:'su14c'},
-  {type:'fire',label:'Mine 110–115 with new Gold Pickaxe (8–10 floors/day now!)',id:'su14d'},
+  {type:'fire',label:'🏆 Mine floor 120 DONE — Skull Key obtained. Mine chapter closed.',id:'su14c'},
+  {type:'fire',label:'BUILD COOP: 4,000g + 300 Wood + 100 Stone — you have all materials. Visit Robin TODAY.',id:'su14d'},
+  {type:'prep',label:'Coop takes 3 days (ready Day 17). After: buy White Chicken from Marnie (800g each).',id:'su14e'},
 ]},
-{d:15,name:'💀 Mine Push 115–120',tasks:[
+{d:15,name:'💰 Vault Push + Fiddlehead',tasks:[
   {type:'fire',label:'Water crops',id:'su15a'},
-  {type:'fire',label:'MINE PUSH 115–120 with Gold Pickaxe — Skull Key is at floor 120!',id:'su15b'},
+  {type:'fire',label:'Fish hard for Vault: need ~34,000g more. Sunny = Sturgeon (mountain lake, 6am–7pm).',id:'su15b'},
   {type:'gather',label:'Fiddlehead Fern from Secret Woods — Summer only, running out of time!',id:'su15c'},
-  {type:'prep',label:'Check gold — if ≥8,000g: buy Apple + Pomegranate saplings from Pierre (4,000g each)',id:'su15d'},
+  {type:'prep',label:'Saplings (Apple + Pomegranate, 4,000g each): skip for now — prioritize Vault + animals.',id:'su15d'},
 ]},
-{d:16,name:'🗝️ Skull Key + Saplings',tasks:[
-  {type:'fire',label:'🏆 SKULL KEY at Mine Floor 120 — you are ready for Skull Cavern once bus is fixed!',id:'su16a'},
+{d:16,name:'🌿 Fern Last Days + Fish',tasks:[
+  {type:'par',label:'Skull Key ✓  Coop Day 2/3 underway. Gold: ~7,659g after Coop (4,000g spent) — Vault needs ~35K more.',id:'su16a'},
   {type:'fire',label:'Water crops',id:'su16b'},
-  {type:'fire',label:'Buy Apple + Pomegranate saplings from Pierre if not done yesterday (4,000g each)',id:'su16c'},
+  {type:'fire',label:'Fish for Vault: Sturgeon mountain lake (sunny) or Catfish river (rain) — need ~34K more',id:'su16c'},
   {type:'gather',label:'🎁 CC: Fiddlehead Fern (Secret Woods, Summer foraging — last few days!)',id:'su16d'},
 ]},
-{d:17,name:"Sam's Birthday + Fish for Vault",tasks:[
+{d:17,name:'🐔 Coop Ready + Sam Birthday',tasks:[
+  {type:'fire',label:'🏠 COOP IS BUILT — visit Marnie to buy 2–4 White Chickens (800g each). Marnie open 9am–6pm.',id:'su17f'},
+  {type:'prep',label:'Chickens need hay daily (Silo auto-fills trough). Open animal door in AM, close at night.',id:'su17g'},
+  {type:'fire',label:'💡 Barn also affordable today (7,659g > 6,000g cost) — build it for CC milk if you want Large Milk bundle progress. Barn takes 3 days.',id:'su17h'},
   {type:'plate',label:"Sam bday ♥ Pizza / Maple Bar / Cactus Fruit",id:'su17a'},
   {type:'fire',label:'Water crops',id:'su17b'},
-  {type:'fire',label:'🌻 Sunflower harvest (8 days from Day 9) — keep 1 for CC Dye bundle',id:'su17c'},
-  {type:'fire',label:'🌸 Poppy harvest (7 days from Day 9) — keep 1 for CC Chef bundle',id:'su17d'},
+  {type:'fire',label:'🌻 Sunflower harvest (Day 9+8=17) — keep 1 for CC Dye bundle',id:'su17c'},
+  {type:'fire',label:'🌸 Poppy should have been harvested Day 16 (7 days from Day 9) — check now if missed',id:'su17d'},
   {type:'fire',label:'🎣 Fish all afternoon — every Sturgeon (200–300g) closes the gap on 42,500g Vault',id:'su17e'},
 ]},
-{d:18,name:'Fish Hard — Vault Gold',tasks:[
+{d:18,name:'🎣 Fish Hard — Vault Gold',tasks:[
   {type:'fire',label:'Water crops',id:'su18a'},
-  {type:'fire',label:'☔ Rain = CATFISH at river (6am–midnight). Sunny = Sturgeon at mountain lake',id:'su18b'},
-  {type:'fire',label:'Fish all day — need ~42,500g total to donate to Vault (CC) and fix the bus',id:'su18c'},
+  {type:'fire',label:'☔ Rain = CATFISH at river (6am–midnight). Sunny = Sturgeon at mountain lake (6am–7pm)',id:'su18b'},
+  {type:'fire',label:'Fish all day — have ~7,659g, need ~35K more for Vault. Every Sturgeon = 200–300g.',id:'su18c'},
   {type:'gather',label:'🎁 LAST DAYS for Fiddlehead Fern — Secret Woods today or never',id:'su18d'},
+  {type:'prep',label:'Combat is low — fight in mines (floors 60–80) to level up before Skull Cavern runs.',id:'su18e'},
+  {type:'prep',label:'If chickens bought yesterday: feed hay daily, open door in AM. First egg in ~3 days.',id:'su18f'},
 ]},
 {d:19,name:"Demetrius' Birthday + Fish",tasks:[
   {type:'plate',label:"Demetrius bday ♥ Bean Hotpot / Ice Cream / Strawberry",id:'su19a'},
   {type:'fire',label:'Water crops',id:'su19b'},
   {type:'fire',label:'🎣 Beach: Tuna (6am–7pm) + Red Snapper (6am–7pm) — CC Ocean Fish bundle',id:'su19c'},
   {type:'gather',label:'🎁 Fiddlehead Fern absolute last chance — Secret Woods today',id:'su19d'},
+  {type:'prep',label:'Check coop for first eggs — keep any Large Egg (W or B) for CC Animal Products bundle.',id:'su19e'},
 ]},
 {d:20,name:'💰 Fund the Vault',tasks:[
-  {type:'fire',label:'If you have 42,500g: donate to Vault at CC → bus fixed → Skull Cavern opens!',id:'su20a'},
+  {type:'fire',label:'Vault needs 42,500g total — donate 2,500g now if you have it (first of 4 payments)',id:'su20a'},
   {type:'fire',label:'Water crops',id:'su20b'},
-  {type:'fire',label:'Fish all day if vault not funded yet — Sturgeon or Catfish (rain)',id:'su20c'},
+  {type:'fire',label:'Fish all day — Sturgeon (mountain, sunny) or Catfish (river, rain)',id:'su20c'},
   {type:'purchase',label:'Buy Fall seeds from Pierre NOW: Pumpkin x40 (100g), Cranberry x20 (120g), Corn x15 (75g), Yam x10 (60g)',id:'su20d'},
+  {type:'prep',label:"Animal Products CC bundle needs: Large Egg, Large Milk, Large Goat Milk, Wool, Duck Egg, Rabbit's Foot, Truffle — most need Big/Deluxe upgrades.",id:'su20e'},
 ]},
 {d:21,name:'🐡 Pufferfish Last Days',tasks:[
   {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY, Summer ONLY — last week ever!',id:'su21a'},
@@ -959,10 +974,10 @@ summer:[
   {type:'fire',label:'🫐 BLUEBERRY harvest (13 days from Day 9) — 3 berries per plant x20 plants!',id:'su22a'},
   {type:'fire',label:'🍈 MELON harvest (12 days from Day 9) — keep 1 gold quality for CC Quality Crops bundle',id:'su22b'},
   {type:'fire',label:'🍅 TOMATO harvest — keep 1 for CC Summer Crops bundle',id:'su22c'},
-  {type:'prep',label:'Set aside for CC: 1x Tomato, 1x Blueberry, 1x Melon, 1x Hot Pepper (Summer Crops bundle)',id:'su22d'},
+  {type:'prep',label:'Set aside for CC Summer Crops: 1x Hot Pepper ✓ (Day 14 harvest), 1x Blueberry, 1x Melon, 1x Tomato — do NOT ship these',id:'su22d'},
 ]},
 {d:23,name:'🚀 First Skull Cavern Run',tasks:[
-  {type:'fire',label:'Bus fixed? Meet Pam at bus stop by 8:40am — SKULL CAVERN DAY 1',id:'su23a'},
+  {type:'fire',label:'Bus fixed? Meet Pam at bus stop 8:40am. Combat 4 is low — bring 30+ Bombs + Staircases.',id:'su23a'},
   {type:'fire',label:'SC: bomb rock clusters, ignore enemies, take every shaft/hole down — goal floor 25+',id:'su23b'},
   {type:'fire',label:'Water crops, harvest Hot Pepper re-growth',id:'su23c'},
   {type:'fire',label:'If bus not fixed yet — fish hard today, donate Vault asap',id:'su23d'},
@@ -997,61 +1012,69 @@ summer:[
 ],
 
 fall:[
-{d:1,name:'Fall Begins',tasks:[
+{d:1,name:'🍂 Fall Begins — Plant + Build',tasks:[
   {type:'fire',label:'PLANT IMMEDIATELY: Pumpkin x40 (100g), Cranberry x20 (120g), Corn x15 (75g), Yam x10 (60g), Eggplant x10 (20g)',id:'fa1a'},
   {type:'fire',label:'🎁 CC: Corn + Eggplant + Pumpkin + Yam = Fall Crops bundle items (need 1 each)',id:'fa1b'},
   {type:'gather',label:'🎁 CC Crafts Room: forage Chanterelle, Common Mushroom, Wild Plum, Hazelnut throughout Fall',id:'fa1c'},
-  {type:'prep',label:'Buy Wheat seeds (10g each) x20 from Pierre — CC Fodder bundle needs Wheat',id:'fa1d'},
-  {type:'prep',label:'Apple + Pomegranate saplings maturing around Fall 9 — they will produce fruit this season for CC Artisan bundle!',id:'fa1e'},
+  {type:'purchase',label:'Buy Wheat seeds x10 from Pierre (10g each) — CC Fodder bundle needs Wheat',id:'fa1d'},
+  {type:'fire',label:'BUILD BARN if not done: 6,000g + 350 Wood + 150 Stone — Cows → Large Milk for CC Animal bundle',id:'fa1e'},
+  {type:'prep',label:'If chickens not bought in Summer: visit Marnie today (White Chicken 800g each)',id:'fa1f'},
+  {type:'par',label:'Vault status: still need donations to fix bus. SC unavailable until 42,500g donated.',id:'fa1g'},
 ]},
-{d:2,name:"Penny Birthday",tasks:[
+{d:2,name:"Penny Birthday + Vault Push",tasks:[
   {type:'plate',label:"Penny bday ♥ Diamond / Emerald / Melon / Poppy / Tom Kha Soup",id:'fa2a'},
-  {type:'fire',label:'🚀 Skull Cavern — main income source now',id:'fa2b'},
+  {type:'fire',label:'🎣 Fish hard for Vault gold — Catfish (river, rainy 6am–midnight) or Tiger Trout (river 6am–7pm)',id:'fa2b'},
   {type:'gather',label:'🎁 Bundle: forage Wild Plum (forest floor), Hazelnut (trees)',id:'fa2c'},
+  {type:'prep',label:'Bus unlocks Skull Cavern — donate 2,500g + 5,000g + 10,000g + 25,000g to Vault at CC when ready',id:'fa2d'},
 ]},
-{d:3,name:'CC Bundle Day',tasks:[
-  {type:'fire',label:'🎁 DONATE to CC today — bring all summer items you collected!',id:'fa3a'},
-  {type:'fire',label:'🚀 Skull Cavern or fishing',id:'fa3b'},
-  {type:'gather',label:'🎁 Bundle: Tiger Trout (river 6am–7pm, Fall only!) — River Fish Bundle',id:'fa3c'},
-  {type:'gather',label:'🎁 Bundle: Walleye (river 12pm–2am, Fall + rainy) — Night Fishing Bundle',id:'fa3d'},
+{d:3,name:'CC Bundle Day + Fish',tasks:[
+  {type:'fire',label:'🎁 DONATE to CC today — bring all summer items: Hot Pepper, Blueberry, Melon, Tomato',id:'fa3a'},
+  {type:'fire',label:'🎣 Fish: Tiger Trout (river 6am–7pm, Fall ONLY) — River Fish Bundle',id:'fa3b'},
+  {type:'gather',label:'🎁 Bundle: Walleye (river 12pm–2am, Fall + rainy) — Night Fishing Bundle',id:'fa3c'},
+  {type:'gather',label:'🎁 Bundle: Eel (ocean rainy 4pm–2am) — if missed in summer',id:'fa3d'},
 ]},
 {d:4,name:'Fish + Forage',tasks:[
-  {type:'fire',label:'🎣 Fish: Tiger Trout (river 6am–7pm), Walleye (river/lake rainy 12pm+)',id:'fa4a'},
-  {type:'fire',label:'🚀 Skull Cavern if good luck day (check TV)',id:'fa4b'},
-  {type:'gather',label:'🎁 Bundle: Eel (ocean rainy 4pm–2am) — if you missed it in summer',id:'fa4c'},
-  {type:'prep',label:'📋 Check Traveling Cart today if it is Friday — Nautilus Shell!',id:'fa4d'},
+  {type:'fire',label:'🎣 Tiger Trout (river 6am–7pm), Walleye (river/lake rainy 12pm+)',id:'fa4a'},
+  {type:'fire',label:'Bus fixed? → Skull Cavern today. Not fixed? → Fish for Vault gold.',id:'fa4b'},
+  {type:'gather',label:'🎁 Bundle: forage Chanterelle + Wild Plum in Cindersap Forest',id:'fa4c'},
+  {type:'prep',label:'📋 Traveling Cart today if Friday — Nautilus Shell + Red Cabbage!',id:'fa4d'},
 ]},
-{d:5,name:"Elliott Birthday",tasks:[
+{d:5,name:"Elliott Birthday + SC or Fish",tasks:[
   {type:'plate',label:"Elliott bday ♥ Crab / Duck Feather / Lobster / Pomegranate / Tom Kha Soup",id:'fa5a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa5b'},
+  {type:'fire',label:'Bus fixed? → 🚀 Skull Cavern. Not fixed? → Fish, fish, fish.',id:'fa5b'},
   {type:'gather',label:'🎁 Bundle: forage Common Mushroom + Chanterelle in Cindersap Forest',id:'fa5c'},
+  {type:'prep',label:'Barn under construction? → Buy Cow from Marnie when it is done (Cow 1,500g each)',id:'fa5d'},
 ]},
 {d:6,name:'🛒 Traveling Cart Friday',tasks:[
-  {type:'fire',label:'📋 Traveling Cart open today (Fri) — CHECK FOR NAUTILUS SHELL!',id:'fa6a'},
-  {type:'fire',label:'📋 Also look for: Red Cabbage, Truffle, Nautilus Fossil, Rabbit\'s Foot',id:'fa6b'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa6c'},
+  {type:'fire',label:'📋 Traveling Cart open today (Fri) — CHECK FOR NAUTILUS SHELL + RED CABBAGE!',id:'fa6a'},
+  {type:'fire',label:'📋 Also look for: Truffle, Nautilus Fossil, Rabbit\'s Foot',id:'fa6b'},
+  {type:'fire',label:'Bus fixed? → 🚀 Skull Cavern. Not fixed? → fish or mine for Vault gold.',id:'fa6c'},
   {type:'gather',label:'🎁 Bundle: forage Wild Plum + Hazelnut from trees around map',id:'fa6d'},
 ]},
 {d:7,name:'Pre-Blackberry',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — good income day before blackberry detour',id:'fa7a'},
-  {type:'gather',label:'🎁 Bundle: Purple Mushroom (mine 80–120, or cave) — Field Research Bundle',id:'fa7b'},
-  {type:'tomorrow',label:'🫐 Blackberry season starts tomorrow Fall 8 — forage HARD!',id:'fa7c'},
+  {type:'fire',label:'Bus fixed? → 🚀 Skull Cavern. Not fixed? → last big fishing day before blackberry week.',id:'fa7a'},
+  {type:'gather',label:'🎁 Bundle: Purple Mushroom (mine 80–120) — Field Research Bundle',id:'fa7b'},
+  {type:'prep',label:'Cows producing? Check for Large Milk — keep 1 for CC Animal Products bundle.',id:'fa7c'},
+  {type:'tomorrow',label:'🫐 Blackberry season starts tomorrow Fall 8 — forage HARD all day!',id:'fa7d'},
 ]},
 {d:8,name:'🫐 Blackberry Season!',tasks:[
-  {type:'gather',label:'🫐 FORAGE BLACKBERRIES — Cindersap Forest, bus stop, town paths',id:'fa8a'},
-  {type:'gather',label:'🎁 Bundle: 4 Blackberries for Enchanter Bundle, rest for cooking/selling',id:'fa8b'},
-  {type:'gather',label:'🎁 Bundle: Hazelnut (trees, shaking works!)',id:'fa8c'},
-  {type:'prep',label:'📋 Traveling Cart SUNDAY today — check for Nautilus Shell!',id:'fa8d'},
+  {type:'gather',label:'🫐 FORAGE BLACKBERRIES — Cindersap Forest, bus stop, town paths (all day!)',id:'fa8a'},
+  {type:'gather',label:'🎁 Bundle: 4+ Blackberries for Enchanter Bundle, rest sell or cook',id:'fa8b'},
+  {type:'gather',label:'🎁 Bundle: Hazelnut (shake trees!)',id:'fa8c'},
+  {type:'prep',label:'📋 Traveling Cart SUNDAY today — Nautilus Shell!',id:'fa8d'},
+  {type:'prep',label:'Barn built? → Upgrade to Big Barn when you have 12,000g (unlocks Goats → Goat Milk for CC)',id:'fa8e'},
 ]},
 {d:9,name:'Blackberry + Harvest',tasks:[
-  {type:'gather',label:'🫐 Blackberries peak — forage all morning before SC',id:'fa9a'},
+  {type:'gather',label:'🫐 Blackberries peak — forage all morning',id:'fa9a'},
   {type:'fire',label:'Harvest Cranberries (first harvest: +3 per plant!)',id:'fa9b'},
-  {type:'fire',label:'🚀 Skull Cavern afternoon',id:'fa9c'},
+  {type:'fire',label:'Bus fixed? → 🚀 Skull Cavern afternoon. Not fixed? → fish/sell for Vault.',id:'fa9c'},
+  {type:'prep',label:'Check coop for Large Egg (W or B) — keep 1 for CC Animal bundle. Chickens take ~5 days to start laying.',id:'fa9d'},
 ]},
 {d:10,name:'Blackberry Last Days',tasks:[
   {type:'gather',label:'🫐 Blackberries — last good day, sweep all routes',id:'fa10a'},
   {type:'fire',label:'Harvest Cranberries again if ready',id:'fa10b'},
   {type:'gather',label:'🎁 Bundle: Red Mushroom (trees/cave) — get Purple Mushroom from mine 80+',id:'fa10c'},
+  {type:'prep',label:'Animal Products CC bundle progress check: Large Egg? Large Milk? (need Barn) Goat Milk? (need Big Barn)',id:'fa10d'},
 ]},
 {d:11,name:"Jodi Birthday",tasks:[
   {type:'plate',label:"Jodi bday ♥ Chocolate Cake / Crispy Bass / Diamond / Eggplant Parmesan",id:'fa11a'},
@@ -1105,11 +1128,13 @@ fall:[
   {type:'fire',label:'🎁 Donate Quality Crops bundle items if you have 5× gold-star Pumpkin, Corn, etc.',id:'fa20b'},
   {type:'fire',label:'🚀 Skull Cavern',id:'fa20c'},
 ]},
-{d:21,name:"Robin Birthday",tasks:[
+{d:21,name:"Robin Birthday + Building Check",tasks:[
   {type:'plate',label:"Robin bday ♥ Goat Cheese / Peach / Spaghetti",id:'fa21a'},
   {type:'fire',label:'🚀 Skull Cavern',id:'fa21b'},
   {type:'gather',label:'🎁 Bundle: Purple Mushroom from deep mines — Field Research Bundle critical item',id:'fa21c'},
   {type:'prep',label:'📋 Traveling Cart SUNDAY — last realistic Nautilus Shell chance before winter',id:'fa21d'},
+  {type:'prep',label:'Building audit: Barn built? Big Barn (12K)? Deluxe Barn for Sheep+Pig (25K)? Animal Products bundle needs Wool + Truffle.',id:'fa21e'},
+  {type:'prep',label:'Big Coop (10K) → Ducks (Duck Egg for CC). Deluxe Coop (20K) → Rabbit (Rabbit\'s Foot for CC).',id:'fa21f'},
 ]},
 {d:22,name:'Winter Prep',tasks:[
   {type:'fire',label:'🚀 Skull Cavern',id:'fa22a'},
@@ -1334,12 +1359,15 @@ winter:[
 
 const PAR=[
   {id:'mine120',label:'Mine Floor 120 — Skull Key',target:'Su13',icon:'pickaxe-steel'},
-  {id:'goldpick',label:'Gold Pickaxe (Clint — 10,000g, 2-day wait)',target:'Su15',icon:'pickaxe'},
+  {id:'goldpick',label:'Gold Pickaxe (Clint — 10,000g, 2-day wait)',target:'Su15',icon:'pickaxe-gold'},
+  {id:'coopbuilt',label:'Coop built — chickens producing eggs',target:'Su17',icon:'item-egg'},
+  {id:'fishinglevel10',label:'Fishing Level 10 — Master Angler',target:'Su22',icon:'fishing-rod'},
   {id:'vault42k',label:'42,500g donated to Vault → Bus Fixed',target:'Su20',icon:'item-gold'},
-  {id:'scfirst',label:'First Skull Cavern run',target:'Su21',icon:'icon-skull'},
+  {id:'scfirst',label:'First Skull Cavern run',target:'Su23',icon:'icon-skull'},
   {id:'fishtank',label:'Fish Tank complete',target:'Su28',icon:'fishing-rod'},
   {id:'craftsroom',label:'Crafts Room complete (all foraging bundles)',target:'Fa8',icon:'item-spring-onion'},
   {id:'boilerroom',label:'Boiler Room complete (bars + gems + monster drops)',target:'Fa20',icon:'furnace'},
+  {id:'animalproducts',label:'Animal Products CC bundle — Large Egg, Large Milk, etc.',target:'Fa20',icon:'item-large-egg'},
   {id:'bulletin',label:'Bulletin Board complete',target:'Wi7',icon:'item-mixed-seeds'},
   {id:'pantry',label:'Pantry complete → Greenhouse unlocked',target:'Wi10',icon:'crop-parsnip'},
   {id:'cc',label:'Community Center complete! 🎉',target:'Wi14',icon:'item-prismatic-shard'},
@@ -1397,6 +1425,17 @@ const CARRY={
     {id:'winterforage',label:'Winter foraging: Holly, Crystal Fruit, Crocus, Snow Yam'},
     {id:'exoticforage',label:'Exotic: Coconut, Cactus, Cave Carrot, Red+Purple Mushroom, Morel'},
   ],
+  'Animals 🐄':[
+    {id:'largeeggw',label:'Large Egg (W) — CC Animal bundle (Big Coop chicken at 200+ friendship)'},
+    {id:'largeegbb',label:'Large Egg (B) — CC Animal bundle (Brown Chicken variant)'},
+    {id:'largemilk',label:'Large Milk — CC Animal bundle (Cow at 200+ friendship)'},
+    {id:'goatmilk',label:'Goat Milk — CC Animal bundle (need Big Barn + Goat)'},
+    {id:'duckegg',label:'Duck Egg — CC Animal bundle (need Big Coop + Duck)'},
+    {id:'wool',label:'Wool — CC Animal bundle (need Deluxe Barn + Sheep)'},
+    {id:'trufflecc',label:"Truffle — CC Artisan bundle (need Deluxe Barn + Pig)"},
+    {id:'duckfeather',label:'Duck Feather — CC Dye bundle (Big Coop + Duck, random drop)'},
+    {id:'rabbitfoot',label:"Rabbit's Foot — CC Animal bundle (need Deluxe Coop + Rabbit)"},
+  ],
   'Tools & SC Prep 🛠️':[
     {id:'goldpickaxe',label:'Gold Pickaxe (Clint — 10,000g, submit then wait 2 days)'},
     {id:'iridpickaxe',label:'Iridium Pickaxe (Clint — 25,000g, from SC Iridium Bars)'},
@@ -1424,7 +1463,7 @@ const lsTgl=k=>{const v=lsGet(k)==='1';lsSet(k,v?'0':'1');return !v;};
 const taskStamp=()=>`${S.season}_${S.day}`;
 const taskDone=id=>lsGet('sdv_t_'+id)===taskStamp();
 const taskEverDone=id=>{const v=lsGet('sdv_t_'+id);return!!v&&v!=='0';};
-const taskPastDone=id=>lsGet('sdv_t_'+id)!=='0';
+const taskPastDone=id=>{const v=lsGet('sdv_t_'+id);return!!v&&v!=='0';};
 const taskSet=(id,done)=>lsSet('sdv_t_'+id,done?taskStamp():'0');
 
 // Namespaced storage for new tools — key: sdv:<saveHash>:<name>
@@ -1485,14 +1524,46 @@ function renderHome(){
 
   const todayData=(RD[S.season]||[]).find(d=>d.d===S.day);
   if(todayData){
-    const total=todayData.tasks.length;
-    const done=todayData.tasks.filter(t=>taskDone(t.id)).length;
+    const tasks=computeDynamicPrep(todayData.tasks,S.bridge);
+    const total=tasks.length;
+    const done=tasks.filter(t=>taskDone(t.id)).length;
     document.getElementById('home-tasks').textContent=`${done}/${total} done`;
   } else {
     document.getElementById('home-tasks').textContent='—';
   }
 
   document.getElementById('home-bridge').textContent=S.bridge?'Connected ✓':'Not connected';
+
+  // Live bridge summary
+  const snap=document.getElementById('home-snap');
+  if(snap){
+    const b=S.bridge;
+    if(b){
+      const gold=b.gold||0;
+      const vaultPct=Math.min(100,Math.round(gold/42500*100));
+      const vaultDone=(b.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles?.every(bnd=>bnd.completed);
+      const animals=(b.animals||[]).length;
+      const bldgs=(b.buildings||[]).filter(x=>/coop|barn/i.test(x));
+      const uc=(b.under_construction||[]);
+      const combat=b.skills?.combat||0;
+      const fishing=b.skills?.fish||0;
+      const rows=[];
+      rows.push(`<div class="home-snap-row">${si('icon-gold-coin',14)}<span>${gold.toLocaleString()}g</span><span style="margin-left:auto;font-size:10px;color:var(--muted)">${vaultDone?'Bus fixed ✓':`Vault ${vaultPct}%`}</span></div>`);
+      if(!vaultDone){
+        const bar=`<div style="height:4px;background:var(--bg);border-radius:2px;margin:2px 14px 6px;overflow:hidden"><div style="width:${vaultPct}%;height:100%;background:var(--acc);border-radius:2px"></div></div>`;
+        rows.push(bar);
+      }
+      if(bldgs.length||uc.length){
+        const bldgStr=[...bldgs,...uc.map(u=>`${u.name} (🔨${u.daysLeft}d)`)].join(', ');
+        rows.push(`<div class="home-snap-row">${si('chest-wood',14)}<span>${bldgStr}</span></div>`);
+      }
+      rows.push(`<div class="home-snap-row">${si('item-rabbit-foot',14)}<span>${animals} animal${animals!==1?'s':''} on farm</span></div>`);
+      rows.push(`<div class="home-snap-row">${si('fishing-rod',14)}<span>Fishing ${fishing}/10</span><span style="margin-left:auto;font-size:10px;color:var(--muted)">Combat ${combat}/10</span></div>`);
+      snap.innerHTML=rows.join('');
+    } else {
+      snap.innerHTML='<div style="color:var(--muted);font-size:11px;padding:4px 0">Connect bridge for live stats</div>';
+    }
+  }
 
   const evts=(EVENTS[S.season]||[]).filter(e=>e.d>=S.day);
   const upcoming=evts.slice(0,5);
@@ -1508,24 +1579,116 @@ function renderHome(){
   }
 }
 
+function computeDynamicPrep(tasks, bridge) {
+  if (!bridge) return tasks;
+  const extra = [];
+  // Under-construction countdowns
+  (bridge.under_construction||[]).forEach(uc=>{
+    extra.push({type:'fire', label:`🔨 Robin building ${uc.name} — ${uc.daysLeft} day${uc.daysLeft!==1?'s':''} left`, id:'dyn_uc_'+uc.name.replace(/\W/g,'_')});
+  });
+  // Next Robin build in upgrade chain
+  const bldgs=bridge.buildings||[];
+  const hasCoop=bldgs.some(x=>/^coop$/i.test(x));
+  const hasBigCoop=bldgs.some(x=>/^big coop$/i.test(x));
+  const hasBarn=bldgs.some(x=>/^barn$/i.test(x));
+  const stor=bridge.storage||{};
+  const gld=bridge.gold||0;
+  const ucNames=(bridge.under_construction||[]).map(u=>u.name.toLowerCase());
+  if(!hasCoop&&!ucNames.includes('coop')){
+    extra.push({type:'prep', label:'🏗️ Coop not built yet — visit Robin (4,000g + 300 Wood + 100 Stone)', id:'dyn_coop'});
+  } else if(hasCoop&&!hasBigCoop&&!ucNames.includes('big coop')){
+    const wOk=(stor.any_wood||0)>=400,sOk=(stor.any_stone||0)>=150,gOk=gld>=10000;
+    const all=wOk&&sOk&&gOk;
+    extra.push({type:'prep', label:`Big Coop next: 10,000g ${gOk?'✓':'✗'} · Wood 400 ${wOk?'✓':'✗'} · Stone 150 ${sOk?'✓':'✗'}${all?' → READY: visit Robin':''}`, id:'dyn_bigcoop'});
+  }
+  if(!hasBarn&&!ucNames.includes('barn')){
+    const wOk=(stor.any_wood||0)>=350,sOk=(stor.any_stone||0)>=150,gOk=gld>=6000;
+    const all=wOk&&sOk&&gOk;
+    extra.push({type:'prep', label:`Barn (for CC milk): 6,000g ${gOk?'✓':'✗'} · Wood 350 ${wOk?'✓':'✗'} · Stone 150 ${sOk?'✓':'✗'}${all?' → READY: visit Robin':''}`, id:'dyn_barn'});
+  }
+  const combat = bridge.skills?.combat ?? 0;
+  if (combat < 6) {
+    extra.push({type:'prep', label:`Combat ${combat}/10 — fight monsters to level up before Skull Cavern runs`, id:'dyn_combat'});
+  }
+  const gold = bridge.gold ?? 0;
+  const vaultDone = (bridge.cc_bundles ?? []).find(r => r.name === 'Vault')?.bundles?.every(b => b.completed);
+  if (!vaultDone) {
+    extra.push({type:'par', label:`Vault fund: ${gold.toLocaleString()}g — donate 2,500g → 5,000g → 10,000g → 25,000g at CC to fix bus (SC locked until done)`, id:'dyn_vault'});
+  }
+  const fishing = bridge.skills?.fishing ?? 0;
+  if (fishing < 10) {
+    extra.push({type:'prep', label:`Fishing ${fishing}/10 — one more level for Master Angler`, id:'dyn_fish'});
+  }
+  const summerCropsBundle = (bridge.cc_bundles ?? [])
+    .flatMap(r => r.bundles ?? [])
+    .find(b => /summer crops/i.test(b.name));
+  if (summerCropsBundle && !summerCropsBundle.completed) {
+    const missing = (summerCropsBundle.slots ?? []).filter(s => !s.have).map(s => s.name);
+    if (missing.length) {
+      extra.push({type:'prep', label:`CC Summer Crops still needs: ${missing.join(', ')}`, id:'dyn_sumcrops'});
+    }
+  }
+  if (bridge.storage) {
+    const stored = (bridge.cc_bundles ?? [])
+      .flatMap(r => r.bundles ?? [])
+      .filter(b => !b.completed)
+      .flatMap(b => (b.slots ?? []).filter(s => !s.have && bridge.storage[s.code]));
+    stored.forEach(slot => {
+      extra.push({type:'prep', label:`Set aside for CC: ◆ ${slot.name} ×${bridge.storage[slot.code]} in chest — don’t ship`, id:'dyn_store_'+slot.code});
+    });
+  }
+  return [...tasks, ...extra];
+}
+
+function patchTodayCard(){
+  const todayCard=document.querySelector('#route-list .route-day.today');
+  if(!todayCard) return;
+  const dayData=(RD[S.season]||[]).find(d=>d.d===S.day);
+  if(!dayData) return;
+  const tasks=computeDynamicPrep(dayData.tasks,S.bridge);
+  const done=tasks.filter(t=>taskDone(t.id)).length;
+  const total=tasks.length;
+  const pct=total>0?done/total:0;
+  const prog=todayCard.querySelector('.day-progress');
+  if(prog) prog.textContent=`${pct===1?'✓':pct>0?'◐':'○'} ${done}/${total}`;
+  todayCard.dataset.status=pct===1?'done':pct>0?'progress':'none';
+  const body=todayCard.querySelector('.day-body');
+  if(!body) return;
+  body.innerHTML=tasks.map(t=>{
+    const ch=taskDone(t.id)?'1':'0';
+    return `<div class="task-row" data-checked="${ch}">
+      <div class="task-check" data-id="${t.id}" data-checked="${ch}"></div>
+      <span class="type-badge tb-${t.type}">${t.type}</span>
+      <span class="task-label">${t.label}</span>
+    </div>`;
+  }).join('');
+}
+
 function renderRoute(){
   const list=document.getElementById('route-list');
   const openSet=new Set();
   list.querySelectorAll('.route-day[data-open=true]').forEach(c=>openSet.add(Number(c.dataset.d)));
+  // Auto-open today's card only when the day first changes, not on every re-render
+  const dayKey=S.season+'_'+S.day;
+  if(_routeAutoOpenDay!==dayKey){
+    openSet.add(S.day);
+    _routeAutoOpenDay=dayKey;
+  }
   const days=RD[S.season];
   const frag=document.createDocumentFragment();
   days.forEach(day=>{
     const isToday=day.d===S.day;
     const card=document.createElement('div');
     card.className='route-day'+(isToday?' today':'');
-    card.dataset.open=(isToday||openSet.has(day.d))?'true':'false';
+    card.dataset.open=openSet.has(day.d)?'true':'false';
     card.dataset.d=day.d;
     const evts=(EVENTS[S.season]||[]).filter(e=>e.d===day.d);
     const evtHtml=evts.map(e=>`<span class="day-event">${e.name}</span>`).join('');
     const isPast=day.d<S.day;
     const doneCheck=isPast?taskPastDone:taskDone;
-    const total=day.tasks.length;
-    const done=day.tasks.filter(t=>doneCheck(t.id)).length;
+    const tasks=isToday?computeDynamicPrep(day.tasks,S.bridge):day.tasks;
+    const total=tasks.length;
+    const done=tasks.filter(t=>doneCheck(t.id)).length;
     const pct=total>0?done/total:0;
     const statusIcon=pct===1?'✓':pct>0?'◐':'○';
     const status=pct===1?'done':pct>0?'progress':'none';
@@ -1537,7 +1700,7 @@ function renderRoute(){
       <span class="day-progress">${statusIcon} ${done}/${total}</span>
       <span class="day-arrow">▶</span>
     </div>
-    <div class="day-body">${day.tasks.map(t=>{
+    <div class="day-body">${tasks.map(t=>{
       const ch=doneCheck(t.id)?'1':'0';
       return `<div class="task-row" data-checked="${ch}">
         <div class="task-check" data-id="${t.id}" data-checked="${ch}"></div>
@@ -1545,12 +1708,38 @@ function renderRoute(){
         <span class="task-label">${t.label}</span>
       </div>`;
     }).join('')}</div>`;
+    // Tap handler — use touchend for iOS Safari web app mode where click on
+    // non-native elements is unreliable; track touchstart Y to ignore scrolls
+    const hdrEl=card.querySelector('.day-header');
+    let _ty=0;
+    hdrEl.addEventListener('touchstart',e=>{_ty=e.touches[0].clientY;},{passive:true});
+    hdrEl.addEventListener('touchend',e=>{
+      if(Math.abs(e.changedTouches[0].clientY-_ty)<10){
+        e.preventDefault(); // suppress subsequent synthetic click
+        card.dataset.open=card.dataset.open==='true'?'false':'true';
+      }
+    },{passive:false});
+    hdrEl.addEventListener('click',()=>{
+      card.dataset.open=card.dataset.open==='true'?'false':'true';
+    });
     frag.appendChild(card);
   });
   list.innerHTML='';
   list.appendChild(frag);
+  // Scroll to today once per day — use direct panel.scrollTop instead of
+  // scrollIntoView which is broken inside position:absolute overflow containers on iOS
   const todayEl=list.querySelector('.route-day.today');
-  if(todayEl) setTimeout(()=>todayEl.scrollIntoView({behavior:'smooth',block:'start'}),100);
+  if(todayEl&&_routeScrolledDay!==dayKey){
+    _routeScrolledDay=dayKey;
+    requestAnimationFrame(()=>{
+      const panel=list.closest('.panel');
+      if(panel){
+        const pr=panel.getBoundingClientRect();
+        const cr=todayEl.getBoundingClientRect();
+        panel.scrollTop+=cr.top-pr.top-8;
+      }
+    });
+  }
 }
 
 function renderCal(){
@@ -1576,13 +1765,24 @@ function renderPar(){
     if(!r) return null;
     return r.bundles.every(bnd=>bnd.completed);
   }
+  function ccBundleDone(bundleName){
+    if(!ccRooms) return null;
+    for(const r of ccRooms){
+      const bnd=r.bundles.find(bnd=>bnd.name===bundleName);
+      if(bnd) return bnd.completed;
+    }
+    return null;
+  }
   const AUTO_MAP={
     mine120:()=>b?!!b.hasSkullKey:null,
     goldpick:()=>b?((b.toolLevels?.Pickaxe||0)>=3):null,
+    coopbuilt:()=>b?(b.buildings||[]).some(x=>/^coop$/i.test(x)):null,
+    fishinglevel10:()=>b?(b.skills?.fish||0)>=10:null,
     vault42k:()=>ccRoomDone('Vault'),
     fishtank:()=>ccRoomDone('Fish Tank'),
     craftsroom:()=>ccRoomDone('Crafts Room'),
     boilerroom:()=>ccRoomDone('Boiler Room'),
+    animalproducts:()=>ccBundleDone('Animal'),
     bulletin:()=>ccRoomDone('Bulletin Board'),
     pantry:()=>ccRoomDone('Pantry'),
     cc:()=>ccRooms?ccRooms.every(r=>r.bundles.every(bnd=>bnd.completed)):null,
@@ -1791,11 +1991,14 @@ function renderUnlocks(){
 
   // Buildings + House
   html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood')}Farm Buildings</div>`;
-  if(b&&b.buildings&&b.buildings.length){
+  if(b&&(b.buildings?.length||b.under_construction?.length)){
     const cnt={};
-    b.buildings.forEach(bd=>{cnt[bd]=(cnt[bd]||0)+1;});
+    (b.buildings||[]).forEach(bd=>{cnt[bd]=(cnt[bd]||0)+1;});
     Object.entries(cnt).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([name,c])=>{
       html+=`<div class="unlock-row"><div class="unlock-dot yes"></div><span>${name}</span>${c>1?`<span class="unlock-level">×${c}</span>`:''}</div>`;
+    });
+    (b.under_construction||[]).forEach(uc=>{
+      html+=`<div class="unlock-row"><div class="unlock-dot" style="background:#f5d87a;border-color:#c9a800"></div><span>${uc.name}</span><span class="unlock-level">🔨 ${uc.daysLeft}d left</span></div>`;
     });
   } else {
     html+='<div class="unlock-row" style="color:var(--muted);font-size:12px">'+(b?'No farm buildings yet':'Connect bridge for live data')+'</div>';
@@ -1804,6 +2007,62 @@ function renderUnlocks(){
   const houseLvl=b?b.houseUpgradeLevel||0:null;
   if(houseLvl!==null) html+=`<div class="unlock-row"><div class="unlock-dot${houseLvl>0?' yes':''}"></div><span>Farmhouse</span><span class="unlock-level">${houseNames[houseLvl]||'Starter'}</span></div>`;
   html+='</div>';
+
+  // Robin's Workshop
+  {
+    const stor=b?.storage||{};
+    const gld=b?.gold||0;
+    const built=new Set((b?.buildings||[]).map(x=>x.toLowerCase()));
+    const matOk=(k,n)=>(stor[k]||0)>=n;
+    const goldOk=(g)=>gld>=g;
+    const matSpan=(k,n,lbl)=>{const ok=matOk(k,n);return `<span style="font-size:10px;font-weight:700;color:${ok?'var(--t-gather)':'#e36887'}">${ok?'✓':'✗'} ${lbl} ${(stor[k]||0).toLocaleString()}/${n.toLocaleString()}</span>`;};
+    const gSpan=(g)=>{const ok=goldOk(g);return `<span style="font-size:10px;font-weight:700;color:${ok?'var(--t-gather)':'#e36887'}">${ok?'✓':'✗'} ${gld.toLocaleString()}/${g.toLocaleString()}g</span>`;};
+    const MAT_LABELS={any_wood:'Wood',any_stone:'Stone',ds_refinedquartz:'Refined Quartz',ds_iridiumbar:'Iridium Bar'};
+    const CC_BADGE=`<span style="font-size:9px;background:#DCBFF2;color:#3d1a6e;padding:1px 6px;border-radius:10px;font-weight:700;flex-shrink:0">★CC</span>`;
+    const ucMap=new Map((b?.under_construction||[]).map(u=>[u.name.toLowerCase(),u.daysLeft]));
+    const ROBIN=[
+      {name:'Coop',         g:4000,  mats:{any_wood:300,any_stone:100},  depth:0, unlocks:'Chickens → Eggs', cc:false},
+      {name:'Big Coop',     g:10000, mats:{any_wood:400,any_stone:150},  depth:1, unlocks:'Ducks, Incubator', cc:'Duck Egg · Duck Feather'},
+      {name:'Deluxe Coop',  g:20000, mats:{any_wood:500,any_stone:200},  depth:2, unlocks:"Rabbit → Rabbit's Foot", cc:"Rabbit's Foot ← Animal bundle"},
+      {name:'Barn',         g:6000,  mats:{any_wood:350,any_stone:150},  depth:0, unlocks:'Cows → Milk, Large Milk', cc:'Large Milk ← Animal bundle'},
+      {name:'Big Barn',     g:12000, mats:{any_wood:450,any_stone:200},  depth:1, unlocks:'Goats → Goat Milk, Large Goat Milk', cc:'Goat Milk ← Animal bundle'},
+      {name:'Deluxe Barn',  g:25000, mats:{any_wood:550,any_stone:300},  depth:2, unlocks:'Sheep → Wool · Pig → Truffle', cc:'Wool + Truffle ← Animal/Artisan'},
+      {name:'Fish Pond',    g:5000,  mats:{any_stone:200},               depth:0, unlocks:'Fish → Roe, Aged Roe', extra:'5 Seaweed · 5 Green Algae', cc:false},
+      {name:'Well',         g:1000,  mats:{any_stone:75},                depth:0, unlocks:'Infinite water on farm', cc:false},
+      {name:'Slime Hutch',  g:10000, mats:{any_stone:500,ds_refinedquartz:10,ds_iridiumbar:1}, depth:0, unlocks:'Slimes → Slime Ball', cc:false},
+    ];
+    html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('axe',16)}Robin's Workshop</div>`;
+    ROBIN.forEach(rb=>{
+      const isBuilt=built.has(rb.name.toLowerCase());
+      const daysLeft=ucMap.get(rb.name.toLowerCase());
+      const isBuilding=daysLeft!==undefined;
+      const pl=rb.depth>0?`padding-left:${14+rb.depth*18}px`:'';
+      const statusBadge=isBuilding
+        ?`<span style="font-size:9px;background:#f5d87a;color:#5a4000;padding:1px 6px;border-radius:10px;font-weight:700;flex-shrink:0">🔨 ${daysLeft}d left</span>`
+        :'';
+      html+=`<div class="unlock-row" style="${pl}">
+        <div class="unlock-dot${isBuilt?' yes':isBuilding?' yes':''}"></div>
+        <span style="font-weight:600">${rb.name}</span>
+        <span style="font-size:10px;color:var(--muted);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${rb.unlocks}</span>
+        ${statusBadge}${!isBuilding&&rb.cc?CC_BADGE:''}
+      </div>`;
+      if(!isBuilt&&!isBuilding&&b){
+        const allMet=goldOk(rb.g)&&Object.entries(rb.mats).every(([k,n])=>matOk(k,n));
+        const pi=14+(rb.depth>0?rb.depth*18:0)+24;
+        html+=`<div style="padding:1px 14px 7px ${pi}px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          ${gSpan(rb.g)}
+          ${Object.entries(rb.mats).map(([k,n])=>matSpan(k,n,MAT_LABELS[k]||k)).join('')}
+          ${rb.extra?`<span style="font-size:10px;color:var(--muted)">${rb.extra}</span>`:''}
+          ${allMet?`<span style="font-size:10px;font-weight:700;color:var(--t-gather);background:var(--bg);padding:1px 6px;border-radius:8px">→ READY</span>`:''}
+        </div>`;
+      }
+      if(rb.cc&&isBuilt){
+        const pi=14+(rb.depth>0?rb.depth*18:0)+24;
+        html+=`<div style="padding:0 14px 5px ${pi}px;font-size:10px;color:#7b4db0;font-weight:600">★ ${rb.cc}</div>`;
+      }
+    });
+    html+='</div>';
+  }
 
   // Skills
   html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('buff-farming')}Skills</div>`;
@@ -1946,8 +2205,10 @@ function renderJunimo(){
         const chips=document.createElement('div'); chips.className='bundle-chips';
         bundle.slots.forEach(slot=>{
           const c=document.createElement('span');
-          c.className='chip '+(slot.have?'have':'missing');
-          c.textContent=(slot.have?'✓ ':'')+slot.name;
+          const qty=!slot.have&&data.storage?.[slot.code];
+          if(slot.have){c.className='chip have';c.textContent='✓ '+slot.name;}
+          else if(qty){c.className='chip stored';c.textContent='◆ '+slot.name+' ×'+qty;}
+          else{c.className='chip missing';c.textContent=slot.name;}
           chips.appendChild(c);
         });
         brow.appendChild(chips);
@@ -2524,18 +2785,26 @@ function renderSupportingCast(){
   animals.forEach(a=>{
     (byBuilding[a.building]||(byBuilding[a.building]=[])).push(a);
   });
-  Object.entries(byBuilding).forEach(([bname,anims])=>{
+  const ANIMAL_BLDGS=['coop','big coop','deluxe coop','barn','big barn','deluxe barn'];
+  const builtAnimalBldgs=(b.buildings||[]).filter(bn=>ANIMAL_BLDGS.includes(bn.toLowerCase()));
+  const allBldgNames=new Set([...builtAnimalBldgs,...Object.keys(byBuilding)]);
+  const HF=`<img src="assets/icons/icon-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
+  const HE=`<img src="assets/icons/icon-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
+  allBldgNames.forEach(bname=>{
+    const anims=byBuilding[bname]||[];
     html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('chest-wood',18)}${bname} (${anims.length})</div>`;
-    anims.forEach(a=>{
-      const hearts=Math.min(5,Math.floor((a.friendship||0)/200));
-      const animalIcon=a.type.includes('Chicken')?si('buff-farming',22):a.type.includes('Cow')?si('icon-gold-coin',22):a.type.includes('Pig')?si('item-purple-mushroom',22):a.type.includes('Sheep')?si('crop-wheat',22):a.type.includes('Goat')?si('item-prismatic-shard',22):a.type.includes('Duck')?si('item-catfish',22):a.type.includes('Rabbit')?si('icon-heart',22):si('buff-farming',22);
-      const bHF=`<img src="assets/icons/icon-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle">`;
-      const bHE=`<img src="assets/icons/icon-heart.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;opacity:.2;filter:grayscale(1)">`;
-      html+=`<div class="animal-row"><span style="line-height:1">${animalIcon}</span><span class="animal-name">${a.name}</span><span class="animal-type">${a.type}</span><span class="animal-hearts">${bHF.repeat(hearts)}${bHE.repeat(5-hearts)}</span></div>`;
-    });
+    if(anims.length===0){
+      html+=`<div class="animal-row" style="color:var(--muted);font-style:italic;font-size:12px">— empty — buy animals from Marnie</div>`;
+    } else {
+      anims.forEach(a=>{
+        const hearts=Math.min(5,Math.floor((a.friendship||0)/200));
+        const animalIcon=a.type.includes('Chicken')?si('item-egg',22):a.type.includes('Cow')?si('item-milk',22):a.type.includes('Pig')?si('item-truffle',22):a.type.includes('Sheep')?si('item-wool',22):a.type.includes('Goat')?si('item-goat-milk',22):a.type.includes('Duck')?si('item-duck-mayo',22):a.type.includes('Rabbit')?si('item-rabbit-foot',22):si('buff-farming',22);
+        html+=`<div class="animal-row"><span style="line-height:1">${animalIcon}</span><span class="animal-name">${a.name}</span><span class="animal-type">${a.type}</span><span class="animal-hearts">${HF.repeat(hearts)}${HE.repeat(5-hearts)}</span></div>`;
+      });
+    }
     html+='</div>';
   });
-  if(!pets.length&&!animals.length) html='<div class="junimo-offline">No animals on the farm yet</div>';
+  if(!pets.length&&!animals.length&&!allBldgNames.size) html='<div class="junimo-offline">No animals or animal buildings yet</div>';
   el.innerHTML=html;
 }
 
@@ -2805,7 +3074,10 @@ function renderFromData(data){
     if(d>=1&&d<=28) S.day=d;
   }
   document.documentElement.dataset.season=S.season;
-  renderTicker(); renderRoute(); renderCal(); renderHome();
+  renderTicker(); renderCal(); renderHome();
+  const _newDayKey=S.season+'_'+S.day;
+  if(_lastDataDay!==_newDayKey){_lastDataDay=_newDayKey;renderRoute();}
+  else{patchTodayCard();}
   // Re-render live tools if their panel is visible
   if(S.tab==='hoard') renderHoardSub(lsGet('sdv_hsub')||'junimo');
   if(S.tab==='story') renderStoryTab(lsGet('sdv_stab')||'previously');
@@ -2954,13 +3226,6 @@ document.addEventListener('click',e=>{
     gpk.dataset.checked=ch; gpk.textContent=ch==='1'?'✓':'';
     if(ch==='1') spawnParticles(gpk);
     renderMilestones();
-    return;
-  }
-
-  const hdr=e.target.closest('.day-header');
-  if(hdr){
-    const card=hdr.closest('.route-day');
-    card.dataset.open=card.dataset.open==='true'?'false':'true';
     return;
   }
 
