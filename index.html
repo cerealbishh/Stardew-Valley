@@ -942,6 +942,8 @@ summer:[
   {type:'fire',label:'OCEAN FISHING at Willy\'s dock all day — guide says ocean is best in summer regardless of weather (~8–10K/day)',id:'su17e'},
   {type:'par',label:'Vault: 7,659g / 42,500g — donate in 4 payments: 2,500g → 5,000g → 10,000g → 25,000g at CC',id:'su17f'},
   {type:'prep',label:'⚠️ Skull Key: floor 120 reached but key may be in unopened chest. Visit mine floor 120 to collect it.',id:'su17g'},
+  {type:'prep',label:'Gift Marnie 2x/week — need 2♥ for bedroom access → Mayor\'s Shorts (750g). Liked: Leek, Parsnip. Loved: Diamond, Pumpkin.',id:'su17_marnie'},
+  {type:'prep',label:'Check Help Wanted board at Pierre\'s — easy gold (150–1,000g) + friendship per quest.',id:'su17_helpwanted'},
 ]},
 {d:18,name:'🎣 Ocean Fish — Vault Sprint',tasks:[
   {type:'fire',label:'Water crops',id:'su18a'},
@@ -963,6 +965,7 @@ summer:[
   {type:'fire',label:'Donate to Vault at CC: 2,500g → 5,000g → 10,000g — bus fixed once all 42,500g done',id:'su20c'},
   {type:'purchase',label:'Backpack upgrade from Pierre\'s (2,000g) if not done — essential before SC',id:'su20d'},
   {type:'purchase',label:'Buy Pumpkin Seeds + Deluxe Speed-Gro from Oasis (Thursday!) for Fall planting',id:'su20e'},
+  {type:'fire',label:"Marnie at 2♥? Enter her bedroom when she's at work (Tue 9am–6pm) → find Mayor's Shorts → return to Lewis → 750g",id:'su20_shorts'},
 ]},
 {d:21,name:'🐡 Pufferfish + SC Prep',tasks:[
   {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY ONLY. Needed for CC Specialty Fish bundle. Last days ever!',id:'su21a'},
@@ -978,6 +981,7 @@ summer:[
   {type:'prep',label:'SC: verify Skull Key in inventory. If missing, floor 120 chest needs to be opened first.',id:'su22d'},
   {type:'prep',label:'SC food: Triple Shot Espresso (speed) via Diamond → Desert Trader daily once bus fixed',id:'su22e'},
   {type:'gather',label:'🎁 CC mine gaps: Fire Quartz (floors 80–119), Ghostfish (mine pond floor 20/60), Purple Mushroom (floors 80+)',id:'su22_mine_cc'},
+  {type:'prep',label:'Check Special Orders board left of Pierre\'s — weekly quests give unique rewards (recipes, rare items)',id:'su22_specialorders'},
 ]},
 {d:23,name:'🚀 First Skull Cavern Run',tasks:[
   {type:'fire',label:'Bus fixed? ⚡ Meet Pam at bus stop 8:40am — run to block her door so she moves faster',id:'su23a'},
@@ -1028,6 +1032,7 @@ fall:[
   {type:'gather',label:'🎁 CC: forage Chanterelle, Common Mushroom, Wild Plum, Hazelnut throughout Fall',id:'fa1c'},
   {type:'prep',label:'Wheat planted Summer 28 = linger crop. Harvest it Fall 2, then immediately plant Pumpkins.',id:'fa1d'},
   {type:'prep',label:'Guide: Pumpkins > Cranberries (not enough Kegs to use all Cranberry → Pumpkin Wine better)',id:'fa1e'},
+  {type:'prep',label:'Gift priority this season: Marnie (2♥→shorts), Elliott (2♥→Crab Pot recipe), Willy (5♥→coral). Check Help Wanted board daily.',id:'fa1_friends'},
 ]},
 {d:2,name:"🎃 Harvest Wheat + Plant Pumpkins",tasks:[
   {type:'plate',label:"Penny bday ♥ Diamond / Emerald / Melon / Poppy / Tom Kha Soup",id:'fa2a'},
@@ -1189,8 +1194,9 @@ winter:[
   {type:'plate',label:"Krobus bday ♥ Diamond / Iridium Bar / Void Egg / Void Mayonnaise",id:'wi1a'},
   {type:'fire',label:'🌿 Plant Winter Seeds in Greenhouse — gives Snow Yam + Crocus (CC critical!)',id:'wi1b'},
   {type:'gather',label:'🎁 Bundle: forage Crystal Fruit, Winter Root, Holly (Crafts Room)',id:'wi1c'},
-  {type:'gather',label:'🎁 Bundle: dig artifact spots on beach/town for Nautilus Shell (48% chance)',id:'wi1d'},
+  {type:'gather',label:'🎁 Bundle: dig artifact spots on beach DAILY — Nautilus Shell (48% chance per spot in Winter)',id:'wi1d'},
   {type:'fire',label:'🚀 Skull Cavern all day — no crops to manage!',id:'wi1e'},
+  {type:'prep',label:'Night Market Wi15–17: submarine mini-game for Sea Urchin (CC Dye bundle — ONLY source in Year 1)',id:'wi1_nightmarket'},
 ]},
 {d:2,name:'CC Bundle Check',tasks:[
   {type:'fire',label:'🎁 DONATE everything ready at CC — which rooms are closest to complete?',id:'wi2a'},
@@ -1375,8 +1381,15 @@ const PAR=[
   {id:'scfirst',label:'First Skull Cavern run',target:'Su23',icon:'icon-skull'},
   {id:'fishtank',label:'Fish Tank complete',target:'Su28',icon:'fishing-rod'},
   {id:'craftsroom',label:'Crafts Room complete (all foraging bundles)',target:'Fa8',icon:'item-spring-onion'},
-  {id:'boilerroom',label:'Boiler Room complete (bars + gems + monster drops)',target:'Fa20',icon:'furnace'},
+  {id:'marnie2hearts',label:"Marnie 2♥ — bedroom access → Mayor's Shorts → 750g",target:'Su20',icon:'icon-heart'},
+  {id:'boilerroom',label:'Boiler Room complete (bars + gems + monster drops)',target:'Fa8',icon:'furnace'},
+  {id:'barnbuilt',label:'Barn built — Cows → Large Milk (CC Animal bundle)',target:'Fa5',icon:'chest-wood'},
+  {id:'iridpickaxe_par',label:'Iridium Pickaxe — 25,000g at Clint (SC efficiency doubled)',target:'Fa1',icon:'pickaxe-iridium'},
+  {id:'farmhouse1',label:'Kitchen added — cooking unlocked (35,000g + 450 Wood)',target:'Fa20',icon:'buff-farming'},
+  {id:'stable',label:'Stable built — Horse for faster movement (10,000g + 100 Wood + 5 Stone)',target:'Fa15',icon:'item-rabbit-foot'},
   {id:'animalproducts',label:'Animal Products CC bundle — Large Egg, Large Milk, etc.',target:'Fa20',icon:'item-large-egg'},
+  {id:'bigbarn',label:'Big Barn — Goats → Goat Milk (CC Animal bundle)',target:'Wi1',icon:'chest-wood'},
+  {id:'crystalarium1',label:'First Crystalarium — Diamond→Espresso · Jade→Staircases',target:'Su28',icon:'item-quartz'},
   {id:'bulletin',label:'Bulletin Board complete',target:'Wi7',icon:'item-mixed-seeds'},
   {id:'pantry',label:'Pantry complete → Greenhouse unlocked',target:'Wi10',icon:'crop-parsnip'},
   {id:'cc',label:'Community Center complete! 🎉',target:'Wi14',icon:'item-prismatic-shard'},
@@ -1406,33 +1419,59 @@ const CARRY={
     {id:'goldbar1',label:'1x Gold Bar (Blacksmith bundle)'},
     {id:'ironbar1',label:'1x Iron Bar (Blacksmith bundle)'},
     {id:'earthcrystal',label:'Earth Crystal (Geologist bundle — mine floors 1–39)'},
-    {id:'aquamarine',label:'Aquamarine (Geologist bundle — mine floors 40–79)'},
+    {id:'aquamarine',label:'Aquamarine (Geologist bundle — mine floors 40–79) ◆ have x2 — DONATE'},
+    {id:'firequartz',label:'Fire Quartz (Geologist bundle — mine floors 80–119)'},
     {id:'slime99',label:'99x Slime (Adventurer bundle — Slime Hutch or caves)'},
     {id:'batwing10',label:'10x Bat Wing (Adventurer bundle — mine floors 40–79)'},
   ],
   'Bulletin Board 📋':[
-    {id:'nautilus',label:'Nautilus Shell (Field Research — beach dig in Winter)'},
+    {id:'nautilus',label:'Nautilus Shell (Field Research — beach artifact spots in Winter)'},
     {id:'chub',label:'Chub (Field Research — any river, year-round)'},
-    {id:'frozengeode',label:'Frozen Geode (Field Research — mine floors 40–79)'},
-    {id:'redmushroom',label:'Red Mushroom (Dye bundle — Summer/Fall forage)'},
+    {id:'frozengeode',label:'Frozen Geode (Field Research — mine floors 40–79) ◆ have x4 — DONATE'},
+    {id:'purplemush',label:'Purple Mushroom (Field Research — mine floors 80+, or cave mushroom floor)'},
+    {id:'redmushroom',label:'Red Mushroom (Dye bundle — Summer/Fall forage trees) ✓ donated'},
     {id:'seaurchin',label:'Sea Urchin (Dye bundle — Night Market submarine Wi15–17 only!)'},
-    {id:'sunflower',label:'Sunflower (Dye bundle — plant Summer 1 or Fall 1)'},
+    {id:'duckfeather_dye',label:'Duck Feather (Dye bundle — Big Coop + Duck, random drop)'},
+    {id:'redcabbage',label:'Red Cabbage (Dye bundle — Year 2 Pierre, or Traveling Cart Fri/Sun)'},
     {id:'coconut',label:'Coconut (Exotic bundle — desert, after bus fixed)'},
-    {id:'cactusfruit',label:'Cactus Fruit (Exotic bundle — desert)'},
+    {id:'cactusfruit',label:'Cactus Fruit (Exotic bundle — desert, after bus fixed)'},
+    {id:'cavecarrot',label:'Cave Carrot (Exotic bundle — mine floors 1–39, dig artifact spots)'},
+    {id:'oakresin_ex',label:'Oak Resin (Exotic bundle — Tapper on Oak Tree)'},
+    {id:'pinetar',label:'Pine Tar (Exotic bundle — Tapper on Pine Tree)'},
+  ],
+  'Chef\'s Bundle 🍳':[
+    {id:'maplesyrup',label:'Maple Syrup (Chef bundle — Tapper on Maple Tree, ~weekly)'},
+    {id:'poppy_cc',label:'Poppy (Chef bundle — Summer crop ONLY. Plant Su17→harvest Su24!)'},
+    {id:'truffle_chef',label:'Truffle (Chef bundle — Deluxe Barn + Pig. Hard Year 1.)'},
+    {id:'makiroll',label:'Maki Roll (Chef bundle — cook: Seaweed+Rice. TV recipe Su21.)'},
+    {id:'friedegg',label:'Fried Egg (Chef bundle — cook: 1 Egg. Recipe from mail Year 1.)'},
+  ],
+  'Enchanter\'s Bundle 🔮':[
+    {id:'oakresin_enc',label:'Oak Resin (Enchanter bundle — Tapper on Oak Tree)'},
+    {id:'wine_enc',label:'Wine (Enchanter bundle — Keg + any fruit. Starfruit Wine = best.)'},
+    {id:'rabbitfoot_enc',label:"Rabbit's Foot (Enchanter bundle — Deluxe Coop + Rabbit)"},
+    {id:'sweetgemberry',label:'Sweet Gem Berry (Enchanter + Artisan — Ancient Seeds, very rare)'},
   ],
   'Pantry 🌾':[
-    {id:'goldparsnip',label:'5x Gold Parsnip (Quality Crops bundle)'},
+    {id:'goldparsnip',label:'5x Gold Parsnip (Quality Crops bundle — need Quality Sprinklers)'},
     {id:'goldpotato',label:'5x Gold Potato (Quality Crops bundle)'},
     {id:'goldcauliflower',label:'5x Gold Cauliflower (Quality Crops bundle)'},
     {id:'goldpumpkin',label:'5x Gold Pumpkin (Quality Crops bundle)'},
     {id:'corn',label:'Corn × needed (Summer + Fall Crops bundles)'},
     {id:'yam',label:'Yam (Fall Crops bundle)'},
-    {id:'artisangoods',label:'Artisan bundle: Jelly + Wine + Honey + Pickle + Cheese + Cloth'},
+    {id:'honey',label:'Honey (Artisan bundle — Bee House near flowers, Farming 3)'},
+    {id:'cloth',label:'Cloth (Artisan bundle — Loom + Wool, or Traveling Cart)'},
+    {id:'apple_cc',label:'Apple (Fodder bundle — Apple sapling from Pierre, matures in 28 days)'},
+    {id:'pomegranate_cc',label:'Pomegranate (Artisan bundle — sapling from Pierre, 28 days)'},
+    {id:'artisangoods',label:'Artisan bundle also needs: Jelly, Wine, Pickle, Cheese, Goat Cheese, Truffle Oil'},
   ],
   'Crafts Room 🌿':[
-    {id:'construction',label:'99 Wood + 10 Stone + 1 Hardwood (Construction bundle)'},
-    {id:'winterforage',label:'Winter foraging: Holly, Crystal Fruit, Crocus, Snow Yam'},
-    {id:'exoticforage',label:'Exotic: Coconut, Cactus, Cave Carrot, Red+Purple Mushroom, Morel'},
+    {id:'construction',label:'99 Wood + 10 Stone + 1 Hardwood (Construction bundle) ✓ donated'},
+    {id:'winterforage_holly',label:'Holly (Winter foraging — any path in Winter)'},
+    {id:'winterforage_crystal',label:'Crystal Fruit (Winter foraging — anywhere in Winter)'},
+    {id:'winterforage_crocus',label:'Crocus (Winter foraging — mountain/bus stop area)'},
+    {id:'winterforage_snowyam',label:'Snow Yam (Winter foraging — hoe any ground in Winter)'},
+    {id:'exoticforage',label:'Exotic (need 5 of 8): Coconut, Cactus, Cave Carrot, Red Mushroom, Purple Mushroom, Maple Syrup, Oak Resin, Pine Tar'},
   ],
   'Animals 🐄':[
     {id:'largeeggw',label:'Large Egg (W) — CC Animal bundle (Big Coop chicken at 200+ friendship)'},
@@ -1454,6 +1493,39 @@ const CARRY={
     {id:'spicyeel',label:'Spicy Eel stocked — NEVER sell (luck + speed)'},
   ],
 };
+
+const FRIENDSHIP_GATES=[
+  // Quest-gated
+  {npc:'Marnie',  key:'marnie',  hearts:2, type:'quest',
+   label:"Bedroom access → Mayor's Shorts → 750g + Lewis ♥",
+   gifts:'Liked: Leek, Parsnip, Daffodil · Loved: Diamond, Pumpkin'},
+  // Recipe unlocks
+  {npc:'Elliott', key:'elliott', hearts:2, type:'recipe',
+   label:'Crab Pot recipe → Crab Pot bundle fish (Crab, Lobster, etc.)',
+   gifts:'Loved: Crab, Duck Feather, Lobster, Pomegranate, Tom Kha Soup'},
+  {npc:'Linus',   key:'linus',   hearts:1, type:'recipe',
+   label:'Sashimi recipe (useful cooking)',
+   gifts:'Loved: Blueberry Tart, Cactus Fruit, Dish O\'the Sea, Yam'},
+  {npc:'Linus',   key:'linus',   hearts:4, type:'recipe',
+   label:'Bait recipe — never buy bait again',
+   gifts:'Loved: Blueberry Tart, Cactus Fruit, Dish O\'the Sea, Yam'},
+  {npc:'Harvey',  key:'harvey',  hearts:3, type:'recipe',
+   label:'Stir Fry recipe + Coffee gift (speed buff)',
+   gifts:'Loved: Coffee, Pickles, Super Meal, Truffle Oil, Wine'},
+  {npc:'Sandy',   key:'sandy',   hearts:3, type:'recipe',
+   label:'Crêpes recipe (great energy food)',
+   gifts:'Liked: Coconut, Daffodil, Maki Roll · Loved: Crocus'},
+  // Unlocks / access
+  {npc:'Willy',   key:'willy',   hearts:5, type:'unlock',
+   label:'Coral gift + fishing tips',
+   gifts:'Loved: Catfish, Diamond, Iridium Bar, Mead, Octopus, Pumpkin'},
+  {npc:'Emily',   key:'emily',   hearts:2, type:'unlock',
+   label:'Tailoring + Cloth gifted (CC Artisan bundle)',
+   gifts:'Loved: Amethyst, Aquamarine, Emerald, Jade, Ruby, Topaz'},
+  {npc:'Evelyn',  key:'evelyn',  hearts:5, type:'recipe',
+   label:'Cookies recipe',
+   gifts:'Loved: Artichoke Dip, Chocolate Cake, Diamond, Fairy Rose, Tulip'},
+];
 
 // Sprite icon helper — inline img for section headers
 function si(name,size=16){return `<img src="assets/icons/${name}.png" style="width:${size}px;height:${size}px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;flex-shrink:0" onerror="this.style.display='none'">`;}
@@ -1659,7 +1731,25 @@ function computeDynamicPrep(tasks, bridge) {
       .filter(b => !b.completed)
       .flatMap(b => (b.slots ?? []).filter(s => !s.have && bridge.storage[s.code]));
     stored.forEach(slot => {
-      extra.push({type:'prep', label:`Set aside for CC: ◆ ${slot.name} ×${bridge.storage[slot.code]} in chest — don’t ship`, id:'dyn_store_'+slot.code});
+      extra.push({type:'prep', label:`Set aside for CC: ◆ ${slot.name} ×${bridge.storage[slot.code]} in chest — don't ship`, id:'dyn_store_'+slot.code});
+    });
+  }
+  // Friendship gate checks — surfaces any NPC threshold blocking quests/recipes/unlocks
+  if (bridge.friendship) {
+    const shown = new Set();
+    FRIENDSHIP_GATES.forEach(gate => {
+      const dedupeKey = gate.key + '_' + gate.hearts;
+      if (shown.has(dedupeKey)) return;
+      const pts = bridge.friendship[gate.key] ?? 0;
+      const have = Math.floor(pts / 250);
+      if (have < gate.hearts) {
+        shown.add(dedupeKey);
+        extra.push({
+          type: 'prep',
+          label: `${gate.npc} ${have}♥/${gate.hearts}♥ [${gate.type}] → ${gate.label} · ${gate.gifts}`,
+          id: `dyn_friend_${gate.key}_${gate.hearts}`
+        });
+      }
     });
   }
   return [...tasks, ...extra];
@@ -1799,18 +1889,24 @@ function renderPar(){
     return null;
   }
   const AUTO_MAP={
-    mine120:()=>b?!!b.hasSkullKey:null,
-    goldpick:()=>b?((b.toolLevels?.Pickaxe||0)>=3):null,
-    coopbuilt:()=>b?(b.buildings||[]).some(x=>/^coop$/i.test(x)):null,
-    fishinglevel10:()=>b?(b.skills?.fish||0)>=10:null,
-    vault42k:()=>ccRoomDone('Vault'),
-    fishtank:()=>ccRoomDone('Fish Tank'),
-    craftsroom:()=>ccRoomDone('Crafts Room'),
-    boilerroom:()=>ccRoomDone('Boiler Room'),
-    animalproducts:()=>ccBundleDone('Animal'),
-    bulletin:()=>ccRoomDone('Bulletin Board'),
-    pantry:()=>ccRoomDone('Pantry'),
-    cc:()=>ccRooms?ccRooms.every(r=>r.bundles.every(bnd=>bnd.completed)):null,
+    mine120:        ()=>b?!!b.hasSkullKey:null,
+    goldpick:       ()=>b?((b.toolLevels?.Pickaxe||0)>=3):null,
+    coopbuilt:      ()=>b?(b.buildings||[]).some(x=>/^coop$/i.test(x)):null,
+    fishinglevel10: ()=>b?(b.skills?.fish||0)>=10:null,
+    vault42k:       ()=>ccRoomDone('Vault'),
+    marnie2hearts:  ()=>b?((b.friendship?.marnie||0)>=500):null,
+    barnbuilt:      ()=>b?(b.buildings||[]).some(x=>/^barn$/i.test(x)):null,
+    iridpickaxe_par:()=>b?((b.toolLevels?.Pickaxe||0)>=4):null,
+    farmhouse1:     ()=>b?(b.houseUpgradeLevel||0)>=1:null,
+    stable:         ()=>b?(b.buildings||[]).some(x=>/stable/i.test(x)):null,
+    bigbarn:        ()=>b?(b.buildings||[]).some(x=>/^big barn$/i.test(x)):null,
+    fishtank:       ()=>ccRoomDone('Fish Tank'),
+    craftsroom:     ()=>ccRoomDone('Crafts Room'),
+    boilerroom:     ()=>ccRoomDone('Boiler Room'),
+    animalproducts: ()=>ccBundleDone('Animal'),
+    bulletin:       ()=>ccRoomDone('Bulletin Board'),
+    pantry:         ()=>ccRoomDone('Pantry'),
+    cc:             ()=>ccRooms?ccRooms.every(r=>r.bundles.every(bnd=>bnd.completed)):null,
   };
   const html=PAR.map(p=>{
     const auto=AUTO_MAP[p.id]?.();
@@ -2085,6 +2181,56 @@ function renderUnlocks(){
         const pi=14+(rb.depth>0?rb.depth*18:0)+24;
         html+=`<div style="padding:0 14px 5px ${pi}px;font-size:10px;color:#7b4db0;font-weight:600">★ ${rb.cc}</div>`;
       }
+    });
+    // ── Pocket Builds ──────────────────────────────────────────────────────
+    html+=`<div class="unlock-row" style="margin-top:8px"><span style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--acc);letter-spacing:.4px">Pocket Builds</span></div>`;
+    const POCKET=[
+      {skill:'farm',lvl:2,name:'Mayonnaise Machine',mats:'Wood×15 Stone×15 Copper Bar×1 Earth Crystal×1',use:'Egg→Mayo · Duck Egg→Duck Mayo (CC Artisan)'},
+      {skill:'farm',lvl:3,name:'Bee House',         mats:'Wood×40 Coal×8 Maple Syrup×1 Flower×1',       use:'Honey (CC Artisan bundle)'},
+      {skill:'farm',lvl:4,name:'Preserves Jar',     mats:'Wood×50 Stone×40 Coal×8',                     use:'Fruit→Jelly · Veg→Pickle (CC Artisan)'},
+      {skill:'fish',lvl:4,name:'Recycling Machine', mats:'Wood×25 Stone×25 Iron Bar×1',                 use:'Trash→Coal/Stone/Iron Ore/Cloth'},
+      {skill:'fore',lvl:3,name:'Tapper',            mats:'Wood×40 Copper Bar×2',                        use:'Maple Syrup · Oak Resin · Pine Tar (CC bundles)'},
+      {skill:'farm',lvl:6,name:'Cheese Press',      mats:'Wood×45 Stone×45 Copper Bar×1',               use:'Milk→Cheese · Goat Milk→Goat Cheese (CC Artisan)'},
+      {skill:'fore',lvl:6,name:'Lightning Rod',     mats:'Copper Bar×1 Iron Bar×1 Refined Quartz×1',    use:'Battery Pack (Crystalarium + boat repairs)'},
+      {skill:'farm',lvl:7,name:'Loom',              mats:'Wood×60 Fiber×30 Pine Tar×1',                 use:'Wool→Cloth (CC Artisan + Dye)'},
+      {skill:'farm',lvl:8,name:'Keg',               mats:'Wood×30 Iron Bar×1 Copper Bar×1 Oak Resin×1', use:'Fruit→Wine · Veg→Juice (main income)'},
+      {skill:'farm',lvl:8,name:'Oil Maker',         mats:'Gold Bar×1 Wood×20 Hardwood×10',              use:'Truffle→Truffle Oil (CC Artisan)'},
+      {skill:'fore',lvl:8,name:'Worm Bin',          mats:'Hardwood×25 Gold Bar×1 Iron Bar×1 Coal×50',   use:'Daily free Bait'},
+      {skill:'farm',lvl:9,name:'Seed Maker',        mats:'Wood×25 Gold Bar×1 Coal×10',                  use:'Crops→Seeds (self-sustaining)'},
+      {skill:'mine',lvl:9,name:'Crystalarium',      mats:'Stone×99 Gold Bar×5 Iridium Bar×2 Diamond×1', use:'Duplicate gems → Diamond→Espresso · Jade→Staircase'},
+    ];
+    const skillMap={farm:'farm',fish:'fish',fore:'forage',mine:'mine'};
+    POCKET.forEach(pb=>{
+      const skillLvl=b?.skills?.[skillMap[pb.skill]]??0;
+      const unlocked=skillLvl>=pb.lvl;
+      html+=`<div class="unlock-row" style="padding-left:14px">
+        <div class="unlock-dot${unlocked?' yes':''}"></div>
+        <span style="font-weight:600;${!unlocked?'color:var(--muted)':''}">${pb.name}</span>
+        <span style="font-size:9px;color:var(--muted);flex:1;margin-left:4px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${unlocked?pb.use:pb.mats}</span>
+        ${!unlocked?`<span style="font-size:9px;color:var(--muted);flex-shrink:0">${pb.skill==='farm'?'🌾':pb.skill==='fish'?'🎣':pb.skill==='fore'?'🌿':'⛏️'} ${pb.lvl}</span>`:''}
+      </div>`;
+      if(unlocked){
+        html+=`<div style="padding:0 14px 4px 38px;font-size:9px;color:var(--muted)">${pb.mats}</div>`;
+      }
+    });
+    // ── House Upgrades ─────────────────────────────────────────────────────
+    html+=`<div class="unlock-row" style="margin-top:8px"><span style="font-family:'Press Start 2P',monospace;font-size:7px;color:var(--acc);letter-spacing:.4px">Farmhouse Upgrades</span></div>`;
+    const HOUSE=[
+      {lvl:1,name:'Kitchen',     cost:'35,000g + 450 Wood',   use:'Cooking unlocked'},
+      {lvl:2,name:'Kids Room',   cost:'50,000g + 150 Hardwood',use:'Nursery — family events'},
+      {lvl:3,name:'Cellar',      cost:'100,000g',              use:'Casks → Aged Wine/Cheese/etc.'},
+    ];
+    const houseLvl2=b?.houseUpgradeLevel||0;
+    HOUSE.forEach(hu=>{
+      const done=houseLvl2>=hu.lvl;
+      const isNext=houseLvl2===hu.lvl-1;
+      const canAfford=isNext&&(b?.gold||0)>=(parseInt(hu.cost.replace(/[^0-9]/g,'').slice(0,6)));
+      html+=`<div class="unlock-row" style="padding-left:14px">
+        <div class="unlock-dot${done?' yes':''}"></div>
+        <span style="font-weight:600;${!done?'color:var(--muted)':''}">${hu.name}</span>
+        <span style="font-size:9px;color:var(--muted);flex:1;margin-left:4px">${done?hu.use:hu.cost+' → '+hu.use}</span>
+        ${isNext&&canAfford?`<span style="font-size:9px;font-weight:700;color:var(--t-gather);flex-shrink:0">→ READY</span>`:''}
+      </div>`;
     });
     html+='</div>';
   }
