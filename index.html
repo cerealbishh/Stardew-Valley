@@ -933,6 +933,7 @@ summer:[
   {type:'gather',label:'🎁 CC: Fiddlehead Fern (Secret Woods, Summer foraging — last few days!)',id:'su16d'},
 ]},
 {d:17,name:'🎣 Ocean Push + Sam Birthday',tasks:[
+  {type:'fire',label:'🌿 FIDDLEHEAD FERN — Secret Woods (Summer ONLY). TODAY may be the last realistic day. Needed for CC Chef Bundle.',id:'su17_fern'},
   {type:'plate',label:"Sam bday ♥ Pizza / Maple Bar / Cactus Fruit",id:'su17a'},
   {type:'fire',label:'Water crops',id:'su17b'},
   {type:'fire',label:'🌻 Sunflower harvest (Day 9+8=17) — keep 1 for CC Dye bundle, sell the rest',id:'su17c'},
@@ -3339,7 +3340,34 @@ document.addEventListener('click',e=>{
   }
 });
 
+function initPastTasks(){
+  // Stamp all Spring + Summer 1-16 task IDs as done on first load.
+  // Only sets tasks that haven't been explicitly touched (preserves any the
+  // user already checked or unchecked manually). Runs once per version flag.
+  if(lsGet('sdv_init_v3')==='1') return;
+  const ids=["sp1a","sp1b","sp1c","sp1d","sp1e","sp2a","sp2b","sp2c","sp2d",
+    "sp3a","sp3b","sp3c","sp3d","sp4a","sp4b","sp4c","sp4d","sp4e","sp5a",
+    "sp5b","sp5c","sp6a","sp6b","sp6c","sp7a","sp7b","sp7c","sp8a","sp8b",
+    "sp8c","sp9a","sp9b","sp9c","sp9d","sp10a","sp10b","sp10c","sp11a","sp11b",
+    "sp11c","sp12a","sp12b","sp12c","sp12d","sp13a","sp13b","sp13c","sp14a",
+    "sp14b","sp14c","sp14d","sp15a","sp15b","sp15c","sp16a","sp16b","sp16c",
+    "sp17a","sp17b","sp17c","sp18a","sp18b","sp18c","sp18d","sp19a","sp19b",
+    "sp19c","sp20a","sp20b","sp20c","sp21a","sp21b","sp21c","sp22a","sp22b",
+    "sp22c","sp23a","sp23b","sp23c","sp24a","sp24b","sp24c","sp25a","sp25b",
+    "sp25c","sp26a","sp26b","sp26c","sp27a","sp27b","sp27c","sp27d","sp28a",
+    "sp28b","sp28c","sp28d","su1a","su1b","su1c","su1d","su2a","su2b","su2c",
+    "su3a","su3b","su3c","su4a","su4b","su4c","su5a","su5b","su5c","su6a",
+    "su6b","su6c","su7a","su7b","su7c","su8a","su8b","su8c","su8d","su9a",
+    "su9b","su9c","su9d","su10a","su10b","su10c","su10d","su11a","su11b",
+    "su11c","su11d","su12a","su12b","su12c","su12d","su13a","su13b","su13c",
+    "su13d","su13e","su14a","su14b","su14c","su14d","su14e","su15a","su15b",
+    "su15c","su15d","su16a","su16b","su16c","su16d"];
+  ids.forEach(id=>{if(!lsGet('sdv_t_'+id)) lsSet('sdv_t_'+id,'spring_1');});
+  lsSet('sdv_init_v3','1');
+}
+
 function init(){
+  initPastTasks();
   const dark=lsGet('sdv_dark');
   if(dark==='1'){S.dark=true;document.documentElement.dataset.dark='true';}
   const override=lsGet('sdv_day_override');
