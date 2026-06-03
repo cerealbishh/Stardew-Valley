@@ -583,11 +583,30 @@ def parse_save():
     out["craftingRecipes"] = crafting
 
     # ── SPECIAL FLAGS ─────────────────────────────────────────────────────────
+    # Stardew 1.6 stores many boolean flags as empty XML elements (<flag />)
+    # rather than <flag>true</flag>, so also cross-check mail flags as fallback.
+    MAIL_FLAG_MAP = {
+        "hasSkullKey":         "HasSkullKey",
+        "hasRustyKey":         "HasRustyKey",
+        "hasClubCard":         "HasClubCard",
+        "canUnderstandDwarves":"learnedDwarfLanguage",
+        "hasMagnifyingGlass":  "HasMagnifyingGlass",
+    }
     for flag in ("hasSkullKey", "hasClubCard", "hasDarkTalisman", "hasMagicInk",
                  "hasMagnifyingGlass", "hasRustyKey", "canUnderstandDwarves",
                  "hasGaloshes", "hasSpecialCharm", "catPerson"):
         el = root.find(f".//player/{flag}")
-        out[flag] = (el is not None and el.text == "true")
+        xml_true = el is not None and (el.text or "").lower() == "true"
+        mail_key = MAIL_FLAG_MAP.get(flag)
+        mail_true = mail_key is not None and mail_key in mail
+        out[flag] = xml_true or mail_true
+
+    # Vault: if ccVault mail received, mark all vault bundle slots as donated
+    if "ccVault" in mail:
+        for bid in [23, 24, 25, 26]:
+            bundle_done[bid] = True
+            slot_donated[(bid, 0)] = True
+            hoard_done.add(vault_map.get(bid, ""))
     cave_el = root.find(".//player/caveChoice")
     out["caveChoice"] = int(cave_el.text or 0) if cave_el is not None else 0
 

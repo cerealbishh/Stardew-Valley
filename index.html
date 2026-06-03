@@ -979,7 +979,7 @@ summer:[
   {type:'plate',label:"Demetrius bday ♥ Bean Hotpot / Ice Cream / Strawberry",id:'su19a'},
   {type:'fire',label:'Water crops',id:'su19b'},
   {type:'fire',label:'OCEAN fish all day — Tuna (6am–7pm) + Red Snapper + Tilapia count for CC Ocean Fish bundle',id:'su19c'},
-  {type:'gather',label:'🎁 Fiddlehead Fern — absolute last chance, Secret Woods',id:'su19d'},
+  {type:'gather',label:'🎁 Fiddlehead Fern — absolute last chance, Secret Woods (already donated ✓ if bridge confirms)',id:'su19d'},
   {type:'prep',label:'Check Traveling Cart (Fri/Sun) — Nautilus Shell + Woodskip if available',id:'su19e'},
 ]},
 {d:20,name:'💰 Vault Donations + Pufferfish',tasks:[
@@ -992,7 +992,7 @@ summer:[
 ]},
 {d:21,name:'🐡 Pufferfish + SC Prep',tasks:[
   {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY ONLY. Needed for CC Specialty Fish bundle. Last days ever!',id:'su21a'},
-  {type:'fire',label:'OCEAN fish all day — Vault sprint',id:'su21b'},
+  {type:'fire',label:'Vault funded ✓ — bus fixed! SC opens after vault cutscene plays.',id:'su21b'},
   {type:'fire',label:'Water crops',id:'su21c'},
   {type:'prep',label:'SC prep: craft/buy 30+ Bombs (Iron Ore×4 + Coal×1 each) and 30+ Staircases (Stone×99 each)',id:'su21d'},
   {type:'prep',label:'SC food: Spicy Eel (speed buff) — trade Ruby to Desert Trader on Fridays once bus fixed',id:'su21e'},
@@ -1001,17 +1001,18 @@ summer:[
   {type:'fire',label:'🫐 BLUEBERRY harvest (Day 9+13=22) — sell all, Summer Crops CC already done!',id:'su22a'},
   {type:'fire',label:'🍈 MELON harvest — sell all (CC Summer Crops bundle already completed ✓)',id:'su22b'},
   {type:'fire',label:'🍅 TOMATO harvest — sell all (already donated)',id:'su22c'},
-  {type:'prep',label:'SC: verify Skull Key in inventory. If missing, floor 120 chest needs to be opened first.',id:'su22d'},
+  {type:'par',label:'Skull Key ✓ (HasSkullKey mail confirmed) · Vault ✓ (ccVault) · Bus fixed. Ready for SC!',id:'su22d'},
   {type:'prep',label:'SC food: Triple Shot Espresso (speed) via Diamond → Desert Trader daily once bus fixed',id:'su22e'},
   {type:'gather',label:'🎁 CC mine gaps: Fire Quartz (floors 80–119), Ghostfish (mine pond floor 20/60), Purple Mushroom (floors 80+)',id:'su22_mine_cc'},
   {type:'prep',label:'Check Special Orders board left of Pierre\'s — weekly quests give unique rewards (recipes, rare items)',id:'su22_specialorders'},
 ]},
-{d:23,name:'🚀 First Skull Cavern Run',tasks:[
-  {type:'fire',label:'Bus fixed? ⚡ Meet Pam at bus stop 8:40am — run to block her door so she moves faster',id:'su23a'},
-  {type:'fire',label:'SC strategy: bomb big rock clusters, take every shaft down, ignore enemies. Goal: floor 25+',id:'su23b'},
-  {type:'fire',label:'Desert Trader: Ruby → Spicy Eel (Fri), Diamond → Triple Espresso, Jade → Staircase (Sun)',id:'su23c'},
-  {type:'fire',label:'Bus NOT fixed yet? Fish ocean + donate Vault ASAP',id:'su23d'},
-  {type:'prep',label:'DO NOT sell Iridium Bars yet — wait for Mining level 10 (Blacksmith profession = 300g/bar)',id:'su23e'},
+{d:23,name:'🚀 Skull Cavern Day 1',tasks:[
+  {type:'fire',label:'⚡ Bus is fixed! Meet Pam at bus stop 8:40am — block her door to make her run (saves 33 min)',id:'su23a'},
+  {type:'fire',label:'SC: bomb rock clusters, take every shaft/hole down, ignore enemies. Goal: floor 25+',id:'su23b'},
+  {type:'fire',label:'Desert Trader trades: Ruby → Spicy Eel (Fri) · Diamond → Triple Espresso · Jade → Staircase (Sun)',id:'su23c'},
+  {type:'prep',label:'Gold is low (2,918g after vault) — SC Iridium Bars are your income now. Smelt as you go.',id:'su23d'},
+  {type:'prep',label:'DO NOT sell Iridium Bars yet — wait for Mining level 10 (Blacksmith = 300g/bar). Currently Mining 6.',id:'su23e'},
+  {type:'fire',label:'Barn built but no animals — after SC, buy Cow from Marnie (1,500g) for CC Large Milk',id:'su23f'},
 ]},
 {d:24,name:'🚀 SC Day 2 + Poppy Harvest',tasks:[
   {type:'fire',label:'🌸 POPPY harvest (planted Su17, 7 days) — donate to CC Chef bundle immediately',id:'su24_poppy'},
@@ -1885,7 +1886,7 @@ function computeDynamicPrep(tasks, bridge) {
   if (mining < 10) {
     extra.push({type:'prep', label:`Mining ${mining}/10 — need level 10 for Blacksmith profession before selling Iridium Bars`, id:'dyn_mining'});
   }
-  if (!bridge.hasSkullKey) {
+  if (!bridge.hasSkullKey && !(bridge.mail||[]).includes('HasSkullKey')) {
     extra.push({type:'fire', label:'⚠️ Skull Key not detected — visit mine floor 120 chest to collect it', id:'dyn_skullkey'});
   }
   const fishing = bridge.skills?.fishing ?? 0;
@@ -2115,7 +2116,7 @@ function renderPar(){
     return null;
   }
   const AUTO_MAP={
-    mine120:        ()=>b?!!b.hasSkullKey:null,
+    mine120:        ()=>b?(b.hasSkullKey||(b.mail||[]).includes('HasSkullKey')):null,
     goldpick:       ()=>b?((b.toolLevels?.Pickaxe||0)>=3):null,
     coopbuilt:      ()=>b?(b.buildings||[]).some(x=>/^coop$/i.test(x)):null,
     fishinglevel10: ()=>b?(b.skills?.fish||0)>=10:null,
@@ -3500,7 +3501,8 @@ function syncLiveState(data){
   if(skills.fish>=2)                         localStorage.setItem(ns('qm_fiberglass'),'1');
   if(bldgs.some(b=>/greenhouse/i.test(b)))   localStorage.setItem(ns('qm_ghouse'),'1');
   if(data.hasSkullKey)                       localStorage.setItem(ns('qm_skull'),'1');
-  const vaultDone_=(data.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles?.every(b=>b.completed);
+  const vaultDone_=(data.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles?.every(b=>b.completed)
+    ||(data.mail||[]).includes('ccVault');
   if(vaultDone_){localStorage.setItem(ns('qm_bus'),'1');localStorage.setItem(ns('qm_desert'),'1');}
   if(data.hasRustyKey)                       localStorage.setItem(ns('qm_sewers'),'1');
   if(data.hasClubCard)                       localStorage.setItem(ns('qm_clubcard'),'1');
@@ -3591,7 +3593,8 @@ function syncLiveState(data){
   });
 
   // ── sdv_par_* — clear items confirmed not done ───────────────────────
-  if(!data.hasSkullKey||!vaultDone_) lsSet('sdv_par_scfirst','0');
+  const hasKey_=data.hasSkullKey||(data.mail||[]).includes('HasSkullKey');
+  if(!hasKey_||!vaultDone_) lsSet('sdv_par_scfirst','0');
 }
 
 function renderFromData(data){
