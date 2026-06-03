@@ -1939,7 +1939,8 @@ function renderCarry(){
   ['spring','summer','fall','winter'].forEach(season=>{
     (RD[season]||[]).forEach(day=>{
       const dayOrd=SORD_[season]*28+day.d;
-      if(dayOrd>=curOrd) return;
+      if(dayOrd>=curOrd) return;          // skip today and future
+      if(curOrd-dayOrd>7) return;         // skip anything older than 7 days
       const missed=day.tasks.filter(t=>!taskEverDone(t.id));
       if(missed.length) overdue.push({season,d:day.d,name:day.name,tasks:missed});
     });
@@ -3490,6 +3491,17 @@ document.addEventListener('click',e=>{
 });
 
 function init(){
+  // Clear any auto-stamps left by the old initPastTasks() run.
+  // Those set value 'spring_1' — detect and wipe them so tasks reflect real state.
+  if(lsGet('sdv_init_v3')==='1'){
+    for(let i=localStorage.length-1;i>=0;i--){
+      const k=localStorage.key(i);
+      if(k&&k.startsWith('sdv_t_')&&localStorage.getItem(k)==='spring_1'){
+        localStorage.removeItem(k);
+      }
+    }
+    localStorage.removeItem('sdv_init_v3');
+  }
   const dark=lsGet('sdv_dark');
   if(dark==='1'){S.dark=true;document.documentElement.dataset.dark='true';}
   const override=lsGet('sdv_day_override');
