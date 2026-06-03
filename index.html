@@ -369,6 +369,29 @@ html[data-dark=true] .chip.have{background:#1a3d2a;border-color:#2a6040;color:#6
 html[data-dark=true] .chip.stored{background:#4a3800;color:#f5d87a;}
 html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .junimo-offline{padding:24px;text-align:center;color:var(--muted);font-size:13px;}
+/* ── Item info bubble ── */
+#item-bubble{position:fixed;z-index:800;display:none;flex-direction:column;align-items:center;
+  pointer-events:none;transition:opacity .18s;opacity:0;}
+#item-bubble.visible{display:flex;opacity:1;pointer-events:auto;}
+#item-bubble-inner{background:var(--surf);border:2px solid var(--acc);border-radius:16px;
+  padding:14px 16px 12px;max-width:260px;min-width:180px;
+  box-shadow:0 8px 32px rgba(239,148,167,.35),0 2px 8px rgba(0,0,0,.12),var(--inset-shine);
+  position:relative;}
+#item-bubble-close{position:absolute;top:8px;right:10px;background:none;border:none;
+  font-size:13px;color:var(--muted);cursor:pointer;padding:2px 4px;line-height:1;font-weight:700;}
+#item-bubble-emoji{font-size:28px;text-align:center;margin-bottom:4px;line-height:1.2;}
+#item-bubble-name{font-family:'Press Start 2P',monospace;font-size:7px;color:var(--acc);
+  text-align:center;margin-bottom:10px;line-height:1.8;letter-spacing:.3px;}
+#item-bubble-rows{display:flex;flex-direction:column;gap:6px;}
+.ib-row{display:flex;align-items:flex-start;gap:7px;font-size:11px;line-height:1.4;}
+.ib-label{font-weight:800;color:var(--acc);flex-shrink:0;font-size:10px;min-width:36px;}
+.ib-val{color:var(--text);}
+.ib-tip{font-size:10px;color:var(--muted);font-style:italic;border-top:1px solid var(--border);
+  padding-top:6px;margin-top:2px;line-height:1.5;}
+#item-bubble-arrow{width:14px;height:8px;overflow:hidden;flex-shrink:0;}
+#item-bubble-arrow::after{content:'';display:block;width:12px;height:12px;
+  background:var(--surf);border:2px solid var(--acc);border-radius:2px;
+  transform:rotate(45deg);margin:-8px auto 0;}
 
 /* ── QUESTS / UNLOCKS ── */
 .unlock-section{background:var(--surf);border:none;border-radius:var(--r);margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow-bubble);}
@@ -1576,6 +1599,136 @@ function seasonLabel(){
 }
 const SEASON_ICON={spring:'crop-parsnip',summer:'crop-sunflower',fall:'crop-pumpkin',winter:'item-quartz'};
 
+// ── Item info bubble lookup ────────────────────────────────────────────────
+// Keys match slot.code from CC_BUNDLE_MAP / HOARD_CODE_NAMES
+const ITEM_INFO={
+  // Fish
+  sp_catfish:    {e:'🐟',w:'Spring & Fall · Rainy days only · 6am–midnight',l:'Pelican Town river or Cindersap Forest river',t:'Check TV the night before! No rain = no catfish.'},
+  sp_eel:        {e:'🐍',w:'Spring & Fall · Rainy days · 4pm–2am',l:'Beach (ocean)',t:'Evening rainy only — easy to miss. Also in Night Fishing bundle.'},
+  su_pufferfish: {e:'🐡',w:'Summer ONLY · Sunny days · Noon–4pm',l:'Beach (ocean)',t:'⚠️ Hardest window in the game — miss it and wait a whole year!'},
+  su_tuna:       {e:'🐟',w:'Summer & Winter · 6am–7pm',l:'Beach (ocean)',t:'Buy from Willy if you miss summer (1,000g)'},
+  su_redsnapper:  {e:'🐠',w:'Summer & Fall · 6am–7pm',l:'Beach (ocean)',t:'Common and easy — available most of summer'},
+  su_tilapia:    {e:'🐟',w:'Summer & Fall · 6am–2pm',l:'Beach (ocean) or rivers',t:'Morning hours only'},
+  fa_tigertrout: {e:'🐟',w:'Fall & Winter · 6am–7pm',l:'River (Pelican Town or Cindersap)',t:'Fishing level 5 required. Very difficult catch.'},
+  fa_walleye:    {e:'🐟',w:'Fall · Rainy days · Noon–2am',l:'River or Mountain Lake',t:'Needs autumn rain — check TV forecast'},
+  any_sunfish:   {e:'☀️',w:'Spring & Summer · 6am–7pm',l:'River (Pelican Town or forest)',t:'Very common and easy'},
+  any_shad:      {e:'🐟',w:'Spring/Summer/Fall · Rainy · 9am–2am',l:'River (any)',t:'Needs rain but easier to catch than catfish'},
+  any_bream:     {e:'🐟',w:'Year-round · 6pm–2am',l:'River (any)',t:'Evening fishing, very common'},
+  any_bass:      {e:'🐟',w:'Spring & Fall · 6am–7pm',l:'Mountain Lake',t:'Largemouth Bass — common lake fish'},
+  any_carp:      {e:'🐟',w:'Spring/Summer/Fall · Any time',l:'Mountain Lake or Secret Forest pond',t:'Very common, practically guaranteed'},
+  any_bullhead:  {e:'🐟',w:'Any season · Any time',l:'Mountain Lake',t:'Common — just fish the mountain lake'},
+  any_woodskip:  {e:'🐟',w:'Any season · Any time',l:'Secret Forest pond (SW, need Steel Axe)',t:'Use Steel Axe to chop the logs blocking the forest entrance'},
+  any_ghostfish:  {e:'👻',w:'Any season · Any time',l:'Underground ponds — Mine floor 20 or floor 60',t:'Bring a fishing rod into the mines! Rare but catchable.'},
+  any_sardine:   {e:'🐟',w:'Spring/Fall/Winter · 6am–7pm',l:'Beach (ocean)',t:'NOT available in Summer — catch in Spring or Fall'},
+  any_chub:      {e:'🐟',w:'Any season · Any time',l:'Mountain Lake or Cindersap Forest river',t:'Year-round and very common'},
+  any_sturgeon:  {e:'🐟',w:'Summer & Winter · 6am–7pm',l:'Mountain Lake',t:'Best income fish in Summer. Fishing level 6 required.'},
+  // Crab pots
+  any_crab:       {e:'🦀',w:'Any season · Check daily',l:'Crab Pot in ocean (beach)',t:'Ocean crab pot only — not river'},
+  any_lobster:    {e:'🦞',w:'Any season · Check daily',l:'Crab Pot in ocean (beach)',t:'Ocean crab pot only'},
+  any_crayfish:   {e:'🦞',w:'Any season · Check daily',l:'Crab Pot in river',t:'River crab pot — near farm or town'},
+  any_snail:      {e:'🐌',w:'Any season · Check daily',l:'Crab Pot in river',t:'River crab pot'},
+  any_periwinkle: {e:'🐚',w:'Any season · Check daily',l:'Crab Pot in river',t:'River crab pot'},
+  any_shrimp:     {e:'🍤',w:'Any season · Check daily',l:'Crab Pot in ocean (beach)',t:'Ocean crab pot'},
+  any_mussel:     {e:'🦪',w:'Any season · Check daily',l:'Crab Pot in ocean (or forage beach)',t:'Also forageable on beach tiles in Spring'},
+  any_clam:       {e:'🦪',w:'Any season · Check daily',l:'Crab Pot in ocean (or forage beach)',t:'Also found on beach tiles'},
+  any_oyster:     {e:'🦪',w:'Any season · Check daily',l:'Crab Pot in ocean (or forage beach)',t:'Also forageable on beach'},
+  // Spring crops
+  sp_parsnip:    {e:'🌱',w:'Spring · 4 days',l:'Buy seeds from Pierre (20g each)',t:'Easiest spring crop — plant Spring 1 for fastest harvest'},
+  sp_greenbean:   {e:'🫘',w:'Spring · 10 days, re-harvests every 3d',l:'Buy from Pierre (60g each)',t:'Trellis crop — don\'t block walkways'},
+  sp_cauliflower: {e:'🥦',w:'Spring · 12 days',l:'Buy from Pierre (80g each)',t:'Can become a Giant Cauliflower if 3×3 planted'},
+  sp_potato:     {e:'🥔',w:'Spring · 6 days',l:'Buy from Pierre (50g each)',t:'25% chance to yield 2 potatoes!'},
+  // Summer crops
+  su_tomato:     {e:'🍅',w:'Summer · 11 days, re-harvests every 4d',l:'Buy from Pierre (50g each)',t:'Keep 1 for bundle — Summer Crops already donated ✓'},
+  su_hotpepper:  {e:'🌶️',w:'Summer · 5 days, re-harvests every 3d',l:'Buy from Pierre (40g each)',t:'Fastest summer crop — already donated ✓'},
+  su_blueberry:  {e:'🫐',w:'Summer · 13 days, re-harvests every 4d',l:'Buy from Pierre (80g each)',t:'Yields 3 berries per harvest! Already donated ✓'},
+  su_melon:      {e:'🍈',w:'Summer · 12 days',l:'Buy from Pierre (80g each)',t:'Gold quality for Quality Crops bundle — already donated ✓'},
+  su_corn:       {e:'🌽',w:'Summer & Fall · 14 days, re-harvests every 4d',l:'Buy from Pierre (150g each)',t:'Grows in BOTH Summer and Fall!'},
+  su_sunflower:  {e:'🌻',w:'Summer/Fall · 8 days',l:'Buy from Pierre (200g)',t:'Dye bundle — already donated ✓'},
+  su_poppy:      {e:'🌸',w:'Summer ONLY · 7 days',l:'Buy from Pierre (100g)',t:'Summer only! Plant by Summer 21 to harvest before end of season'},
+  su_fiddlehead: {e:'🌿',w:'Summer ONLY · Any time',l:'Secret Forest (southwest, needs Steel Axe)',t:'Summer-only forage — Chef\'s bundle. Already donated ✓'},
+  su_spiceberry:  {e:'🍓',w:'Summer · Any time',l:'Forage anywhere in Summer (paths, fields)',t:'Very common summer forage'},
+  su_grape:      {e:'🍇',w:'Summer (forage) or Fall crop',l:'Forage in Summer; or buy Grape Starter from Pierre in Fall',t:'Can be grown on trellises in Fall too'},
+  su_sweetpea:   {e:'🌺',w:'Summer · Any time',l:'Forage in Cindersap Forest or along town paths',t:'Common summer forage item'},
+  su_wheat10:    {e:'🌾',w:'Summer & Fall · 4 days',l:'Buy from Pierre (10g each)',t:'Also needed for Fodder bundle — buy at least 10+. Check storage!'},
+  // Fall crops
+  fa_eggplant:   {e:'🍆',w:'Fall · 5 days, re-harvests every 5d',l:'Buy from Pierre (20g each)',t:'Quick fall crop with re-harvests'},
+  fa_pumpkin:    {e:'🎃',w:'Fall · 13 days',l:'Buy from Pierre (100g each)',t:'Gold quality needed for Quality Crops bundle — use fertilizer!'},
+  fa_yam:        {e:'🍠',w:'Fall · 10 days',l:'Buy from Pierre (60g each)',t:'Keep 1 for Fall Crops bundle'},
+  fa_apple:      {e:'🍎',w:'Fall annually · Sapling takes 28 days',l:'Apple Sapling from Pierre (4,000g)',t:'Plant sapling ASAP — produces every Fall indefinitely after'},
+  fa_pomegranate: {e:'🍊',w:'Fall annually · Sapling takes 28 days',l:'Pomegranate Sapling from Pierre (6,000g)',t:'Takes a full season to grow — plant as soon as you can afford it'},
+  fa_mushroom:   {e:'🍄',w:'Fall · Any time',l:'Forage Cindersap Forest; OR mushroom cave',t:'If you chose mushroom cave, check it every day!'},
+  fa_plum:       {e:'🫐',w:'Fall · Any time',l:'Forage Cindersap Forest (ground and tree shakes)',t:'Wild Plum — shake Oak, Maple, and Pine trees too'},
+  fa_hazelnut:   {e:'🌰',w:'Fall · Any time',l:'Shake any trees or forage on ground paths',t:'Found everywhere in Fall — just shake trees!'},
+  fa_blackberry:  {e:'🫐',w:'Fall 8–11 ONLY · Any time',l:'Forage paths: Bus Stop, Cindersap, town',t:'⚠️ Window is ONLY Fall 8–11 — sweep every path!'},
+  // Winter foraging
+  wi_winterroot: {e:'🟤',w:'Winter · Any time',l:'Dig sparkly artifact spots on any path or dirt',t:'Use Hoe on the sparkly ground spots all around town'},
+  wi_crystalfruit:{e:'💙',w:'Winter · Any time',l:'Forage anywhere in Winter (paths, fields)',t:'Common winter foraging — walks to town will find them'},
+  wi_snowyam:    {e:'🍠',w:'Winter · Any time',l:'Dig sparkly artifact spots; or grow Winter Seeds in Greenhouse',t:'Hoe the ground spots! Also in Greenhouse from Winter Seeds'},
+  wi_crocus:     {e:'🌸',w:'Winter · Any time',l:'Forage near mountain, Bus Stop, town paths',t:'Also grows from Winter Seeds in Greenhouse'},
+  wi_nautilus:   {e:'🐚',w:'Winter · Any time',l:'Dig artifact spots on the BEACH',t:'48% chance per beach sparkle — check every single day in Winter!'},
+  // Mine drops
+  any_quartz:    {e:'💎',w:'Any season',l:'Mine floors 1–39 (rock drops, gem nodes)',t:'Very common — just mine normally in the early floors'},
+  any_earthcrystal:{e:'🟤',w:'Any season',l:'Mine floors 1–39 (brown crystal nodes)',t:'Look for earthy brown gem nodes in early mine'},
+  any_aquamarine:{e:'💠',w:'Any season',l:'Mine floors 40–79 (blue gem nodes)',t:'Needed for BOTH Geologist AND Dye bundles — keep 2!'},
+  any_firequartz:{e:'🔴',w:'Any season',l:'Mine floors 80–119 (red lava nodes) or Skull Cavern',t:'Hot zone — bring food and be ready for combat'},
+  any_frozengeode:{e:'🔵',w:'Any season',l:'Mine floors 40–79 (common chest or rock drop)',t:'Break at Clint\'s (25g) for frozen minerals'},
+  any_cavecarrot:{e:'🥕',w:'Any season',l:'Mine floors 1–39 — hoe dirt patches OR find on floor',t:'Use your Hoe on mine floor dirt patches. Very common!'},
+  any_redmush:   {e:'🍄',w:'Summer & Fall (forage) or Mushroom Floor',l:'Under trees in Cindersap Forest; OR mine mushroom floor',t:'Can also come from mushroom cave if you chose it'},
+  any_purpmush:  {e:'🟣',w:'Any season',l:'Mine floors 80–119 mushroom floor; or mushroom cave',t:'Check the cave daily if you chose mushrooms over bats'},
+  any_copperbar: {e:'🟠',w:'Any season',l:'Furnace: 5 Copper Ore + 1 Coal',t:'Copper Ore from mine floors 1–39 — very common'},
+  any_ironbar:   {e:'⬜',w:'Any season',l:'Furnace: 5 Iron Ore + 1 Coal',t:'Iron Ore from mine floors 40–79'},
+  any_goldbar:   {e:'🟡',w:'Any season',l:'Furnace: 5 Gold Ore + 1 Coal',t:'Gold Ore from mine floors 80–119'},
+  any_slime:     {e:'🟢',w:'Any season',l:'Kill Slimes anywhere in the mines',t:'Need 99! Farm floor 5 or 55 for fast Slime kills'},
+  any_batwing:   {e:'🦇',w:'Any season',l:'Kill Bats in mine floors 40–79',t:'Need 10 Bat Wings — quick to farm'},
+  any_solar:     {e:'☀️',w:'Any season',l:'Kill Squid Kids or Metal Heads (floors 80+)',t:'Also dropped by Iridium Bats in Skull Cavern'},
+  any_void:      {e:'🖤',w:'Any season',l:'Kill Shadow Brutes or Shadow Shaman (floors 80+)',t:'100 Solar + 100 Void Essence = Iridium Band ring!'},
+  // Resources
+  any_wood:      {e:'🪵',w:'Any season',l:'Chop trees anywhere on farm or maps',t:'You need 99 for Construction bundle — already donated ✓'},
+  any_stone:     {e:'🪨',w:'Any season',l:'Break rocks on farm or in mines',t:'Already donated ✓ — you have 1,200+ in storage'},
+  any_hardwood:  {e:'🪵',w:'Any season',l:'Secret Forest stumps (6/day reset) or large farm stumps',t:'Need Copper Axe+. Secret Forest gives 12 hardwood per day!'},
+  any_hay:       {e:'🌾',w:'Any season',l:'Silo auto-collects when you scythe grass. Buy from Marnie (50g).',t:'Scythe farm grass every day to keep Silo stocked for free'},
+  any_coconut:   {e:'🥥',w:'Any season (desert)',l:'Forage Calico Desert OR buy from Sandy at Oasis',t:'Need bus fixed first! Also sold by Sandy and Traveling Cart'},
+  any_cactus:    {e:'🌵',w:'Any season (desert)',l:'Forage in Calico Desert OR Sandy\'s Oasis shop',t:'Need bus fixed first (final Vault payment: 25,000g)'},
+  any_maplesyrup:{e:'🍁',w:'Any season (7-day cycles)',l:'Tapper on a Maple Tree',t:'Place Tapper ASAP — first batch takes ~7 days'},
+  any_oakresin:  {e:'🌳',w:'Any season (7-day cycles)',l:'Tapper on an Oak Tree',t:'Needed for Kegs AND Enchanter\'s AND Exotic bundles — set up multiple!'},
+  any_pinetar:   {e:'🌲',w:'Any season (7-day cycles)',l:'Tapper on a Pine Tree',t:'Also needed for Loom recipe (Farming 7)'},
+  any_honey:     {e:'🍯',w:'Spring/Summer/Fall',l:'Bee House near a flower (Farming 3 to craft)',t:'Place Bee House next to a blooming flower for flavored honey'},
+  any_jelly:     {e:'🫙',w:'Any season',l:'Preserves Jar + any Fruit (Farming 4)',t:'Blueberry or Strawberry jelly sells best'},
+  any_cheese:    {e:'🧀',w:'Any season · Daily',l:'Cheese Press + Milk from Cow (Farming 6)',t:'Need Barn + Cow first (Cow costs 1,500g from Marnie)'},
+  any_wine:      {e:'🍷',w:'Any season (6-day process)',l:'Keg + any Fruit (Farming 8)',t:'Starfruit Wine = 2,250g (3,150g with Artisan perk!)'},
+  any_cloth:     {e:'🧶',w:'Any season',l:'Loom + Wool (Farming 7) OR occasionally from Emily',t:'Loom needs Deluxe Barn + Sheep first'},
+  any_goatcheese:{e:'🧀',w:'Any season · Daily',l:'Cheese Press + Goat Milk (Big Barn + Goat)',t:'Need Big Barn upgrade (12,000g) + Goat (4,000g from Marnie)'},
+  // Animal products
+  hard_largeeggw:{e:'🥚',w:'Any season · Daily (at 200+ friendship)',l:'White Chicken in Coop',t:'Pet and feed your chicken daily! Takes a few days to reach 200 friendship.'},
+  hard_largeeggb:{e:'🥚',w:'Any season · Daily (at 200+ friendship)',l:'Brown Chicken in Coop',t:'Same as White Chicken but brown variant — buy from Marnie'},
+  hard_largemilk:{e:'🥛',w:'Any season · Daily (at 200+ friendship)',l:'Cow in Barn',t:'Need Barn first! Cows cost 1,500g from Marnie.'},
+  hard_goatmilk: {e:'🥛',w:'Any season · Daily (at 200+ friendship)',l:'Goat in Big Barn',t:'Need Big Barn upgrade (12,000g + 450 Wood + 200 Stone)'},
+  hard_duckegg:  {e:'🥚',w:'Any season · Every 2 days',l:'Duck in Big Coop',t:'Need Big Coop (10,000g). Ducks cost 4,000g from Marnie.'},
+  hard_wool:     {e:'🧶',w:'Any season · Every 4 days',l:'Sheep in Deluxe Barn',t:'Need Deluxe Barn (25,000g). Sheep cost 8,000g from Marnie.'},
+  hard_duckfeather:{e:'🪶',w:'Any season · Rarely (random)',l:'Duck in Big Coop at high friendship',t:'Random rare drop — pet duck every day and hope! Very low chance.'},
+  hard_truffle:  {e:'🍄',w:'Spring/Summer/Fall · Daily (if outdoors)',l:'Pig rooting outside in Deluxe Barn',t:'Pigs DON\'T go out in Winter! Need Deluxe Barn (25,000g) + Pig (16,000g from Marnie)'},
+  hard_redcabbage:{e:'🥬',w:'Summer · Year 2+ from Pierre',l:'Pierre\'s shop (Year 2 only!) OR Traveling Cart (Fri/Sun)',t:'⚠️ Year 2 item — check Traveling Cart every Fri/Sun for an early chance!'},
+  q_rabbitsfoot: {e:'🐇',w:'Any season · Rarely (random)',l:'Rabbit in Deluxe Coop at high friendship',t:'Random rare drop. Need Deluxe Coop (20,000g) + Rabbit (8,000g from Marnie)'},
+  // Artisan/special
+  truffle_oil:   {e:'🫙',w:'Any season (with Pig)',l:'Oil Maker (Farming 8) + Truffle',t:'Oil Maker: 1 Gold Bar + 20 Wood + 10 Hardwood. Sells for 1,065g!'},
+  any_friedegg:  {e:'🍳',w:'Any season',l:'Cook in Kitchen: 1 Egg',t:'Need Farmhouse Kitchen upgrade (35,000g + 450 Wood from Robin) to cook!'},
+  any_makiroll:  {e:'🍣',w:'Any season',l:'Cook in Kitchen: 1 Seaweed + 1 Fish + 1 Rice',t:'Seaweed from beach foraging/fishing trash. TV recipe Summer 21.'},
+  q_sweetgemberry:{e:'💎',w:'Any season (28 days)',l:'Grow Ancient Seeds — rare from: museum donation, Seed Maker, Traveling Cart',t:'Traveling Cart sometimes sells for ~600g. Worth it for Enchanter\'s bundle!'},
+  // Vault
+  vault_2500:    {e:'💰',w:'Anytime',l:'Community Center → Vault room',t:'DONE ✓ First payment made!'},
+  vault_5000:    {e:'💰',w:'Anytime',l:'Community Center → Vault room',t:'DONE ✓ Second payment made!'},
+  vault_10000:   {e:'💰',w:'Anytime',l:'Community Center → Vault room',t:'DONE ✓ Third payment made! One left.'},
+  vault_25000:   {e:'💰',w:'Need 25,000g in cash',l:'Community Center → Vault room',t:'Final payment! Bus repaired → Pam drives to Desert → Skull Cavern unlocked!'},
+  // Desert / SC
+  ds_iridiumbar: {e:'🟣',w:'Any season (Skull Cavern)',l:'Smelt 5 Iridium Ore + 1 Coal in Furnace',t:'Iridium Ore from Skull Cavern floors 50+. Wait for Mining 10 (Blacksmith) to sell!'},
+  ds_iridiumore: {e:'🟣',w:'Any season',l:'Skull Cavern floors 50+',t:'Deep floors have huge iridium patches — use bombs!'},
+  ds_refinedquartz:{e:'🔷',w:'Any season',l:'Smelt 1 Quartz + 1 Coal OR Recycling Machine trash',t:'Also from broken CDs/glasses in the Recycling Machine'},
+  any_seaurchin: {e:'🦔',w:'Winter 15–17 ONLY (Night Market)',l:'Night Market submarine mini-game (beach at night)',t:'Already donated ✓ This is ONLY available 3 nights a year — great job getting it!'},
+  // Special
+  pale_ale:      {e:'🍺',w:'Any season',l:'Keg + Hops (Farming 8 + Hops grown Summer)',t:'Hops are a Summer trellis crop. Takes 11 days to first grow.'},
+  aged_roe:      {e:'🫙',w:'Any season',l:'Preserves Jar + Roe (from Fish Pond)',t:'Fish Pond with Sturgeon produces Roe. Age it for Aged Roe (1,400g for Sturgeon!)'},
+};
+
 function renderTicker(){
   const icon=SEASON_ICON[S.season]||'icon-star';
   const override=lsGet('sdv_day_override');
@@ -1593,6 +1746,7 @@ function openDayOverride(){
 function closeDayOverride(){document.getElementById('day-override-modal').classList.remove('open');}
 
 document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('item-bubble-close').addEventListener('click',hideItemBubble);
   document.getElementById('ticker-text').addEventListener('click',openDayOverride);
   document.getElementById('dov-cancel').addEventListener('click',closeDayOverride);
   document.getElementById('dov-apply').addEventListener('click',()=>{
@@ -1776,6 +1930,55 @@ function computeDynamicPrep(tasks, bridge) {
   }
   _dynPrepCache=extra; _dynPrepKey=key;
   return [...tasks, ...extra];
+}
+
+// ── Item info bubble ──────────────────────────────────────────────────────
+let _bubbleTarget=null;
+function showItemBubble(code,chipEl){
+  const info=ITEM_INFO[code];
+  const bub=document.getElementById('item-bubble');
+  if(!bub) return;
+  if(_bubbleTarget===chipEl&&bub.classList.contains('visible')){hideItemBubble();return;}
+  _bubbleTarget=chipEl;
+  document.getElementById('item-bubble-emoji').textContent=info?.e||'❓';
+  document.getElementById('item-bubble-name').textContent=chipEl.textContent.replace(/^[✓◆]\s*/,'');
+  const rows=document.getElementById('item-bubble-rows');
+  rows.innerHTML='';
+  if(info){
+    if(info.w) rows.innerHTML+=`<div class="ib-row"><span class="ib-label">When</span><span class="ib-val">${info.w}</span></div>`;
+    if(info.l) rows.innerHTML+=`<div class="ib-row"><span class="ib-label">Where</span><span class="ib-val">${info.l}</span></div>`;
+    if(info.t) rows.innerHTML+=`<div class="ib-tip">${info.t}</div>`;
+  } else {
+    rows.innerHTML='<div class="ib-tip">No info yet for this item</div>';
+  }
+  // Position above the chip
+  bub.style.display='flex';
+  bub.classList.remove('visible');
+  requestAnimationFrame(()=>{
+    const cr=chipEl.getBoundingClientRect();
+    const bw=bub.offsetWidth||240;
+    const bh=bub.offsetHeight||140;
+    const margin=8;
+    let left=cr.left+cr.width/2-bw/2;
+    left=Math.max(margin,Math.min(left,window.innerWidth-bw-margin));
+    const spaceAbove=cr.top-margin;
+    const placeAbove=spaceAbove>=bh+12;
+    const top=placeAbove?cr.top-bh-12:cr.bottom+12;
+    bub.style.left=left+'px';
+    bub.style.top=top+'px';
+    const arrow=document.getElementById('item-bubble-arrow');
+    arrow.style.display=placeAbove?'block':'none';
+    if(placeAbove){
+      const arrowLeft=cr.left+cr.width/2-left-7;
+      arrow.style.marginLeft=Math.max(8,Math.min(arrowLeft,bw-20))+'px';
+    }
+    bub.classList.add('visible');
+  });
+}
+function hideItemBubble(){
+  const bub=document.getElementById('item-bubble');
+  if(bub){bub.classList.remove('visible');setTimeout(()=>{if(!bub.classList.contains('visible'))bub.style.display='none';},200);}
+  _bubbleTarget=null;
 }
 
 function patchTodayCard(){
@@ -2403,6 +2606,12 @@ function renderJunimo(){
           if(slot.have){c.className='chip have';c.textContent='✓ '+slot.name;}
           else if(qty){c.className='chip stored';c.textContent='◆ '+slot.name+' ×'+qty;}
           else{c.className='chip missing';c.textContent=slot.name;}
+          c.dataset.code=slot.code;
+          c.style.cursor='pointer';
+          let _ct=0;
+          c.addEventListener('touchstart',()=>{_ct=Date.now();},{passive:true});
+          c.addEventListener('touchend',e=>{if(Date.now()-_ct<300){e.preventDefault();showItemBubble(slot.code,c);}},{passive:false});
+          c.addEventListener('click',()=>showItemBubble(slot.code,c));
           chips.appendChild(c);
         });
         brow.appendChild(chips);
@@ -3528,6 +3737,11 @@ function spawnParticles(el){
 }
 
 document.addEventListener('click',e=>{
+  // Dismiss item bubble if clicking outside it
+  const bub=document.getElementById('item-bubble');
+  if(bub&&bub.classList.contains('visible')&&!bub.contains(e.target)&&!e.target.dataset.code){
+    hideItemBubble();
+  }
   const tab=e.target.closest('.nav-btn[data-tab]');
   if(tab){goPanel(tab.dataset.tab);return;}
 
@@ -3716,5 +3930,16 @@ document.addEventListener('DOMContentLoaded',init);
   }
 })();
 </script>
+
+<!-- Item info bubble -->
+<div id="item-bubble" aria-live="polite">
+  <div id="item-bubble-inner">
+    <button id="item-bubble-close" aria-label="Close">✕</button>
+    <div id="item-bubble-emoji"></div>
+    <div id="item-bubble-name"></div>
+    <div id="item-bubble-rows"></div>
+  </div>
+  <div id="item-bubble-arrow"></div>
+</div>
 </body>
 </html>
