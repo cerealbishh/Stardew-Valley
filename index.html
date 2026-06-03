@@ -3234,6 +3234,75 @@ function goStoryTab(sub){
   renderStoryTab(sub);
 }
 
+// ── Save Sync ──────────────────────────────────────────────────────────────
+// stampPastTasks: run once, mark all days before today as 'save_sync'
+// so they show as checked without polluting user-set task state.
+function stampPastTasks(){
+  if(lsGet('sdv_pts_v1')==='1') return;
+  const SORD_={spring:0,summer:1,fall:2,winter:3};
+  const curOrd=SORD_[S.season]*28+S.day;
+  ['spring','summer','fall','winter'].forEach(season=>{
+    (RD[season]||[]).forEach(day=>{
+      if(SORD_[season]*28+day.d>=curOrd) return;
+      day.tasks.forEach(t=>{if(!lsGet('sdv_t_'+t.id)) lsSet('sdv_t_'+t.id,'save_sync');});
+    });
+  });
+  lsSet('sdv_pts_v1','1');
+}
+
+// syncLiveState: run once per game-day when bridge connects.
+// Sets qm_*/mq_*/sdv_c_*/sdv_par_* to match confirmed save state.
+function syncLiveState(data){
+  const dayKey=S.season+'_'+S.day;
+  if(lsGet('sdv_lsync')===dayKey) return;
+  lsSet('sdv_lsync',dayKey);
+  const hash=(data.farm||'hoedown').replace(/\s+/g,'').toLowerCase();
+  const ns=k=>`sdv:${hash}:${k}`;
+  const ccBundleDone_=name=>(data.cc_bundles||[]).some(r=>r.bundles?.some(b=>b.name===name&&b.completed));
+  const skills=data.skills||{};
+  const tools=data.toolLevels||{};
+  const bldgs=data.buildings||[];
+
+  // ── qm_* milestone checklist ─────────────────────────────────────────
+  // Set confirmed done
+  if(skills.fish>=2)                         localStorage.setItem(ns('qm_fiberglass'),'1');
+  if(bldgs.some(b=>/greenhouse/i.test(b)))   localStorage.setItem(ns('qm_ghouse'),'1');
+  if(data.hasSkullKey)                       localStorage.setItem(ns('qm_skull'),'1');
+  const vaultDone_=(data.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles?.every(b=>b.completed);
+  if(vaultDone_){localStorage.setItem(ns('qm_bus'),'1');localStorage.setItem(ns('qm_desert'),'1');}
+  if(data.hasRustyKey)                       localStorage.setItem(ns('qm_sewers'),'1');
+  if(data.hasClubCard)                       localStorage.setItem(ns('qm_clubcard'),'1');
+  if(data.canUnderstandDwarves)              localStorage.setItem(ns('qm_dwarflang'),'1');
+  // Clear confirmed NOT done
+  if(!data.hasSkullKey)   localStorage.removeItem(ns('qm_skull'));
+  if(!vaultDone_){        localStorage.removeItem(ns('qm_bus'));localStorage.removeItem(ns('qm_desert'));}
+  if(!data.hasRustyKey)   localStorage.removeItem(ns('qm_sewers'));
+  if(!data.hasClubCard)   localStorage.removeItem(ns('qm_clubcard'));
+  if(!data.canUnderstandDwarves) localStorage.removeItem(ns('qm_dwarflang'));
+
+  // ── mq_* main quest arc ──────────────────────────────────────────────
+  if((tools.Pickaxe||0)>=1) localStorage.setItem(ns('mq_copper'),'1');
+  if((tools.Pickaxe||0)>=2) localStorage.setItem(ns('mq_iron'),'1');
+  if(data.hasSkullKey)       localStorage.setItem(ns('mq_skull'),'1');
+  else                       localStorage.removeItem(ns('mq_skull'));
+  if(skills.fish>=2)         localStorage.setItem(ns('mq_fgrod'),'1');
+  if(vaultDone_)             localStorage.setItem(ns('mq_desert'),'1');
+  else                       localStorage.removeItem(ns('mq_desert'));
+
+  // ── sdv_c_* carry items — mark done-bundle items ─────────────────────
+  if(ccBundleDone_("Blacksmith's"))['iridbar5','goldbar1','ironbar1'].forEach(id=>lsSet('sdv_c_'+id,'1'));
+  if(ccBundleDone_("Adventurer's"))['slime99','batwing10'].forEach(id=>lsSet('sdv_c_'+id,'1'));
+  if(ccBundleDone_('Construction'))  lsSet('sdv_c_construction','1');
+  // Vault carry payments
+  const vb=(data.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles||[];
+  ['vault2500','vault5000','vault10k','vault25k'].forEach((id,i)=>{
+    if(vb[i]?.completed) lsSet('sdv_c_'+id,'1');
+  });
+
+  // ── sdv_par_* — clear items confirmed not done ───────────────────────
+  if(!data.hasSkullKey||!vaultDone_) lsSet('sdv_par_scfirst','0');
+}
+
 function renderFromData(data){
   if(!data) return;
   const override=lsGet('sdv_day_override');
@@ -3245,6 +3314,8 @@ function renderFromData(data){
     if(d>=1&&d<=28) S.day=d;
   }
   document.documentElement.dataset.season=S.season;
+  stampPastTasks();
+  syncLiveState(data);
   renderTicker(); renderCal(); renderHome();
   const _newDayKey=S.season+'_'+S.day;
   if(_lastDataDay!==_newDayKey){_lastDataDay=_newDayKey;renderRoute();}
