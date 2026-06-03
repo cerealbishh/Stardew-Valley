@@ -1939,8 +1939,7 @@ function renderCarry(){
   ['spring','summer','fall','winter'].forEach(season=>{
     (RD[season]||[]).forEach(day=>{
       const dayOrd=SORD_[season]*28+day.d;
-      if(dayOrd>=curOrd) return;          // skip today and future
-      if(curOrd-dayOrd>7) return;         // skip anything older than 7 days
+      if(dayOrd>=curOrd) return;
       const missed=day.tasks.filter(t=>!taskEverDone(t.id));
       if(missed.length) overdue.push({season,d:day.d,name:day.name,tasks:missed});
     });
