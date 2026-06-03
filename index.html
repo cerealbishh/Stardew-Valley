@@ -927,7 +927,7 @@ summer:[
   {type:'prep',label:'Saplings (Apple + Pomegranate, 4,000g each): skip for now — prioritize Vault + animals.',id:'su15d'},
 ]},
 {d:16,name:'🌿 Fern Last Days + Fish',tasks:[
-  {type:'par',label:'Skull Key ✓  Coop Day 2/3 underway. Gold: ~7,659g after Coop (4,000g spent) — Vault needs ~35K more.',id:'su16a'},
+  {type:'par',label:'Vault: 3/4 payments done (17,500g donated). Final payment: 25,000g. Need ~17,341g more in cash.',id:'su16a'},
   {type:'fire',label:'Water crops',id:'su16b'},
   {type:'fire',label:'Fish for Vault: Sturgeon mountain lake (sunny) or Catfish river (rain) — need ~34K more',id:'su16c'},
   {type:'gather',label:'🎁 CC: Fiddlehead Fern (Secret Woods, Summer foraging — last few days!)',id:'su16d'},
@@ -940,7 +940,7 @@ summer:[
   {type:'fire',label:'Water crops',id:'su17b'},
   {type:'fire',label:'🌻 Sunflower harvest (Day 9+8=17) — keep 1 for CC Dye bundle ✓ (already donated? check Junimo Feed)',id:'su17c'},
   {type:'fire',label:'OCEAN FISHING at Willy\'s dock all day — guide says ocean is best in summer regardless of weather (~8–10K/day)',id:'su17e'},
-  {type:'par',label:'Vault: 7,659g / 42,500g — donate in 4 payments: 2,500g → 5,000g → 10,000g → 25,000g at CC',id:'su17f'},
+  {type:'par',label:'Vault: 3 payments done ✓ (2,500+5,000+10,000g). Final payment: 25,000g at CC → bus fixed!',id:'su17f'},
   {type:'prep',label:'⚠️ Skull Key: floor 120 reached but key may be in unopened chest. Visit mine floor 120 to collect it.',id:'su17g'},
   {type:'prep',label:'Gift Marnie 2x/week — need 2♥ for bedroom access → Mayor\'s Shorts (750g). Liked: Leek, Parsnip. Loved: Diamond, Pumpkin.',id:'su17_marnie'},
   {type:'prep',label:'Check Help Wanted board at Pierre\'s — easy gold (150–1,000g) + friendship per quest.',id:'su17_helpwanted'},
@@ -948,7 +948,7 @@ summer:[
 {d:18,name:'🎣 Ocean Fish — Vault Sprint',tasks:[
   {type:'fire',label:'Water crops',id:'su18a'},
   {type:'fire',label:'OCEAN fish all day — summer ocean beats mountain lake and river in all weather (guide)',id:'su18b'},
-  {type:'fire',label:'Donate to Vault at CC as thresholds are hit: 2,500g first, then 5,000g, 10,000g, 25,000g',id:'su18c'},
+  {type:'fire',label:'3/4 Vault payments done! Bring 25,000g to CC Vault room → bus fixed → Skull Cavern opens',id:'su18c'},
   {type:'gather',label:'🎁 LAST chance Fiddlehead Fern — Secret Woods today or never',id:'su18d'},
   {type:'prep',label:'Mine Combat level: fight floors 80–119 on bad luck days to level Combat before SC',id:'su18e'},
 ]},
@@ -962,7 +962,7 @@ summer:[
 {d:20,name:'💰 Vault Donations + Pufferfish',tasks:[
   {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY ONLY. CC Specialty Fish bundle. Last ever chance!',id:'su20a'},
   {type:'fire',label:'OCEAN fish all day (or Pufferfish then ocean)',id:'su20b'},
-  {type:'fire',label:'Donate to Vault at CC: 2,500g → 5,000g → 10,000g — bus fixed once all 42,500g done',id:'su20c'},
+  {type:'fire',label:'FINAL VAULT PAYMENT: bring 25,000g to CC Vault room → bus repaired → Skull Cavern unlocked',id:'su20c'},
   {type:'purchase',label:'Backpack upgrade from Pierre\'s (2,000g) if not done — essential before SC',id:'su20d'},
   {type:'purchase',label:'Buy Pumpkin Seeds + Deluxe Speed-Gro from Oasis (Thursday!) for Fall planting',id:'su20e'},
   {type:'fire',label:"Marnie at 2♥? Enter her bedroom when she's at work (Tue 9am–6pm) → find Mayor's Shorts → return to Lewis → 750g",id:'su20_shorts'},
@@ -1492,6 +1492,24 @@ const CARRY={
     {id:'coffee',label:'Coffee/Triple Espresso stocked — NEVER sell (speed+)'},
     {id:'spicyeel',label:'Spicy Eel stocked — NEVER sell (luck + speed)'},
   ],
+  'Secret Notes 📝':[
+    {id:'sn1',label:'#1 — 5 secret notes hidden on farm. Dig artifact spots to find them → Solid Gold Lewis'},
+    {id:'sn2',label:'#2 — Shadow Guy follows you, befriend Krobus for 50,000g discount'},
+    {id:'sn3',label:'#3 — NPC gift preferences cheat sheet (journal of liked gifts)'},
+    {id:'sn4',label:'#4 — Stone Junimo shows location of buried treasure'},
+    {id:'sn5',label:'#5 — Mermaid Show puzzle at Night Market (Wi15–17) → Pearl'},
+    {id:'sn6',label:'#6 — Burglar\'s Ring: kill 500 Dust Sprites on floor 55 for faster loot'},
+    {id:'sn7',label:'#7 — Statue of Uncertainty (Sewer, 10,000g) respec professions'},
+    {id:'sn8',label:'#8 — Cryptic message about a dog (pet)'},
+    {id:'sn9',label:'#9 — Treasure map. Dig next to Leah\'s Cottage → Cherry Bomb'},
+    {id:'sn10',label:'#10 — Witch\'s Hut: get a Void Egg, incubate → Void Chicken'},
+    {id:'sn11',label:'#11 — Iridium Snake Milk location'},
+    {id:'sn14',label:'#14 — Dwarvish Sentient Ember Artifact location (floor 105 bomb)'},
+    {id:'sn19',label:'#19 — Special charm buried in Cindersap Forest southeast corner'},
+    {id:'sn20',label:'#20 — Frog! Rainy Spring/Summer, after watering crops → Slippery Sneakers'},
+    {id:'sn25',label:'#25 — Mr. Qi quest chain starts: find secret notes to unlock Qi\'s Challenges'},
+    {id:'sn26',label:'#26 — Krobus shop access: donate 60 items to museum → Rusty Key'},
+  ],
 };
 
 const FRIENDSHIP_GATES=[
@@ -1544,7 +1562,6 @@ const lsTgl=k=>{const v=lsGet(k)==='1';lsSet(k,v?'0':'1');return !v;};
 const taskStamp=()=>`${S.season}_${S.day}`;
 const taskDone=id=>lsGet('sdv_t_'+id)===taskStamp();
 const taskEverDone=id=>{const v=lsGet('sdv_t_'+id);return!!v&&v!=='0';};
-const taskPastDone=id=>{const v=lsGet('sdv_t_'+id);return!!v&&v!=='0';};
 const taskSet=(id,done)=>lsSet('sdv_t_'+id,done?taskStamp():'0');
 
 // Namespaced storage for new tools — key: sdv:<saveHash>:<name>
@@ -1660,8 +1677,13 @@ function renderHome(){
   }
 }
 
+let _dynPrepCache=null, _dynPrepKey='';
 function computeDynamicPrep(tasks, bridge) {
   if (!bridge) return tasks;
+  const key=[bridge.gold,bridge.hasSkullKey,(bridge.buildings||[]).join(','),
+    bridge.skills?.combat,bridge.skills?.mine,bridge.skills?.fish,
+    JSON.stringify(bridge.friendship),!!bridge.storage].join('|');
+  if(key===_dynPrepKey&&_dynPrepCache) return [...tasks,..._dynPrepCache];
   const extra = [];
   // Under-construction countdowns
   (bridge.under_construction||[]).forEach(uc=>{
@@ -1752,6 +1774,7 @@ function computeDynamicPrep(tasks, bridge) {
       }
     });
   }
+  _dynPrepCache=extra; _dynPrepKey=key;
   return [...tasks, ...extra];
 }
 
@@ -1800,7 +1823,7 @@ function renderRoute(){
     const evts=(EVENTS[S.season]||[]).filter(e=>e.d===day.d);
     const evtHtml=evts.map(e=>`<span class="day-event">${e.name}</span>`).join('');
     const isPast=day.d<S.day;
-    const doneCheck=isPast?taskPastDone:taskDone;
+    const doneCheck=isPast?taskEverDone:taskDone;
     const tasks=isToday?computeDynamicPrep(day.tasks,S.bridge):day.tasks;
     const total=tasks.length;
     const done=tasks.filter(t=>doneCheck(t.id)).length;
@@ -3289,10 +3312,69 @@ function syncLiveState(data){
   if(vaultDone_)             localStorage.setItem(ns('mq_desert'),'1');
   else                       localStorage.removeItem(ns('mq_desert'));
 
-  // ── sdv_c_* carry items — mark done-bundle items ─────────────────────
+  // ── sdv_c_* carry items — sync from CC slot donation status ─────────
+  // Build per-slot lookup from bridge cc_bundles (now correct after bridge fix)
+  const slotsMap={};
+  (data.cc_bundles||[]).forEach(room=>{
+    (room.bundles||[]).forEach(bundle=>{
+      (bundle.slots||[]).forEach((slot,i)=>{slotsMap[bundle.id+'_'+i]=slot.have;});
+    });
+  });
+  const sd_=(bid,i)=>!!slotsMap[bid+'_'+i];
+  // Fish Tank
+  if(sd_(6,1))  lsSet('sdv_c_catfish','1');
+  if(sd_(6,2))  lsSet('sdv_c_shad','1');
+  if(sd_(9,2))  lsSet('sdv_c_eel','1');
+  if(sd_(10,0)) lsSet('sdv_c_pufferfish','1');
+  if(sd_(10,1)||sd_(7,3)) lsSet('sdv_c_woodskip','1');
+  if(sd_(10,2)) lsSet('sdv_c_ghostfish','1');
+  if(sd_(10,3)) lsSet('sdv_c_tigertrout','1');
+  // Boiler Room
   if(ccBundleDone_("Blacksmith's"))['iridbar5','goldbar1','ironbar1'].forEach(id=>lsSet('sdv_c_'+id,'1'));
   if(ccBundleDone_("Adventurer's"))['slime99','batwing10'].forEach(id=>lsSet('sdv_c_'+id,'1'));
-  if(ccBundleDone_('Construction'))  lsSet('sdv_c_construction','1');
+  if(sd_(21,1)) lsSet('sdv_c_earthcrystal','1');
+  if(sd_(21,2)) lsSet('sdv_c_aquamarine','1');
+  if(sd_(21,3)) lsSet('sdv_c_firequartz','1');
+  // Bulletin Board
+  if(sd_(32,1)) lsSet('sdv_c_nautilus','1');
+  if(sd_(32,2)) lsSet('sdv_c_chub','1');
+  if(sd_(32,3)) lsSet('sdv_c_frozengeode','1');
+  if(sd_(32,0)) lsSet('sdv_c_purplemush','1');
+  if(sd_(34,0)) lsSet('sdv_c_redmushroom','1');
+  if(sd_(34,1)) lsSet('sdv_c_seaurchin','1');
+  if(sd_(34,2)) lsSet('sdv_c_sunflower','1');
+  if(sd_(34,3)){lsSet('sdv_c_duckfeather_dye','1');lsSet('sdv_c_duckfeather','1');}
+  if(sd_(19,2)) lsSet('sdv_c_cavecarrot','1');
+  if(sd_(19,7)) lsSet('sdv_c_pinetar','1');
+  if(sd_(19,6)) lsSet('sdv_c_oakresin_ex','1');
+  // Chef's Bundle
+  if(sd_(31,0)) lsSet('sdv_c_maplesyrup','1');
+  if(sd_(31,3)) lsSet('sdv_c_poppy_cc','1');
+  if(sd_(31,2)){lsSet('sdv_c_truffle_chef','1');lsSet('sdv_c_trufflecc','1');}
+  if(sd_(31,4)) lsSet('sdv_c_makiroll','1');
+  if(sd_(31,5)) lsSet('sdv_c_friedegg','1');
+  // Enchanter's Bundle
+  if(sd_(33,0)) lsSet('sdv_c_oakresin_enc','1');
+  if(sd_(33,1)) lsSet('sdv_c_wine_enc','1');
+  if(sd_(33,2)){lsSet('sdv_c_rabbitfoot_enc','1');lsSet('sdv_c_rabbitfoot','1');}
+  if(sd_(33,3)) lsSet('sdv_c_sweetgemberry','1');
+  // Pantry
+  if(sd_(35,2)) lsSet('sdv_c_apple_cc','1');
+  if(sd_(5,7))  lsSet('sdv_c_pomegranate_cc','1');
+  if(sd_(5,4))  lsSet('sdv_c_honey','1');
+  if(sd_(5,1))  lsSet('sdv_c_cloth','1');
+  if(ccBundleDone_('Construction')) lsSet('sdv_c_construction','1');
+  // Crafts Room winter foraging
+  if(sd_(16,1)) lsSet('sdv_c_winterforage_crystal','1');
+  if(sd_(16,3)) lsSet('sdv_c_winterforage_crocus','1');
+  if(sd_(16,2)) lsSet('sdv_c_winterforage_snowyam','1');
+  // Animals
+  if(sd_(4,0))  lsSet('sdv_c_largeeggw','1');
+  if(sd_(4,2))  lsSet('sdv_c_largeegbb','1');
+  if(sd_(4,1))  lsSet('sdv_c_largemilk','1');
+  if(sd_(4,3))  lsSet('sdv_c_goatmilk','1');
+  if(sd_(4,4))  lsSet('sdv_c_wool','1');
+  if(sd_(4,5))  lsSet('sdv_c_duckegg','1');
   // Vault carry payments
   const vb=(data.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles||[];
   ['vault2500','vault5000','vault10k','vault25k'].forEach((id,i)=>{
@@ -3316,9 +3398,9 @@ function renderFromData(data){
   document.documentElement.dataset.season=S.season;
   stampPastTasks();
   syncLiveState(data);
-  renderTicker(); renderCal(); renderHome();
+  renderTicker(); renderHome();
   const _newDayKey=S.season+'_'+S.day;
-  if(_lastDataDay!==_newDayKey){_lastDataDay=_newDayKey;renderRoute();}
+  if(_lastDataDay!==_newDayKey){_lastDataDay=_newDayKey;renderCal();renderRoute();}
   else{patchTodayCard();}
   // Re-render live tools if their panel is visible
   if(S.tab==='hoard') renderHoardSub(lsGet('sdv_hsub')||'junimo');
@@ -3350,7 +3432,7 @@ async function fetchBridge(){
     const res=await fetch(url,{signal:AbortSignal.timeout(8000)});
     if(!res.ok) throw new Error(`HTTP ${res.status}`);
     const data=await res.json();
-    S.bridge=data; S.lastSyncMs=Date.now(); updateSyncDot();
+    S.bridge=data; S.lastSyncMs=Date.now(); _dynPrepCache=null; updateSyncDot();
     // Schema version check
     const banner=document.getElementById('schema-banner');
     if(banner) banner.style.display=(data.schema_version&&data.schema_version!==BRIDGE_SCHEMA_VER)?'block':'none';
@@ -3383,7 +3465,7 @@ async function fetchGist(){
     const content=gist.files?.['sdv-save.json']?.content;
     if(!content) throw new Error('No sdv-save.json in gist — is bridge running?');
     const data=JSON.parse(content);
-    S.bridge=data; S.lastSyncMs=Date.now(); updateSyncDot();
+    S.bridge=data; S.lastSyncMs=Date.now(); _dynPrepCache=null; updateSyncDot();
     const banner=document.getElementById('schema-banner');
     if(banner) banner.style.display=(data.schema_version&&data.schema_version!==BRIDGE_SCHEMA_VER)?'block':'none';
     if(status) status.textContent=`Synced ${new Date().toLocaleTimeString()}`;
