@@ -1423,37 +1423,38 @@ const PAR=[
 
 const CARRY={
   'Vault 💰':[
-    {id:'vault2500',label:'2,500g → Community Center Vault'},
-    {id:'vault5000',label:'5,000g → Community Center Vault'},
-    {id:'vault10k',label:'10,000g → Community Center Vault'},
-    {id:'vault25k',label:'25,000g → Community Center Vault (total 42,500g → Bus Fixed)'},
+    {id:'vault2500',label:'2,500g → Vault ✓'},
+    {id:'vault5000',label:'5,000g → Vault ✓'},
+    {id:'vault10k',label:'10,000g → Vault ✓'},
+    {id:'vault25k',label:'25,000g → Vault ✓ — Bus Fixed! Skull Cavern Open!'},
   ],
   'Fish Tank 🎣':[
-    {id:'catfish',label:'Catfish (river, rainy Spring/Fall — ship block, do not sell)'},
-    {id:'shad',label:'Shad (river, rainy Spring/Summer/Fall)'},
-    {id:'eel',label:'Eel (ocean, rainy Spring/Fall evenings)'},
-    {id:'pufferfish',label:'Pufferfish (ocean, sunny Summer, noon–4pm)'},
-    {id:'woodskip',label:'Woodskip (Secret Forest pond — need Axe upgrade)'},
-    {id:'ghostfish',label:'Ghostfish (mine ponds, floor 20/60)'},
-    {id:'superucumber',label:'Super Cucumber (ocean, Summer/Fall, 6pm–2am)'},
-    {id:'sturgeon',label:'Sturgeon (mountain lake, Summer/Winter, 6am–7pm)'},
-    {id:'tigertrout',label:'Tiger Trout (river, Fall/Winter, 6am–7pm — rare!)'},
-    {id:'crabpot',label:'Crab/Lobster/Crayfish from crab pots (ocean + river)'},
+    {id:'catfish',label:'Catfish (River Fish bundle) ✓ donated — NOTE: also needed for Night Fishing bundle! Catch in rainy Fall'},
+    {id:'shad',label:'Shad (River Fish bundle) ✓ donated'},
+    {id:'eel',label:'Eel (Night Fishing bundle) ✓ donated'},
+    {id:'pufferfish',label:'Pufferfish (Specialty Fish — ocean SUNNY Summer noon–4pm ONLY) ⚠️ last few days!'},
+    {id:'woodskip',label:'Woodskip (Lake Fish + Specialty Fish bundles) ✓ donated'},
+    {id:'ghostfish',label:'Ghostfish (Specialty Fish — mine ponds floor 20 or 60, year-round)'},
+    {id:'sardine',label:'Sardine (Ocean Fish — beach Spring/Fall/Winter 6am–7pm, NOT Summer)'},
+    {id:'superucumber',label:'Super Cucumber (ocean Summer/Fall 6pm–2am) — not a CC bundle item, keep for gifting'},
+    {id:'sturgeon',label:'Sturgeon (mountain lake Summer/Winter 6am–7pm) — great income, not CC bundle'},
+    {id:'tigertrout',label:'Tiger Trout (Specialty Fish — river Fall/Winter 6am–7pm, Fishing 5+, very rare)'},
+    {id:'crabpot',label:'Crab Pot bundle: need Crab + Lobster + Snail + Shrimp + Mussel + Clam (ocean) · Crayfish+Periwinkle+Oyster ✓'},
   ],
   'Boiler Room ⛏️':[
-    {id:'iridbar5',label:'5x Iridium Bar (Skull Cavern — Blacksmith bundle)'},
+    {id:'iridbar5',label:'5x Iridium Bar (Skull Cavern — sell AFTER Mining 10 for Blacksmith 300g/bar)'},
     {id:'goldbar1',label:'1x Gold Bar (Blacksmith bundle)'},
     {id:'ironbar1',label:'1x Iron Bar (Blacksmith bundle)'},
-    {id:'earthcrystal',label:'Earth Crystal (Geologist bundle — mine floors 1–39)'},
-    {id:'aquamarine',label:'Aquamarine (Geologist bundle — mine floors 40–79) ◆ have x2 — DONATE'},
-    {id:'firequartz',label:'Fire Quartz (Geologist bundle — mine floors 80–119)'},
+    {id:'earthcrystal',label:'Earth Crystal (Geologist bundle) ✓ donated'},
+    {id:'aquamarine',label:'Aquamarine (Geologist bundle) ✓ donated'},
+    {id:'firequartz',label:'Fire Quartz (Geologist bundle) ✓ donated'},
     {id:'slime99',label:'99x Slime (Adventurer bundle — Slime Hutch or caves)'},
     {id:'batwing10',label:'10x Bat Wing (Adventurer bundle — mine floors 40–79)'},
   ],
   'Bulletin Board 📋':[
     {id:'nautilus',label:'Nautilus Shell (Field Research — beach artifact spots in Winter)'},
     {id:'chub',label:'Chub (Field Research — any river, year-round)'},
-    {id:'frozengeode',label:'Frozen Geode (Field Research — mine floors 40–79) ◆ have x4 — DONATE'},
+    {id:'frozengeode',label:'Frozen Geode (Field Research) ✓ donated'},
     {id:'purplemush',label:'Purple Mushroom (Field Research — mine floors 80+, or cave mushroom floor)'},
     {id:'redmushroom',label:'Red Mushroom (Dye bundle — Summer/Fall forage trees) ✓ donated'},
     {id:'seaurchin',label:'Sea Urchin (Dye bundle — Night Market submarine Wi15–17 only!)'},
@@ -3470,27 +3471,28 @@ function goStoryTab(sub){
 }
 
 // ── Save Sync ──────────────────────────────────────────────────────────────
-// stampPastTasks: run once, mark all days before today as 'save_sync'
-// so they show as checked without polluting user-set task state.
+// stampPastTasks: marks all days before today as 'save_sync' on first load
+// and whenever the game day advances — so Never Forget never shows stale days.
 function stampPastTasks(){
-  if(lsGet('sdv_pts_v1')==='1') return;
   const SORD_={spring:0,summer:1,fall:2,winter:3};
   const curOrd=SORD_[S.season]*28+S.day;
+  const lastOrd=parseInt(lsGet('sdv_pts_ord')||'0');
+  if(lastOrd>=curOrd) return; // already stamped up through yesterday
   ['spring','summer','fall','winter'].forEach(season=>{
     (RD[season]||[]).forEach(day=>{
       if(SORD_[season]*28+day.d>=curOrd) return;
       day.tasks.forEach(t=>{if(!lsGet('sdv_t_'+t.id)) lsSet('sdv_t_'+t.id,'save_sync');});
     });
   });
-  lsSet('sdv_pts_v1','1');
+  lsSet('sdv_pts_ord',String(curOrd));
 }
 
 // syncLiveState: run once per game-day when bridge connects.
 // Sets qm_*/mq_*/sdv_c_*/sdv_par_* to match confirmed save state.
 function syncLiveState(data){
   const dayKey=S.season+'_'+S.day;
-  if(lsGet('sdv_lsync')===dayKey) return;
-  lsSet('sdv_lsync',dayKey);
+  if(lsGet('sdv_lsync_v2')===dayKey) return;
+  lsSet('sdv_lsync_v2',dayKey);
   const hash=(data.farm||'hoedown').replace(/\s+/g,'').toLowerCase();
   const ns=k=>`sdv:${hash}:${k}`;
   const ccBundleDone_=name=>(data.cc_bundles||[]).some(r=>r.bundles?.some(b=>b.name===name&&b.completed));
@@ -3537,6 +3539,7 @@ function syncLiveState(data){
   // Fish Tank
   if(sd_(6,1))  lsSet('sdv_c_catfish','1');
   if(sd_(6,2))  lsSet('sdv_c_shad','1');
+  if(sd_(8,0))  lsSet('sdv_c_sardine','1');  // Ocean Fish Sardine
   if(sd_(9,2))  lsSet('sdv_c_eel','1');
   if(sd_(10,0)) lsSet('sdv_c_pufferfish','1');
   if(sd_(10,1)||sd_(7,3)) lsSet('sdv_c_woodskip','1');
