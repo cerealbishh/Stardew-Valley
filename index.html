@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Stardew or Dew Not, There Is No Try</title>
 <link rel="manifest" href="manifest.json">
+<link rel="preload" href="assets/fonts/press-start-2p.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="theme-color" content="#F4C1CB">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./service-worker.js').catch(()=>{});}</script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@font-face{font-family:'Press Start 2P';src:url('assets/fonts/press-start-2p.woff2') format('woff2');font-weight:400;font-display:swap;}
 /* ── KAWAII Y2K PASTEL THEME ── */
 :root{
   --bg:#F4DBE8;--surf:#F4C1CB;--text:#3d1f3d;--muted:#A07888;

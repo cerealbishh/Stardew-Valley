@@ -1,9 +1,11 @@
-const CACHE_NAME = 'hoedown-v9';
+const CACHE_NAME = 'hoedown-v10';
 const ASSETS = [
   './index.html',
   './manifest.json',
   './service-worker.js',
-  './update-checker.js'
+  './update-checker.js',
+  './assets/fonts/press-start-2p.woff2',
+  './assets/logo.png',
 ];
 
 self.addEventListener('install', (e) => {
