@@ -470,7 +470,10 @@ html[data-dark=true] .chip.missing{background:var(--bg);color:var(--muted);}
 .npc-pts{font-size:11px;color:var(--muted);margin-left:6px;}
 .npc-gift-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
 .npc-gifts{display:flex;flex-wrap:wrap;gap:4px;}
-.gift-chip{font-size:10px;padding:2px 8px;border-radius:20px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);}
+.gift-chip{font-size:10px;padding:3px 8px 3px;border-radius:20px;background:var(--bg);border:1.5px solid var(--border);color:var(--text);display:inline-flex;flex-direction:column;align-items:flex-start;}
+.gift-chip.have-it{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 12%,var(--bg));}
+.gift-chip.blocked{opacity:.5;}
+.gift-src{font-size:9px;color:var(--muted);font-weight:400;line-height:1.3;margin-top:1px;}
 
 /* ── TIMELINE / LORE ── */
 .timeline-row{display:flex;align-items:center;gap:10px;padding:8px 14px;font-size:12.5px;}
@@ -1992,6 +1995,21 @@ function computeDynamicPrep(tasks, bridge) {
       });
     });
   }
+  // ── Birthday gift suggestion ─────────────────────────────────────────────
+  NPC_DATA.forEach(npc=>{
+    if(daysUntil(npc.bs,npc.bd)===0){
+      const best=getBestGiftNow(npc,bridge);
+      if(best.have){
+        extra.push({type:'plate',label:`🎂 ${npc.n}'s birthday TODAY! Give ${best.name} — ${best.where}. Loved gift = 640pts (8× normal)`,id:`dyn_bday_${npc.k}`});
+      } else if(best.name){
+        extra.push({type:'plate',label:`🎂 ${npc.n}'s birthday TODAY! Get ${best.name} — ${best.where}. Loved gift = 640pts`,id:`dyn_bday_${npc.k}`});
+      } else {
+        const fallback=best.blocked?.slice(0,2).join(' · ')||'check their card for options';
+        extra.push({type:'plate',label:`🎂 ${npc.n}'s birthday TODAY! No loved gifts available now — give a liked item. Locked: ${fallback}`,id:`dyn_bday_${npc.k}`});
+      }
+    }
+  });
+
   // ── Special Orders board — surfaces every Monday + shows active orders ──────
   // Board resets on days 1, 8, 15, 22 of every season (all Mondays)
   if([1,8,15,22].includes(S.day)){
@@ -2308,6 +2326,153 @@ const NPC_DATA=[
   {n:'Willy',k:'willy',e:'🎣',bs:'fall',bd:24,g:['Catfish','Diamond','Iridium Bar']},
   {n:'Wizard',k:'wizard',e:'🔮',bs:'winter',bd:17,g:['Purple Mushroom','Solar Essence','Void Essence']},
 ];
+
+// ── GIFT HINTS — item name → {src: how to get, avail: fn(bridge)→bool} ──────
+// avail() returning false means "not realistically gettable at current stage"
+const GIFT_HINTS={
+  // Gems / minerals — from mine
+  'Amethyst':          {src:'Mine floors 40–79 (gem nodes)',       avail:(b)=>true},
+  'Aquamarine':        {src:'Mine floors 40–79 (gem nodes)',       avail:(b)=>true},
+  'Frozen Tear':       {src:'Mine floors 40–79',                   avail:(b)=>true},
+  'Earth Crystal':     {src:'Mine floors 1–39',                    avail:(b)=>true},
+  'Quartz':            {src:'Mine any floor',                      avail:(b)=>true},
+  'Diamond':           {src:'Mine floors 80+ / open geodes',       avail:(b)=>(b?.skills?.mine||0)>=7},
+  'Emerald':           {src:'Mine floors 80+ / open geodes',       avail:(b)=>(b?.skills?.mine||0)>=7},
+  'Ruby':              {src:'Mine floors 80+',                     avail:(b)=>(b?.skills?.mine||0)>=7},
+  'Topaz':             {src:'Mine floors 1–39',                    avail:(b)=>true},
+  'Jade':              {src:'Mine floors 40–79',                   avail:(b)=>true},
+  'Gold Bar':          {src:'Smelt 5 gold ore (mine 80+)',         avail:(b)=>(b?.skills?.mine||0)>=7},
+  'Iridium Bar':       {src:'Smelt 5 iridium ore (Skull Cavern)',  avail:(b)=>!!(b?.hasSkullKey)},
+  'Omni Geode':        {src:'Mine (all levels)',                   avail:(b)=>true},
+  // Forage — Spring
+  'Daffodil':          {src:'Forage Cindersap Forest',             avail:(b)=>S.season==='spring'},
+  'Dandelion':         {src:'Forage town paths',                   avail:(b)=>S.season==='spring'},
+  'Leek':              {src:'Forage Cindersap Forest',             avail:(b)=>S.season==='spring'},
+  'Spring Onion':      {src:'Forage south Cindersap',             avail:(b)=>S.season==='spring'},
+  'Wild Horseradish':  {src:'Forage Cindersap Forest',             avail:(b)=>S.season==='spring'},
+  // Forage — Summer
+  'Fiddlehead Fern':   {src:'Secret Woods (need Steel Axe)',       avail:(b)=>S.season==='summer'},
+  'Sweet Pea':         {src:'Forage any path',                     avail:(b)=>S.season==='summer'},
+  'Spice Berry':       {src:'Forage Cindersap Forest',             avail:(b)=>S.season==='summer'},
+  'Grape':             {src:'Forage or grow (Fall) / Traveling Cart',avail:(b)=>S.season==='fall'},
+  'Summer Spangle':    {src:'Forage any path',                     avail:(b)=>S.season==='summer'},
+  // Forage — Fall
+  'Chanterelle':       {src:'Forage Cindersap Forest',             avail:(b)=>S.season==='fall'},
+  'Common Mushroom':   {src:'Forage Cindersap Forest',             avail:(b)=>S.season==='fall'},
+  'Wild Plum':         {src:'Forage forest floor',                 avail:(b)=>S.season==='fall'},
+  'Hazelnut':          {src:'Shake trees in Fall',                 avail:(b)=>S.season==='fall'},
+  'Blackberry':        {src:'Forage Fall 8–11 (season starts day 8)',avail:(b)=>S.season==='fall'&&S.day>=8},
+  // Forage — Winter
+  'Crocus':            {src:'Forage mountain / town paths',        avail:(b)=>S.season==='winter'},
+  'Holly':             {src:'Forage (Winter only)',                 avail:(b)=>S.season==='winter'},
+  'Crystal Fruit':     {src:'Forage (Winter only)',                 avail:(b)=>S.season==='winter'},
+  'Snow Yam':          {src:'Dig artifact spots (Winter)',         avail:(b)=>S.season==='winter'},
+  // Crops
+  'Parsnip':           {src:'Grow Spring (5 days) — plant Spring 1',avail:(b)=>S.season==='spring'&&S.day>=5},
+  'Green Bean':        {src:'Grow Spring (10 days)',               avail:(b)=>S.season==='spring'&&S.day>=10},
+  'Cauliflower':       {src:'Grow Spring (12 days)',               avail:(b)=>S.season==='spring'&&S.day>=12},
+  'Potato':            {src:'Grow Spring (6 days)',                avail:(b)=>S.season==='spring'&&S.day>=6},
+  'Strawberry':        {src:'Egg Festival Spring 13, then grow (8 days)',avail:(b)=>S.season==='spring'&&S.day>=21},
+  'Melon':             {src:'Grow Summer (12 days) — Pierre\'s 80g',avail:(b)=>S.season==='summer'&&S.day>=12},
+  'Poppy':             {src:'Grow Summer (7 days) — Pierre\'s 100g',avail:(b)=>S.season==='summer'&&S.day>=7},
+  'Sunflower':         {src:'Grow Summer (8 days) — Pierre\'s 200g',avail:(b)=>['summer','fall'].includes(S.season)},
+  'Hot Pepper':        {src:'Grow Summer (5 days) — Pierre\'s 40g',avail:(b)=>S.season==='summer'&&S.day>=5},
+  'Blueberry':         {src:'Grow Summer (13 days) — Pierre\'s 80g',avail:(b)=>S.season==='summer'&&S.day>=13},
+  'Pumpkin':           {src:'Grow Fall (13 days) — Pierre\'s 100g',avail:(b)=>S.season==='fall'&&S.day>=13},
+  'Yam':               {src:'Grow Fall (10 days) — Pierre\'s 60g', avail:(b)=>S.season==='fall'&&S.day>=10},
+  'Corn':              {src:'Grow Summer/Fall (14 days)',           avail:(b)=>['summer','fall'].includes(S.season)&&S.day>=14},
+  'Beet':              {src:'Desert shop Tue/Thu (need bus)',       avail:(b)=>!!((b?.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles?.every(x=>x.completed))},
+  // Animal products
+  'Egg':               {src:'Chicken (Coop)',                       avail:(b)=>(b?.buildings||[]).some(x=>/coop/i.test(x))},
+  'Large Egg':         {src:'Happy Chicken (Coop, 4+ hearts)',      avail:(b)=>(b?.buildings||[]).some(x=>/coop/i.test(x))},
+  'Milk':              {src:'Cow (Barn)',                           avail:(b)=>(b?.buildings||[]).some(x=>/barn/i.test(x))},
+  'Large Milk':        {src:'Happy Cow (Barn, 4+ hearts)',          avail:(b)=>(b?.buildings||[]).some(x=>/barn/i.test(x))},
+  'Goat Milk':         {src:'Goat (Big Barn)',                      avail:(b)=>(b?.buildings||[]).some(x=>/big barn/i.test(x))},
+  'Goat Cheese':       {src:'Goat Milk + Cheese Press',             avail:(b)=>(b?.buildings||[]).some(x=>/big barn/i.test(x))},
+  'Duck Egg':          {src:'Duck produces in Big Coop',            avail:(b)=>(b?.buildings||[]).some(x=>/big coop/i.test(x))},
+  'Duck Feather':      {src:'Happy Duck in Big Coop (4+ hearts)',   avail:(b)=>(b?.buildings||[]).some(x=>/big coop/i.test(x))},
+  "Rabbit's Foot":     {src:'Rabbit in Deluxe Coop (rare drop)',    avail:(b)=>(b?.buildings||[]).some(x=>/deluxe coop/i.test(x))},
+  'Truffle':           {src:'Pig in Deluxe Barn (roams outside)',   avail:(b)=>(b?.buildings||[]).some(x=>/deluxe barn/i.test(x))},
+  'Truffle Oil':       {src:'Truffle + Oil Maker',                  avail:(b)=>(b?.buildings||[]).some(x=>/deluxe barn/i.test(x))},
+  'Wool':              {src:'Sheep in Big Barn (every few days)',   avail:(b)=>(b?.buildings||[]).some(x=>/big barn/i.test(x))},
+  'Cloth':             {src:'Wool + Loom (or Emily 2♥ gift)',       avail:(b)=>(b?.buildings||[]).some(x=>/big barn/i.test(x))},
+  'Void Egg':          {src:'Krobus shop (Sewers) or Witch event',  avail:(b)=>!!(b?.hasRustyKey)},
+  'Battery Pack':      {src:'Lightning Rod during storms',          avail:(b)=>true},
+  // Saloon / buy
+  'Beer':              {src:'Stardrop Saloon 400g',                 avail:(b)=>true},
+  'Coffee':            {src:'Stardrop Saloon 300g',                 avail:(b)=>true},
+  'Salad':             {src:'Stardrop Saloon 220g',                 avail:(b)=>true},
+  'Pizza':             {src:'Stardrop Saloon 600g',                 avail:(b)=>true},
+  'Joja Cola':         {src:'Stardrop Saloon 75g',                  avail:(b)=>true},
+  'Pale Ale':          {src:'Keg + Hops OR Stardrop Saloon 400g',  avail:(b)=>true},
+  'Mead':              {src:'Keg + Honey',                          avail:(b)=>true},
+  // Desert (need bus)
+  'Spicy Eel':         {src:'Desert Trader Fri — trade Ruby (need bus)',avail:(b)=>!!((b?.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles?.every(x=>x.completed))},
+  'Cactus Fruit':      {src:'Desert or Traveling Cart',             avail:(b)=>!!((b?.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles?.every(x=>x.completed))},
+  'Coconut':           {src:'Desert or Traveling Cart',             avail:(b)=>!!((b?.cc_bundles||[]).find(r=>r.name==='Vault')?.bundles?.every(x=>x.completed))},
+  // Fishing
+  'Catfish':           {src:'River rainy days (Spring/Fall 6am–midnight)',avail:(b)=>['spring','fall'].includes(S.season)},
+  'Lobster':           {src:'Crab Pot (ocean)',                     avail:(b)=>true},
+  'Crab':              {src:'Crab Pot (ocean)',                     avail:(b)=>true},
+  // Kegs / artisan
+  'Wine':              {src:'Keg + any fruit (takes 7 days)',       avail:(b)=>true},
+  'Pickles':           {src:'Preserves Jar + any vegetable',       avail:(b)=>true},
+  // Cooking (locked behind recipes)
+  'Blueberry Tart':    {src:'Cook — recipe from Evelyn 3♥',        avail:(b)=>false},
+  'Glazed Yams':       {src:'Cook — recipe from Evelyn 3♥',        avail:(b)=>false},
+  'Fried Calamari':    {src:'Cook — recipe from Jodi 3♥',          avail:(b)=>false},
+  'Tom Kha Soup':      {src:'Cook — recipe from Sandy 3♥',         avail:(b)=>false},
+  'Chocolate Cake':    {src:'Cook — Queen of Sauce Winter 14 Yr2',  avail:(b)=>false},
+  'Pink Cake':         {src:'Cook — Queen of Sauce Summer 21 Yr2',  avail:(b)=>false},
+  'Maple Bar':         {src:'Cook — recipe from Shane 3♥',         avail:(b)=>false},
+  'Pumpkin Soup':      {src:'Cook — recipe from Robin 7♥',         avail:(b)=>false},
+  'Plum Pudding':      {src:'Cook — Queen of Sauce Winter 7 Yr1',  avail:(b)=>false},
+  'Spaghetti':         {src:'Cook — recipe from Robin 7♥',         avail:(b)=>false},
+  'Poppyseed Muffin':  {src:'Cook — recipe from Linus 3♥',         avail:(b)=>false},
+  'Complete Breakfast':{src:'Cook — recipe from Pam 7♥',           avail:(b)=>false},
+  'Salmon Dinner':     {src:'Cook — recipe from Willy 3♥',         avail:(b)=>false},
+  'Bean Hotpot':       {src:'Cook — recipe from Clint 7♥',         avail:(b)=>false},
+  'Eggplant Parmesan': {src:'Cook — recipe from Sandy 7♥',         avail:(b)=>false},
+  'Fried Mushroom':    {src:'Cook — recipe from George 3♥',        avail:(b)=>false},
+  'Green Tea':         {src:'Tea Sapling — Caroline 2♥ gives recipe',avail:(b)=>false},
+  'Fish Taco':         {src:'Cook — recipe from Jodi 7♥',          avail:(b)=>false},
+  'Pepper Poppers':    {src:'Cook — recipe from Harvey 3♥',        avail:(b)=>false},
+  'Cranberry Candy':   {src:'Cook — recipe from Willy 5♥',         avail:(b)=>false},
+  'Blackberry Cobbler':{src:'Cook — recipe from Marnie 7♥',        avail:(b)=>false},
+  // Trees (need time to grow)
+  'Peach':             {src:'Peach Sapling (Summer only, plant Spring)',avail:(b)=>false},
+  'Pomegranate':       {src:'Pomegranate Sapling (Fall only)',      avail:(b)=>false},
+  'Orange':            {src:'Orange Sapling (Summer only)',         avail:(b)=>false},
+  'Apple':             {src:'Apple Sapling (Fall only)',            avail:(b)=>false},
+  'Cherry':            {src:'Cherry Sapling (Spring only)',         avail:(b)=>false},
+  'Apricot':           {src:'Apricot Sapling (Spring only)',        avail:(b)=>false},
+  'Fairy Rose':        {src:'Grow (28 days, Fall) or Traveling Cart',avail:(b)=>false},
+  // Misc
+  'Purple Mushroom':   {src:'Mine floors 80+ or Mushroom Cave',     avail:(b)=>(b?.skills?.mine||0)>=7},
+  'Solar Essence':     {src:'Kill Squid Kid / Metal Head (mine 80+)',avail:(b)=>(b?.skills?.mine||0)>=7},
+  'Void Essence':      {src:'Kill Shadow Brute / Shaman (mine 80+)',avail:(b)=>(b?.skills?.mine||0)>=7},
+  'Pufferfish':        {src:'Beach noon–4pm SUNNY (Summer only)',   avail:(b)=>S.season==='summer'},
+};
+
+// Birthday gift hint — what can I give this NPC RIGHT NOW?
+function getBestGiftNow(npc, bridge){
+  const gifts=npc.g;
+  // 1. Check backpack first — ideal
+  if(bridge?.backpack){
+    for(const g of gifts){
+      const item=bridge.backpack.find(i=>i.name===g);
+      if(item) return {name:g, where:`in your backpack (×${item.count})`, have:true};
+    }
+  }
+  // 2. Find best available gift at current game stage
+  for(const g of gifts){
+    const hint=GIFT_HINTS[g];
+    if(hint&&hint.avail(bridge)) return {name:g, where:hint.src, have:false};
+  }
+  // 3. Nothing loved is accessible — note it
+  const blocked=gifts.map(g=>{const h=GIFT_HINTS[g]; return h?`${g} (${h.src})`:g;});
+  return {name:null, blocked, have:false};
+}
 
 const SORD={spring:0,summer:1,fall:2,winter:3};
 function daysUntil(bs,bd){
@@ -2676,8 +2841,16 @@ function renderHoardCovenant(){
     <div class="npc-body">
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">${milestones}</div>
       ${ptsLine}
-      <div class="npc-gift-label">Loved Gifts</div>
-      <div class="npc-gifts">${npc.g.map(g=>`<span class="gift-chip">${g}</span>`).join('')}</div>
+      <div class="npc-gift-label">Loved Gifts — <span style="font-weight:400">tap for source</span></div>
+      <div class="npc-gifts">${npc.g.map(g=>{
+        const hint=GIFT_HINTS[g];
+        const avail=hint?hint.avail(b):true;
+        const inBag=b?.backpack?.some(i=>i.name===g);
+        const cls=inBag?'gift-chip have-it':avail?'gift-chip':'gift-chip blocked';
+        const badge=inBag?'✓ ':'';
+        const src=hint?`<span class="gift-src">${hint.src}</span>`:'';
+        return `<span class="${cls}">${badge}${g}${src}</span>`;
+      }).join('')}</div>
       ${marriageHtml}
     </div>`;
     frag.appendChild(card);
@@ -2727,7 +2900,14 @@ function renderNeighbors(){
       <div class="npc-hearts-row">${heartRow}${ptsLine}</div>
       <div style="margin:6px 0 4px">${giftTag}</div>
       <div class="npc-gift-label">Loved Gifts</div>
-      <div class="npc-gifts">${npc.g.map(g=>`<span class="gift-chip">${g}</span>`).join('')}</div>
+      <div class="npc-gifts">${npc.g.map(g=>{
+        const hint=GIFT_HINTS[g];
+        const avail=hint?hint.avail(b):true;
+        const inBag=b?.backpack?.some(i=>i.name===g);
+        const cls=inBag?'gift-chip have-it':avail?'gift-chip':'gift-chip blocked';
+        const src=hint?`<span class="gift-src">${hint.src}</span>`:'';
+        return `<span class="${cls}">${inBag?'✓ ':''}${g}${src}</span>`;
+      }).join('')}</div>
     </div>`;
     frag.appendChild(card);
   });
