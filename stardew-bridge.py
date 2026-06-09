@@ -14,7 +14,7 @@ import urllib.error
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
-SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/Hoedown_203853699/Hoedown_203853699"
+SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/HoeDown_440710266/HoeDown_440710266"
 PORT = 8742
 POLL_INTERVAL = 5
 _BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
