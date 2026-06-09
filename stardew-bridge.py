@@ -440,6 +440,34 @@ def parse_save():
             })
     out["activeQuests"] = active_quests
 
+    # Special Orders (Pierre's board + Qi's board) — stored separately from questLog
+    special_orders = []
+    for so in root.findall(".//specialOrders/SpecialOrder"):
+        key_el = so.find("questKey")
+        name_el = so.find("questName") or so.find("questTitle")
+        due_el = so.find("dueDate")
+        done_el = so.find("readyForRemoval")
+        obj_descs = []
+        for obj in so.findall(".//objectives/SpecialOrderObjective"):
+            desc_el = obj.find("description")
+            cur_el = obj.find("currentCount")
+            max_el = obj.find("maxCount") or obj.find("requiredCount")
+            if desc_el is not None and desc_el.text:
+                cur = int(cur_el.text or 0) if cur_el is not None else 0
+                req = int(max_el.text or 0) if max_el is not None else 0
+                obj_descs.append({"desc": desc_el.text, "current": cur, "required": req})
+        special_orders.append({
+            "key": key_el.text if key_el is not None else "",
+            "title": name_el.text if name_el is not None else (key_el.text if key_el is not None else "Special Order"),
+            "dueDate": int(due_el.text or -1) if due_el is not None else -1,
+            "done": done_el is not None and done_el.text == "true",
+            "objectives": obj_descs,
+        })
+    # Completed special order keys
+    completed_so = [s.text for s in root.findall(".//specialOrdersCompleted/string") if s.text]
+    out["specialOrders"] = special_orders
+    out["completedSpecialOrders"] = completed_so
+
     # Tool upgrade levels: 0=Basic 1=Copper 2=Iron 3=Gold 4=Iridium
     tool_levels = {}
     for item in root.findall(".//player/items/Item"):

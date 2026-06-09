@@ -758,6 +758,7 @@ spring:[
   {type:'gather',label:'Forage Cindersap Forest — Spring Onions, Daffodil, Dandelion, Leek, Wild Horseradish',id:'sp1c'},
   {type:'fire',label:'Plant 15 Parsnip Seeds + all Mixed Seeds before 2AM',id:'sp1d'},
   {type:'prep',label:'Keep: 20 fiber, stone, wood. Ship everything else. Craft Chest (50 wood).',id:'sp1e'},
+  {type:'prep',label:'📋 Special Orders board is live — check left of Pierre\'s every Monday for weekly orders',id:'sp1_so'},
   {type:'tomorrow',label:"Willy's letter arrives tomorrow — go to beach first thing for bamboo pole",id:'sp1f'},
 ]},
 {d:2,name:'Fishing Begins — Get Fiberglass Rod',tasks:[
@@ -798,6 +799,7 @@ spring:[
   {type:'fire',label:"Get Wizard's letter, go to Wizard's Tower — watch CC cutscene, DO NOT skip",id:'sp7b'},
   {type:'fire',label:'Upgrade to Steel Pickaxe at Clint (5,000g)',id:'sp7c'},
   {type:'fire',label:'Mountain lake fishing until 2AM',id:'sp7d'},
+  {type:'plate',label:'💜 Gift Abigail — Amethyst (easiest, from mine/fishing chests) or Chocolate Cake',id:'sp7_abigail'},
 ]},
 {d:8,name:'Fish + Cave Choice',tasks:[
   {type:'prep',label:'If cave upgrade offered: choose MUSHROOMS — faster restock, better energy food, more value than bats',id:'sp8a'},
@@ -834,6 +836,7 @@ spring:[
 {d:14,name:'Mine + Haley Birthday',tasks:[
   {type:'plate',label:"Haley bday ♥ Daffodil / Earth Crystal / Coconut (skip if deep in mines)",id:'sp14a'},
   {type:'fire',label:'Mine — push to elevator 80+ (gold ore zone)',id:'sp14b'},
+  {type:'plate',label:'💜 Gift Abigail — Amethyst / Chocolate Cake (2 gifts/week keeps hearts growing fast)',id:'sp14_abigail'},
 ]},
 {d:15,name:'🎁 CC Bundle Day',tasks:[
   {type:'fire',label:'🎁 CC: Bring Spring Foraging — Daffodil, Dandelion, Leek, Wild Horseradish',id:'sp15a'},
@@ -1985,6 +1988,17 @@ function computeDynamicPrep(tasks, bridge) {
       });
     });
   }
+  // ── Special Orders board — surfaces every Monday + shows active orders ──────
+  // Board resets on days 1, 8, 15, 22 of every season (all Mondays)
+  if([1,8,15,22].includes(S.day)){
+    extra.push({type:'fire',label:'📋 Special Orders board reset TODAY (Monday) — check left of Pierre\'s for new weekly orders',id:'dyn_so_monday'});
+  }
+  const activeSO=bridge.specialOrders||[];
+  activeSO.filter(o=>!o.done).forEach(o=>{
+    const progress=o.objectives.map(obj=>obj.required>0?` ${obj.current}/${obj.required}`:''  ).join('');
+    extra.push({type:'fire',label:`📋 Special Order active: "${o.title}"${progress} — complete before deadline`,id:'dyn_so_'+o.key.replace(/\W/g,'_')});
+  });
+
   _dynPrepCache=extra; _dynPrepKey=key;
   return [...tasks, ...extra];
 }
@@ -2312,7 +2326,39 @@ function renderQuests(){
   if(!el) return;
   let html='';
 
-  // Live: active quests from questLog
+  // ── Special Orders (Pierre's board + Qi's board) ──────────────────────────
+  const so=S.bridge&&S.bridge.specialOrders;
+  const cso=S.bridge&&S.bridge.completedSpecialOrders||[];
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">📋 Special Orders Board</div>`;
+  if(!S.bridge){
+    html+=`<div class="quest-row" style="color:var(--muted);font-size:12px">Connect bridge to see active orders</div>
+      <div class="quest-row" style="color:var(--muted);font-size:11px;padding-top:0">Board resets every Monday (days 1, 8, 15, 22) — check left of Pierre's</div>`;
+  } else if(so&&so.length){
+    so.forEach(q=>{
+      const cls=q.done?'qs-done':'qs-active';
+      const objHtml=q.objectives.map(o=>{
+        const pct=o.required>0?Math.min(100,Math.round(o.current/o.required*100)):0;
+        return `<div style="font-size:11px;color:var(--muted);padding:2px 0 2px 28px">${o.desc}${o.required>0?` — ${o.current}/${o.required} (${pct}%)`:''}</div>`;
+      }).join('');
+      html+=`<div class="quest-row" style="flex-direction:column;align-items:flex-start;gap:2px">
+        <div style="display:flex;align-items:center;gap:10px;width:100%">
+          <span class="quest-status ${cls}">${q.done?'Done':'Active'}</span>
+          <span style="font-weight:700">${q.title}</span>
+        </div>${objHtml}</div>`;
+    });
+    if(cso.length){
+      html+=`<div class="quest-row" style="color:var(--muted);font-size:11px">✓ ${cso.length} order${cso.length!==1?'s':''} completed this run</div>`;
+    }
+  } else {
+    html+='<div class="quest-row" style="color:var(--muted);font-size:12px">No active Special Orders</div>';
+    html+=`<div class="quest-row" style="color:var(--muted);font-size:11px;padding-top:0">Board resets every Monday — check left of Pierre's store</div>`;
+    if(cso.length){
+      html+=`<div class="quest-row" style="color:var(--muted);font-size:11px">✓ ${cso.length} completed this run</div>`;
+    }
+  }
+  html+='</div>';
+
+  // ── Active Journal Quests ─────────────────────────────────────────────────
   const aq=S.bridge&&S.bridge.activeQuests;
   html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('sword-wood')}Active Journal</div>`;
   if(!S.bridge){
