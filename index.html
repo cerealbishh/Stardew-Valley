@@ -626,6 +626,9 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
         <div class="home-stat"><span>Tasks Today</span><span class="home-stat-val" id="home-tasks">—</span></div>
         <div class="home-stat"><span>Bridge</span><span class="home-stat-val" id="home-bridge">Not connected</span></div>
         <div id="home-snap" style="margin-top:8px;display:flex;flex-direction:column;gap:2px"></div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px dashed color-mix(in srgb,var(--border) 40%,transparent)">
+          <button onclick="if(confirm('Reset all task progress? Keeps bridge settings + dark mode. This cannot be undone.')){clearRunData();location.reload();}" style="font-size:11px;color:var(--muted);background:none;border:1.5px dashed color-mix(in srgb,var(--border) 60%,transparent);border-radius:10px;padding:6px 12px;cursor:pointer;width:100%;font-family:inherit">🔄 New run — reset task progress</button>
+        </div>
       </div>
     </div>
     <div class="card">
@@ -2237,15 +2240,16 @@ function renderCarry(){
     el.innerHTML=`<div class="carry-section"><div style="color:var(--acc);font-size:14px;padding:20px 0;text-align:center">${si('icon-star',18)}All caught up! Nothing overdue.</div></div>`;
     return;
   }
-  el.innerHTML=`<div style="font-size:11px;color:var(--muted);padding:8px 14px 4px">Tasks from past days you haven't checked off yet</div>`+
+  el.innerHTML=`<div style="font-size:11px;color:var(--muted);padding:8px 14px 4px">Unchecked tasks from past days — check them off here when done</div>`+
     overdue.map(({season,d,name,tasks})=>`
     <div class="carry-section">
       <div class="carry-title">${si('watering-can',14)}${SL[season]} ${d}${name?' · '+name:''}</div>
       ${tasks.map(t=>{
         const ch=taskEverDone(t.id)?'1':'0';
-        return `<div class="carry-item">
-          <div class="task-check" data-id="${t.id}" data-checked="${ch}" style="flex-shrink:0;width:20px;height:20px;border-radius:50%;border:2px solid var(--acc);background:${ch==='1'?'var(--acc)':'var(--bg)'};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;transition:all .15s"></div>
-          <span>${t.label}</span>
+        return `<div class="task-row" data-checked="${ch}" style="padding:8px 14px">
+          <div class="task-check" data-id="${t.id}" data-checked="${ch}"></div>
+          <span class="type-badge tb-${t.type||'prep'}">${t.type||'prep'}</span>
+          <span class="task-label">${t.label}</span>
         </div>`;
       }).join('')}
     </div>`).join('');
@@ -3617,14 +3621,39 @@ function goStoryTab(sub){
 }
 
 // ── Save Sync ──────────────────────────────────────────────────────────────
+
+// clearRunData: wipe all per-run task/progress state, keeping bridge creds + UI prefs.
+function clearRunData(){
+  const toRemove=[];
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k) continue;
+    // Per-task stamps, par checks, CC sync flags, day tracker, live sync marker, day override
+    if(k.startsWith('sdv_t_')||k.startsWith('sdv_par_')||k.startsWith('sdv_c_')||
+       k==='sdv_pts_ord'||k==='sdv_lsync_v2'||k==='sdv_day_override') toRemove.push(k);
+    // Namespaced progress keys (qm_* milestones, marry_* checklist, mq_* main quest)
+    if(k.startsWith('sdv:')&&(k.includes(':qm_')||k.includes(':marry_')||k.includes(':mq_'))) toRemove.push(k);
+  }
+  toRemove.forEach(k=>localStorage.removeItem(k));
+}
+
 // stampPastTasks: on FIRST LOAD only (lastOrd===0), auto-dismisses all
 // historical tasks so Never Forget doesn't flood with ancient history.
 // On subsequent day advances, tasks the user missed are left as null so
 // Never Forget can surface them. Never stamps the gap between lastOrd and today.
+// Also auto-detects a new game (day went backward significantly) and clears stale data.
 function stampPastTasks(){
   const SORD_={spring:0,summer:1,fall:2,winter:3};
   const curOrd=SORD_[S.season]*28+S.day;
-  const lastOrd=parseInt(lsGet('sdv_pts_ord')||'0');
+  let lastOrd=parseInt(lsGet('sdv_pts_ord')||'0');
+
+  // New game detected: current day is significantly before last tracked day.
+  // (e.g. restarting from Spring 1 when we were on Summer 27)
+  if(lastOrd>curOrd+1&&lastOrd>7){
+    clearRunData();
+    lastOrd=0;
+  }
+
   if(lastOrd>=curOrd) return;
 
   // Only auto-dismiss tasks that predate our tracking start point.
@@ -3954,7 +3983,9 @@ document.addEventListener('click',e=>{
   const tc=e.target.closest('.task-check[data-id]');
   if(tc){
     e.stopPropagation();
-    const wasDone=taskDone(tc.dataset.id)||taskEverDone(tc.dataset.id);
+    // Use visual state from DOM (data-checked) as source of truth for the toggle.
+    // This avoids stale save_sync stamps from old runs causing a phantom "unchecked" tap.
+    const wasDone=tc.dataset.checked==='1';
     taskSet(tc.dataset.id,!wasDone);
     const ch=(!wasDone)?'1':'0';
     tc.dataset.checked=ch;
