@@ -1918,7 +1918,7 @@ function computeDynamicPrep(tasks, bridge) {
     extra.push({type:'prep', label:`Barn (for CC milk): 6,000g ${gOk?'✓':'✗'} · Wood 350 ${wOk?'✓':'✗'} · Stone 150 ${sOk?'✓':'✗'}${all?' → READY: visit Robin':''}`, id:'dyn_barn'});
   }
   const combat = bridge.skills?.combat ?? 0;
-  if (combat < 6) {
+  if (combat < 4) {
     extra.push({type:'prep', label:`Combat ${combat}/10 — fight floors 80–119 to level up before SC runs`, id:'dyn_combat'});
   }
   const gold = bridge.gold ?? 0;
@@ -1936,14 +1936,14 @@ function computeDynamicPrep(tasks, bridge) {
     extra.push({type:'fire', label:'Guide: OCEAN fishing is best in summer regardless of weather — fish at Willy dock area', id:'dyn_ocean'});
   }
   const mining = bridge.skills?.mine ?? 0;
-  if (mining < 10) {
+  if (mining < 8) {
     extra.push({type:'prep', label:`Mining ${mining}/10 — need level 10 for Blacksmith profession before selling Iridium Bars`, id:'dyn_mining'});
   }
   if (!bridge.hasSkullKey && !(bridge.mail||[]).includes('HasSkullKey')) {
     extra.push({type:'fire', label:'⚠️ Skull Key not detected — visit mine floor 120 chest to collect it', id:'dyn_skullkey'});
   }
-  const fishing = bridge.skills?.fishing ?? 0;
-  if (fishing < 10) {
+  const fishing = bridge.skills?.fish ?? 0;
+  if (fishing < 9) {
     extra.push({type:'prep', label:`Fishing ${fishing}/10 — one more level for Master Angler`, id:'dyn_fish'});
   }
   const summerCropsBundle = (bridge.cc_bundles ?? [])
@@ -1964,22 +1964,30 @@ function computeDynamicPrep(tasks, bridge) {
       extra.push({type:'prep', label:`Set aside for CC: ◆ ${slot.name} ×${bridge.storage[slot.code]} in chest — don't ship`, id:'dyn_store_'+slot.code});
     });
   }
-  // Friendship gate checks — surfaces any NPC threshold blocking quests/recipes/unlocks
+  // Friendship gate checks — only show gates you're close to (≤3 hearts away),
+  // and cap at 3 total to avoid flooding today's card.
   if (bridge.friendship) {
     const shown = new Set();
+    const gateHits = [];
     FRIENDSHIP_GATES.forEach(gate => {
       const dedupeKey = gate.key + '_' + gate.hearts;
       if (shown.has(dedupeKey)) return;
       const pts = bridge.friendship[gate.key] ?? 0;
       const have = Math.floor(pts / 250);
-      if (have < gate.hearts) {
+      const gap = gate.hearts - have;
+      if (gap > 0 && gap <= 3) {
         shown.add(dedupeKey);
-        extra.push({
-          type: 'prep',
-          label: `${gate.npc} ${have}♥/${gate.hearts}♥ [${gate.type}] → ${gate.label} · ${gate.gifts}`,
-          id: `dyn_friend_${gate.key}_${gate.hearts}`
-        });
+        gateHits.push({gap, gate, have});
       }
+    });
+    // Sort by closest (smallest gap) and cap at 3
+    gateHits.sort((a,b)=>a.gap-b.gap);
+    gateHits.slice(0,3).forEach(({gate,have})=>{
+      extra.push({
+        type: 'prep',
+        label: `💌 ${gate.npc} ${have}♥→${gate.hearts}♥ [${gate.type}] ${gate.label}`,
+        id: `dyn_friend_${gate.key}_${gate.hearts}`
+      });
     });
   }
   _dynPrepCache=extra; _dynPrepKey=key;
@@ -3609,16 +3617,23 @@ function goStoryTab(sub){
 }
 
 // ── Save Sync ──────────────────────────────────────────────────────────────
-// stampPastTasks: marks all days before today as 'save_sync' on first load
-// and whenever the game day advances — so Never Forget never shows stale days.
+// stampPastTasks: on FIRST LOAD only (lastOrd===0), auto-dismisses all
+// historical tasks so Never Forget doesn't flood with ancient history.
+// On subsequent day advances, tasks the user missed are left as null so
+// Never Forget can surface them. Never stamps the gap between lastOrd and today.
 function stampPastTasks(){
   const SORD_={spring:0,summer:1,fall:2,winter:3};
   const curOrd=SORD_[S.season]*28+S.day;
   const lastOrd=parseInt(lsGet('sdv_pts_ord')||'0');
-  if(lastOrd>=curOrd) return; // already stamped up through yesterday
+  if(lastOrd>=curOrd) return;
+
+  // Only auto-dismiss tasks that predate our tracking start point.
+  // First load (lastOrd===0): auto-dismiss everything before today.
+  // Day advance (lastOrd>0): don't stamp the gap — those are recently missed tasks.
+  const autoStampBefore=lastOrd===0?curOrd:lastOrd;
   ['spring','summer','fall','winter'].forEach(season=>{
     (RD[season]||[]).forEach(day=>{
-      if(SORD_[season]*28+day.d>=curOrd) return;
+      if(SORD_[season]*28+day.d>=autoStampBefore) return;
       day.tasks.forEach(t=>{if(!lsGet('sdv_t_'+t.id)) lsSet('sdv_t_'+t.id,'save_sync');});
     });
   });
