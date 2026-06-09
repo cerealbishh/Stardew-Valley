@@ -752,353 +752,335 @@ let _lastDataDay=null;      // tracks last day renderRoute was fully rebuilt
 
 const RD={
 spring:[
-{d:1,name:'Year Begins',tasks:[
-  {type:'fire',label:'Plant all 15 parsnip seeds',id:'sp1a'},
-  {type:'fire',label:'Chop 50+ wood, clear 50+ stone',id:'sp1b'},
-  {type:'gather',label:'Forage south: spring onions (Cindersap), beach items',id:'sp1c'},
-  {type:'prep',label:'Craft a Chest (50 wood) for overflow storage',id:'sp1d'},
-  {type:'tomorrow',label:'Pierre opens tomorrow — save 2200g for cauliflower + potato seeds',id:'sp1e'},
+{d:1,name:'Year Begins — Meet Everyone',tasks:[
+  {type:'fire',label:'Chop 9 Maple/Pine trees until Foraging Lv 1 FIRST — do not chop Oak trees (save acorns)',id:'sp1a'},
+  {type:'fire',label:'Meet ALL 27 villagers today → completes Introductions quest (100g reward tomorrow)',id:'sp1b'},
+  {type:'gather',label:'Forage Cindersap Forest — Spring Onions, Daffodil, Dandelion, Leek, Wild Horseradish',id:'sp1c'},
+  {type:'fire',label:'Plant 15 Parsnip Seeds + all Mixed Seeds before 2AM',id:'sp1d'},
+  {type:'prep',label:'Keep: 20 fiber, stone, wood. Ship everything else. Craft Chest (50 wood).',id:'sp1e'},
+  {type:'tomorrow',label:"Willy's letter arrives tomorrow — go to beach first thing for bamboo pole",id:'sp1f'},
 ]},
-{d:2,name:'Fish + Farm',tasks:[
-  {type:'fire',label:'Water parsnips',id:'sp2a'},
-  {type:'fire',label:'Visit Willy at beach — receive free Bamboo Fishing Rod',id:'sp2b'},
-  {type:'fire',label:'Fish at mountain lake or beach to level up fishing skill',id:'sp2c'},
-  {type:'gather',label:'Forage Cindersap Forest (daffodils, leeks)',id:'sp2d'},
+{d:2,name:'Fishing Begins — Get Fiberglass Rod',tasks:[
+  {type:'fire',label:'Pick up Bamboo Pole from Willy — give him any rock → collect 100g Introductions reward',id:'sp2a'},
+  {type:'fire',label:'Fish south of pier with bamboo pole until Fishing Lv 2',id:'sp2b'},
+  {type:'purchase',label:'Buy Training Rod (25g) from Willy — fish with minimum casts until you have 1,800g',id:'sp2c'},
+  {type:'fire',label:'Buy Fiberglass Rod (1,800g) + max bait (5g each). Equip bait immediately.',id:'sp2d'},
+  {type:'fire',label:'Fish at beach with Fiberglass Rod until 2AM — pass out, leave fish in chest',id:'sp2e'},
+  {type:'tomorrow',label:'Spring 3 ALWAYS RAINS — go straight to Cindersap Forest river. Skip everything else.',id:'sp2f'},
 ]},
-{d:3,name:"Pierre's Seeds",tasks:[
-  {type:'purchase',label:'Buy 15 Cauliflower Seeds (80g each = 1200g)',id:'sp3a'},
-  {type:'purchase',label:'Buy 20 Potato Seeds (50g each = 1000g)',id:'sp3b'},
-  {type:'fire',label:'Plant all seeds immediately — water them',id:'sp3c'},
-  {type:'fire',label:'Fish all remaining energy',id:'sp3d'},
+{d:3,name:'🌧️ Catfish Day (always rains)',tasks:[
+  {type:'fire',label:'🌧️ RAIN = CATFISH. Go directly to Cindersap Forest river. Fish all day until 2AM.',id:'sp3a'},
+  {type:'fire',label:'Best spot: cast south 6 tiles west of Leah\'s door — aim for deep water east of island',id:'sp3b'},
+  {type:'prep',label:'Catfish sell 200g+ each (Fisher: 250g). This day is worth more than any other Spring day.',id:'sp3c'},
+  {type:'prep',label:'Save 75g to buy 1 copper ore from Clint tomorrow → triggers Furnace cutscene',id:'sp3d'},
+  {type:'tomorrow',label:'Check TV every morning from now on for next day\'s weather',id:'sp3e'},
 ]},
-{d:4,name:'Mine Opens',tasks:[
-  {type:'fire',label:'Water all crops',id:'sp4a'},
-  {type:'fire',label:'Enter the mine — Marlon intro cutscene',id:'sp4b'},
-  {type:'fire',label:'Reach mine level 5+ (copper ore starts at L1)',id:'sp4c'},
-  {type:'gather',label:'Collect 20+ copper ore, 10+ stone',id:'sp4d'},
-  {type:'prep',label:'Sleep with 1+ copper ore to trigger Furnace blueprint',id:'sp4e'},
+{d:4,name:'Mountain Lake Fishing',tasks:[
+  {type:'prep',label:'Check TV: what is tomorrow\'s weather? (do this every single morning)',id:'sp4a'},
+  {type:'fire',label:'Mountain lake — cast east toward the submerged log in deep water',id:'sp4b'},
+  {type:'fire',label:'Fish until 1AM. Fill inventory with gems/ore/coal + best fish before passing out.',id:'sp4c'},
+  {type:'prep',label:'If it rains tomorrow → fish forest river instead of mountain lake (catfish!)',id:'sp4d'},
 ]},
-{d:5,name:'Furnace + Mine',tasks:[
-  {type:'prep',label:'Build Furnace (25 copper ore + 25 stone)',id:'sp5a'},
-  {type:'fire',label:'Water crops — then mine to level 10 (chest reward)',id:'sp5b'},
-  {type:'fire',label:'Smelt first copper bars (5 ore each, 30 min/bar)',id:'sp5c'},
+{d:5,name:'⚠️ Copper Pickaxe (before 4pm!)',tasks:[
+  {type:'fire',label:'⚠️ SMELT 5 Copper Bars BEFORE 3pm — deliver to Clint, upgrade to Copper Pickaxe (2,000g)',id:'sp5a'},
+  {type:'purchase',label:"Pierre's — buy 1 Bean Starter (60g) + 1 Cauliflower (80g) + 1 Potato (50g) + 16 Kale Seeds (1,120g)",id:'sp5b'},
+  {type:'fire',label:'Plant + water all new seeds on the farm',id:'sp5c'},
+  {type:'fire',label:'Mountain lake fishing until 2AM. Smelt iron bars while fishing.',id:'sp5d'},
+  {type:'prep',label:'Need 5 iron bars for steel pickaxe on Spring 7',id:'sp5e'},
 ]},
-{d:6,name:'Mine Push',tasks:[
-  {type:'fire',label:'Water crops',id:'sp6a'},
-  {type:'fire',label:'Mine — target level 15–20',id:'sp6b'},
-  {type:'prep',label:'Buy Fiberglass Rod from Willy (1800g) if fishing is priority',id:'sp6c'},
+{d:6,name:'Fish + Smelt Iron',tasks:[
+  {type:'fire',label:'Mountain lake fishing until 1AM',id:'sp6a'},
+  {type:'prep',label:'Smelt iron bars. Need 5 for steel pickaxe tomorrow.',id:'sp6b'},
+  {type:'tomorrow',label:"Wizard's letter should arrive — DON'T skip the cutscene (walk through it)",id:'sp6c'},
 ]},
-{d:7,name:"Lewis Birthday",tasks:[
-  {type:'plate',label:"Lewis bday ♥ Leek, Spring Onion, Daffodil, or any gem",id:'sp7a'},
-  {type:'fire',label:'Water crops',id:'sp7b'},
-  {type:'fire',label:'Mine — target level 20–25',id:'sp7c'},
+{d:7,name:"Lewis Birthday + Steel Pickaxe + Wizard",tasks:[
+  {type:'plate',label:"Lewis bday ♥ Leek / Spring Onion / Daffodil / any gem (he's on the way to Wizard)",id:'sp7a'},
+  {type:'fire',label:"Get Wizard's letter, go to Wizard's Tower — watch CC cutscene, DO NOT skip",id:'sp7b'},
+  {type:'fire',label:'Upgrade to Steel Pickaxe at Clint (5,000g)',id:'sp7c'},
+  {type:'fire',label:'Mountain lake fishing until 2AM',id:'sp7d'},
 ]},
-{d:8,name:'Iron Push',tasks:[
-  {type:'fire',label:'Water crops',id:'sp8a'},
-  {type:'fire',label:'Mine — push to level 30+ (iron ore zone begins)',id:'sp8b'},
-  {type:'gather',label:'Collect 30+ iron ore, smelt bars in evening',id:'sp8c'},
+{d:8,name:'Fish + Cave Choice',tasks:[
+  {type:'prep',label:'If cave upgrade offered: choose MUSHROOMS — faster restock, better energy food, more value than bats',id:'sp8a'},
+  {type:'fire',label:'Mountain lake fishing until 2AM',id:'sp8b'},
 ]},
-{d:9,name:'Mine Level 40',tasks:[
-  {type:'fire',label:'Water crops',id:'sp9a'},
-  {type:'fire',label:'Mine — reach level 40 (chest reward)',id:'sp9b'},
-  {type:'fire',label:'Smelt iron bars (5 ore each)',id:'sp9c'},
-  {type:'purchase',label:'Buy Large Pack from Pierre (2000g) if not yet',id:'sp9d'},
+{d:9,name:'Gold Pickaxe + Large Pack',tasks:[
+  {type:'fire',label:'Retrieve Steel Pickaxe from Clint, upgrade to Gold Pickaxe (10,000g)',id:'sp9a'},
+  {type:'purchase',label:'Buy Large Pack from Pierre (2,000g) — 36 inventory slots',id:'sp9b'},
+  {type:'fire',label:'Mountain lake fishing until 2AM',id:'sp9c'},
+  {type:'prep',label:'Should hit Fishing 10 today or tomorrow — choose Angler profession (+50% fish value)',id:'sp9d'},
 ]},
-{d:10,name:"Vincent Birthday",tasks:[
-  {type:'plate',label:"Vincent bday ♥ Grape, Fiddlehead Fern, Pink Cake",id:'sp10a'},
-  {type:'fire',label:'Water crops',id:'sp10b'},
-  {type:'fire',label:'Mine — push toward level 50',id:'sp10c'},
+{d:10,name:"Vincent Birthday + Buy Kale Batch 1",tasks:[
+  {type:'plate',label:"Vincent bday ♥ Daffodil / Earth Crystal / Parsnip",id:'sp10a'},
+  {type:'fire',label:'Retrieve Gold Pickaxe from Clint',id:'sp10b'},
+  {type:'purchase',label:'Buy ~86 Kale Seeds (6,020g) from Pierre — first batch toward Farming 6',id:'sp10c'},
+  {type:'fire',label:'Mountain lake fishing until 2AM. Smelt gold bars while fishing.',id:'sp10d'},
 ]},
-{d:11,name:'Mine Level 50',tasks:[
-  {type:'fire',label:'Mine level 50 (chest reward: Boots)',id:'sp11a'},
-  {type:'fire',label:'Water crops',id:'sp11b'},
-  {type:'tomorrow',label:'Egg Festival tomorrow (Spring 13) — save 3000g for strawberry seeds',id:'sp11c'},
+{d:11,name:'Harvest Kale + Start Mining',tasks:[
+  {type:'fire',label:'Harvest all Kale → should reach Farming 2',id:'sp11a'},
+  {type:'fire',label:'Hoe farm in Quality Sprinkler pattern (do NOT water — sprinklers coming)',id:'sp11b'},
+  {type:'fire',label:'GO TO THE MINES. Mining push starts today. Bring furnace.',id:'sp11c'},
+  {type:'prep',label:'Every new elevator floor: return to 0F, empty inventory, restock furnaces',id:'sp11d'},
+  {type:'prep',label:'Keep stone for Staircase crafting on infested floors (need Mining 2 first)',id:'sp11e'},
 ]},
-{d:12,name:'Pre-Festival',tasks:[
-  {type:'fire',label:'Water crops',id:'sp12a'},
-  {type:'fire',label:'Mine — target level 55–60',id:'sp12b'},
-  {type:'prep',label:'Smelt iron bars, save gold',id:'sp12c'},
-  {type:'tomorrow',label:'Egg Festival! Bring 3000g+ for 30 strawberry seeds at 100g each',id:'sp12d'},
+{d:12,name:'Mine',tasks:[
+  {type:'fire',label:'Mine until 2AM. Smelt copper and iron continuously.',id:'sp12a'},
+  {type:'prep',label:'Mining 5 → choose Miner profession (+1 ore per vein)',id:'sp12b'},
 ]},
-{d:13,name:'🥚 Egg Festival',tasks:[
-  {type:'purchase',label:'Buy 30+ Strawberry Seeds from Pierre stall (100g each)',id:'sp13a'},
-  {type:'fire',label:'Participate in egg hunt — win for prize',id:'sp13b'},
-  {type:'prep',label:'Cannot plant today (festival ends after market closes)',id:'sp13c'},
+{d:13,name:'Mine (skip Egg Festival)',tasks:[
+  {type:'fire',label:'Guide: skip Egg Festival — mine instead (worth more than strawberries)',id:'sp13a'},
+  {type:'prep',label:'Optional: attend 9AM–2PM to buy 1–2 Strawberry Seeds for Spring Crops bundle',id:'sp13b'},
+  {type:'fire',label:'Mine until 2AM',id:'sp13c'},
 ]},
-{d:14,name:'Plant Strawberries',tasks:[
-  {type:'fire',label:'Plant ALL strawberry seeds — water immediately',id:'sp14a'},
-  {type:'fire',label:'Water all other crops',id:'sp14b'},
-  {type:'plate',label:"Haley bday ♥ Sunflower, Pink Cake, Daffodil",id:'sp14c'},
-  {type:'fire',label:'Mine — push to level 65',id:'sp14d'},
+{d:14,name:'Mine + Haley Birthday',tasks:[
+  {type:'plate',label:"Haley bday ♥ Daffodil / Earth Crystal / Coconut (skip if deep in mines)",id:'sp14a'},
+  {type:'fire',label:'Mine — push to elevator 80+ (gold ore zone)',id:'sp14b'},
 ]},
-{d:15,name:'Mine Level 70',tasks:[
-  {type:'fire',label:'Water crops',id:'sp15a'},
-  {type:'fire',label:'Mine — target level 70 (gold elevator unlocks at 65)',id:'sp15b'},
-  {type:'fire',label:'Harvest parsnips if grown — sell or ship',id:'sp15c'},
+{d:15,name:'🎁 CC Bundle Day',tasks:[
+  {type:'fire',label:'🎁 CC: Bring Spring Foraging — Daffodil, Dandelion, Leek, Wild Horseradish',id:'sp15a'},
+  {type:'fire',label:'🎁 CC: Bring Spring Crops — Parsnip, Green Bean, Cauliflower, Potato',id:'sp15b'},
+  {type:'fire',label:'🎁 CC: Bring Blacksmith — Copper Bar, Iron Bar, Gold Bar',id:'sp15c'},
+  {type:'fire',label:'🎁 CC: Bring Geologist — Quartz, Earth Crystal, Frozen Tear, Fire Quartz',id:'sp15d'},
+  {type:'fire',label:"🎁 CC: Bring Adventurer's — Slime x99, Bat Wing x10",id:'sp15e'},
+  {type:'fire',label:'💰 Pay Vault bundles if you have 42,500g — bus + desert unlocked next morning',id:'sp15f'},
+  {type:'fire',label:'Place Crystalarium (CC reward) → put Diamond in it for speed buff chain',id:'sp15g'},
+  {type:'fire',label:'Mine until 2AM — minecarts now unlocked',id:'sp15h'},
 ]},
-{d:16,name:'Mine Level 75',tasks:[
-  {type:'fire',label:'Water crops',id:'sp16a'},
-  {type:'fire',label:'Mine — level 75+',id:'sp16b'},
-  {type:'gather',label:'Forage any remaining spring items',id:'sp16c'},
+{d:16,name:'Mine Push to 100',tasks:[
+  {type:'fire',label:'Mine push — target floor 100. Use minecarts to get there faster.',id:'sp16a'},
+  {type:'prep',label:'Floor 90 chest: Obsidian Edge. Floor 100: Skull Key + Stardrop.',id:'sp16b'},
+  {type:'prep',label:'Check Help Wanted board at Pierre\'s daily — quick 150–1,000g quests',id:'sp16c'},
 ]},
-{d:17,name:'Mine Level 80',tasks:[
-  {type:'fire',label:'Water crops',id:'sp17a'},
-  {type:'fire',label:'Mine — level 80 (gold ore zone begins)',id:'sp17b'},
-  {type:'prep',label:'Start smelting gold bars in evenings',id:'sp17c'},
+{d:17,name:'Mine to 120 / SC Prep',tasks:[
+  {type:'fire',label:'🏴‍☠️ GOAL: Mine floor 120 ASAP. Skull Key = bus = Skull Cavern opens.',id:'sp17a'},
+  {type:'fire',label:'If vault not done yet: fish mountain lake on bad luck days',id:'sp17b'},
+  {type:'prep',label:'Tip: finish floor 120 AND vault on same day if possible → bus fixed next morning',id:'sp17c'},
 ]},
-{d:18,name:"Pam Birthday",tasks:[
-  {type:'plate',label:"Pam bday ♥ Parsnip, Pale Ale, Glazed Yams",id:'sp18a'},
-  {type:'fire',label:'Water crops',id:'sp18b'},
-  {type:'fire',label:'Mine — push to level 85',id:'sp18c'},
-  {type:'fire',label:'Harvest parsnips and potatoes if ready',id:'sp18d'},
+{d:18,name:"Pam Birthday + SC/Mine",tasks:[
+  {type:'plate',label:"Pam bday ♥ Parsnip — easiest loved gift, pass her trailer on SC bus runs",id:'sp18a'},
+  {type:'fire',label:'SC run if Skull Key obtained + vault done, else mine',id:'sp18b'},
 ]},
-{d:19,name:'Mine Level 90',tasks:[
-  {type:'fire',label:'Water crops',id:'sp19a'},
-  {type:'fire',label:'Mine — level 90+',id:'sp19b'},
-  {type:'prep',label:'Craft Quality Sprinklers (1 iron bar + 1 gold bar + 1 refined quartz)',id:'sp19c'},
+{d:19,name:'SC Runs Begin',tasks:[
+  {type:'fire',label:'🚀 Skull Cavern — good luck day: go deep. Bad luck day: mine floor 80 for gold.',id:'sp19a'},
+  {type:'gather',label:'Keep Jade (→ Staircases Sunday), Emerald (→ Cheese Friday), Ruby (→ Spicy Eel)',id:'sp19b'},
+  {type:'prep',label:'Do NOT sell Iridium Bars yet — wait for Mining 10 Blacksmith (1,000g vs 667g)',id:'sp19c'},
 ]},
-{d:20,name:'Mine Level 95',tasks:[
-  {type:'fire',label:'Water crops',id:'sp20a'},
-  {type:'fire',label:'Mine — level 95',id:'sp20b'},
-  {type:'prep',label:'Refine quartz: Quartz/Frozen Tear + stone at Recycler',id:'sp20c'},
+{d:20,name:'Harvest Kale + Plant Batch 2',tasks:[
+  {type:'fire',label:'Harvest kale batch 1',id:'sp20a'},
+  {type:'purchase',label:'Buy second ~86 kale batch from Pierre (6,020g)',id:'sp20b'},
+  {type:'fire',label:'Plant + water, then SC/mine',id:'sp20c'},
+  {type:'prep',label:'Craft Quality Sprinklers (1 iron bar + 1 gold bar + 1 refined quartz) — place on kale',id:'sp20d'},
 ]},
-{d:21,name:'Mine Level 100 🔑',tasks:[
-  {type:'fire',label:'Water crops',id:'sp21a'},
-  {type:'fire',label:'Mine — reach level 100: SKULL KEY obtained!',id:'sp21b'},
-  {type:'fire',label:'Harvest strawberries (first harvest if planted day 14)',id:'sp21c'},
+{d:21,name:'SC / Mine',tasks:[
+  {type:'fire',label:'🚀 SC run. Mining XP fast in SC — push toward Mining 10.',id:'sp21a'},
+  {type:'prep',label:'💜 Abigail: 2 gifts/week every week from now on (Mon+Thu ideal). Amethyst or Chocolate Cake.',id:'sp21b'},
 ]},
-{d:22,name:'Skull Cavern Day 1',tasks:[
-  {type:'fire',label:'Skull Cavern: target floor 10+ on first run',id:'sp22a'},
-  {type:'gather',label:'Collect iridium ore, gems',id:'sp22b'},
-  {type:'prep',label:'Supplies: 30 bombs, 30 staircases, lots of food',id:'sp22c'},
+{d:22,name:'SC + Copper Axe',tasks:[
+  {type:'fire',label:'Drop Axe at Clint for Copper upgrade (2,000g)',id:'sp22a'},
+  {type:'fire',label:'🚀 SC run',id:'sp22b'},
 ]},
-{d:23,name:'Fish or Mine',tasks:[
-  {type:'fire',label:'If raining: FISH — catfish in river!',id:'sp23a'},
-  {type:'fire',label:'If sunny: Skull Cavern run',id:'sp23b'},
-  {type:'fire',label:'Water crops',id:'sp23c'},
+{d:23,name:'SC / Catfish if Rain',tasks:[
+  {type:'fire',label:'🌧️ If raining: Cindersap Forest river catfish — always better than SC on rain',id:'sp23a'},
+  {type:'fire',label:'☀️ If sunny: 🚀 SC run',id:'sp23b'},
+  {type:'prep',label:'Retrieve Copper Axe from Clint',id:'sp23c'},
 ]},
-{d:24,name:'Prep Summer',tasks:[
-  {type:'fire',label:'Water crops',id:'sp24a'},
-  {type:'fire',label:'Mine or Skull Cavern',id:'sp24b'},
-  {type:'prep',label:'Plan summer layout: 36 melon + 96 blueberry tiles',id:'sp24c'},
+{d:24,name:'SC + Steel Axe',tasks:[
+  {type:'fire',label:'Drop Axe at Clint for Steel upgrade (5,000g)',id:'sp24a'},
+  {type:'fire',label:'🚀 SC run',id:'sp24b'},
 ]},
-{d:25,name:'Harvest + Sell',tasks:[
-  {type:'fire',label:'Harvest strawberries (second harvest)',id:'sp25a'},
-  {type:'fire',label:'Harvest cauliflower and potatoes',id:'sp25b'},
-  {type:'prep',label:'Install quality sprinklers for summer',id:'sp25c'},
+{d:25,name:'Thursday — SC + Oasis Prep',tasks:[
+  {type:'fire',label:'🚀 SC or catfish if rain',id:'sp25a'},
+  {type:'prep',label:'Plan Starfruit count for Summer 2. Target 400–500 seeds + matching Deluxe Speed-Gro.',id:'sp25b'},
+  {type:'prep',label:'Thursday: Oasis sells Deluxe Speed-Gro (80g each). Buy 1 per Starfruit tile.',id:'sp25c'},
 ]},
-{d:26,name:"Pierre Birthday",tasks:[
-  {type:'plate',label:"Pierre bday ♥ Fried Calamari, Daffodil, or gem",id:'sp26a'},
-  {type:'fire',label:'Harvest remaining crops',id:'sp26b'},
-  {type:'fire',label:'Skull Cavern or mine',id:'sp26c'},
+{d:26,name:"Pierre Birthday + SC",tasks:[
+  {type:'plate',label:"Pierre bday ♥ Daffodil / Dandelion / Parsnip",id:'sp26a'},
+  {type:'fire',label:'Retrieve Steel Axe from Clint',id:'sp26b'},
+  {type:'fire',label:'🚀 SC run',id:'sp26c'},
 ]},
-{d:27,name:"Emily Birthday",tasks:[
-  {type:'plate',label:"Emily bday ♥ Cloth, Wool, Amethyst, Aquamarine",id:'sp27a'},
-  {type:'fire',label:'Harvest ALL remaining crops — last water day',id:'sp27b'},
-  {type:'fire',label:'Sell all spring crops',id:'sp27c'},
-  {type:'prep',label:'Clear farm tiles for summer layout',id:'sp27d'},
+{d:27,name:"Emily Birthday + Harvest Kale",tasks:[
+  {type:'fire',label:'Harvest second kale batch → should hit Farming 6',id:'sp27a'},
+  {type:'plate',label:"Emily bday ♥ Amethyst / Aquamarine / Cloth",id:'sp27b'},
+  {type:'fire',label:'🚀 SC run',id:'sp27c'},
 ]},
-{d:28,name:'Season End',tasks:[
-  {type:'fire',label:'All crops die tonight — harvest anything left',id:'sp28a'},
-  {type:'purchase',label:'Buy summer seeds: 36 Melon (200g), 96 Blueberry (80g)',id:'sp28b'},
-  {type:'prep',label:'Set up sprinklers for summer layout',id:'sp28c'},
-  {type:'tomorrow',label:'Plant ALL summer seeds on Summer 1!',id:'sp28d'},
+{d:28,name:'Season End + Farm Prep',tasks:[
+  {type:'fire',label:'Ship as much as possible — need gold for Summer 2 Starfruit buy',id:'sp28a'},
+  {type:'fire',label:'Craft + place Quality Sprinklers on all farm tiles',id:'sp28b'},
+  {type:'prep',label:'💜 Abigail goal: 8♥ by Fall 13 (her birthday). Current pace: 2 loved gifts/week.',id:'sp28c'},
+  {type:'prep',label:'Journal reminder: check Help Wanted board tomorrow and every day',id:'sp28d'},
+  {type:'tomorrow',label:'Summer 2: warp Desert 6AM → Deluxe Speed-Gro + Starfruit Seeds (400g) → plant whole farm',id:'sp28e'},
 ]},
 ],
 
 summer:[
-{d:1,name:'Summer Begins',tasks:[
-  {type:'fire',label:'Mine push — you were around mine floor 60-65 entering summer, pushing toward 80s',id:'su1a'},
-  {type:'fire',label:'Forage Fiddlehead Fern in Secret Woods (Summer only — do this every day you can)',id:'su1b'},
-  {type:'gather',label:'🎁 CC: Red Mushroom from trees in Cindersap Forest (Summer + Fall)',id:'su1c'},
-  {type:'fire',label:'Fish mountain lake for Sturgeon (200g) or river/beach for income',id:'su1d'},
+{d:1,name:'🚀 SC + Iridium Pickaxe',tasks:[
+  {type:'fire',label:'🚀 Skull Cavern all day — go deep, bomb rock clusters, take every shaft',id:'su1a'},
+  {type:'fire',label:'Smelt Iridium Bars from Spring SC runs → sell once you hit Mining 10 (Blacksmith prof)',id:'su1b'},
+  {type:'gather',label:'🎁 CC: Fiddlehead Fern in Secret Woods (Summer ONLY — do this every free moment)',id:'su1c'},
+  {type:'prep',label:'Goal: 25,000g for Iridium Pickaxe upgrade at Clint (Summer 3–4 target)',id:'su1d'},
 ]},
-{d:2,name:'Mine + Fish',tasks:[
-  {type:'fire',label:'Mine push — floors 65–75 (Iron zone ends, Gold zone starts at 80)',id:'su2a'},
-  {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods (north of farm, need Steel Axe)',id:'su2b'},
-  {type:'fire',label:'☔ If raining: forest river catfish (6am–midnight) — best gold/hr in summer',id:'su2c'},
+{d:2,name:'🌟 Starfruit Plant Day',tasks:[
+  {type:'fire',label:'Scythe Parsnip linger crop first if planted Spring 28',id:'su2a'},
+  {type:'fire',label:'Warp Desert 6AM → buy Deluxe Speed-Gro (80g) + Starfruit Seeds (400g each) at Oasis',id:'su2b'},
+  {type:'fire',label:'Plant all Starfruit + Speed-Gro immediately — fills whole farm',id:'su2c'},
+  {type:'prep',label:'Craft 10–20 Lightning Rods — Summer 13 + Summer 26 are guaranteed storm days',id:'su2d'},
+  {type:'prep',label:'Plant Acorns in a corner — building Oak Tree forest for Oak Resin → Kegs later',id:'su2e'},
 ]},
-{d:3,name:'Mine Gold Zone',tasks:[
-  {type:'fire',label:'Mine push — entering floor 80+ (Gold Ore zone starts here)',id:'su3a'},
-  {type:'fire',label:'Save all Gold Ore + smelt into bars (5 ore + 1 coal each)',id:'su3b'},
+{d:3,name:'SC + Iridium Pickaxe',tasks:[
+  {type:'fire',label:'Smelt Iridium Bars → deliver to Clint, upgrade to Iridium Pickaxe (25,000g)',id:'su3a'},
+  {type:'fire',label:'🚀 SC all day after drop-off',id:'su3b'},
   {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods',id:'su3c'},
 ]},
-{d:4,name:"Jas's Birthday",tasks:[
-  {type:'plate',label:"Jas bday ♥ Fairy Rose / Pink Cake / Plum Pudding",id:'su4a'},
-  {type:'fire',label:'Mine push — floors 80–85',id:'su4b'},
-  {type:'fire',label:'🎣 Pufferfish window: beach noon–4pm SUNNY — grab for CC Ocean Fish bundle',id:'su4c'},
+{d:4,name:"Jas Birthday + SC",tasks:[
+  {type:'plate',label:"Jas bday ♥ Fairy Rose / Pink Cake / Plum Pudding — inconvenient, skip if in SC",id:'su4a'},
+  {type:'fire',label:'🚀 SC all day',id:'su4b'},
+  {type:'fire',label:'🎣 Pufferfish window: beach noon–4pm SUNNY ONLY — grab for CC Ocean Fish bundle',id:'su4c'},
 ]},
-{d:5,name:'Mine + Fish',tasks:[
-  {type:'fire',label:'Mine push — staying in 80s (Gold Ore heavy zone)',id:'su5a'},
-  {type:'fire',label:'🎣 Fish: Pufferfish (beach noon–4pm sunny), Shad (river 9am–2am)',id:'su5b'},
-  {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods',id:'su5c'},
+{d:5,name:'SC + Crab Pots',tasks:[
+  {type:'fire',label:'🚀 SC all day',id:'su5a'},
+  {type:'fire',label:'🎣 Pufferfish: beach noon–4pm SUNNY — limited window (Summer + sunny only)',id:'su5b'},
+  {type:'prep',label:'Set up Crab Pots in river + ocean — passive CC Crab Pot bundle items (Lobster, Crab, etc.)',id:'su5c'},
+  {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods',id:'su5d'},
 ]},
-{d:6,name:'Income + Bundles',tasks:[
-  {type:'fire',label:'Mine push toward 85',id:'su6a'},
-  {type:'fire',label:'🎣 Fish for income — Sturgeon (mountain lake 6am–7pm) or Tuna (beach)',id:'su6b'},
-  {type:'gather',label:'🎁 CC: Red Mushroom forage + check any Crab Pots you have placed',id:'su6c'},
+{d:6,name:'SC + Animals',tasks:[
+  {type:'fire',label:'🚀 SC all day',id:'su6a'},
+  {type:'prep',label:'Animals: Coop ready? Buy White Chicken (800g) from Marnie → Egg for CC Animal bundle',id:'su6b'},
+  {type:'prep',label:'Check Crab Pots — Lobster, Crab, Cockle, Mussel count toward CC Crab Pot bundle',id:'su6c'},
+  {type:'prep',label:'💜 Abigail gift day (Monday): Amethyst / Chocolate Cake / Pumpkin Soup',id:'su6d'},
 ]},
-{d:7,name:'Fish Bundles',tasks:[
-  {type:'fire',label:'🎣 Target: Pufferfish (beach noon–4pm sunny), Shad (river 9am–2am)',id:'su7a'},
-  {type:'fire',label:'🎣 Evening: Bream (river 6pm–2am), Eel (ocean rainy 4pm–2am)',id:'su7b'},
-  {type:'prep',label:'Set up Crab Pots in river + ocean if you have them — passive CC Crab Pot bundle items',id:'su7c'},
+{d:7,name:'SC + Fish Bundles',tasks:[
+  {type:'fire',label:'🚀 SC all day',id:'su7a'},
+  {type:'fire',label:'🎣 Target evening: Bream (river 6pm–2am), Eel (ocean rainy 4pm–2am)',id:'su7b'},
+  {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods — running out of summer!',id:'su7c'},
 ]},
-{d:8,name:"Gus's Birthday",tasks:[
-  {type:'plate',label:"Gus bday ♥ Diamond / Escargot / Orange",id:'su8a'},
-  {type:'fire',label:'🎣 Beach fishing: Tuna (6am–7pm) + Red Snapper (6am–7pm)',id:'su8b'},
-  {type:'fire',label:'Check Crab Pots — Crab, Lobster, Clam, Mussel, Snail count toward CC Crab Pot bundle',id:'su8c'},
-  {type:'prep',label:'⚠️ No crops planted yet — Day 9 is your planting day, plan what to buy from Pierre',id:'su8d'},
+{d:8,name:"Gus Birthday + SC",tasks:[
+  {type:'plate',label:"Gus bday ♥ Diamond / Orange — pass by on SC runs",id:'su8a'},
+  {type:'fire',label:'🚀 SC all day',id:'su8b'},
+  {type:'fire',label:'Check Crab Pots — Lobster, Crab, Snail, Periwinkle count toward Crab Pot bundle',id:'su8c'},
+  {type:'prep',label:'💜 Abigail gift day (Thursday): Amethyst / Spicy Eel',id:'su8d'},
+  {type:'prep',label:'Check Help Wanted board + Special Orders board at Pierre\'s daily — easy gold + friendship',id:'su8e'},
 ]},
-{d:9,name:'🌱 Plant Day + Fish',tasks:[
-  {type:'fire',label:'Buy from Pierre (open until 5pm): Blueberry ×20 (80g ea), Melon ×5 (80g ea), Tomato ×10 (50g ea), Hot Pepper ×10 (40g ea)',id:'su9a'},
-  {type:'fire',label:'Also buy: Poppy ×5 (100g — CC Chef bundle), Sunflower ×5 (200g — CC Dye bundle) — total ~4,400g',id:'su9b'},
-  {type:'fire',label:'Plant and water everything — Blueberry first harvest Day 22, Hot Pepper Day 14',id:'su9c'},
-  {type:'prep',label:'Fish mountain lake for Sturgeon all afternoon — building toward 10,000g for Gold Pickaxe upgrade',id:'su9d'},
+{d:9,name:'🛒 Traveling Cart (Sunday!) + SC',tasks:[
+  {type:'fire',label:"CHECK TRAVELING CART — Red Cabbage seeds (buy any!), Rabbit's Foot, Duck Feather, Nautilus Shell",id:'su9a'},
+  {type:'fire',label:'🚀 SC all day',id:'su9b'},
+  {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods — Summer only, time is running out',id:'su9c'},
+  {type:'prep',label:'💜 Abigail gift day (Monday): Amethyst / Chocolate Cake',id:'su9d'},
+  {type:'prep',label:'Buy Starfruit Seeds (Oasis Thursday) for second batch if needed',id:'su9e'},
 ]},
-{d:10,name:"Maru's Birthday + Mine",tasks:[
+{d:10,name:"Maru Birthday + SC",tasks:[
   {type:'plate',label:"Maru bday ♥ Diamond / Gold Bar / Iridium Bar / Battery Pack",id:'su10a'},
-  {type:'fire',label:'Water crops',id:'su10b'},
-  {type:'fire',label:'MINE PUSH — floors 85–92 (gold ore zone, bomb rock clusters)',id:'su10c'},
-  {type:'gather',label:'Save all Gold Ore — need 1 Gold Bar for CC Blacksmith bundle',id:'su10d'},
+  {type:'fire',label:'🚀 SC all day',id:'su10b'},
+  {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods',id:'su10c'},
+  {type:'prep',label:'Oasis CLOSED tomorrow (Luau). Buy Starfruit + Speed-Gro today if you need more.',id:'su10d'},
 ]},
-{d:11,name:'🌊 Luau + Mine',tasks:[
-  {type:'fire',label:'Luau potluck 9am–2pm — bring best quality fish or crop for Governor bonus',id:'su11a'},
-  {type:'fire',label:'Water crops after Luau',id:'su11b'},
-  {type:'fire',label:'Mine 92–98 this afternoon',id:'su11c'},
-  {type:'prep',label:'Check gold total — need 10,000g to submit Pickaxe to Clint (submit by Day 13)',id:'su11d'},
+{d:11,name:'🌊 Luau + SC',tasks:[
+  {type:'fire',label:'Luau potluck 9am–2pm — bring best quality item for Governor approval',id:'su11a'},
+  {type:'fire',label:'🚀 SC after Luau',id:'su11b'},
+  {type:'gather',label:'🎁 CC: Fiddlehead Fern — last few days in Secret Woods this summer',id:'su11c'},
+  {type:'prep',label:'💜 Abigail gift day (Thursday): Amethyst / Spicy Eel',id:'su11d'},
 ]},
-{d:12,name:'🛒 Traveling Cart (Sunday!) + Fish',tasks:[
-  {type:'fire',label:"CHECK TRAVELING CART — Red Cabbage seeds (buy any you see!), Rabbit's Foot, Duck Feather",id:'su12a'},
-  {type:'fire',label:'Water crops',id:'su12b'},
-  {type:'fire',label:'🎣 Fish mountain lake: Sturgeon all day if gold < 10,000g for pickaxe',id:'su12c'},
-  {type:'prep',label:'Mine push 98–105 if already have 10k and submitted pickaxe to Clint',id:'su12d'},
+{d:12,name:'🛒 Traveling Cart + SC',tasks:[
+  {type:'fire',label:"CHECK TRAVELING CART — Red Cabbage, Rabbit's Foot, Nautilus Shell, ancient artifacts",id:'su12a'},
+  {type:'fire',label:'🚀 SC all day',id:'su12b'},
+  {type:'gather',label:'🎁 CC: LAST DAYS for Fiddlehead Fern (Secret Woods, Summer only)',id:'su12c'},
 ]},
-{d:13,name:"Alex's Birthday + Submit Pickaxe",tasks:[
-  {type:'plate',label:"Alex bday ♥ Complete Breakfast / Salmon Dinner",id:'su13a'},
-  {type:'fire',label:'Water crops',id:'su13b'},
-  {type:'fire',label:'⚠️ SUBMIT PICKAXE TO CLINT for Gold upgrade (10,000g) — Clint closes 4pm!',id:'su13c'},
-  {type:'fire',label:'Mine push 105–110 after visiting Clint',id:'su13d'},
-  {type:'gather',label:'Solar Essence + Void Essence from ghosts/shadows (mine 80+) — CC Adventurer bundle',id:'su13e'},
+{d:13,name:'⚡ Storm Day + Alex Birthday',tasks:[
+  {type:'fire',label:'⚡ Summer 13 GUARANTEED STORM — collect Battery Packs from Lightning Rods in AM',id:'su13a'},
+  {type:'plate',label:"Alex bday ♥ Complete Breakfast / Salmon Dinner",id:'su13b'},
+  {type:'fire',label:'🚀 SC (storm doesn\'t affect SC)',id:'su13c'},
+  {type:'prep',label:'Craft Crystalariums with Battery Packs — put Diamond in first 5–10 for espresso supply',id:'su13d'},
+  {type:'prep',label:'💜 Abigail gift day (Monday): Amethyst / Chocolate Cake',id:'su13e'},
 ]},
-{d:14,name:'🏆 Mine Done + Build Coop',tasks:[
-  {type:'fire',label:'HARVEST Hot Peppers (5-day grow from Day 9) — keep 1 for CC Summer Crops bundle',id:'su14a'},
-  {type:'fire',label:'Water remaining crops',id:'su14b'},
-  {type:'fire',label:'🏆 Mine floor 120 DONE — Skull Key obtained. Mine chapter closed.',id:'su14c'},
-  {type:'fire',label:'BUILD COOP: 4,000g + 300 Wood + 100 Stone — you have all materials. Visit Robin TODAY.',id:'su14d'},
-  {type:'prep',label:'Coop takes 3 days (ready Day 17). After: buy White Chicken from Marnie (800g each).',id:'su14e'},
+{d:14,name:'🐡 Pufferfish + SC',tasks:[
+  {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY ONLY. CC Ocean Fish bundle. Very limited window!',id:'su14a'},
+  {type:'fire',label:'🚀 SC all day (morning + after pufferfish window)',id:'su14b'},
+  {type:'prep',label:'Coop + Barn check: do you have animals? Need Egg, Milk, Large Milk, Large Egg for CC Animal bundle',id:'su14c'},
 ]},
-{d:15,name:'💰 Vault Push + Fiddlehead',tasks:[
-  {type:'fire',label:'Water crops',id:'su15a'},
-  {type:'fire',label:'Fish hard for Vault: need ~34,000g more. Sunny = Sturgeon (mountain lake, 6am–7pm).',id:'su15b'},
-  {type:'gather',label:'Fiddlehead Fern from Secret Woods — Summer only, running out of time!',id:'su15c'},
-  {type:'prep',label:'Saplings (Apple + Pomegranate, 4,000g each): skip for now — prioritize Vault + animals.',id:'su15d'},
+{d:15,name:'🐡 Pufferfish + SC',tasks:[
+  {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY ONLY. Ocean Fish bundle needs this.',id:'su15a'},
+  {type:'fire',label:'🚀 SC all day',id:'su15b'},
+  {type:'gather',label:'🎁 CC: Plant Poppy today (7-day crop) → harvest Su22 for CC Chef bundle',id:'su15c'},
+  {type:'prep',label:'Place Tapper on a Maple Tree — Maple Syrup needed for CC Chef bundle (~7 days)',id:'su15d'},
+  {type:'prep',label:'💜 Abigail gift day (Thursday): Amethyst / Spicy Eel',id:'su15e'},
 ]},
-{d:16,name:'🌿 Fern Last Days + Fish',tasks:[
-  {type:'par',label:'Vault: 3/4 payments done (17,500g donated). Final payment: 25,000g. Need ~17,341g more in cash.',id:'su16a'},
-  {type:'fire',label:'Water crops',id:'su16b'},
-  {type:'fire',label:'Fish for Vault: Sturgeon mountain lake (sunny) or Catfish river (rain) — need ~34K more',id:'su16c'},
-  {type:'gather',label:'🎁 CC: Fiddlehead Fern (Secret Woods, Summer foraging — last few days!)',id:'su16d'},
+{d:16,name:'SC + Bundle Check',tasks:[
+  {type:'fire',label:'🚀 SC all day',id:'su16a'},
+  {type:'gather',label:'🎁 CC: Forage Sweet Pea, Grape, Spice Berry for Summer Foraging bundle',id:'su16b'},
+  {type:'prep',label:'🎁 CC: Tuna (beach 6am–7pm), Red Snapper (rainy), Tilapia (ocean) needed for Ocean Fish bundle',id:'su16c'},
+  {type:'prep',label:'Check journal + Help Wanted board — complete any active quests',id:'su16d'},
 ]},
-{d:17,name:'🎣 Ocean Push + Sam Birthday',tasks:[
-  {type:'fire',label:'🌿 PLANT POPPY today — 7 days to Su24 harvest. Last chance for CC Chef bundle (Poppy slot not donated).',id:'su17_poppy'},
-  {type:'fire',label:'🎁 DONATE AT CC: Aquamarine (have x2, need 1 for Geologist bundle) + Wheat (have x6 for Fodder bundle)',id:'su17_donate'},
-  {type:'fire',label:'🔨 Place Tapper on a Maple Tree TODAY — Maple Syrup needed for CC Chef bundle (takes ~7 days)',id:'su17_tapper'},
+{d:17,name:'Sam Birthday + SC',tasks:[
   {type:'plate',label:"Sam bday ♥ Pizza / Maple Bar / Cactus Fruit",id:'su17a'},
-  {type:'fire',label:'Water crops',id:'su17b'},
-  {type:'fire',label:'🌻 Sunflower harvest (Day 9+8=17) — keep 1 for CC Dye bundle ✓ (already donated? check Junimo Feed)',id:'su17c'},
-  {type:'fire',label:'OCEAN FISHING at Willy\'s dock all day — guide says ocean is best in summer regardless of weather (~8–10K/day)',id:'su17e'},
-  {type:'par',label:'Vault: 3 payments done ✓ (2,500+5,000+10,000g). Final payment: 25,000g at CC → bus fixed!',id:'su17f'},
-  {type:'prep',label:'⚠️ Skull Key: floor 120 reached but key may be in unopened chest. Visit mine floor 120 to collect it.',id:'su17g'},
-  {type:'prep',label:'Gift Marnie 2x/week — need 2♥ for bedroom access → Mayor\'s Shorts (750g). Liked: Leek, Parsnip. Loved: Diamond, Pumpkin.',id:'su17_marnie'},
-  {type:'prep',label:'Check Help Wanted board at Pierre\'s — easy gold (150–1,000g) + friendship per quest.',id:'su17_helpwanted'},
+  {type:'fire',label:'🚀 SC all day',id:'su17b'},
+  {type:'gather',label:'🎁 CC: plant Sunflower today (8 days → harvest Su25) for Dye bundle if not donated yet',id:'su17c'},
+  {type:'prep',label:'💜 Abigail gift day (Monday): Amethyst / Chocolate Cake',id:'su17d'},
+  {type:'prep',label:'Check Help Wanted board + Special Orders board daily — easy gold, friendship, unique rewards',id:'su17e'},
 ]},
-{d:18,name:'🎣 Ocean Fish — Vault Sprint',tasks:[
-  {type:'fire',label:'Water crops',id:'su18a'},
-  {type:'fire',label:'OCEAN fish all day — summer ocean beats mountain lake and river in all weather (guide)',id:'su18b'},
-  {type:'fire',label:'3/4 Vault payments done! Bring 25,000g to CC Vault room → bus fixed → Skull Cavern opens',id:'su18c'},
-  {type:'gather',label:'🎁 LAST chance Fiddlehead Fern — Secret Woods today or never',id:'su18d'},
-  {type:'prep',label:'Mine Combat level: fight floors 80–119 on bad luck days to level Combat before SC',id:'su18e'},
+{d:18,name:'SC + Ocean Fish Push',tasks:[
+  {type:'fire',label:'🚀 SC all day. Galaxy Sword if you have Prismatic Shard — 3 pillars in Calico Desert.',id:'su18a'},
+  {type:'fire',label:'Ocean fishing if bad luck: Tuna (6am–7pm), Red Snapper (rainy), Tilapia for CC Ocean Fish bundle',id:'su18b'},
+  {type:'prep',label:'Marnie 2♥? Her bedroom unlocks Mayor\'s Shorts quest (750g reward)',id:'su18c'},
 ]},
-{d:19,name:"Demetrius' Birthday + Ocean",tasks:[
-  {type:'plate',label:"Demetrius bday ♥ Bean Hotpot / Ice Cream / Strawberry",id:'su19a'},
-  {type:'fire',label:'Water crops',id:'su19b'},
-  {type:'fire',label:'OCEAN fish all day — Tuna (6am–7pm) + Red Snapper + Tilapia count for CC Ocean Fish bundle',id:'su19c'},
-  {type:'gather',label:'🎁 Fiddlehead Fern — absolute last chance, Secret Woods (already donated ✓ if bridge confirms)',id:'su19d'},
-  {type:'prep',label:'Check Traveling Cart (Fri/Sun) — Nautilus Shell + Woodskip if available',id:'su19e'},
+{d:19,name:"Demetrius Birthday + SC",tasks:[
+  {type:'plate',label:"Demetrius bday ♥ Bean Hotpot / Strawberry / Ice Cream",id:'su19a'},
+  {type:'fire',label:'🚀 SC all day',id:'su19b'},
+  {type:'prep',label:'💜 Abigail gift day (Thursday): Amethyst / Spicy Eel',id:'su19c'},
+  {type:'prep',label:'Traveling Cart (Friday tomorrow): Red Cabbage, Nautilus Shell, Rabbit\'s Foot',id:'su19d'},
 ]},
-{d:20,name:'💰 Vault Donations + Pufferfish',tasks:[
-  {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY ONLY. CC Specialty Fish bundle. Last ever chance!',id:'su20a'},
-  {type:'fire',label:'OCEAN fish all day (or Pufferfish then ocean)',id:'su20b'},
-  {type:'fire',label:'FINAL VAULT PAYMENT: bring 25,000g to CC Vault room → bus repaired → Skull Cavern unlocked',id:'su20c'},
-  {type:'purchase',label:'Backpack upgrade from Pierre\'s (2,000g) if not done — essential before SC',id:'su20d'},
-  {type:'purchase',label:'Buy Pumpkin Seeds + Deluxe Speed-Gro from Oasis (Thursday!) for Fall planting',id:'su20e'},
-  {type:'fire',label:"Marnie at 2♥? Enter her bedroom when she's at work (Tue 9am–6pm) → find Mayor's Shorts → return to Lewis → 750g",id:'su20_shorts'},
+{d:20,name:'🌟 Second Starfruit Harvest + Plant',tasks:[
+  {type:'fire',label:'HARVEST Starfruit (planted Su2, 13 days with Speed-Gro → harvest Su15ish, or this is batch 2)',id:'su20a'},
+  {type:'fire',label:'Warp Desert → buy third batch of Starfruit Seeds + Speed-Gro at Oasis',id:'su20b'},
+  {type:'fire',label:'Plant all Starfruit immediately',id:'su20c'},
+  {type:'fire',label:'🚀 SC after planting',id:'su20d'},
+  {type:'prep',label:'Re-spec from Agriculturist → Artisan (Statue of Uncertainty) if at Farming 10',id:'su20e'},
 ]},
-{d:21,name:'🐡 Pufferfish + SC Prep',tasks:[
-  {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY ONLY. Needed for CC Specialty Fish bundle. Last days ever!',id:'su21a'},
-  {type:'fire',label:'Vault funded ✓ — bus fixed! SC opens after vault cutscene plays.',id:'su21b'},
-  {type:'fire',label:'Water crops',id:'su21c'},
-  {type:'prep',label:'SC prep: craft/buy 30+ Bombs (Iron Ore×4 + Coal×1 each) and 30+ Staircases (Stone×99 each)',id:'su21d'},
-  {type:'prep',label:'SC food: Spicy Eel (speed buff) — trade Ruby to Desert Trader on Fridays once bus fixed',id:'su21e'},
+{d:21,name:'SC + Crab Pots',tasks:[
+  {type:'fire',label:'🚀 SC all day',id:'su21a'},
+  {type:'fire',label:'Check Crab Pots — Lobster, Crab, Periwinkle, Snail, Oyster for CC Crab Pot bundle',id:'su21b'},
+  {type:'prep',label:'💜 Abigail gift day (Monday): goal is 8♥ before Fall 13 birthday for max birthday bonus',id:'su21c'},
 ]},
-{d:22,name:'🫐 Big Harvest + SC Prep',tasks:[
-  {type:'fire',label:'🫐 BLUEBERRY harvest (Day 9+13=22) — sell all, Summer Crops CC already done!',id:'su22a'},
-  {type:'fire',label:'🍈 MELON harvest — sell all (CC Summer Crops bundle already completed ✓)',id:'su22b'},
-  {type:'fire',label:'🍅 TOMATO harvest — sell all (already donated)',id:'su22c'},
-  {type:'par',label:'Skull Key ✓ (HasSkullKey mail confirmed) · Vault ✓ (ccVault) · Bus fixed. Ready for SC!',id:'su22d'},
-  {type:'prep',label:'SC food: Triple Shot Espresso (speed) via Diamond → Desert Trader daily once bus fixed',id:'su22e'},
-  {type:'gather',label:'🎁 CC mine gaps: Fire Quartz (floors 80–119), Ghostfish (mine pond floor 20/60), Purple Mushroom (floors 80+)',id:'su22_mine_cc'},
-  {type:'prep',label:'Check Special Orders board left of Pierre\'s — weekly quests give unique rewards (recipes, rare items)',id:'su22_specialorders'},
+{d:22,name:'SC + Maple Syrup Check',tasks:[
+  {type:'fire',label:'🚀 SC all day',id:'su22a'},
+  {type:'gather',label:'🎁 CC: Check Maple Tapper — Maple Syrup ready? Donate to CC Chef bundle',id:'su22b'},
+  {type:'prep',label:'Check Special Orders board — weekly quests give unique rewards (Tub o\' Flowers, recipes)',id:'su22c'},
+  {type:'prep',label:'💜 Abigail gift day (Thursday): Amethyst / Spicy Eel',id:'su22d'},
 ]},
-{d:23,name:'🚀 Skull Cavern Day 1',tasks:[
-  {type:'fire',label:'⚡ Bus is fixed! Meet Pam at bus stop 8:40am — block her door to make her run (saves 33 min)',id:'su23a'},
-  {type:'fire',label:'SC: bomb rock clusters, take every shaft/hole down, ignore enemies. Goal: floor 25+',id:'su23b'},
-  {type:'fire',label:'Desert Trader trades: Ruby → Spicy Eel (Fri) · Diamond → Triple Espresso · Jade → Staircase (Sun)',id:'su23c'},
-  {type:'prep',label:'Gold is low (2,918g after vault) — SC Iridium Bars are your income now. Smelt as you go.',id:'su23d'},
-  {type:'prep',label:'DO NOT sell Iridium Bars yet — wait for Mining level 10 (Blacksmith = 300g/bar). Currently Mining 6.',id:'su23e'},
-  {type:'fire',label:'Barn built but no animals — after SC, buy Cow from Marnie (1,500g) for CC Large Milk',id:'su23f'},
+{d:23,name:'SC',tasks:[
+  {type:'fire',label:'🚀 SC all day. Desert Trader: Ruby→Spicy Eel (Fri), Diamond→Espresso, Jade→Staircase (Sun)',id:'su23a'},
+  {type:'prep',label:'Sell Iridium Bars once Mining 10 + Blacksmith chosen — worth 1,000g each',id:'su23b'},
 ]},
-{d:24,name:'🚀 SC Day 2 + Poppy Harvest',tasks:[
-  {type:'fire',label:'🌸 POPPY harvest (planted Su17, 7 days) — donate to CC Chef bundle immediately',id:'su24_poppy'},
-  {type:'fire',label:'🚀 Skull Cavern — push deeper. Use bombs on big clusters, staircases on bad floors.',id:'su24a'},
-  {type:'fire',label:'Water crops',id:'su24b'},
-  {type:'fire',label:'Smelt Iridium Ore → Bars (5 ore + 1 coal). HOLD BARS until Mining 10 for Blacksmith bonus.',id:'su24c'},
-  {type:'purchase',label:'Target: 25,000g for Iridium Pickaxe at Clint — upgrade as soon as you can afford it',id:'su24d'},
-  {type:'prep',label:'Craft Lightning Rods (Copper Bar×1 + Iron Bar×1 + Refined Quartz×1) — place 10–20 on farm for storms',id:'su24e'},
+{d:24,name:'SC + Poppy Harvest',tasks:[
+  {type:'fire',label:'🌸 POPPY harvest (if planted Su17, 7 days) — donate to CC Chef bundle immediately',id:'su24a'},
+  {type:'fire',label:'🚀 SC all day',id:'su24b'},
+  {type:'prep',label:'💜 Abigail gift day (Monday): Amethyst / Chocolate Cake',id:'su24c'},
 ]},
-{d:25,name:'🚀 SC + Oasis Thursday',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern all day',id:'su25a'},
-  {type:'purchase',label:'Oasis open Thursday — buy Deluxe Speed-Gro (80g each) — need 1 per Pumpkin tile for Fall',id:'su25b'},
-  {type:'fire',label:'Craft + place Tappers on every Oak Tree — Oak Resin → Kegs later for huge wine income',id:'su25c'},
-  {type:'prep',label:'Plant Acorns in a corner of farm — building Oak Tree forest for future Tapper income',id:'su25d'},
+{d:25,name:'SC + Oasis Thursday',tasks:[
+  {type:'fire',label:'🚀 SC all day',id:'su25a'},
+  {type:'purchase',label:'Oasis Thursday — buy Deluxe Speed-Gro (80g each) for Fall Pumpkins',id:'su25b'},
+  {type:'fire',label:'Place Tappers on all Oak Trees — Oak Resin → Kegs → Starfruit Wine → Artisan buff',id:'su25c'},
 ]},
-{d:26,name:'⚡ Storm Day + SC',tasks:[
+{d:26,name:'⚡ Storm + SC',tasks:[
   {type:'fire',label:'⚡ Summer 26 GUARANTEED STORM — collect Battery Packs from Lightning Rods in AM',id:'su26a'},
-  {type:'fire',label:'🚀 Skull Cavern (storm doesn\'t affect SC)',id:'su26b'},
-  {type:'fire',label:'🫐 SECOND BLUEBERRY HARVEST if Day 22 crop re-grew (every 4 days)',id:'su26c'},
-  {type:'prep',label:'Craft Crystalariums with Battery Packs — put Diamond in first 5–10 for Triple Espresso supply',id:'su26d'},
+  {type:'fire',label:'🚀 SC (storm doesn\'t affect underground)',id:'su26b'},
+  {type:'prep',label:'Craft Crystalariums from Battery Packs — Diamond → Espresso supply for SC speed buff',id:'su26c'},
+  {type:'prep',label:'💜 Abigail gift day (Thursday): Amethyst / Spicy Eel',id:'su26d'},
 ]},
-{d:27,name:'Final Summer Harvest + SC',tasks:[
-  {type:'fire',label:'⭐ GALAXY SWORD — grab Prismatic Shard from gem chest, warp Desert, stand center of 3 pillars to claim it',id:'su27_galaxy'},
-  {type:'fire',label:'HARVEST ALL summer crops — everything dies tonight at midnight',id:'su27a'},
-  {type:'fire',label:'🚀 Skull Cavern with Galaxy Sword equipped — doubles your damage output',id:'su27b'},
-  {type:'plate',label:'💜 Gift Abigail today — Amethyst or Chocolate Cake (both in your chests). She\'s at 4.4♥, goal is 8♥ for Bouquet.',id:'su27_abigail'},
-  {type:'fire',label:'📋 Quest: Pam is Thirsty — buy Pale Ale at Saloon (400g) → give to Pam → 350g + friendship',id:'su27_pam'},
-  {type:'fire',label:'📋 Quest: Crop Research — give Demetrius a Melon → 550g reward',id:'su27_demetrius'},
-  {type:'fire',label:'📋 Quest: Knee Therapy — give George a Hot Pepper → 200g reward',id:'su27_george'},
-  {type:'purchase',label:'Ship enough for Wheat Seeds to cover whole farm tomorrow (Pierre sells 10g each)',id:'su27c'},
-  {type:'prep',label:'Mining 7 → 10: Skull Cavern mining XP is fast. Mining 10 → Blacksmith = Iridium Bars worth 1000g each',id:'su27d'},
+{d:27,name:'Final Harvest + SC',tasks:[
+  {type:'fire',label:'⭐ GALAXY SWORD if you have Prismatic Shard — 3 pillars in Calico Desert. Warp Desert first.',id:'su27_galaxy'},
+  {type:'fire',label:'HARVEST ALL Starfruit — everything dies at midnight',id:'su27a'},
+  {type:'fire',label:'🚀 SC all day with Galaxy Sword equipped',id:'su27b'},
+  {type:'plate',label:'💜 Gift Abigail — Amethyst / Chocolate Cake. 8♥ → give Bouquet (Pierre\'s, 200g)',id:'su27_abigail'},
+  {type:'purchase',label:'Ship enough for Wheat Seeds to cover farm (Pierre, 10g each)',id:'su27c'},
 ]},
 {d:28,name:'🌊 Moonlight Jellies + Wheat',tasks:[
-  {type:'fire',label:'⭐ GALAXY SWORD if not done yesterday — Prismatic Shard → 3 pillars in Calico Desert',id:'su28_galaxy'},
-  {type:'fire',label:'Final summer crop harvest before 6pm',id:'su28a'},
-  {type:'purchase',label:'9am: Pierre\'s — buy Wheat Seeds to cover whole farm (10g each, linger crop keeps Speed-Gro)',id:'su28b'},
-  {type:'fire',label:'Plant Wheat Seeds — they keep Deluxe Speed-Gro on the tile for Fall Pumpkins',id:'su28c'},
-  {type:'prep',label:'📋 Traveling Cart open TODAY (Sunday) — check for Nautilus Shell (CC Winter bundle)',id:'su28_cart'},
-  {type:'plate',label:'💜 Gift Abigail if not gifted yesterday — Amethyst / Chocolate Cake from chests',id:'su28_abigail'},
-  {type:'fire',label:'🚀 Skull Cavern before festival if good luck day',id:'su28_sc'},
-  {type:'fire',label:'Moonlight Jellies festival on the beach tonight',id:'su28d'},
-  {type:'tomorrow',label:'Fall 1: SC run + buy Pumpkin Seeds (100g each). Harvest Wheat on Fall 2 then plant Pumpkins.',id:'su28e'},
+  {type:'fire',label:'⭐ GALAXY SWORD if not done yesterday — Prismatic Shard → 3 pillars in Desert',id:'su28_galaxy'},
+  {type:'fire',label:'Harvest remaining Starfruit before 6pm',id:'su28a'},
+  {type:'purchase',label:'9AM: Pierre\'s — buy Wheat Seeds (10g each, linger crop keeps Deluxe Speed-Gro on tiles)',id:'su28b'},
+  {type:'fire',label:'Plant Wheat Seeds — they preserve Speed-Gro for Fall Pumpkins',id:'su28c'},
+  {type:'prep',label:'📋 Traveling Cart open (Sunday) — check for Nautilus Shell, Red Cabbage, artifacts',id:'su28_cart'},
+  {type:'plate',label:'💜 Gift Abigail if slots available — Amethyst / Chocolate Cake',id:'su28_abigail'},
+  {type:'fire',label:'🚀 SC before festival if good luck day',id:'su28_sc'},
+  {type:'fire',label:'Moonlight Jellies festival at the beach tonight — attend for event cutscene',id:'su28d'},
+  {type:'tomorrow',label:'Fall 1: SC + buy Pumpkin Seeds (100g each). Harvest Wheat on Fall 2, plant Pumpkins immediately.',id:'su28e'},
 ]},
 ],
 
@@ -1179,10 +1161,12 @@ fall:[
   {type:'fire',label:'Harvest Cranberries (second harvest)',id:'fa12b'},
   {type:'fire',label:'🚀 Skull Cavern',id:'fa12c'},
 ]},
-{d:13,name:"Abigail Birthday",tasks:[
-  {type:'plate',label:"Abigail bday ♥ Amethyst / Blackberry Cobbler / Chocolate Cake / Pumpkin / Spicy Eel",id:'fa13a'},
+{d:13,name:"💜 Abigail Birthday",tasks:[
+  {type:'plate',label:"💜 Abigail bday ♥ LOVED: Amethyst / Chocolate Cake / Pumpkin / Spicy Eel — birthday = 640pts (8× a normal gift!)",id:'fa13a'},
   {type:'fire',label:'📋 Traveling Cart FRIDAY — check for Nautilus Shell + Red Cabbage!',id:'fa13b'},
   {type:'fire',label:'🚀 Skull Cavern',id:'fa13c'},
+  {type:'prep',label:"💜 Marriage path check: at 8♥? Give Bouquet from Pierre's (200g) → she becomes girlfriend. Then need 10♥.",id:'fa13d'},
+  {type:'prep',label:'💜 House upgrade: Robin needs 10,000g + 450 wood → kitchen added = marriage eligible',id:'fa13e'},
 ]},
 {d:14,name:"Harvey Birthday + Pumpkins",tasks:[
   {type:'plate',label:"Harvey bday ♥ Coffee / Pickles / Super Meal / Truffle Oil / Wine",id:'fa14a'},
@@ -1229,10 +1213,13 @@ fall:[
   {type:'prep',label:'Building audit: Barn built? Big Barn (12K)? Deluxe Barn for Sheep+Pig (25K)? Animal Products bundle needs Wool + Truffle.',id:'fa21e'},
   {type:'prep',label:'Big Coop (10K) → Ducks (Duck Egg for CC). Deluxe Coop (20K) → Rabbit (Rabbit\'s Foot for CC).',id:'fa21f'},
 ]},
-{d:22,name:'Winter Prep',tasks:[
+{d:22,name:'Winter Prep + Marriage Check',tasks:[
   {type:'fire',label:'🚀 Skull Cavern',id:'fa22a'},
-  {type:'prep',label:'🌿 Buy Winter Seeds from Willy/Pierre for Greenhouse (Snow Yam + Crocus)',id:'fa22b'},
-  {type:'prep',label:'🎁 Missing items review: what CC bundles are still open?',id:'fa22c'},
+  {type:'prep',label:'🌿 Buy Winter Seeds from Willy/Pierre for Greenhouse (Snow Yam + Crocus for CC)',id:'fa22b'},
+  {type:'fire',label:'🎁 Missing items review — which CC bundles are still open? Donate anything ready.',id:'fa22c'},
+  {type:'prep',label:"💜 Marriage check: at 10♥ + have Bouquet given? Buy Mermaid's Pendant from Old Mariner on a RAINY beach day (5,000g)",id:'fa22d'},
+  {type:'prep',label:'💜 House upgrade done? Robin: 10,000g + 450 wood → kitchen = marriage eligible. Start now if not.',id:'fa22e'},
+  {type:'prep',label:'📋 Complete all active journal quests before year end — check quest log',id:'fa22f'},
 ]},
 {d:23,name:'Final Harvest Push',tasks:[
   {type:'fire',label:'Harvest Pumpkins + Cranberries (everything ready before season end)',id:'fa23a'},
@@ -1319,6 +1306,8 @@ winter:[
   {type:'fire',label:'🚀 Skull Cavern — keep stacking income',id:'wi9b'},
   {type:'gather',label:'🎁 Bundle: dig beach DAILY for Nautilus Shell',id:'wi9c'},
   {type:'prep',label:'Keg check — sell artisan wines + pickles',id:'wi9d'},
+  {type:'prep',label:'💜 Abigail gift day: Amethyst / Chocolate Cake / Pumpkin Soup. Keep 2 gifts/week pace.',id:'wi9e'},
+  {type:'prep',label:'📋 Check quest log — complete any active journals. Help Wanted board daily.',id:'wi9f'},
 ]},
 {d:10,name:'Skull Cavern',tasks:[
   {type:'fire',label:'🚀 Skull Cavern',id:'wi10a'},
@@ -1384,7 +1373,10 @@ winter:[
 {d:22,name:'Year End Prep',tasks:[
   {type:'fire',label:'🚀 Skull Cavern',id:'wi22a'},
   {type:'prep',label:'Buy Winter Star gift for your assigned villager',id:'wi22b'},
-  {type:'prep',label:'Plan Year 2: Ginger Island, expand farm, animals for Pantry bundle',id:'wi22c'},
+  {type:'prep',label:'Plan Year 2: Ginger Island, farm expansion, Ancient Fruit seedlings',id:'wi22c'},
+  {type:'prep',label:'💜 Abigail: at 10♥ + Bouquet given? Buy Mermaid\'s Pendant from Old Mariner on a rainy beach day',id:'wi22d'},
+  {type:'fire',label:'📋 Complete ALL active journal quests before year ends — check quest log now',id:'wi22e'},
+  {type:'prep',label:'📋 Pierre\'s Special Orders board: check for any final week orders to complete',id:'wi22f'},
 ]},
 {d:23,name:"Leah Birthday",tasks:[
   {type:'plate',label:"Leah bday ♥ Goat Cheese / Poppyseed Muffin / Salad / Truffle / Wine",id:'wi23a'},
@@ -1891,7 +1883,7 @@ function renderHome(){
 let _dynPrepCache=null, _dynPrepKey='';
 function computeDynamicPrep(tasks, bridge) {
   if (!bridge) return tasks;
-  const key=[bridge.gold,bridge.hasSkullKey,(bridge.buildings||[]).join(','),
+  const key=[S.season,S.day,bridge.gold,bridge.hasSkullKey,(bridge.buildings||[]).join(','),
     bridge.skills?.combat,bridge.skills?.mine,bridge.skills?.fish,
     JSON.stringify(bridge.friendship),!!bridge.storage].join('|');
   if(key===_dynPrepKey&&_dynPrepCache) return [...tasks,..._dynPrepCache];
@@ -2303,7 +2295,7 @@ const SORD={spring:0,summer:1,fall:2,winter:3};
 function daysUntil(bs,bd){
   const ci=SORD[S.season]||0,bi=SORD[bs]||0;
   let d=(bi-ci)*28+(bd-S.day);
-  if(d<=0) d+=112;
+  if(d<0) d+=112;
   return d;
 }
 
@@ -2580,7 +2572,7 @@ function renderHoardCovenant(){
     const hearts=pts!==null&&pts!==undefined?Math.floor(pts/250):null;
     const untilD=daysUntil(npc.bs,npc.bd);
     const bLabel=npc.bs.charAt(0).toUpperCase()+npc.bs.slice(1)+' '+npc.bd;
-    const bdayBadge=untilD<=7?`<span style="font-size:14px;margin-left:2px" title="Birthday in ${untilD} days">🎂</span>`:'';
+    const bdayBadge=untilD===0?'🎂 TODAY':untilD<=7?`<span style="font-size:14px;margin-left:2px" title="Birthday in ${untilD} days">🎂</span>`:'';
     const miniH=Array.from({length:8},(_,i)=>`<span class="heart-sm">${hearts!==null&&i<hearts?hFull:hEmpty}</span>`).join('');
     const milestones=MILESTONES.map(m=>{
       const ok=pts!==null&&pts>=m.pts;
@@ -2678,7 +2670,7 @@ function renderNeighbors(){
     card.innerHTML=`<div class="npc-header">
       <img class="npc-portrait" src="assets/portraits/${npc.k}.png" alt="${npc.n}" onerror="this.outerHTML='<span style=font-size:20px>${npc.e}</span>'">
       <span class="npc-name">${npc.n}</span>
-      <span class="npc-bday-tag">${bLabel}${untilD<=3?' ⚠️':''}<br><span style="color:var(--acc)">${untilD}d away</span></span>
+      <span class="npc-bday-tag">${untilD===0?'🎂 TODAY! ':bLabel}${untilD>0&&untilD<=3?' ⚠️':''}<br><span style="color:var(--acc)">${untilD===0?'':untilD+'d away'}</span></span>
       <div class="npc-hearts-mini">${miniH}</div>
     </div>
     <div class="npc-body">
@@ -2698,36 +2690,62 @@ function renderJunimo(){
   if(!el) return;
   const data=S.bridge;
   if(!data||!data.cc_bundles){
-    // Offline CC checklist — show remaining bundles from save state
-    el.innerHTML=`<div class="room-card" data-open="true">
-      <div class="room-header"><span class="room-title">🌽 CC Completion Checklist</span><span style="font-size:11px;color:var(--muted)">Est. Fall 14–Winter 7</span></div>
-      <div class="room-body">
-        <div style="font-size:12px;color:var(--muted);padding:8px 6px 4px">Bundles remaining — bridge offline, based on Summer 27 save:</div>
-        ${[
-          {name:'Ocean Fish',missing:'Pufferfish · Sardine · Tuna',season:'Summer/Ocean',color:'#5bb8e8'},
-          {name:'Animal Bundle',missing:'Large Milk · Large Egg · Goat Milk · Wool · Duck Egg',season:'Animals (new — give it time)',color:'#e8b55b'},
-          {name:'Artisan Bundle',missing:'Truffle Oil · Cloth · Goat Cheese · Honey · Jelly · Wine + more',season:'Kegs/Buildings',color:'#c47bdb'},
-          {name:'Fall Crops',missing:'1 more: Bok Choy / Yam / Corn / Eggplant',season:'Fall — Pierre\'s',color:'#CAAF77'},
-          {name:'Night Fishing',missing:'1 more: Eel / Squid / Woodskip',season:'Night fishing',color:'#5bb8e8'},
-          {name:'Construction',missing:'Stone × 99 · Hardwood × 10 · Wood × 333',season:'Farm materials',color:'#8B70D8'},
-          {name:'Fall Foraging',missing:'Chanterelle · Common Mushroom · Wild Plum · Hazelnut',season:'🍂 Forage Fall',color:'#CAAF77'},
-          {name:'Winter Foraging',missing:'Snow Yam · Crocus · Nautilus Shell (Traveling Cart!)',season:'❄️ Winter key items',color:'#89A6D3'},
-          {name:'Dye Bundle',missing:'2 more items',season:'Bulletin Board',color:'#e36887'},
-          {name:'Field Research',missing:'2 more items',season:'Bulletin Board',color:'#e36887'},
-          {name:'Enchanter\'s',missing:'2 more items',season:'Bulletin Board',color:'#e36887'},
-          {name:'Fodder Bundle',missing:'2 more items',season:'Bulletin Board',color:'#e36887'},
-        ].map(b=>`<div class="bundle-row">
-          <div class="bundle-top">
-            <div class="bundle-check" style="border-color:${b.color}"></div>
-            <span class="bundle-name">${b.name}</span>
-            <span style="font-size:10px;color:var(--muted)">${b.season}</span>
-          </div>
-          <div class="bundle-chips" style="padding-left:26px">${b.missing.split(' · ').map(m=>`<span class="chip missing">${m}</span>`).join('')}</div>
-        </div>`).join('')}
-      </div>
-    </div>
-    <div class="junimo-offline" style="font-size:11px">Connect bridge for live CC progress ↑ offline checklist above based on save</div>`;
-    return;
+    // Offline: show full CC reference card — all rooms/bundles/items needed
+    const CC_REF=[
+      {room:'🌾 Pantry',bundles:[
+        {name:'Spring Crops',items:'Parsnip · Green Bean · Cauliflower · Potato'},
+        {name:'Summer Crops',items:'Tomato · Hot Pepper · Blueberry · Melon'},
+        {name:'Fall Crops',items:'Corn · Eggplant · Pumpkin · Yam'},
+        {name:'Quality Crops',items:'Gold Parsnip ×5 · Gold Melon ×5 · Gold Pumpkin ×5 · Gold Corn ×5'},
+        {name:'Animal',items:'Large Milk · Egg · Large Egg · Large Goat Milk · Wool · Duck Egg'},
+        {name:'Artisan',items:'Truffle Oil · Cloth · Goat Cheese · Cheese · Honey · Jelly · Apple · Apricot · Orange · Pomegranate · Cherry · Wine'},
+      ]},
+      {room:'🪵 Crafts Room',bundles:[
+        {name:'Spring Foraging',items:'Daffodil · Dandelion · Leek · Wild Horseradish'},
+        {name:'Summer Foraging',items:'Fiddlehead Fern · Grape · Spice Berry · Sweet Pea'},
+        {name:'Fall Foraging',items:'Chanterelle · Common Mushroom · Wild Plum · Hazelnut'},
+        {name:'Winter Foraging',items:'Holly · Crystal Fruit · Snow Yam · Crocus · Nautilus Shell'},
+        {name:'Construction',items:'Wood ×99 · Stone ×99 · Hardwood ×10'},
+        {name:'Exotic Foraging',items:'Coconut · Cactus Fruit · Cave Carrot · Red Mushroom · Purple Mushroom · Maple Syrup · Oak Resin · Pine Tar · Morel'},
+      ]},
+      {room:'🐟 Fish Tank',bundles:[
+        {name:'River Fish',items:'Catfish · Shad · Tiger Trout · Sunfish'},
+        {name:'Lake Fish',items:'Woodskip · Midnight Carp · Largemouth Bass · Bullhead'},
+        {name:'Ocean Fish',items:'Pufferfish · Tuna · Red Snapper · Tilapia'},
+        {name:'Night Fishing',items:'Walleye · Bream · Eel'},
+        {name:'Specialty Fish',items:'Legend · Mutant Carp · Crimsonfish · Angler · Glacierfish'},
+        {name:'Crab Pot',items:'Lobster · Crayfish · Crab · Cockle · Mussel · Shrimp · Clam · Snail · Periwinkle · Oyster'},
+      ]},
+      {room:'⚙️ Boiler Room',bundles:[
+        {name:'Blacksmith',items:'Copper Bar · Iron Bar · Gold Bar'},
+        {name:'Geologist',items:'Quartz · Earth Crystal · Frozen Tear · Fire Quartz'},
+        {name:"Adventurer's",items:'Slime ×99 · Bat Wing ×10 · Solar Essence · Void Essence'},
+      ]},
+      {room:'📋 Bulletin Board',bundles:[
+        {name:"Chef's",items:'Maple Syrup · Fiddlehead Fern · Truffle · Poppy · Maki Roll · Fried Egg'},
+        {name:'Dye',items:'Red Mushroom · Sea Urchin · Sunflower · Duck Feather · Aquamarine · Red Cabbage'},
+        {name:'Field Research',items:'Purple Mushroom · Nautilus Shell · Chub · Frozen Geode'},
+        {name:'Fodder',items:'Wheat ×10 · Hay ×10 · Apple'},
+        {name:"Enchanter's",items:'Oak Resin · Wine · Rabbit\'s Foot · Pomegranate'},
+      ]},
+      {room:'💰 Vault',bundles:[
+        {name:'2,500g donation',items:'2,500g'},
+        {name:'5,000g donation',items:'5,000g'},
+        {name:'10,000g donation',items:'10,000g'},
+        {name:'25,000g donation',items:'25,000g'},
+      ]},
+    ];
+    let html='<div class="junimo-offline" style="font-size:11px;margin-bottom:8px">Bridge offline — reference card shows every item needed for CC</div>';
+    CC_REF.forEach(({room,bundles})=>{
+      html+=`<div class="room-card" data-open="false">
+        <div class="room-header"><span class="room-title">${room}</span><span style="font-size:11px;color:var(--muted)">${bundles.length} bundles</span></div>
+        <div class="room-body">${bundles.map(b=>`<div class="bundle-row">
+          <div class="bundle-top"><div class="bundle-check"></div><span class="bundle-name">${b.name}</span></div>
+          <div class="bundle-chips">${b.items.split(' · ').map(i=>`<span class="chip missing">${i}</span>`).join('')}</div>
+        </div>`).join('')}</div>
+      </div>`;
+    });
+    el.innerHTML=html;
     return;
   }
   const frag=document.createDocumentFragment();
@@ -3418,11 +3436,10 @@ const FISH_LIST=[
   {id:'pike',n:'Pike',src:'River/Mountain (rainy)',season:'summer'},
   {id:'super_cucumber',n:'Super Cucumber',src:'Ocean (night)',season:'summer'},
   {id:'octopus',n:'Octopus',src:'Ocean (day)',season:'summer'},
-  {id:'tigertrout',n:'Tiger Trout',src:'River',season:'fall'},
+  {id:'tigertrout',n:'Tiger Trout',src:'River (Fall/Winter, Fishing 5+)',season:'fall'},
   {id:'walleye',n:'Walleye',src:'River/Lake (rainy)',season:'fall'},
   {id:'salmon',n:'Salmon',src:'River',season:'fall'},
   {id:'albacore',n:'Albacore',src:'Ocean',season:'fall'},
-  {id:'tiger_trout',n:'Tiger Trout',src:'River (fall)',season:'fall'},
   {id:'woodskip',n:'Woodskip',src:'Secret Woods',season:'all'},
   {id:'lingcod',n:'Lingcod',src:'River (winter)',season:'winter'},
   {id:'squid',n:'Squid',src:'Ocean (night, winter)',season:'winter'},
@@ -3632,7 +3649,7 @@ function clearRunData(){
     if(k.startsWith('sdv_t_')||k.startsWith('sdv_par_')||k.startsWith('sdv_c_')||
        k==='sdv_pts_ord'||k==='sdv_lsync_v2'||k==='sdv_day_override') toRemove.push(k);
     // Namespaced progress keys (qm_* milestones, marry_* checklist, mq_* main quest)
-    if(k.startsWith('sdv:')&&(k.includes(':qm_')||k.includes(':marry_')||k.includes(':mq_'))) toRemove.push(k);
+    if(k.startsWith('sdv:')&&(k.includes(':qm_')||k.includes(':marry_')||k.includes(':mq_')||k.includes(':gpa_'))) toRemove.push(k);
   }
   toRemove.forEach(k=>localStorage.removeItem(k));
 }
@@ -3649,7 +3666,7 @@ function stampPastTasks(){
 
   // New game detected: current day is significantly before last tracked day.
   // (e.g. restarting from Spring 1 when we were on Summer 27)
-  if(lastOrd>curOrd+1&&lastOrd>7){
+  if(lastOrd>curOrd+1&&lastOrd>0){
     clearRunData();
     lastOrd=0;
   }
@@ -3883,7 +3900,6 @@ function refreshData(){
 }
 document.addEventListener('visibilitychange',()=>{if(!document.hidden) refreshData();});
 window.addEventListener('focus',refreshData);
-setInterval(()=>fetchBridge(),60000);
 
 function goPanel(tab){
   S.tab=tab;

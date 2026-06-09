@@ -11,8 +11,8 @@ Interactive Year 1 Stardew Valley min-max tracker suite.
 ## Device Setup
 - MacBook Air M1 + iPhone 15 (Safari + web app mode)
 - Playstyle: Min-max Year 1 (fishing + Skull Cavern → Iridium Bars → Starfruit)
-- Target: ~5 million gold by Summer 28
-- Seed: `203853699`
+- Target: ~5 million gold by Summer 28, CC complete Year 1, marry Abigail post-Year 1
+- Seed: random (no fixed seed)
 
 ## Current State
 Single `index.html` (~128KB) with all features built. Needs optimization for mobile + web app mode.
@@ -24,7 +24,7 @@ Single `index.html` (~128KB) with all features built. Needs optimization for mob
 ### 🔵 Route 66 — Daily Efficiency Checklist
 **Tabs:**
 - **Prep/Fire/Plate** — Today's tasks sorted by urgency (fire=urgent, prep=setup, plate=gather)
-- **It Is Wednesday My Dudes 🐸** — Calendar (festivals, birthdays, weather flags hardcoded from seed 203853699)
+- **It Is Wednesday My Dudes 🐸** — Calendar (festivals, birthdays)
 - **Are We There Yet? 🗺️** — Par check (gold/skills/ore vs targets, green/yellow/red status)
 - **🚨 Never Forget 🚨** — Carryover (unchecked tasks auto-roll to next day with "[X carryover]" badge)
 
