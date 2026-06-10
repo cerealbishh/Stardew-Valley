@@ -426,18 +426,36 @@ def parse_save():
         donated += 1
     out["museumDonations"] = donated
 
-    # Active quests currently in questLog
+    # Active quests currently in questLog (journal + Help Wanted board)
     active_quests = []
     for q in root.findall(".//player/questLog/Quest"):
-        id_el = q.find("id") if q.find("id") is not None else q.find("questID")
-        title_el = q.find("questTitle") or q.find("title")
+        id_el      = q.find("id") or q.find("questID")
+        # Help Wanted quests store title in _questTitle; story quests use questTitle/title
+        title_el   = q.find("questTitle") or q.find("title") or q.find("_questTitle")
+        obj_el     = q.find("_currentObjective")
         completed_el = q.find("completed")
-        if title_el is not None and title_el.text:
-            active_quests.append({
-                "id": int(id_el.text or 0) if id_el is not None else 0,
-                "title": title_el.text,
-                "done": completed_el is not None and completed_el.text == "true"
-            })
+        daily_el   = q.find("dailyQuest")
+        days_el    = q.find("daysLeft")
+        reward_el  = q.find("moneyReward")
+        item_el    = q.find("itemIndex")
+        req_el     = q.find("requester") or q.find("target")
+        number_el  = q.find("number")
+
+        if title_el is None or not title_el.text:
+            continue
+
+        active_quests.append({
+            "id":        int(id_el.text or 0) if id_el is not None else 0,
+            "title":     title_el.text,
+            "objective": obj_el.text if obj_el is not None else None,
+            "done":      completed_el is not None and completed_el.text == "true",
+            "daily":     daily_el is not None and daily_el.text == "true",
+            "daysLeft":  int(days_el.text or 0) if days_el is not None else None,
+            "reward":    int(reward_el.text or 0) if reward_el is not None else 0,
+            "item":      item_el.text if item_el is not None else None,
+            "requester": req_el.text if req_el is not None else None,
+            "number":    int(number_el.text or 1) if number_el is not None else 1,
+        })
     out["activeQuests"] = active_quests
 
     # Special Orders (Pierre's board + Qi's board) — stored separately from questLog

@@ -2027,6 +2027,11 @@ function computeDynamicPrep(tasks, bridge) {
   if([1,8,15,22].includes(S.day)){
     extra.push({type:'fire',label:'📋 Special Orders board reset TODAY (Monday) — check left of Pierre\'s for new weekly orders',id:'dyn_so_monday'});
   }
+  // Help Wanted quests expiring today or tomorrow → fire task
+  (bridge.activeQuests||[]).filter(q=>q.daily&&!q.done&&q.daysLeft<=1).forEach(q=>{
+    extra.push({type:'fire',label:`📋 Help Wanted expires TODAY: "${q.title}"${q.objective?' — '+q.objective:''}${q.reward?' (+'+q.reward+'g)':''}`,id:'dyn_hw_'+q.id});
+  });
+
   const activeSO=bridge.specialOrders||[];
   activeSO.filter(o=>!o.done).forEach(o=>{
     const progress=o.objectives.map(obj=>obj.required>0?` ${obj.current}/${obj.required}`:''  ).join('');
@@ -2539,18 +2544,49 @@ function renderQuests(){
   }
   html+='</div>';
 
-  // ── Active Journal Quests ─────────────────────────────────────────────────
-  const aq=S.bridge&&S.bridge.activeQuests;
-  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('sword-wood')}Active Journal</div>`;
+  // ── Help Wanted Board (daily quests) ─────────────────────────────────────
+  const aq=S.bridge&&S.bridge.activeQuests||[];
+  const helpWanted=aq.filter(q=>q.daily);
+  const storyQuests=aq.filter(q=>!q.daily);
+
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('sword-wood')}Help Wanted</div>`;
   if(!S.bridge){
-    html+='<div class="quest-row" style="color:var(--muted);font-size:12px">Connect bridge to see active quests</div>';
-  } else if(aq&&aq.length){
-    aq.forEach(q=>{
-      const cls=q.done?'qs-done':'qs-active';
-      html+=`<div class="quest-row"><span class="quest-status ${cls}">${q.done?'Done':'Active'}</span><span>${q.title}</span></div>`;
+    html+=`<div class="quest-row" style="color:var(--muted);font-size:12px">Connect bridge to see board quests</div>
+           <div class="quest-row" style="color:var(--muted);font-size:11px;padding-top:0">Check bulletin board outside Pierre's each morning</div>`;
+  } else if(helpWanted.length){
+    helpWanted.forEach(q=>{
+      const cls=q.done?'qs-done':q.daysLeft===1?'qs-active':'qs-active';
+      const urgency=q.daysLeft===1?'color:var(--t-fire);font-weight:700':q.daysLeft===2?'color:var(--butter)':'';
+      const days=q.daysLeft!=null?`<span style="font-size:10px;${urgency};margin-left:auto">${q.daysLeft}d left</span>`:'';
+      const reward=q.reward>0?`<span style="font-size:10px;color:var(--acc);margin-left:6px">+${q.reward}g</span>`:'';
+      const obj=q.objective?`<div style="font-size:11px;color:var(--muted);padding:1px 0 3px 28px">${q.objective}</div>`:'';
+      html+=`<div class="quest-row" style="flex-direction:column;align-items:flex-start;gap:0">
+        <div style="display:flex;align-items:center;gap:8px;width:100%">
+          <span class="quest-status ${cls}">${q.done?'Done':'Active'}</span>
+          <span style="font-weight:700;flex:1">${q.title}</span>${reward}${days}
+        </div>${obj}</div>`;
     });
   } else {
-    html+='<div class="quest-row" style="color:var(--muted);font-size:12px">No active quests in journal</div>';
+    html+='<div class="quest-row" style="color:var(--muted);font-size:12px">No Help Wanted quests accepted</div>';
+  }
+  html+='</div>';
+
+  // ── Story / Journal Quests ────────────────────────────────────────────────
+  html+=`<div class="unlock-section"><div class="unlock-sec-title">${si('item-ancient-fruit')}Journal</div>`;
+  if(!S.bridge){
+    html+='<div class="quest-row" style="color:var(--muted);font-size:12px">Connect bridge to see journal</div>';
+  } else if(storyQuests.length){
+    storyQuests.forEach(q=>{
+      const cls=q.done?'qs-done':'qs-active';
+      const obj=q.objective?`<div style="font-size:11px;color:var(--muted);padding:1px 0 3px 28px">${q.objective}</div>`:'';
+      html+=`<div class="quest-row" style="flex-direction:column;align-items:flex-start;gap:0">
+        <div style="display:flex;align-items:center;gap:8px;width:100%">
+          <span class="quest-status ${cls}">${q.done?'Done':'Active'}</span>
+          <span>${q.title}</span>
+        </div>${obj}</div>`;
+    });
+  } else {
+    html+='<div class="quest-row" style="color:var(--muted);font-size:12px">No active journal quests</div>';
   }
   html+='</div>';
 
