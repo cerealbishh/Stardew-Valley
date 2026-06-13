@@ -798,17 +798,17 @@ spring:[
   {type:'purchase',label:"Pierre's — buy 1 Bean Starter (60g) + 1 Cauliflower (80g) + 1 Potato (50g) + 16 Kale Seeds (1,120g)",id:'sp5b'},
   {type:'fire',label:'Plant + water all new seeds on the farm',id:'sp5c'},
   {type:'fire',label:'Mountain lake fishing until 2AM. Smelt iron bars while fishing.',id:'sp5d'},
-  {type:'prep',label:'Need 5 iron bars for steel pickaxe on Spring 7',id:'sp5e'},
+  {type:'prep',label:'Mine floors 40–79 with copper pick for iron ore — need 5 Iron Bars for Steel Pickaxe',id:'sp5e'},
 ]},
 {d:6,name:'Fish + Smelt Iron',tasks:[
   {type:'fire',label:'Mountain lake fishing until 1AM',id:'sp6a'},
-  {type:'prep',label:'Smelt iron bars. Need 5 for steel pickaxe tomorrow.',id:'sp6b'},
+  {type:'prep',label:'Smelt Iron Bars from yesterday\'s ore — need 5 total for Steel Pickaxe',id:'sp6b'},
   {type:'tomorrow',label:"Wizard's letter should arrive — DON'T skip the cutscene (walk through it)",id:'sp6c'},
 ]},
-{d:7,name:"Lewis Birthday + Steel Pickaxe + Wizard",tasks:[
+{d:7,name:"Lewis Birthday + Wizard Tower",tasks:[
   {type:'plate',label:"🎂 Lewis — Leek / Daffodil / gem",id:'sp7a'},
   {type:'fire',label:"Get Wizard's letter, go to Wizard's Tower — watch CC cutscene, DO NOT skip",id:'sp7b'},
-  {type:'fire',label:'Upgrade to Steel Pickaxe at Clint (5,000g)',id:'sp7c'},
+  {type:'prep',label:'Steel Pickaxe when ready: 5 Iron Bars + 5,000g at Clint (2-day wait). Dynamic task fires when you have both.',id:'sp7c'},
   {type:'fire',label:'Mountain lake fishing until 2AM',id:'sp7d'},
   {type:'plate',label:'💜 Amethyst / Chocolate Cake → Abigail',id:'sp7_abigail'},
 ]},
@@ -816,20 +816,20 @@ spring:[
   {type:'fire',label:'🌧️ RAIN (predicted) — Cindersap Forest river all day. Catfish = 200–250g each, best gold/hr.',id:'sp8_rain'},
   {type:'prep',label:'If cave upgrade offered: choose MUSHROOMS — faster restock, better energy food, more value',id:'sp8a'},
 ]},
-{d:9,name:'Gold Pickaxe + Large Pack',tasks:[
-  {type:'fire',label:'Retrieve Steel Pickaxe from Clint, upgrade to Gold Pickaxe (10,000g)',id:'sp9a'},
+{d:9,name:'Large Pack + Fish',tasks:[
+  {type:'prep',label:'Retrieve Steel Pickaxe from Clint if you submitted Spring 7',id:'sp9a'},
   {type:'purchase',label:'Buy Large Pack from Pierre (2,000g) — 36 inventory slots',id:'sp9b'},
   {type:'fire',label:'Mountain lake fishing until 2AM',id:'sp9c'},
-  {type:'prep',label:'Should hit Fishing 10 today or tomorrow — choose Angler profession (+50% fish value)',id:'sp9d'},
+  {type:'prep',label:'Fishing 10 target — choose Angler profession (+50% fish value) when you hit it',id:'sp9d'},
 ]},
-{d:10,name:"🌧️ Rain — Vincent Bday + Kale",tasks:[
+{d:10,name:"🌧️ Rain — Vincent Bday + Catfish",tasks:[
   {type:'fire',label:'🌧️ RAIN (predicted) — fish Cindersap Forest river for Catfish all day',id:'sp10_rain'},
   {type:'plate',label:"🎂 Vincent — Daffodil / Earth Crystal / Parsnip",id:'sp10a'},
-  {type:'fire',label:'Retrieve Gold Pickaxe from Clint',id:'sp10b'},
-  {type:'purchase',label:'Buy ~86 Kale Seeds (6,020g) from Pierre — first batch toward Farming 6',id:'sp10c'},
+  {type:'prep',label:'Retrieve pickaxe from Clint if submitted 2 days ago',id:'sp10b'},
 ]},
-{d:11,name:'Harvest Kale + Start Mining',tasks:[
+{d:11,name:'Harvest Kale + Buy Batch 1 + Start Mining',tasks:[
   {type:'fire',label:'Harvest all Kale → should reach Farming 2',id:'sp11a'},
+  {type:'purchase',label:"Buy ~86 Kale Seeds (6,020g) from Pierre — batch 1 toward Farming 6 (Pierre open Thu–Tue)",id:'sp10c'},
   {type:'fire',label:'Hoe farm in Quality Sprinkler pattern (do NOT water — sprinklers coming)',id:'sp11b'},
   {type:'fire',label:'GO TO THE MINES. Mining push starts today. Bring furnace.',id:'sp11c'},
   {type:'prep',label:'Every new elevator floor: return to 0F, empty inventory, restock furnaces',id:'sp11d'},
@@ -1987,6 +1987,28 @@ function computeDynamicPrep(tasks, bridge) {
   const fishing = bridge.skills?.fish ?? 0;
   if (fishing < 9) {
     extra.push({type:'prep', label:`Fishing ${fishing}/10 — one more level for Master Angler`, id:'dyn_fish'});
+  }
+  // ── Pickaxe upgrades: only fire when you actually have the gold + bars ──
+  {
+    const pick=bridge.toolLevels?.Pickaxe??0;
+    const gld=bridge.gold??0;
+    const stor=bridge.storage??{};
+    const cBars=stor.any_copperbar??0;
+    const iBars=stor.any_ironbar??0;
+    const gBars=stor.any_goldbar??0;
+    const irBars=stor.ds_iridiumbar??0;
+    if(pick<1){
+      if(gld>=2000&&cBars>=5) extra.push({type:'fire',label:'🔨 READY: Copper Pickaxe — bring 5 Copper Bars to Clint + 2,000g',id:'dyn_pick_copper'});
+      else extra.push({type:'prep',label:`Copper Pickaxe goal: 5 Copper Bars (have ${cBars}) + 2,000g (have ${gld}g)`,id:'dyn_goal_copper'});
+    } else if(pick===1){
+      if(gld>=5000&&iBars>=5) extra.push({type:'fire',label:'🔨 READY: Steel Pickaxe — bring 5 Iron Bars to Clint + 5,000g',id:'dyn_pick_steel'});
+      else extra.push({type:'prep',label:`Steel Pickaxe goal: 5 Iron Bars (have ${iBars}) + 5,000g (have ${gld}g)`,id:'dyn_goal_steel'});
+    } else if(pick===2){
+      if(gld>=10000&&gBars>=5) extra.push({type:'fire',label:'🔨 READY: Gold Pickaxe — bring 5 Gold Bars to Clint + 10,000g',id:'dyn_pick_gold'});
+      else extra.push({type:'prep',label:`Gold Pickaxe goal: 5 Gold Bars (have ${gBars}) + 10,000g (have ${gld}g)`,id:'dyn_goal_gold'});
+    } else if(pick===3){
+      if(gld>=25000&&irBars>=5) extra.push({type:'fire',label:'🔨 READY: Iridium Pickaxe — bring 5 Iridium Bars to Clint + 25,000g',id:'dyn_pick_irid'});
+    }
   }
   const summerCropsBundle = (bridge.cc_bundles ?? [])
     .flatMap(r => r.bundles ?? [])
