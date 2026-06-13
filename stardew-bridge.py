@@ -14,7 +14,7 @@ import urllib.error
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
-SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/HoeDown_440710266/HoeDown_440710266"
+SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/HoeDown_382994277/HoeDown_382994277"
 PORT = 8742
 POLL_INTERVAL = 5
 _BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -129,6 +129,12 @@ HOARD_ITEM_MAP = {
     # Artisan / Enchanter's bundle items
     "Cloth": "any_cloth", "Goat Cheese": "any_goatcheese",
     "Sweet Gem Berry": "q_sweetgemberry",
+    # Home Cook bundle (bundle 36, 1.6)
+    "Tom Kha Soup": "hc_tomkha", "Blackberry Cobbler": "hc_blackberrycobbler",
+    "Fish Taco": "hc_fishtaco", "Omelet": "hc_omelet",
+    "Fried Eel": "hc_friedeel", "Cranberry Sauce": "hc_cranberrysauce",
+    # Artisan extras
+    "Cherry": "hc_cherry", "Apricot": "hc_apricot", "Orange": "hc_orange",
 }
 
 CC_BUNDLE_MAP = {
@@ -139,8 +145,9 @@ CC_BUNDLE_MAP = {
     3:  ["sp_parsnip","su_melon","fa_pumpkin","su_corn"],               # Quality Crops (⚠ gold quality not tracked)
     4:  ["hard_largeeggw","hard_largemilk","hard_largeeggb",            # Animal
          "hard_goatmilk","hard_wool","hard_duckegg"],
-    5:  ["truffle_oil","any_cloth","any_goatcheese","any_cheese",       # Artisan (need 4 of listed)
-         "any_honey","any_jelly","fa_apple","fa_pomegranate","q_sweetgemberry"],
+    5:  ["truffle_oil","any_cloth","any_goatcheese","any_cheese",       # Artisan (need 6 of listed)
+         "any_honey","any_jelly","fa_apple","fa_pomegranate",
+         "hc_cherry","hc_apricot","hc_orange","q_sweetgemberry"],
     # ── FISH TANK ────────────────────────────────────────────────────────────
     6:  ["any_sunfish","sp_catfish","any_shad"],                        # River Fish
     7:  ["any_bass","any_carp","any_bullhead","any_woodskip"],          # Lake Fish
@@ -169,6 +176,8 @@ CC_BUNDLE_MAP = {
     34: ["any_redmush","any_seaurchin","su_sunflower","hard_duckfeather",  # Dye
          "any_aquamarine","hard_redcabbage"],
     35: ["su_wheat10","any_hay","fa_apple"],                           # Fodder
+    36: ["hc_tomkha","hc_blackberrycobbler","hc_fishtaco",             # Home Cook (need 3 of 6)
+         "hc_omelet","hc_friedeel","hc_cranberrysauce"],
 }
 
 SEASONS = ["spring", "summer", "fall", "winter"]
@@ -182,7 +191,7 @@ BUNDLE_NAMES = {
     16:"Winter Foraging", 17:"Construction", 19:"Exotic Foraging",
     20:"Blacksmith's", 21:"Geologist's", 22:"Adventurer's",
     23:"2,500g", 24:"5,000g", 25:"10,000g", 26:"25,000g",
-    31:"Chef's", 32:"Field Research", 33:"Enchanter's", 34:"Dye", 35:"Fodder",
+    31:"Chef's", 32:"Field Research", 33:"Enchanter's", 34:"Dye", 35:"Fodder", 36:"Home Cook",
 }
 BUNDLE_ROOMS = {
     0:"Pantry",1:"Pantry",2:"Pantry",3:"Pantry",4:"Pantry",5:"Pantry",
@@ -190,7 +199,7 @@ BUNDLE_ROOMS = {
     13:"Crafts Room",14:"Crafts Room",15:"Crafts Room",16:"Crafts Room",17:"Crafts Room",19:"Crafts Room",
     20:"Boiler Room",21:"Boiler Room",22:"Boiler Room",
     23:"Vault",24:"Vault",25:"Vault",26:"Vault",
-    31:"Bulletin Board",32:"Bulletin Board",33:"Bulletin Board",34:"Bulletin Board",35:"Bulletin Board",
+    31:"Bulletin Board",32:"Bulletin Board",33:"Bulletin Board",34:"Bulletin Board",35:"Bulletin Board",36:"Bulletin Board",
 }
 ROOM_ORDER = ["Pantry","Crafts Room","Fish Tank","Boiler Room","Bulletin Board","Vault"]
 ROOM_EMOJI = {"Pantry":"🌽","Crafts Room":"🌲","Fish Tank":"🐟",
@@ -232,6 +241,12 @@ HOARD_CODE_NAMES = {
     "hard_redcabbage":"Red Cabbage","hard_duckfeather":"Duck Feather","hard_truffle":"Truffle",
     "truffle_oil":"Truffle Oil","q_rabbitsfoot":"Rabbit's Foot","q_sweetgemberry":"Sweet Gem Berry",
     "vault_2500":"2,500g","vault_5000":"5,000g","vault_10000":"10,000g","vault_25000":"25,000g",
+    # Artisan extras (1.6)
+    "hc_cherry":"Cherry","hc_apricot":"Apricot","hc_orange":"Orange",
+    # Home Cook bundle (bundle 36, 1.6)
+    "hc_tomkha":"Tom Kha Soup","hc_blackberrycobbler":"Blackberry Cobbler",
+    "hc_fishtaco":"Fish Taco","hc_omelet":"Omelet",
+    "hc_friedeel":"Fried Eel","hc_cranberrysauce":"Cranberry Sauce",
 }
 
 
@@ -309,17 +324,20 @@ def parse_save():
             if idx < len(exp_list):
                 out["skills"][skill_id] = xp_to_level(int(exp_list[idx].text or 0))
 
-    for entry in root.findall(".//friendships/item"):
-        key_el = entry.find("key/string")
-        pts_el = entry.find("value/Friendship/Points")
-        gifts_el = entry.find("value/Friendship/GiftsThisWeek")
-        if key_el is not None and pts_el is not None:
-            name = key_el.text
-            if name in FRIENDSHIP_NPCS:
-                nk = name.lower()
-                out["friendship"][nk] = int(pts_el.text or 0)
-                if gifts_el is not None:
-                    out.setdefault("giftsThisWeek", {})[nk] = int(gifts_el.text or 0)
+    # SV 1.6: friendship data moved from .//friendships to player/friendshipData
+    _frnd_paths = [".//player/friendshipData/item", ".//friendships/item"]
+    for path in _frnd_paths:
+        for entry in root.findall(path):
+            key_el = entry.find("key/string")
+            pts_el = entry.find("value/Friendship/Points")
+            gifts_el = entry.find("value/Friendship/GiftsThisWeek")
+            if key_el is not None and pts_el is not None:
+                name = key_el.text
+                if name in FRIENDSHIP_NPCS:
+                    nk = name.lower()
+                    out["friendship"][nk] = int(pts_el.text or 0)
+                    if gifts_el is not None:
+                        out.setdefault("giftsThisWeek", {})[nk] = int(gifts_el.text or 0)
 
     inv_counts = {}
     for item in root.findall(".//player/items/Item"):
@@ -374,19 +392,21 @@ def parse_save():
     out["storage"] = storage
 
     vault_map = {23:"vault_2500", 24:"vault_5000", 25:"vault_10000", 26:"vault_25000"}
+    # Pre-parse bundleRewards for hoard_done (accurate for partial-donation bundles)
+    bundle_rewards_done = {}
+    for item in root.findall(".//bundleRewards/item"):
+        k = item.find("key/int")
+        v = item.find("value/boolean")
+        if k is not None and v is not None:
+            bundle_rewards_done[int(k.text or -1)] = (v.text == 'true')
     hoard_done = set()
-    for bundle_el in root.findall(".//bundles/item"):
-        key_el  = bundle_el.find("key/int")
-        val_els = bundle_el.findall("value/ArrayOfBoolean/boolean")
-        if key_el is None: continue
-        bundle_id = int(key_el.text or -1)
-        if not val_els: continue
-        all_done = all(v.text == 'true' for v in val_els)
-        if all_done and bundle_id in CC_BUNDLE_MAP:
-            for hid in CC_BUNDLE_MAP[bundle_id]:
+    for bundle_id, hids in CC_BUNDLE_MAP.items():
+        if bundle_rewards_done.get(bundle_id, False):
+            for hid in hids:
                 hoard_done.add(hid)
-        if bundle_id in vault_map and all_done:
-            hoard_done.add(vault_map[bundle_id])
+    for bid, vk in vault_map.items():
+        if bundle_rewards_done.get(bid, False):
+            hoard_done.add(vk)
     out["hoard_done"] = list(hoard_done)
 
     mail = set()
@@ -487,14 +507,18 @@ def parse_save():
     out["completedSpecialOrders"] = completed_so
 
     # Tool upgrade levels: 0=Basic 1=Copper 2=Iron 3=Gold 4=Iridium
+    # Scan both player inventory and chests (players often store tools in a chest)
     tool_levels = {}
-    for item in root.findall(".//player/items/Item"):
-        name_el = item.find("name")
-        upgrade_el = item.find("upgradeLevel")
-        if name_el is not None and name_el.text and upgrade_el is not None:
-            n = name_el.text
-            if n in ("Pickaxe", "Axe", "Hoe", "Watering Can"):
-                tool_levels[n] = int(upgrade_el.text or 0)
+    _tool_paths = [".//player/items/Item", ".//objects/item/value/Object/items/Item"]
+    for path in _tool_paths:
+        for item in root.findall(path):
+            name_el = item.find("name")
+            upgrade_el = item.find("upgradeLevel")
+            if name_el is not None and name_el.text and upgrade_el is not None:
+                n = name_el.text
+                if n in ("Pickaxe", "Axe", "Hoe", "Watering Can"):
+                    lvl = int(upgrade_el.text or 0)
+                    tool_levels[n] = max(tool_levels.get(n, 0), lvl)
     out["toolLevels"] = tool_levels
 
     house_el = root.find(".//player/houseUpgradeLevel")
@@ -519,22 +543,31 @@ def parse_save():
     out["under_construction"] = under_construction
 
     hearts8plus = 0
-    for entry in root.findall(".//friendships/item"):
-        pts_el = entry.find("value/Friendship/Points")
-        if pts_el is not None:
-            if int(pts_el.text or 0) >= 2000:
-                hearts8plus += 1
+    for path in _frnd_paths:
+        for entry in root.findall(path):
+            pts_el = entry.find("value/Friendship/Points")
+            if pts_el is not None:
+                if int(pts_el.text or 0) >= 2000:
+                    hearts8plus += 1
     out["npcsAt8Hearts"] = hearts8plus
 
     # ── CC BUNDLES (structured for Junimo Feed) ──────────────────────────────
+    # bundleRewards tracks true completion (handles "pick X of Y" bundles correctly)
     bundle_done = {}
-    slot_donated = {}  # {(bundle_id, slot_idx): bool} — per-slot donation status
+    for item in root.findall(".//bundleRewards/item"):
+        k = item.find("key/int")
+        v = item.find("value/boolean")
+        if k is not None and v is not None:
+            bundle_done[int(k.text or -1)] = (v.text == 'true')
+
+    # SV 1.6 stores 3 booleans per item slot in the ArrayOfBoolean.
+    # Slot for item i is at index i*3 (triples represent item+quantity+quality).
+    slot_donated = {}  # {(bundle_id, item_idx): bool}
     for bundle_el in root.findall(".//bundles/item"):
         key_el  = bundle_el.find("key/int")
         val_els = bundle_el.findall("value/ArrayOfBoolean/boolean")
         if key_el is None or not val_els: continue
         bid = int(key_el.text or -1)
-        bundle_done[bid] = all(v.text == 'true' for v in val_els)
         for i, v in enumerate(val_els):
             slot_donated[(bid, i)] = (v.text == 'true')
 
@@ -551,7 +584,7 @@ def parse_save():
             items = [vault_map[bid]]
         # have=True if this specific slot was individually donated OR item is in inventory/chest
         slots = [{"code": c, "name": HOARD_CODE_NAMES.get(c, c),
-                  "have": slot_donated.get((bid, i), False) or c in hoard_have_set}
+                  "have": slot_donated.get((bid, i * 3), False) or c in hoard_have_set}
                  for i, c in enumerate(items)]
         room_map[room]["bundles"].append({
             "id": bid, "name": BUNDLE_NAMES.get(bid, f"Bundle {bid}"),
