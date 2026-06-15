@@ -825,6 +825,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
 if __name__ == "__main__":
     if os.path.exists(SAVE_PATH):
         latest_data = parse_save()
+        # Push immediately on startup so phone gets current data right away
+        threading.Thread(target=push_to_gist, args=(latest_data,), daemon=True).start()
     else:
         latest_data = {"error": "Save file not found yet."}
 
