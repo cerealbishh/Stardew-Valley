@@ -794,7 +794,7 @@ spring:[
   {type:'prep',label:'If it rains tomorrow → fish forest river instead of mountain lake (catfish!)',id:'sp4d'},
 ]},
 {d:5,name:'⚠️ Copper Pickaxe (before 4pm!)',tasks:[
-  {type:'fire',label:'⚠️ SMELT 5 Copper Bars BEFORE 3pm — deliver to Clint, upgrade to Copper Pickaxe (2,000g)',id:'sp5a'},
+  {type:'fire',label:'⚠️ SMELT 5 Copper Bars — deliver to Clint before 4pm, upgrade to Copper Pickaxe (2,000g)',id:'sp5a'},
   {type:'purchase',label:"Pierre's — buy 1 Bean Starter (60g) + 1 Cauliflower (80g) + 1 Potato (50g) + 16 Kale Seeds (1,120g)",id:'sp5b'},
   {type:'fire',label:'Plant + water all new seeds on the farm',id:'sp5c'},
   {type:'fire',label:'Mountain lake fishing until 2AM. Smelt iron bars while fishing.',id:'sp5d'},
@@ -877,7 +877,7 @@ spring:[
 {d:19,name:'SC Runs Begin',tasks:[
   {type:'fire',label:'🚀 Skull Cavern — good luck day: go deep. Bad luck day: mine floor 80 for gold.',id:'sp19a'},
   {type:'gather',label:'Keep Jade (→ Staircases Sunday), Emerald (→ Cheese Friday), Ruby (→ Spicy Eel)',id:'sp19b'},
-  {type:'prep',label:'Do NOT sell Iridium Bars yet — wait for Mining 10 Blacksmith (1,000g vs 667g)',id:'sp19c'},
+  {type:'prep',label:'Do NOT sell Iridium Bars yet — wait for Mining 10 + Blacksmith profession (1,500g vs 1,000g)',id:'sp19c'},
 ]},
 {d:20,name:'Harvest Kale + Plant Batch 2',tasks:[
   {type:'fire',label:'Harvest kale batch 1',id:'sp20a'},
@@ -898,22 +898,22 @@ spring:[
   {type:'fire',label:'☀️ If sunny: 🚀 SC run',id:'sp23b'},
   {type:'prep',label:'Retrieve Copper Axe from Clint',id:'sp23c'},
 ]},
-{d:24,name:'🌸 Flower Dance + Steel Axe',tasks:[
-  {type:'prep',label:'Flower Dance today (Cindersap Forest, 9am–2pm) — optional to attend. Clint & Pierre closed during festival hours.',id:'sp24_dance'},
-  {type:'fire',label:'Drop Axe at Clint for Steel upgrade (5,000g) — morning before 9am if possible, or skip dance',id:'sp24a'},
-  {type:'fire',label:'🚀 SC run',id:'sp24b'},
+{d:24,name:'🌸 Flower Dance (Clint + Pierre closed)',tasks:[
+  {type:'prep',label:'Flower Dance today (Cindersap Forest, 9am–2pm). Clint + Pierre both closed — axe pickup moves to tomorrow.',id:'sp24_dance'},
+  {type:'fire',label:'🚀 SC run — Flower Dance is optional, SC is better gold',id:'sp24b'},
 ]},
-{d:25,name:'SC + Oasis Planning',tasks:[
+{d:25,name:'Retrieve Copper Axe + Submit Steel',tasks:[
+  {type:'fire',label:'Retrieve Copper Axe from Clint (submitted Spring 22) + drop for Steel upgrade (5,000g) — retrieve Spring 27',id:'sp24a'},
   {type:'fire',label:'🚀 SC or catfish if rain',id:'sp25a'},
-  {type:'prep',label:'Plan Starfruit count for Summer 2. Target 400–500 seeds + matching Deluxe Speed-Gro.',id:'sp25b'},
-  {type:'prep',label:'Oasis (Sandy) sells Deluxe Speed-Gro (80g) every day — go whenever bus is fixed, not Thursday-specific.',id:'sp25c'},
+  {type:'prep',label:'Plan Starfruit count for Summer 2. Target 400–500 seeds + Deluxe Speed-Gro.',id:'sp25b'},
+  {type:'prep',label:'Oasis (Sandy) sells Deluxe Speed-Gro (80g) every day — go whenever bus is fixed.',id:'sp25c'},
 ]},
 {d:26,name:"Pierre Birthday + SC",tasks:[
   {type:'plate',label:"🎂 Pierre — Daffodil / Dandelion",id:'sp26a'},
-  {type:'fire',label:'Retrieve Steel Axe from Clint',id:'sp26b'},
   {type:'fire',label:'🚀 SC run',id:'sp26c'},
 ]},
-{d:27,name:"Emily Birthday + Harvest Kale",tasks:[
+{d:27,name:"Emily Birthday + Retrieve Steel Axe + Harvest",tasks:[
+  {type:'fire',label:'Retrieve Steel Axe from Clint (submitted Spring 25)',id:'sp26b'},
   {type:'fire',label:'Harvest second kale batch → should hit Farming 6',id:'sp27a'},
   {type:'plate',label:"🎂 Emily — Amethyst / Aquamarine",id:'sp27b'},
   {type:'fire',label:'🚀 SC run',id:'sp27c'},
@@ -938,18 +938,19 @@ summer:[
   {type:'fire',label:'Scythe Parsnip linger crop first if planted Spring 28',id:'su2a'},
   {type:'fire',label:'Warp Desert 6AM → buy Deluxe Speed-Gro (80g) + Starfruit Seeds (400g each) at Oasis',id:'su2b'},
   {type:'fire',label:'Plant all Starfruit + Speed-Gro immediately — fills whole farm',id:'su2c'},
-  {type:'prep',label:'Craft 10–20 Lightning Rods — Summer 13 + Summer 26 are guaranteed storm days',id:'su2d'},
+  {type:'prep',label:'Craft 10–20 Lightning Rods — Summer 13 is guaranteed storm; Summer 26 often storms too',id:'su2d'},
   {type:'prep',label:'Plant Acorns in a corner — building Oak Tree forest for Oak Resin → Kegs later',id:'su2e'},
 ]},
-{d:3,name:'🌧️ Rain — SC + Iridium Pickaxe',tasks:[
+{d:3,name:'🌧️ Rain — SC (Clint closed Wed)',tasks:[
   {type:'fire',label:'🌧️ RAIN (predicted) — SC underground, rain no effect. Eel (beach 4pm–2am) if SC done early.',id:'su3_rain'},
-  {type:'fire',label:'Smelt Iridium Bars → deliver to Clint, upgrade to Iridium Pickaxe (25,000g)',id:'su3a'},
-  {type:'fire',label:'🚀 SC all day after drop-off',id:'su3b'},
+  {type:'prep',label:'⚠️ Clint CLOSED today (Wednesday) — submit Iridium Pickaxe tomorrow (Su4 Thu)',id:'su3a'},
+  {type:'fire',label:'🚀 SC all day',id:'su3b'},
   {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods',id:'su3c'},
 ]},
-{d:4,name:"Jas Birthday + SC",tasks:[
+{d:4,name:"Jas Birthday + SC + Iridium Pickaxe",tasks:[
+  {type:'fire',label:'Smelt Iridium Bars → deliver to Clint, upgrade to Iridium Pickaxe (25,000g) — retrieve Su6',id:'su3a'},
   {type:'plate',label:"🎂 Jas — Fairy Rose (Fall crop) / skip if in SC",id:'su4a'},
-  {type:'fire',label:'🚀 SC all day',id:'su4b'},
+  {type:'fire',label:'🚀 SC all day after drop-off',id:'su4b'},
   {type:'fire',label:'🎣 Pufferfish window: beach noon–4pm SUNNY ONLY — grab for CC Ocean Fish bundle',id:'su4c'},
 ]},
 {d:5,name:'🌧️ Rain — SC + Eel',tasks:[
@@ -1042,7 +1043,7 @@ summer:[
   {type:'plate',label:"🎂 Demetrius — Strawberry / Ice Cream",id:'su19a'},
   {type:'fire',label:'🚀 SC all day',id:'su19b'},
   {type:'prep',label:'💜 Amethyst / Spicy Eel → Abigail',id:'su19c'},
-  {type:'prep',label:'Traveling Cart (Friday tomorrow): Red Cabbage, Nautilus Shell, Rabbit\'s Foot',id:'su19d'},
+  {type:'fire',label:'🛒 Traveling Cart TODAY (Friday!) — Red Cabbage seeds, Nautilus Shell, Rabbit\'s Foot',id:'su19d'},
 ]},
 {d:20,name:'🌟 Second Starfruit Harvest + Plant',tasks:[
   {type:'fire',label:'HARVEST Starfruit (planted Su2, 13 days with Speed-Gro → harvest Su15ish, or this is batch 2)',id:'su20a'},
@@ -1077,7 +1078,7 @@ summer:[
   {type:'fire',label:'Place Tappers on all Oak Trees — Oak Resin → Kegs → Starfruit Wine → Artisan buff',id:'su25c'},
 ]},
 {d:26,name:'⚡ Storm + SC',tasks:[
-  {type:'fire',label:'⚡ Summer 26 GUARANTEED STORM — collect Battery Packs from Lightning Rods in AM',id:'su26a'},
+  {type:'fire',label:'⚡ Summer 26 often storms — collect Battery Packs from Lightning Rods in AM if so',id:'su26a'},
   {type:'fire',label:'🚀 SC (storm doesn\'t affect underground)',id:'su26b'},
   {type:'prep',label:'Craft Crystalariums from Battery Packs — Diamond → Espresso supply for SC speed buff',id:'su26c'},
   {type:'prep',label:'💜 Amethyst / Spicy Eel → Abigail',id:'su26d'},
@@ -1129,7 +1130,7 @@ fall:[
 ]},
 {d:4,name:'🌧️ Rain — SC + Catfish + Walleye',tasks:[
   {type:'fire',label:'🌧️ RAIN (predicted) — Walleye (river/lake 12pm–2am) + Catfish (river 6am–midnight) today',id:'fa4_rain'},
-  {type:'fire',label:'🚀 Skull Cavern — smelt + hold Iridium Bars until Mining 10 (Blacksmith = 300g/bar)',id:'fa4a'},
+  {type:'fire',label:'🚀 Skull Cavern — hold Iridium Bars until Mining 10 + Blacksmith profession (1,500g/bar vs 1,000g)',id:'fa4a'},
   {type:'gather',label:'🎁 Bundle: forage Chanterelle + Wild Plum in Cindersap Forest',id:'fa4b'},
   {type:'gather',label:'🎁 Bundle: Tiger Trout + Walleye if not caught yet',id:'fa4c'},
   {type:'prep',label:'📋 Traveling Cart today if Friday — Nautilus Shell, Red Cabbage',id:'fa4d'},
@@ -1157,7 +1158,7 @@ fall:[
   {type:'gather',label:'🎁 Bundle: Blackberry for Enchanter Bundle',id:'fa8b'},
   {type:'gather',label:'🎁 Bundle: Hazelnut (shake trees!)',id:'fa8c'},
   {type:'fire',label:'🚀 Skull Cavern afternoon',id:'fa8d'},
-  {type:'prep',label:'📋 Traveling Cart SUNDAY — Nautilus Shell check',id:'fa8e'},
+  {type:'prep',label:'📋 Cart was yesterday (Fall 7 Sun) — next Traveling Cart: Fall 12 (Friday)',id:'fa8e'},
 ]},
 {d:9,name:'🫐 Blackberry + Re-spec Day',tasks:[
   {type:'gather',label:'🫐 Blackberries — sweep all routes before SC',id:'fa9a'},
@@ -1184,7 +1185,7 @@ fall:[
 ]},
 {d:13,name:"💜 Abigail Birthday",tasks:[
   {type:'plate',label:"🎂💜 Amethyst / Pumpkin → Abigail",id:'fa13a'},
-  {type:'fire',label:'📋 Traveling Cart FRIDAY — check for Nautilus Shell + Red Cabbage!',id:'fa13b'},
+  {type:'fire',label:'🛒 Cart was YESTERDAY (Fall 12 Fri) — check Fall 14 (Sunday) for Nautilus Shell + Red Cabbage!',id:'fa13b'},
   {type:'fire',label:'🚀 Skull Cavern',id:'fa13c'},
   {type:'prep',label:"💜 Marriage path check: at 8♥? Give Bouquet from Pierre's (200g) → she becomes girlfriend. Then need 10♥.",id:'fa13d'},
   {type:'prep',label:'💜 House upgrade: Robin needs 10,000g + 450 wood → kitchen added = marriage eligible',id:'fa13e'},
@@ -1199,7 +1200,7 @@ fall:[
   {type:'plate',label:"🎂 Sandy — Crocus (Winter forage) / Daffodil",id:'fa15a'},
   {type:'prep',label:'🎡 Grange Display prep for tomorrow — 9 items, max variety',id:'fa15b'},
   {type:'prep',label:'Best Grange: gold crop, artisan good, fish, mineral, animal product',id:'fa15c'},
-  {type:'prep',label:'📋 Traveling Cart SUNDAY — Nautilus Shell check!',id:'fa15d'},
+  {type:'prep',label:'📋 Cart was yesterday (Fall 14 Sun) — next Traveling Cart: Fall 19 (Friday)',id:'fa15d'},
 ]},
 {d:16,name:'🎡 Stardew Valley Fair',tasks:[
   {type:'fire',label:'🎡 Grange Display 9am–3pm — aim 90+ points for star token jackpot',id:'fa16a'},
@@ -1248,7 +1249,7 @@ fall:[
   {type:'fire',label:'🌧️ RAIN (predicted) — Catfish + Walleye before/after harvesting',id:'fa23_rain'},
   {type:'fire',label:'Harvest Pumpkins + Cranberries (everything ready before season end)',id:'fa23a'},
   {type:'fire',label:'🚀 Skull Cavern if good luck',id:'fa23b'},
-  {type:'prep',label:'📋 Traveling Cart FRIDAY — final fall cart check',id:'fa23c'},
+  {type:'prep',label:'📋 Next Traveling Cart: Fall 26 (Friday) — last Fall cart. Get Nautilus Shell if missing.',id:'fa23c'},
 ]},
 {d:24,name:"Willy Birthday",tasks:[
   {type:'plate',label:"🎂 Willy — Catfish / Diamond / Iridium Bar",id:'fa24a'},
@@ -1259,7 +1260,7 @@ fall:[
   {type:'fire',label:'🌧️ RAIN (predicted) — Catfish/Walleye while harvesting (AutoScythe helps)',id:'fa25_rain'},
   {type:'fire',label:'Harvest ALL crops — nothing survives season change',id:'fa25a'},
   {type:'fire',label:'Ship everything you\'re not keeping for CC bundles',id:'fa25b'},
-  {type:'prep',label:"Spirit's Eve is TOMORROW (Fall 27, 6pm) — maze = Golden Pumpkin reward",id:'fa25c'},
+  {type:'prep',label:"Spirit's Eve is in 2 days (Fall 27, starts 9pm) — maze = Golden Pumpkin reward",id:'fa25c'},
 ]},
 {d:26,name:'🛒 Traveling Cart (Friday) + Harvest',tasks:[
   {type:'fire',label:'🛒 CHECK TRAVELING CART — final Friday cart of Fall! Nautilus Shell, Red Cabbage, Rabbit\'s Foot',id:'fa26c'},
@@ -1271,7 +1272,7 @@ fall:[
   {type:'fire',label:'🎁 DONATE everything you can to CC before winter',id:'fa27b'},
   {type:'purchase',label:'Buy Winter Seeds from Pierre (bag of 25g) — open until 5pm before Spirit\'s Eve starts',id:'fa27c'},
   {type:'prep',label:'Stock up: bombs, staircases, cheese/salad for winter SC runs',id:'fa27d'},
-  {type:'fire',label:"🎃 Spirit's Eve 6pm–11:30pm — solve maze for Golden Pumpkin reward",id:'fa26a'},
+  {type:'fire',label:"🎃 Spirit's Eve 9pm–11:30pm — solve maze for Golden Pumpkin reward",id:'fa26a'},
   {type:'purchase',label:"Buy rare items from Spirit's Eve vendors if useful",id:'fa26b'},
 ]},
 {d:28,name:'Season End',tasks:[
@@ -1304,7 +1305,7 @@ winter:[
 ]},
 {d:4,name:'Skull Cavern',tasks:[
   {type:'fire',label:'🚀 Skull Cavern — target floor 100+',id:'wi4a'},
-  {type:'prep',label:'Smelt iridium bars — sell at 300g each (Blacksmith profession)',id:'wi4b'},
+  {type:'prep',label:'Smelt iridium bars — sell at 1,500g each with Blacksmith / 1,000g without',id:'wi4b'},
   {type:'gather',label:'🎁 Bundle: dig beach + town for Nautilus Shell daily',id:'wi4c'},
 ]},
 {d:5,name:'Mine + Fish',tasks:[
@@ -1514,7 +1515,7 @@ const CARRY={
     {id:'crabpot',label:'Crab Pot bundle: need Crab + Lobster + Snail + Shrimp + Mussel + Clam (ocean) · Crayfish+Periwinkle+Oyster ✓'},
   ],
   'Boiler Room ⛏️':[
-    {id:'iridbar5',label:'5x Iridium Bar (Skull Cavern — sell AFTER Mining 10 for Blacksmith 300g/bar)'},
+    {id:'iridbar5',label:'5x Iridium Bar (Skull Cavern — sell AFTER Mining 10 + Blacksmith for 1,500g/bar)'},
     {id:'goldbar1',label:'1x Gold Bar (Blacksmith bundle)'},
     {id:'ironbar1',label:'1x Iron Bar (Blacksmith bundle)'},
     {id:'earthcrystal',label:'Earth Crystal (Geologist bundle) ✓ donated'},
@@ -4141,28 +4142,59 @@ function syncTasksFromSave(data){
   const evts=data.events||[];
   const mail=data.mail||[];
   const skull=!!(data.hasSkullKey||mail.includes('HasSkullKey'));
+  const axe=data.toolLevels?.Axe??0;
+  const farm=data.skills?.farm??0;
+  const bldgs=data.buildings??[];
+  const house=data.houseUpgradeLevel??0;
+  const ccDone=n=>(data.cc_bundles??[]).some(r=>r.bundles?.some(b=>b.name===n&&b.completed));
+  const ccAll=(data.cc_bundles??[]).length>0&&(data.cc_bundles??[]).every(r=>r.bundles?.every(b=>b.completed));
+  const hasCoop=bldgs.some(x=>/^coop$/i.test(x));
+  const hasBarn=bldgs.some(x=>/^barn$/i.test(x));
+
   const SYNC={
     // ── Fishing ───────────────────────────────────────────────────────────
     'sp2a': evts.includes(1400094),   // Bamboo Pole from Willy
     'sp2b': fish>=2,                  // Fished to Lv 2
     'sp2d': fish>=2,                  // Fiberglass Rod bought (req Lv 2)
     'sp9d': fish>=10,                 // Fishing 10 achieved
-    // ── Pickaxe tiers (each level = submission was done) ──────────────────
-    'sp5a': pick>=1,                  // Copper Pickaxe delivered to Clint
+    // ── Pickaxe tiers ─────────────────────────────────────────────────────
+    'sp5a': pick>=1,                  // Copper Pickaxe delivered
     'sp7c': pick>=2,                  // Steel Pickaxe submitted
     'sp9a': pick>=3,                  // Gold Pickaxe submitted
     'sp10b':pick>=3,                  // Gold Pickaxe retrieved
     'su3a': pick>=4,                  // Iridium Pickaxe submitted
+    // ── Axe tiers ─────────────────────────────────────────────────────────
+    'sp22a':axe>=1,                   // Copper Axe submitted to Clint
+    'sp23c':axe>=1,                   // Copper Axe retrieved (day after)
+    'sp24a':axe>=2,                   // Steel Axe submitted
+    'sp26b':axe>=2,                   // Steel Axe retrieved
     // ── Mining ────────────────────────────────────────────────────────────
-    'su1b': mine>=10,                 // Mining 10 reached (can sell iridium bars)
+    'sp12b':mine>=5,                  // Mining 5 → Miner profession
+    'su1b': mine>=10,                 // Mining 10 reached
+    // ── Farming ───────────────────────────────────────────────────────────
+    'sp11a':farm>=2,                  // First kale harvest → Farming 2
+    'sp27a':farm>=6,                  // Second kale harvest → Farming 6
     // ── Events / cutscenes ────────────────────────────────────────────────
     'sp7b': evts.includes(3910975),   // Wizard Tower CC cutscene
     // ── Flags ─────────────────────────────────────────────────────────────
     'sp17a':skull,                    // Skull Key obtained
     // ── Vault / bus ───────────────────────────────────────────────────────
     'sp15f':vaultDone,                // 42,500g donated to Vault
-    'su2b': vaultDone,                // Warp Desert (bus fixed = can go)
+    'su2b': vaultDone,                // Warp Desert (bus fixed)
     'su20b':vaultDone,                // Third Starfruit run at Oasis
+    // ── CC bundle rooms ───────────────────────────────────────────────────
+    'sp15a':ccDone('Spring Foraging'),
+    'sp15b':ccDone('Spring Crops'),
+    'sp15c':ccDone("Blacksmith's"),
+    'sp15d':ccDone("Geologist's"),
+    'sp15e':ccDone("Adventurer's"),
+    // ── Buildings ─────────────────────────────────────────────────────────
+    'su6b': hasCoop,                  // Coop built
+    // ── House upgrades ────────────────────────────────────────────────────
+    'fa13e':house>=1,                 // Kitchen added (marriage eligible)
+    'fa22e':house>=1,
+    // ── CC complete ───────────────────────────────────────────────────────
+    'wi14a':ccAll,                    // Community Center complete
   };
   const stamp=taskStamp();
   Object.entries(SYNC).forEach(([id,met])=>{
@@ -4173,10 +4205,26 @@ function syncTasksFromSave(data){
 
 function renderFromData(data){
   if(!data) return;
+  const SORD_={spring:0,summer:1,fall:2,winter:3};
+  const bridgeSea=(data.season||'').toLowerCase();
+  const bridgeOrd=(['spring','summer','fall','winter'].includes(bridgeSea))
+    ?(SORD_[bridgeSea]*28+(parseInt(data.day)||1)):0;
   const override=lsGet('sdv_day_override');
-  if(override){try{const o=JSON.parse(override);S.season=o.season;S.day=o.day;}catch(e){localStorage.removeItem('sdv_day_override');}}
-  else{
-    const sea=(data.season||'').toLowerCase();
+  if(override){
+    try{
+      const o=JSON.parse(override);
+      const overrideOrd=SORD_[o.season]*28+o.day;
+      // Auto-clear stale override if bridge is ahead — bridge is authoritative
+      if(bridgeOrd>overrideOrd){localStorage.removeItem('sdv_day_override');throw new Error('stale');}
+      S.season=o.season;S.day=o.day;
+    }catch(e){
+      const sea=bridgeSea;
+      if(['spring','summer','fall','winter'].includes(sea)) S.season=sea;
+      const d=parseInt(data.day);
+      if(d>=1&&d<=28) S.day=d;
+    }
+  } else {
+    const sea=bridgeSea;
     if(['spring','summer','fall','winter'].includes(sea)) S.season=sea;
     const d=parseInt(data.day);
     if(d>=1&&d<=28) S.day=d;
