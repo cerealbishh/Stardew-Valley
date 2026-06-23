@@ -4193,11 +4193,13 @@ function syncTasksFromSave(data){
   const frnd=data.friendship??{};
   const spouse=(data.spouse??'').toLowerCase();
   const ccDone=n=>(data.cc_bundles??[]).some(r=>r.bundles?.some(b=>b.name===n&&b.completed));
+  const ccRoom=n=>(data.cc_bundles??[]).some(r=>r.name===n&&r.bundles?.length>0&&r.done===r.bundles.length);
   const ccAll=(data.cc_bundles??[]).length>0&&(data.cc_bundles??[]).every(r=>r.bundles?.every(b=>b.completed));
   const hasCoop=bldgs.some(x=>/^coop$/i.test(x));
   const hasBarn=bldgs.some(x=>/^barn$/i.test(x));
   const hasBarnAny=bldgs.some(x=>/barn/i.test(x));
   const hasBigCoop=bldgs.some(x=>/^(?:big|deluxe) coop$/i.test(x));
+  const hasGreenhouse=bldgs.some(x=>/greenhouse/i.test(x));
 
   const SYNC={
     // ── Fishing ───────────────────────────────────────────────────────────
@@ -4211,6 +4213,8 @@ function syncTasksFromSave(data){
     'sp9a': pick>=3,                  // Gold Pickaxe submitted
     'sp10b':pick>=3,                  // Gold Pickaxe retrieved
     'su3a': pick>=4,                  // Iridium Pickaxe submitted
+    'fa5d': pick>=4,                  // Iridium Pickaxe: top priority done
+    'wi6d': pick>=4,                  // "upgrade tools" reminder resolved
     // ── Axe tiers ─────────────────────────────────────────────────────────
     'sp22a':axe>=1,                   // Copper Axe submitted to Clint
     'sp23c':axe>=1,                   // Copper Axe retrieved (day after)
@@ -4219,12 +4223,18 @@ function syncTasksFromSave(data){
     // ── Mining ────────────────────────────────────────────────────────────
     'sp12b':mine>=5,                  // Mining 5 → Miner profession
     'su1b': mine>=10,                 // Mining 10 reached
+    'su23b':mine>=10,                 // "sell iridium bars once Mining 10" reminder
+    'wi4b': mine>=10,                 // "smelt/sell iridium bars" reminder
     // ── Farming / Foraging ────────────────────────────────────────────────
     'sp1a': forage>=1,                // Chop trees → Foraging Lv 1
     'sp11a':farm>=2,                  // First kale harvest → Farming 2
     'sp27a':farm>=6,                  // Second kale harvest → Farming 6
+    'su20e':farm>=10,                 // Re-spec to Artisan (Farming 10 reached)
+    'fa9c': farm>=10,                 // Re-spec Fall 9 reminder
     // ── Events / cutscenes ────────────────────────────────────────────────
     'sp7b': evts.includes(3910975),   // Wizard Tower CC cutscene
+    // ── Quests / mail ─────────────────────────────────────────────────────
+    'sp1b': mail.includes('introductions'),  // Introductions quest reward received
     // ── Flags ─────────────────────────────────────────────────────────────
     'sp8a': caveChoice!==0,           // Cave choice made (Demetrius event)
     'sp17a':skull,                    // Skull Key obtained
@@ -4238,23 +4248,37 @@ function syncTasksFromSave(data){
     'sp15c':ccDone("Blacksmith's"),
     'sp15d':ccDone("Geologist's"),
     'sp15e':ccDone("Adventurer's"),
-    'su16b':ccDone('Summer Foraging'),   // forage Sweet Pea/Grape/SpiceBerry done
-    'fa12a':ccDone('Fall Foraging'),     // fall donation day covered
-    'wi2a': ccAll,                       // "donate everything ready" resolved
-    'wi9a': ccAll,                       // "how many rooms left?" resolved
-    'wi12a':ccAll,                       // "donate everything you have" resolved
-    'wi13a':ccAll,                       // "what's left?" resolved
-    'wi14b':ccAll,                       // Ginger Island unlocked
-    'wi14c':ccAll,                       // "if CC not done: find items" resolved
+    'su16b':ccDone('Summer Foraging'),       // forage Sweet Pea/Grape/SpiceBerry done
+    'su22b':ccDone("Chef's"),                // Maple Syrup donated to Chef's bundle
+    'su24a':ccDone("Chef's"),                // Poppy donated to Chef's bundle
+    'fa3a': ccDone('Summer Crops'),          // summer donation day covered
+    'fa12a':ccDone('Fall Foraging'),         // fall donation day covered
+    'fa18a':ccDone('Fall Crops')||ccRoom('Boiler Room'), // Fall CC donate day
+    'fa20b':ccDone('Quality Crops'),         // Quality Crops bundle donated
+    'fa22c':ccAll,                           // "which bundles still open?" resolved
+    'fa27b':ccAll,                           // "donate everything to CC" resolved
+    'wi2a': ccAll,                           // "donate everything ready" resolved
+    'wi9a': ccAll,                           // "how many rooms left?" resolved
+    'wi12a':ccAll,                           // "donate everything you have" resolved
+    'wi13a':ccAll,                           // "what's left?" resolved
+    'wi14b':ccAll,                           // Ginger Island unlocked
+    'wi14c':ccAll,                           // "if CC not done: find items" resolved
+    'wi26c':ccAll,                           // "any CC items still missing?" resolved
+    'wi28b':ccAll,                           // "final CC donate" resolved
+    'wi28c':ccAll,                           // "did you complete CC?" resolved
     // ── Buildings ─────────────────────────────────────────────────────────
     'su6b': hasCoop,                  // Coop built
     'fa21e':hasBarnAny,               // Barn built (any tier)
     'fa21f':hasBigCoop,               // Big Coop built
+    'wi1b': hasGreenhouse,            // Greenhouse built → plant winter seeds
     // ── House upgrades ────────────────────────────────────────────────────
+    'fa1_marriage':house>=1,          // Marriage path house upgrade done
     'fa13e':house>=1,                 // Kitchen added (marriage eligible)
     'fa22e':house>=1,
     // ── Friendship ────────────────────────────────────────────────────────
     'su18c':(frnd.marnie??0)>=500,                                      // Marnie 2♥
+    'su27_abigail':(frnd.abigail??0)>=2000,                             // Abigail 8♥ gift day
+    'fa1_friends':(frnd.marnie??0)>=500&&(frnd.elliott??0)>=500&&(frnd.willy??0)>=1250,
     'fa13d':(frnd.abigail??0)>=2000,                                    // Abigail 8♥
     'fa22d':(frnd.abigail??0)>=2500||spouse==='abigail',                // Abigail 10♥/married
     'wi22d':(frnd.abigail??0)>=2500||spouse==='abigail',                // same (winter reminder)
