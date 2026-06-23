@@ -170,7 +170,29 @@ img.sdv-icon{image-rendering:pixelated;display:block;}
   box-shadow:0 0 0 2px rgba(255,255,255,0.45);transition:background .4s;}
 #bridge-dot.ok{background:#58c880;}
 #bridge-dot.stale{background:#e0b040;}
-#bridge-sync-time{font-size:9px;color:var(--muted);letter-spacing:-.2px;}
+#bridge-sync-time{font-size:9px;color:var(--text);opacity:.75;letter-spacing:-.2px;}
+#bridge-pill{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.10);
+  border:1.5px solid rgba(255,255,255,0.25);border-radius:20px;padding:3px 8px 3px 6px;
+  cursor:pointer;transition:background .2s,border-color .2s;}
+#bridge-pill.ok{background:rgba(88,200,128,0.18);border-color:rgba(88,200,128,0.55);}
+#bridge-pill.stale{background:rgba(224,176,64,0.18);border-color:rgba(224,176,64,0.55);}
+#bridge-pill:active{filter:brightness(.88);}
+#bridge-modal{display:none;position:fixed;top:calc(env(safe-area-inset-top)+58px);right:12px;
+  z-index:500;background:var(--surf);border:2px solid var(--acc);border-radius:var(--r);
+  box-shadow:var(--shadow-bubble);width:min(300px,calc(100vw - 24px));max-height:65vh;
+  flex-direction:column;overflow:hidden;}
+#bridge-modal.open{display:flex;}
+#bridge-modal-hdr{display:flex;justify-content:space-between;align-items:center;
+  padding:9px 14px;background:var(--acc);color:#fff;font-size:10px;font-weight:700;flex-shrink:0;}
+#bridge-modal-close{background:none;border:none;color:#fff;font-size:16px;cursor:pointer;
+  padding:0 2px;line-height:1;font-family:inherit;}
+#bridge-modal-body{overflow-y:auto;padding:10px 14px;font-size:11px;line-height:1.6;
+  -webkit-overflow-scrolling:touch;}
+.bm-row{display:flex;justify-content:space-between;
+  border-bottom:1px solid color-mix(in srgb,var(--border) 30%,transparent);
+  padding:3px 0;gap:8px;}
+.bm-key{color:var(--muted);font-size:10px;white-space:nowrap;}
+.bm-val{text-align:right;font-size:10px;word-break:break-all;}
 #schema-banner{display:none;background:#e0b040;color:#3a1f3a;font-size:11px;font-weight:700;
   text-align:center;padding:4px 12px;flex-shrink:0;}
 
@@ -594,8 +616,10 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   </div>
   <div id="ticker-right">
     <span id="ticker-text"></span>
-    <span id="bridge-sync-time"></span>
-    <div id="bridge-dot" title="Bridge"></div>
+    <button id="bridge-pill" title="Bridge sync — tap for snapshot" onclick="toggleBridgeModal()">
+      <span id="bridge-sync-time"></span>
+      <div id="bridge-dot"></div>
+    </button>
     <button id="dark-btn" aria-label="Toggle dark mode"><img src="assets/icons/icon-skull.png" style="width:18px;height:18px;image-rendering:pixelated;vertical-align:middle"></button>
   </div>
 </div>
@@ -616,6 +640,14 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
     <button id="dov-cancel">Cancel</button>
     <button id="dov-clear">clear override</button>
   </div>
+</div>
+
+<div id="bridge-modal" role="dialog" aria-label="Bridge data snapshot">
+  <div id="bridge-modal-hdr">
+    <span>🔗 Bridge Snapshot</span>
+    <button id="bridge-modal-close" onclick="document.getElementById('bridge-modal').classList.remove('open')">✕</button>
+  </div>
+  <div id="bridge-modal-body"></div>
 </div>
 
 <main id="main">
@@ -794,7 +826,7 @@ spring:[
   {type:'prep',label:'If it rains tomorrow → fish forest river instead of mountain lake (catfish!)',id:'sp4d'},
 ]},
 {d:5,name:'☔ RAIN — Catfish + Copper Pickaxe',tasks:[
-  {type:'fire',label:'☔ RAIN TODAY — Cindersap Forest river: Catfish 200g+ each. Fish until 3pm then Clint.',id:'sp5_rain'},
+  {type:'fire',label:'RAIN TODAY — Cindersap Forest river: CATFISH 200g+ each. Bubble 2:10PM-5:50PM tile(61,61) then 6:10PM-6:40PM tile(34,79). Fish river until 2pm, submit pickaxe to Clint, return and fish until 2am.',id:'sp5_rain'},
   {type:'fire',label:'⚠️ SMELT 5 Copper Bars — deliver to Clint before 4pm, upgrade to Copper Pickaxe (2,000g)',id:'sp5a'},
   {type:'purchase',label:"Pierre's — buy 1 Bean Starter (60g) + 1 Cauliflower (80g) + 1 Potato (50g) + 16 Kale Seeds (1,120g)",id:'sp5b'},
   {type:'fire',label:'Plant + water all new seeds on the farm',id:'sp5c'},
@@ -818,7 +850,7 @@ spring:[
   {type:'prep',label:'If cave upgrade offered: choose MUSHROOMS — faster restock, better energy food, more value',id:'sp8a'},
 ]},
 {d:9,name:'☔ RAIN — Catfish Day + Large Pack',tasks:[
-  {type:'fire',label:'☔ RAIN TODAY — Cindersap Forest river Catfish all day. 200g+ each (Angler: 300g+). Best gold/hr this season.',id:'sp9_rain'},
+  {type:'fire',label:'RAIN TODAY — Cindersap Forest river: CATFISH all day. Bubbles: 10:00AM-10:30AM tile(45,86), 1:10PM-3:20PM tile(50,87), 10:00PM-1:50AM tile(46,66). Stop at Pierre for Large Pack on the way.',id:'sp9_rain'},
   {type:'prep',label:'Retrieve Steel Pickaxe from Clint if you submitted Spring 7',id:'sp9a'},
   {type:'purchase',label:'Buy Large Pack from Pierre (2,000g) — 36 inventory slots',id:'sp9b'},
   {type:'fire',label:'Fish Cindersap Forest river until 2AM',id:'sp9c'},
@@ -848,7 +880,7 @@ spring:[
   {type:'fire',label:'Mine until 2AM',id:'sp13c'},
 ]},
 {d:14,name:'☔ RAIN — Haley Bday + Catfish',tasks:[
-  {type:'fire',label:'🌧️ RAIN (predicted) — Cindersap Forest river catfish all day',id:'sp14_rain'},
+  {type:'fire',label:'RAIN TODAY — Forest river CATFISH all day. Bubbles: 7:00AM-10:50AM tile(34,69), 11:40AM-2:50PM tile(24,28), 6:20PM-6:50PM tile(41,29), 8:40PM-9:20PM tile(36,68). Evening: Beach for Eel (85g) 4pm-2am.',id:'sp14_rain'},
   {type:'plate',label:"🎂 Haley — Daffodil / Earth Crystal",id:'sp14a'},
   {type:'plate',label:'💜 Abigail — Amethyst',id:'sp14_abigail'},
 ]},
@@ -1058,7 +1090,7 @@ summer:[
   {type:'prep',label:'Re-spec from Agriculturist → Artisan (Statue of Uncertainty) if at Farming 10',id:'su20e'},
 ]},
 {d:21,name:'☔ RAIN — SC + Eel Night',tasks:[
-  {type:'fire',label:'☔ RAIN TODAY — Eel at beach 4pm–2am (85g, CC Night Fishing bundle)',id:'su21_rain'},
+  {type:'fire',label:'RAIN TODAY — Eel at Beach 4pm-2am (85g). Beach bubble 3:00PM-5:50PM tile(53,28) and 6:00-6:40PM tile(88,43).',id:'su21_rain'},
   {type:'fire',label:'🚀 SC all day',id:'su21a'},
   {type:'fire',label:'Check Crab Pots — Lobster, Crab, Periwinkle, Snail, Oyster for CC Crab Pot bundle',id:'su21b'},
   {type:'prep',label:'💜 Amethyst → Abigail · 8♥ before Fall 13',id:'su21c'},
@@ -1852,6 +1884,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     const m=document.getElementById('day-override-modal');
     if(m.classList.contains('open')&&!m.contains(e.target)&&e.target.id!=='ticker-text'){
       closeDayOverride();
+    }
+    const bm=document.getElementById('bridge-modal');
+    if(bm.classList.contains('open')&&!bm.contains(e.target)&&e.target.id!=='bridge-pill'&&!e.target.closest('#bridge-pill')){
+      bm.classList.remove('open');
     }
   });
 });
@@ -4145,6 +4181,7 @@ function syncTasksFromSave(data){
   const pick=data.toolLevels?.Pickaxe||0;
   const fish=data.skills?.fish||0;
   const mine=data.skills?.mine||0;
+  const forage=data.skills?.forage??0;
   const evts=data.events||[];
   const mail=data.mail||[];
   const skull=!!(data.hasSkullKey||mail.includes('HasSkullKey'));
@@ -4152,10 +4189,15 @@ function syncTasksFromSave(data){
   const farm=data.skills?.farm??0;
   const bldgs=data.buildings??[];
   const house=data.houseUpgradeLevel??0;
+  const caveChoice=data.caveChoice??0;
+  const frnd=data.friendship??{};
+  const spouse=(data.spouse??'').toLowerCase();
   const ccDone=n=>(data.cc_bundles??[]).some(r=>r.bundles?.some(b=>b.name===n&&b.completed));
   const ccAll=(data.cc_bundles??[]).length>0&&(data.cc_bundles??[]).every(r=>r.bundles?.every(b=>b.completed));
   const hasCoop=bldgs.some(x=>/^coop$/i.test(x));
   const hasBarn=bldgs.some(x=>/^barn$/i.test(x));
+  const hasBarnAny=bldgs.some(x=>/barn/i.test(x));
+  const hasBigCoop=bldgs.some(x=>/^(?:big|deluxe) coop$/i.test(x));
 
   const SYNC={
     // ── Fishing ───────────────────────────────────────────────────────────
@@ -4177,12 +4219,14 @@ function syncTasksFromSave(data){
     // ── Mining ────────────────────────────────────────────────────────────
     'sp12b':mine>=5,                  // Mining 5 → Miner profession
     'su1b': mine>=10,                 // Mining 10 reached
-    // ── Farming ───────────────────────────────────────────────────────────
+    // ── Farming / Foraging ────────────────────────────────────────────────
+    'sp1a': forage>=1,                // Chop trees → Foraging Lv 1
     'sp11a':farm>=2,                  // First kale harvest → Farming 2
     'sp27a':farm>=6,                  // Second kale harvest → Farming 6
     // ── Events / cutscenes ────────────────────────────────────────────────
     'sp7b': evts.includes(3910975),   // Wizard Tower CC cutscene
     // ── Flags ─────────────────────────────────────────────────────────────
+    'sp8a': caveChoice!==0,           // Cave choice made (Demetrius event)
     'sp17a':skull,                    // Skull Key obtained
     // ── Vault / bus ───────────────────────────────────────────────────────
     'sp15f':vaultDone,                // 42,500g donated to Vault
@@ -4194,11 +4238,26 @@ function syncTasksFromSave(data){
     'sp15c':ccDone("Blacksmith's"),
     'sp15d':ccDone("Geologist's"),
     'sp15e':ccDone("Adventurer's"),
+    'su16b':ccDone('Summer Foraging'),   // forage Sweet Pea/Grape/SpiceBerry done
+    'fa12a':ccDone('Fall Foraging'),     // fall donation day covered
+    'wi2a': ccAll,                       // "donate everything ready" resolved
+    'wi9a': ccAll,                       // "how many rooms left?" resolved
+    'wi12a':ccAll,                       // "donate everything you have" resolved
+    'wi13a':ccAll,                       // "what's left?" resolved
+    'wi14b':ccAll,                       // Ginger Island unlocked
+    'wi14c':ccAll,                       // "if CC not done: find items" resolved
     // ── Buildings ─────────────────────────────────────────────────────────
     'su6b': hasCoop,                  // Coop built
+    'fa21e':hasBarnAny,               // Barn built (any tier)
+    'fa21f':hasBigCoop,               // Big Coop built
     // ── House upgrades ────────────────────────────────────────────────────
     'fa13e':house>=1,                 // Kitchen added (marriage eligible)
     'fa22e':house>=1,
+    // ── Friendship ────────────────────────────────────────────────────────
+    'su18c':(frnd.marnie??0)>=500,                                      // Marnie 2♥
+    'fa13d':(frnd.abigail??0)>=2000,                                    // Abigail 8♥
+    'fa22d':(frnd.abigail??0)>=2500||spouse==='abigail',                // Abigail 10♥/married
+    'wi22d':(frnd.abigail??0)>=2500||spouse==='abigail',                // same (winter reminder)
     // ── CC complete ───────────────────────────────────────────────────────
     'wi14a':ccAll,                    // Community Center complete
   };
@@ -4252,15 +4311,55 @@ function renderFromData(data){
 function updateSyncDot(){
   const dot=document.getElementById('bridge-dot');
   const lbl=document.getElementById('bridge-sync-time');
-  if(!S.lastSyncMs){dot.className='';if(lbl)lbl.textContent='';return;}
+  const pill=document.getElementById('bridge-pill');
+  if(!S.lastSyncMs){
+    dot.className='';if(lbl)lbl.textContent='';if(pill)pill.className='';return;
+  }
   const age=Date.now()-S.lastSyncMs;
-  const mm=String(new Date(S.lastSyncMs).getMinutes()).padStart(2,'0');
-  const ss=String(new Date(S.lastSyncMs).getSeconds()).padStart(2,'0');
-  const hh=String(new Date(S.lastSyncMs).getHours()).padStart(2,'0');
+  const t=new Date(S.lastSyncMs);
+  const hh=String(t.getHours()).padStart(2,'0');
+  const mm=String(t.getMinutes()).padStart(2,'0');
+  const ss=String(t.getSeconds()).padStart(2,'0');
   if(lbl) lbl.textContent=`${hh}:${mm}:${ss}`;
-  if(age<30000)      dot.className='ok';
-  else if(age<120000) dot.className='stale';
-  else               dot.className='';
+  if(age<30000){dot.className='ok';if(pill)pill.className='ok';}
+  else if(age<120000){dot.className='stale';if(pill)pill.className='stale';}
+  else{dot.className='';if(pill)pill.className='';}
+}
+
+function toggleBridgeModal(){
+  const modal=document.getElementById('bridge-modal');
+  if(modal.classList.contains('open')){modal.classList.remove('open');return;}
+  renderBridgeModal();
+  modal.classList.add('open');
+}
+
+function renderBridgeModal(){
+  const body=document.getElementById('bridge-modal-body');
+  const d=S.bridge;
+  if(!d){body.innerHTML='<p style="color:var(--muted);font-size:11px">No bridge data yet.</p>';return;}
+  const age=S.lastSyncMs?Math.round((Date.now()-S.lastSyncMs)/1000):null;
+  const ageStr=age!==null?(age<60?`${age}s ago`:`${Math.floor(age/60)}m ${age%60}s ago`):'—';
+  const flag=v=>v?'<span style="color:#58c880">✓</span>':'<span style="color:#e06868">✗</span>';
+  const rows=[
+    ['Last sync',ageStr],
+    ['Season / Day',`${d.season??'?'} ${d.day??'?'}`],
+    ['Gold',(d.gold??0).toLocaleString()+'g'],
+    ['Skills',Object.entries(d.skills||{}).map(([k,v])=>`${k[0].toUpperCase()+k.slice(1)} ${v}`).join(' · ')||'—'],
+    ['Tools',Object.entries(d.toolLevels||{}).map(([k,v])=>k+' L'+v).join(' · ')||'—'],
+    ['Buildings',(d.buildings||[]).join(', ')||'—'],
+    ['House lvl',String(d.houseUpgradeLevel??'—')],
+    ['Cave choice',d.caveChoice!=null?['—','Bat','Mushroom'][d.caveChoice]||String(d.caveChoice):'—'],
+    ['Spouse',d.spouse||'—'],
+    ['Museum',(d.museumDonations??0)+'/95'],
+    ['Skull Key',flag(d.hasSkullKey)],
+    ['Rusty Key',flag(d.hasRustyKey)],
+    ['Club Card',flag(d.hasClubCard)],
+    ['Dark Talisman',flag(d.hasDarkTalisman)],
+    ['Magic Ink',flag(d.hasMagicInk)],
+    ['Special Charm',flag(d.hasSpecialCharm)],
+    ['CC rooms',(d.cc_bundles||[]).filter(r=>r.done===r.bundles?.length).length+'/'+(d.cc_bundles||[]).length],
+  ];
+  body.innerHTML=rows.map(([k,v])=>`<div class="bm-row"><span class="bm-key">${k}</span><span class="bm-val">${v}</span></div>`).join('');
 }
 setInterval(updateSyncDot,5000);
 
