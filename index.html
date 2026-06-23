@@ -4200,90 +4200,159 @@ function syncTasksFromSave(data){
   const hasBarnAny=bldgs.some(x=>/barn/i.test(x));
   const hasBigCoop=bldgs.some(x=>/^(?:big|deluxe) coop$/i.test(x));
   const hasGreenhouse=bldgs.some(x=>/greenhouse/i.test(x));
+  const stor=data.storage??{};
+  const have=k=>(stor[k]??0)>0;
+  const profs=new Set(data.professions??[]);
 
   const SYNC={
     // ── Fishing ───────────────────────────────────────────────────────────
-    'sp2a': evts.includes(1400094),   // Bamboo Pole from Willy
-    'sp2b': fish>=2,                  // Fished to Lv 2
-    'sp2d': fish>=2,                  // Fiberglass Rod bought (req Lv 2)
-    'sp9d': fish>=10,                 // Fishing 10 achieved
+    'sp2a': evts.includes(1400094),           // Bamboo Pole from Willy
+    'sp2b': fish>=2,                          // Fished to Lv 2
+    'sp2d': fish>=2,                          // Fiberglass Rod bought (req Lv 2)
+    'sp9d': fish>=10,                         // Fishing 10 achieved
     // ── Pickaxe tiers ─────────────────────────────────────────────────────
-    'sp5a': pick>=1,                  // Copper Pickaxe delivered
-    'sp7c': pick>=2,                  // Steel Pickaxe submitted
-    'sp9a': pick>=3,                  // Gold Pickaxe submitted
-    'sp10b':pick>=3,                  // Gold Pickaxe retrieved
-    'su3a': pick>=4,                  // Iridium Pickaxe submitted
-    'fa5d': pick>=4,                  // Iridium Pickaxe: top priority done
-    'wi6d': pick>=4,                  // "upgrade tools" reminder resolved
+    'sp5a': pick>=1,                          // Copper Pickaxe delivered
+    'sp7c': pick>=2,                          // Steel Pickaxe submitted
+    'sp9a': pick>=3,                          // Gold Pickaxe submitted
+    'sp10b':pick>=3,                          // Gold Pickaxe retrieved
+    'su3a': pick>=4,                          // Iridium Pickaxe submitted
+    'fa5d': pick>=4,                          // Iridium Pickaxe: top priority done
+    'wi6d': pick>=4,                          // "upgrade tools" reminder resolved
     // ── Axe tiers ─────────────────────────────────────────────────────────
-    'sp22a':axe>=1,                   // Copper Axe submitted to Clint
-    'sp23c':axe>=1,                   // Copper Axe retrieved (day after)
-    'sp24a':axe>=2,                   // Steel Axe submitted
-    'sp26b':axe>=2,                   // Steel Axe retrieved
+    'sp22a':axe>=1,                           // Copper Axe submitted to Clint
+    'sp23c':axe>=1,                           // Copper Axe retrieved (day after)
+    'sp24a':axe>=2,                           // Steel Axe submitted
+    'sp26b':axe>=2,                           // Steel Axe retrieved
     // ── Mining ────────────────────────────────────────────────────────────
-    'sp12b':mine>=5,                  // Mining 5 → Miner profession
-    'su1b': mine>=10,                 // Mining 10 reached
-    'su23b':mine>=10,                 // "sell iridium bars once Mining 10" reminder
-    'wi4b': mine>=10,                 // "smelt/sell iridium bars" reminder
+    'sp12b':mine>=5,                          // Mining 5 → Miner profession
+    'su1b': mine>=10,                         // Mining 10 reached
+    'su19c':mine>=10,                         // "don't sell bars yet" resolved
+    'su23b':mine>=10,                         // "sell iridium bars once Mining 10"
+    'wi4b': mine>=10,                         // "smelt/sell iridium bars" reminder
     // ── Farming / Foraging ────────────────────────────────────────────────
-    'sp1a': forage>=1,                // Chop trees → Foraging Lv 1
-    'sp11a':farm>=2,                  // First kale harvest → Farming 2
-    'sp27a':farm>=6,                  // Second kale harvest → Farming 6
-    'su20e':farm>=10,                 // Re-spec to Artisan (Farming 10 reached)
-    'fa9c': farm>=10,                 // Re-spec Fall 9 reminder
+    'sp1a': forage>=1,                        // Chop trees → Foraging Lv 1
+    'sp11a':farm>=2,                          // First kale harvest → Farming 2
+    'sp27a':farm>=6,                          // Second kale harvest → Farming 6
+    'su20e':profs.has(4)||profs.has(5)||farm>=10, // Re-spec Artisan (Farming 10)
+    'fa9c': profs.has(4)||profs.has(5)||farm>=10, // Re-spec Fall 9 reminder
     // ── Events / cutscenes ────────────────────────────────────────────────
-    'sp7b': evts.includes(3910975),   // Wizard Tower CC cutscene
+    'sp7b': evts.includes(3910975),           // Wizard Tower CC cutscene
     // ── Quests / mail ─────────────────────────────────────────────────────
-    'sp1b': mail.includes('introductions'),  // Introductions quest reward received
+    'sp1b': mail.includes('introductions'),   // Introductions quest reward received
     // ── Flags ─────────────────────────────────────────────────────────────
-    'sp8a': caveChoice!==0,           // Cave choice made (Demetrius event)
-    'sp17a':skull,                    // Skull Key obtained
+    'sp8a': caveChoice!==0,                   // Cave choice made (Demetrius event)
+    'sp17a':skull,                            // Skull Key obtained
     // ── Vault / bus ───────────────────────────────────────────────────────
-    'sp15f':vaultDone,                // 42,500g donated to Vault
-    'su2b': vaultDone,                // Warp Desert (bus fixed)
-    'su20b':vaultDone,                // Third Starfruit run at Oasis
+    'sp15f':vaultDone,                        // 42,500g donated to Vault
+    'su2b': vaultDone,                        // Warp Desert (bus fixed)
+    'su20b':vaultDone,                        // Third Starfruit run at Oasis
     // ── CC bundle rooms ───────────────────────────────────────────────────
     'sp15a':ccDone('Spring Foraging'),
     'sp15b':ccDone('Spring Crops'),
     'sp15c':ccDone("Blacksmith's"),
     'sp15d':ccDone("Geologist's"),
     'sp15e':ccDone("Adventurer's"),
-    'su16b':ccDone('Summer Foraging'),       // forage Sweet Pea/Grape/SpiceBerry done
-    'su22b':ccDone("Chef's"),                // Maple Syrup donated to Chef's bundle
-    'su24a':ccDone("Chef's"),                // Poppy donated to Chef's bundle
-    'fa3a': ccDone('Summer Crops'),          // summer donation day covered
-    'fa12a':ccDone('Fall Foraging'),         // fall donation day covered
-    'fa18a':ccDone('Fall Crops')||ccRoom('Boiler Room'), // Fall CC donate day
-    'fa20b':ccDone('Quality Crops'),         // Quality Crops bundle donated
-    'fa22c':ccAll,                           // "which bundles still open?" resolved
-    'fa27b':ccAll,                           // "donate everything to CC" resolved
-    'wi2a': ccAll,                           // "donate everything ready" resolved
-    'wi9a': ccAll,                           // "how many rooms left?" resolved
-    'wi12a':ccAll,                           // "donate everything you have" resolved
-    'wi13a':ccAll,                           // "what's left?" resolved
-    'wi14b':ccAll,                           // Ginger Island unlocked
-    'wi14c':ccAll,                           // "if CC not done: find items" resolved
-    'wi26c':ccAll,                           // "any CC items still missing?" resolved
-    'wi28b':ccAll,                           // "final CC donate" resolved
-    'wi28c':ccAll,                           // "did you complete CC?" resolved
+    // ── Summer Foraging gather tasks (Fiddlehead) ─────────────────────────
+    'su1c': ccDone('Summer Foraging'),
+    'su3c': ccDone('Summer Foraging'),
+    'su5d': ccDone('Summer Foraging'),
+    'su7c': ccDone('Summer Foraging'),
+    'su9c': ccDone('Summer Foraging'),
+    'su10c':ccDone('Summer Foraging'),
+    'su11c':ccDone('Summer Foraging'),
+    'su12c':ccDone('Summer Foraging'),
+    'su16b':ccDone('Summer Foraging'),        // forage Sweet Pea/Grape/SpiceBerry
+    // ── Chef's bundle ─────────────────────────────────────────────────────
+    'su22b':have('any_maplesyrup')||ccDone("Chef's"), // Maple Syrup tapper check
+    'su24a':have('su_poppy')||ccDone("Chef's"),       // Poppy harvest/donate
+    // ── Pufferfish (Ocean Fish bundle) ────────────────────────────────────
+    'su4c': have('su_pufferfish')||ccDone('Ocean Fish'),
+    'su14a':have('su_pufferfish')||ccDone('Ocean Fish'),
+    // ── Eel (Night Fishing bundle) ────────────────────────────────────────
+    'su7b': have('sp_eel')||ccDone('Night Fishing'),
+    // ── Crab Pot bundle tasks ─────────────────────────────────────────────
+    'su6c': ccDone('Crab Pot'),
+    'su8c': ccDone('Crab Pot'),
+    'su21b':ccDone('Crab Pot'),
+    // ── Battery Pack storm tasks ──────────────────────────────────────────
+    'su10_storm':have('ds_battery'),
+    'su13a':     have('ds_battery'),
+    'su15_storm':have('ds_battery'),
+    'su20_storm':have('ds_battery'),
+    'su26a':     have('ds_battery'),
+    // ── Summer CC donation days ────────────────────────────────────────────
+    'fa3a': ccDone('Summer Crops'),           // summer donation day covered
+    // ── Tiger Trout (Specialty Fish) ──────────────────────────────────────
+    'fa3c': have('fa_tigertrout')||ccDone('Specialty Fish'),
+    'fa4c': have('fa_tigertrout')||ccDone('Specialty Fish'),
+    // ── Fall Foraging gather tasks ─────────────────────────────────────────
+    'fa1c': ccDone('Fall Foraging'),          // Chanterelle/Mushroom/Wild Plum/Hazelnut
+    'fa2d': ccDone('Fall Foraging'),
+    'fa4b': ccDone('Fall Foraging'),
+    'fa5c': ccDone('Fall Foraging'),
+    'fa6c': ccDone('Fall Foraging'),
+    'fa7b': ccDone('Fall Foraging'),          // Purple Mushroom → Fall Foraging
+    'fa8a': ccDone('Fall Foraging'),          // Blackberry forage → Fall Foraging bundle
+    'fa8b': have('fa_blackberry')||ccDone("Enchanter's"), // Blackberry for Enchanter's Wine
+    'fa8c': have('fa_hazelnut')||ccDone('Fall Foraging'),
+    'fa9a': ccDone('Fall Foraging'),          // Blackberry forage continued
+    'fa10d':ccDone('Fall Foraging')||ccDone('Dye'), // Red/Purple Mushroom gather
+    'fa21c':ccDone('Fall Foraging'),          // Purple Mushroom gather
+    // ── Fall CC donation days ─────────────────────────────────────────────
+    'fa12a':ccDone('Fall Foraging'),
+    'fa18a':ccDone('Fall Crops')||ccRoom('Boiler Room'),
+    'fa20b':ccDone('Quality Crops'),
+    'fa22c':ccAll,
+    'fa27b':ccAll,
+    // ── Winter Foraging gather tasks ──────────────────────────────────────
+    'wi1c': ccDone('Winter Foraging'),
+    'wi3c': ccDone('Winter Foraging'),
+    'wi5c': ccDone('Winter Foraging'),
+    'wi7c': ccDone('Winter Foraging'),
+    'wi10c':ccDone('Winter Foraging'),
+    'wi11c':ccDone('Winter Foraging'),
+    'wi18c':ccDone('Winter Foraging'),
+    'wi20c':ccDone('Winter Foraging'),
+    // ── Nautilus Shell (Field Research bundle) ────────────────────────────
+    'wi1d': have('wi_nautilus')||ccDone('Field Research'),
+    'wi9c': have('wi_nautilus')||ccDone('Field Research'),
+    'wi12c':have('wi_nautilus')||ccDone('Field Research'),
+    'wi21c':have('wi_nautilus')||ccDone('Field Research'),
+    'wi25c':ccDone('Field Research'),
+    // ── Winter fish bundle tasks ──────────────────────────────────────────
+    'wi6b': ccDone('Night Fishing'),
+    'wi10b':have('wi_squid')||ccDone('Ocean Fish'),
+    'wi13c':ccRoom('Fish Tank'),
+    'wi19b':ccRoom('Fish Tank'),
+    'wi23c':ccRoom('Fish Tank'),
+    // ── Winter CC donation tasks ──────────────────────────────────────────
+    'wi2a': ccAll,
+    'wi9a': ccAll,
+    'wi12a':ccAll,
+    'wi13a':ccAll,
+    'wi14b':ccAll,
+    'wi14c':ccAll,
+    'wi26c':ccAll,
+    'wi28b':ccAll,
+    'wi28c':ccAll,
     // ── Buildings ─────────────────────────────────────────────────────────
-    'su6b': hasCoop,                  // Coop built
-    'fa21e':hasBarnAny,               // Barn built (any tier)
-    'fa21f':hasBigCoop,               // Big Coop built
-    'wi1b': hasGreenhouse,            // Greenhouse built → plant winter seeds
+    'su6b': hasCoop,
+    'fa21e':hasBarnAny,
+    'fa21f':hasBigCoop,
+    'wi1b': hasGreenhouse,
     // ── House upgrades ────────────────────────────────────────────────────
-    'fa1_marriage':house>=1,          // Marriage path house upgrade done
-    'fa13e':house>=1,                 // Kitchen added (marriage eligible)
+    'fa1_marriage':house>=1,
+    'fa13e':house>=1,
     'fa22e':house>=1,
     // ── Friendship ────────────────────────────────────────────────────────
-    'su18c':(frnd.marnie??0)>=500,                                      // Marnie 2♥
-    'su27_abigail':(frnd.abigail??0)>=2000,                             // Abigail 8♥ gift day
+    'su18c':(frnd.marnie??0)>=500,
+    'su27_abigail':(frnd.abigail??0)>=2000,
     'fa1_friends':(frnd.marnie??0)>=500&&(frnd.elliott??0)>=500&&(frnd.willy??0)>=1250,
-    'fa13d':(frnd.abigail??0)>=2000,                                    // Abigail 8♥
-    'fa22d':(frnd.abigail??0)>=2500||spouse==='abigail',                // Abigail 10♥/married
-    'wi22d':(frnd.abigail??0)>=2500||spouse==='abigail',                // same (winter reminder)
+    'fa13d':(frnd.abigail??0)>=2000,
+    'fa22d':(frnd.abigail??0)>=2500||spouse==='abigail',
+    'wi22d':(frnd.abigail??0)>=2500||spouse==='abigail',
     // ── CC complete ───────────────────────────────────────────────────────
-    'wi14a':ccAll,                    // Community Center complete
+    'wi14a':ccAll,
   };
   const stamp=taskStamp();
   Object.entries(SYNC).forEach(([id,met])=>{
