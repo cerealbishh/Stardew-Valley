@@ -101,7 +101,7 @@ HOARD_ITEM_MAP = {
     "Large Egg (White)": "hard_largeeggw", "Large Egg (Brown)": "hard_largeeggb",
     "Duck Egg": "hard_duckegg", "Wool": "hard_wool",
     "Red Cabbage": "hard_redcabbage", "Goat Milk": "hard_goatmilk",
-    "Large Goat Milk": "hard_largemilk", "Cheese": "any_cheese",
+    "Large Goat Milk": "hard_goatmilk", "Cheese": "any_cheese",
     "Honey": "any_honey", "Fried Egg": "any_friedegg", "Maki Roll": "any_makiroll",
     "Largemouth Bass": "any_bass", "Carp": "any_carp", "Bullhead": "any_bullhead",
     "Sturgeon": "any_sturgeon", "Sardine": "any_sardine",
@@ -219,6 +219,7 @@ HOARD_CODE_NAMES = {
     "fa_hazelnut":"Hazelnut","fa_blackberry":"Blackberry","fa_tigertrout":"Tiger Trout",
     "wi_winterroot":"Winter Root","wi_crystalfruit":"Crystal Fruit",
     "wi_snowyam":"Snow Yam","wi_crocus":"Crocus","wi_nautilus":"Nautilus Shell",
+    "fa_walleye":"Walleye","wi_squid":"Squid",
     "any_wood":"Wood (99)","any_stone":"Stone (99)","any_hardwood":"Hardwood (10)",
     "any_hay":"Hay (10)","any_maplesyrup":"Maple Syrup","any_oakresin":"Oak Resin",
     "any_pinetar":"Pine Tar","any_cavecarrot":"Cave Carrot","any_redmush":"Red Mushroom",
@@ -544,12 +545,17 @@ def parse_save():
     out["under_construction"] = under_construction
 
     hearts8plus = 0
+    seen_8h = set()
     for path in _frnd_paths:
         for entry in root.findall(path):
+            key_el = entry.find("key/string")
             pts_el = entry.find("value/Friendship/Points")
-            if pts_el is not None:
-                if int(pts_el.text or 0) >= 2000:
-                    hearts8plus += 1
+            if key_el is None or pts_el is None: continue
+            npc_key = key_el.text or ""
+            if npc_key in seen_8h: continue
+            if int(pts_el.text or 0) >= 2000:
+                hearts8plus += 1
+                seen_8h.add(npc_key)
     out["npcsAt8Hearts"] = hearts8plus
 
     # ── CC BUNDLES (structured for Junimo Feed) ──────────────────────────────
@@ -571,6 +577,13 @@ def parse_save():
         bid = int(key_el.text or -1)
         for i, v in enumerate(val_els):
             slot_donated[(bid, i)] = (v.text == 'true')
+
+    # Vault: if ccVault mail received, mark all vault bundle slots as done
+    # Must run BEFORE room_map is built so the data propagates into cc_bundles output
+    if "ccVault" in mail:
+        for bid in [23, 24, 25, 26]:
+            bundle_done[bid] = True
+            slot_donated[(bid, 0)] = True
 
     hoard_have_set = set(out["hoard_have"])
     room_map = {r: {"name": r, "emoji": ROOM_EMOJI[r], "bundles": [], "done": 0} for r in ROOM_ORDER}
@@ -681,12 +694,6 @@ def parse_save():
         mail_true = mail_key is not None and mail_key in mail
         out[flag] = xml_true or mail_true
 
-    # Vault: if ccVault mail received, mark all vault bundle slots as donated
-    if "ccVault" in mail:
-        for bid in [23, 24, 25, 26]:
-            bundle_done[bid] = True
-            slot_donated[(bid, 0)] = True
-            hoard_done.add(vault_map.get(bid, ""))
     cave_el = root.find(".//player/caveChoice")
     out["caveChoice"] = int(cave_el.text or 0) if cave_el is not None else 0
 

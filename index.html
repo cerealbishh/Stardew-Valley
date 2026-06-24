@@ -151,7 +151,7 @@ body{display:flex;flex-direction:column;overflow:hidden;
 .home-logo{width:min(320px,88vw);height:auto;image-rendering:pixelated;filter:drop-shadow(0 4px 12px rgba(0,0,0,.18));}
 .home-subtitle{font-family:'Press Start 2P',monospace;font-size:11px;color:var(--acc);letter-spacing:1px;line-height:1.6;}
 #ticker-text{font-family:'Press Start 2P',monospace;font-size:7px;letter-spacing:.3px;line-height:1.6;cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px;}
-#day-override-modal{display:none;position:fixed;top:calc(env(safe-area-inset-top)+56px);right:12px;z-index:500;background:var(--card);border:2px solid var(--acc);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow-bubble);min-width:220px;}
+#day-override-modal{display:none;position:fixed;top:calc(env(safe-area-inset-top)+56px);right:12px;z-index:500;background:var(--surf);border:2px solid var(--acc);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow-bubble);min-width:220px;}
 #day-override-modal.open{display:block;}
 #day-override-modal h4{font-size:10px;margin:0 0 10px;color:var(--acc);}
 #day-override-modal select{font-size:13px;padding:5px 8px;border-radius:8px;border:1.5px solid var(--acc);background:var(--bg);color:var(--text);margin-right:6px;}
@@ -1879,7 +1879,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('dov-clear').addEventListener('click',()=>{
     localStorage.removeItem('sdv_day_override');
     closeDayOverride();
-    fetchBridge();
+    refreshData();
   });
   document.addEventListener('click',e=>{
     const m=document.getElementById('day-override-modal');
@@ -3681,13 +3681,15 @@ function renderTouchingGrass(){
   let html=`<div class="unlock-section"><div class="unlock-sec-title">${si('buff-foraging',18)}Friendship — sorted by hearts</div>`;
   sorted.forEach(npc=>{
     const pts=friendship[npc.k]||0;
-    const hearts=Math.min(8,Math.floor(pts/250));
-    const halfH=pts%250>=125;
+    const spouse=(S.bridge?.spouse||'').toLowerCase();
+    const maxH=npc.k===spouse?14:8;
+    const hearts=Math.min(maxH,Math.floor(pts/250));
+    const halfH=pts%250>=125&&hearts<maxH;
     const hFull=`<img src="assets/icons/icon-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
-    const hHalf=`<img src="assets/icons/icon-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle">`;
+    const hHalf=`<img src="assets/icons/icon-heart.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.5">`;
     const hEmpty=`<img src="assets/icons/icon-skull.png" style="width:13px;height:13px;image-rendering:pixelated;vertical-align:middle;opacity:.3">`;
-    const filledH=hFull.repeat(hearts)+(halfH&&hearts<8?hHalf:'');
-    const emptyH=hEmpty.repeat(8-hearts-(halfH&&hearts<8?1:0));
+    const filledH=hFull.repeat(hearts)+(halfH?hHalf:'');
+    const emptyH=hEmpty.repeat(maxH-hearts-(halfH?1:0));
     html+=`<div class="grass-row">
       <img src="assets/portraits/${npc.k}.png" alt="${npc.n}" style="width:28px;height:28px;image-rendering:pixelated;border-radius:6px;flex-shrink:0" onerror="this.outerHTML='<span style=font-size:14px>${npc.e}</span>'">
       <span class="grass-name">${npc.n}</span>
@@ -4234,8 +4236,8 @@ function syncTasksFromSave(data){
     'sp1a': forage>=1,                        // Chop trees → Foraging Lv 1
     'sp11a':farm>=2,                          // First kale harvest → Farming 2
     'sp27a':farm>=6,                          // Second kale harvest → Farming 6
-    'su20e':profs.has(4)||profs.has(5)||farm>=10, // Re-spec Artisan (Farming 10)
-    'fa9c': profs.has(4)||profs.has(5)||farm>=10, // Re-spec Fall 9 reminder
+    'su20e':profs.has(4)||profs.has(5),           // Re-spec Artisan (profession chosen)
+    'fa9c': profs.has(4)||profs.has(5),           // Re-spec Fall 9 reminder
     // ── Events / cutscenes ────────────────────────────────────────────────
     'sp7b': evts.includes(3910975),           // Wizard Tower CC cutscene
     // ── Quests / mail ─────────────────────────────────────────────────────
@@ -4640,9 +4642,9 @@ document.addEventListener('click',e=>{
     if(ch==='1') spawnParticles(tc);
     const card=tc.closest('.route-day');
     if(card){
-      const rows=card.querySelectorAll('.task-row');
+      const rows=[...card.querySelectorAll('.task-row:not(.weather-banner)')];
       const tot=rows.length;
-      const dn=[...rows].filter(r=>r.dataset.checked==='1').length;
+      const dn=rows.filter(r=>r.dataset.checked==='1').length;
       const p=tot>0?dn/tot:0;
       card.dataset.status=p===1?'done':p>0?'progress':'none';
       const prog=card.querySelector('.day-progress');
