@@ -592,6 +592,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
 </head>
 <body>
 <div id="schema-banner">⚠️ Bridge data format changed — please restart stardew-bridge.py</div>
+<div id="stale-banner" style="display:none;background:#e06868;color:#fff;font-size:11px;font-weight:700;text-align:center;padding:5px 12px;flex-shrink:0;cursor:pointer" onclick="openDayOverride()">⚠️ Save data is stale — tap to set day manually or sleep in-game to refresh</div>
 
 <!-- floating background sprites -->
 <div id="bg-sprites" aria-hidden="true">
@@ -4430,11 +4431,13 @@ function renderBridgeModal(){
   const body=document.getElementById('bridge-modal-body');
   const d=S.bridge;
   if(!d){body.innerHTML='<p style="color:var(--muted);font-size:11px">No bridge data yet.</p>';return;}
-  const age=S.lastSyncMs?Math.round((Date.now()-S.lastSyncMs)/1000):null;
-  const ageStr=age!==null?(age<60?`${age}s ago`:`${Math.floor(age/60)}m ${age%60}s ago`):'—';
+  const genMs=d.generated_at?d.generated_at*1000:S.lastSyncMs;
+  const age=genMs?Math.round((Date.now()-genMs)/1000):null;
+  const ageStr=age!==null?(age<60?`${age}s ago`:age<3600?`${Math.floor(age/60)}m ago`:`${Math.floor(age/3600)}h ago`):'—';
+  const staleWarn=age!=null&&age>900?' ⚠️ STALE':'';
   const flag=v=>v?'<span style="color:#58c880">✓</span>':'<span style="color:#e06868">✗</span>';
   const rows=[
-    ['Last sync',ageStr],
+    ['Save data age',ageStr+staleWarn],
     ['Season / Day',`${d.season??'?'} ${d.day??'?'}`],
     ['Gold',(d.gold??0).toLocaleString()+'g'],
     ['Skills',Object.entries(d.skills||{}).map(([k,v])=>`${k[0].toUpperCase()+k.slice(1)} ${v}`).join(' · ')||'—'],
@@ -4467,9 +4470,7 @@ async function fetchBridge(){
     const data=await res.json();
     if(data.error){throw new Error(`Bridge: ${data.error}`);}
     S.bridge=data; S.lastSyncMs=Date.now(); _dynPrepCache=null; updateSyncDot();
-    // Schema version check
-    const banner=document.getElementById('schema-banner');
-    if(banner) banner.style.display=(data.schema_version&&data.schema_version!==BRIDGE_SCHEMA_VER)?'block':'none';
+    checkStaleBanner(data);
     status.textContent=JSON.stringify(data,null,2);
     document.getElementById('home-bridge').textContent='Connected ✓';
     renderFromData(data);
@@ -4501,8 +4502,7 @@ async function fetchGist(){
     const data=JSON.parse(content);
     if(data.error){throw new Error(`Bridge: ${data.error}`);}
     S.bridge=data; S.lastSyncMs=Date.now(); _dynPrepCache=null; updateSyncDot();
-    const banner=document.getElementById('schema-banner');
-    if(banner) banner.style.display=(data.schema_version&&data.schema_version!==BRIDGE_SCHEMA_VER)?'block':'none';
+    checkStaleBanner(data);
     if(status) status.textContent=`Synced ${new Date().toLocaleTimeString()}`;
     const homeEl=document.getElementById('home-bridge');
     if(homeEl) homeEl.textContent='Connected ✓';
@@ -4511,6 +4511,18 @@ async function fetchGist(){
     updateSyncDot();
     if(status) status.textContent=`Error: ${e.message}`;
   }
+}
+
+function checkStaleBanner(data){
+  const schemaBanner=document.getElementById('schema-banner');
+  if(schemaBanner) schemaBanner.style.display=(data.schema_version&&data.schema_version!==BRIDGE_SCHEMA_VER)?'block':'none';
+  const staleBanner=document.getElementById('stale-banner');
+  if(!staleBanner) return;
+  // generated_at is Unix seconds from the bridge; if absent or >15 min old, warn
+  const gen=data.generated_at;
+  const staleMs=15*60*1000;
+  const isStale=!gen||(Date.now()-gen*1000>staleMs);
+  staleBanner.style.display=isStale?'block':'none';
 }
 
 // Fetch on visibility/focus — not on an interval (iOS Safari throttles background tabs)

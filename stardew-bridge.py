@@ -293,6 +293,7 @@ def parse_save():
         "schema_version": 1,
         "farm": "Hoe Down Farms",
         "updated": datetime.now().strftime("%H:%M:%S"),
+        "generated_at": int(time.time()),
         "gold": 0, "season": "spring", "day": 1, "year": 1,
         "isRaining": False, "isSnowing": False, "isLightning": False,
         "isDebrisWeather": False, "dailyLuck": 0.0, "weatherTomorrow": "Sun",
