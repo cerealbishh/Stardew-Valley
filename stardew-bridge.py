@@ -590,16 +590,17 @@ def parse_save():
 
     for bid in sorted(BUNDLE_ROOMS.keys()):
         room = BUNDLE_ROOMS[bid]
-        completed = bundle_done.get(bid, False)
         items = CC_BUNDLE_MAP.get(bid, [])
         # Vault bundles: show gold amount as a single slot
         if not items and bid in vault_map:
-            amt = {23:2500, 24:5000, 25:10000, 26:25000}[bid]
             items = [vault_map[bid]]
-        # have=True if this specific slot was individually donated OR item is in inventory/chest
         slots = [{"code": c, "name": HOARD_CODE_NAMES.get(c, c),
                   "have": slot_donated.get((bid, i * 3), False) or c in hoard_have_set}
                  for i, c in enumerate(items)]
+        # A bundle is complete if bundleRewards says so OR all required slots are donated.
+        # bundleRewards can lag (e.g. CC cutscene not yet triggered) even when items are in.
+        all_slots_in = len(items) > 0 and all(slot_donated.get((bid, i * 3), False) for i in range(len(items)))
+        completed = bundle_done.get(bid, False) or all_slots_in
         room_map[room]["bundles"].append({
             "id": bid, "name": BUNDLE_NAMES.get(bid, f"Bundle {bid}"),
             "completed": completed, "slots": slots,
