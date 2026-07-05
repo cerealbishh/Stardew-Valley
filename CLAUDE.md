@@ -5,6 +5,7 @@ Interactive Year 1 Stardew Valley min-max tracker suite.
 
 - **Goal:** Perfect, production-ready iPhone web app (Safari)
 - **Hosting:** GitHub Pages (`cerealbishh.github.io/Stardew-Valley`)
+- **Also deployed on:** Vercel (`stardew-or-dew-not` project under `cerealbishhs-projects`)
 - **Storage:** localStorage + Python bridge (`stardew-bridge.py`) for live game sync
 - **Aesthetic:** Y2K kawaii cottagecore pastel retro (soft pinks, mints, lavenders, bubbly UI, pixel headers)
 
@@ -14,8 +15,43 @@ Interactive Year 1 Stardew Valley min-max tracker suite.
 - Target: ~5 million gold by Summer 28
 - Seed: `203853699`
 
-## Current State
-Single `index.html` (~128KB) with all features built. Needs optimization for mobile + web app mode.
+## Repo
+- GitHub: `cerealbishh/Stardew-Valley`
+- Main branch: `main`
+- Dev branch convention: `claude/<description>`
+
+## Current State (as of Session 4)
+Single `index.html` (~60KB, 1292 lines) + supporting files. Sessions so far:
+
+| Session | What was built |
+|---------|---------------|
+| 1 | Initial single HTML file (~128KB), all features rough-drafted |
+| 2 | New app shell — bottom nav, seasonal CSS tokens, bridge UI, Junimos panel |
+| 3 | All 112 days of Route 66 data hardcoded; corrupted index.html fixed; `.gitignore *.crt` |
+| 4 | Y2K kawaii theme (CSS vars, seasonal color switching, dark mode); 5-tab bottom nav; service-worker bridge fix |
+
+## File Structure
+```
+index.html          # Main app (single file, all HTML/CSS/JS)
+manifest.json       # PWA manifest — name: "Stardew or Dew Not, There is no Try", short_name: "Hoe Down 🌾"
+service-worker.js   # SW for PWA + bridge polling fix
+stardew-bridge.py   # Python bridge for live game state sync
+update-checker.js   # Checks for app updates
+.gitignore          # Ignores *.crt (Tailscale certs)
+CLAUDE.md           # This file
+```
+
+## Theme / CSS Architecture
+CSS custom properties on `:root` with seasonal overrides:
+- `html[data-season=spring]` → pinks/lavenders (default)
+- `html[data-season=summer]` → mint/teal/gold
+- `html[data-season=fall]` → amber/burnt orange
+- `html[data-season=winter]` → blues/purples
+- `html[data-dark=true]` → dark mode override
+
+Key vars: `--bg, --surf, --text, --muted, --border, --acc, --acc2, --hdr-a, --hdr-b, --nav-bg, --nav-act`
+
+Task badge colors: `--t-fire` (red), `--t-prep` (orange), `--t-gather` (green), `--t-plate` (purple), `--t-purchase` (blue), `--t-par` (gold), `--t-tomorrow` (gray)
 
 ---
 
@@ -36,6 +72,7 @@ Single `index.html` (~128KB) with all features built. Needs optimization for mob
 - Weather-conditional tasks tagged ☔/☀️ (blue tint for rain tasks)
 - Birthday tasks pink-tagged 🎂 with easiest gift + how to get it
 - Festival days get special card treatment
+- All 112 days (Spring 1 → Winter 28) fully hardcoded with tasks
 
 ---
 
@@ -72,3 +109,17 @@ Source of truth: Quantities from bridge (live). Hoard only tracks yes/no checkli
 - **The Supporting Cast 🐄** — Animals grouped by building (Coop/Barn/other)
 - **Plot Armor 🛡️** — Special flags (skull key, dark talisman, magic ink, magnifying glass, club card, dwarf language, etc.). All auto-checked from bridge.
 - **The Holocron 🔮** — Collections (Fish Caught, Artifacts, Minerals, Cooking, etc.)
+
+---
+
+## Bridge Setup
+- `stardew-bridge.py` runs on MacBook, serves game state over HTTP
+- Supports Tailscale hostname (with `.crt` cert, ignored by gitignore) and Cloudflare tunnel URLs
+- Service worker handles bridge polling; fix landed in Session 4
+- Bridge status dot in header: red = disconnected, green = connected
+
+## PWA Setup
+- `manifest.json` configured for standalone display, portrait, iOS web app
+- Icons are inline SVG data URIs (🌾 emoji on pink background)
+- `apple-mobile-web-app-capable` and status bar meta tags set
+- Safe area insets handled with `env(safe-area-inset-top/bottom)`
