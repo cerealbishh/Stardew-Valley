@@ -4,9 +4,11 @@ stardew-bridge.py — Hoe Down Farms Live Sync
 Watches your Stardew save file and serves parsed data to the tracker on your iPhone.
 """
 
+import base64
 import http.server
 import json
 import os
+import platform
 import threading
 import time
 import urllib.request
@@ -14,7 +16,48 @@ import urllib.error
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
-SAVE_PATH = "/Users/roohi/.config/StardewValley/Saves/HoeDown_382994277/HoeDown_382994277"
+
+def find_save_path():
+    """Auto-detect the Stardew Valley save file for this OS.
+
+    Picks the most-recently-modified save if more than one exists, since
+    that's almost always the one actively being played. Set SDV_SAVE_PATH
+    to override (useful if auto-detection picks the wrong save/location).
+    """
+    override = os.environ.get("SDV_SAVE_PATH")
+    if override:
+        return override
+
+    home = os.path.expanduser("~")
+    system = platform.system()
+    candidates = []
+    if system == "Windows":
+        appdata = os.environ.get("APPDATA", os.path.join(home, "AppData", "Roaming"))
+        candidates.append(os.path.join(appdata, "StardewValley", "Saves"))
+    elif system == "Darwin":
+        candidates.append(os.path.join(home, ".config", "StardewValley", "Saves"))
+        candidates.append(os.path.join(home, "Library", "Application Support", "StardewValley", "Saves"))
+    else:
+        candidates.append(os.path.join(home, ".config", "StardewValley", "Saves"))
+
+    best_path, best_mtime = None, -1
+    for saves_dir in candidates:
+        if not os.path.isdir(saves_dir):
+            continue
+        try:
+            entries = os.listdir(saves_dir)
+        except OSError:
+            continue
+        for entry in entries:
+            save_file = os.path.join(saves_dir, entry, entry)
+            if os.path.isfile(save_file):
+                mtime = os.path.getmtime(save_file)
+                if mtime > best_mtime:
+                    best_mtime, best_path = mtime, save_file
+    return best_path
+
+
+SAVE_PATH = find_save_path()
 PORT = 8742
 POLL_INTERVAL = 5
 _BRIDGE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -251,6 +294,69 @@ HOARD_CODE_NAMES = {
 }
 
 
+def find_any(el, *tags):
+    """el.find(a) or el.find(b) is broken: ElementTree elements with no child
+    elements (any plain <tag>text</tag> leaf) are falsy regardless of being
+    found, so `or` silently discards a real match and moves to the next tag.
+    Confirmed live bug: quest <id> leaves were being discarded this way."""
+    for t in tags:
+        found = el.find(t)
+        if found is not None:
+            return found
+    return None
+
+
+def parse_bundle_string(raw):
+    """Decode one bundleData value string into structured data.
+
+    Real format (confirmed against a live save, both vanilla and remixed
+    bundles use the same shape): Name/Reward/Items/ColorIndex/MinRequired//DisplayName
+    e.g. "Spring Crops/O 465 20/24 1 0 188 1 0 190 1 0 192 1 0/0///Spring Crops"
+    Item IDs are the game's numeric object IDs — resolving them to names
+    happens client-side (a lookup table, since it's static reference data).
+    """
+    parts = raw.split("/")
+    name = parts[0] if len(parts) > 0 else ""
+    reward_tokens = parts[1].split() if len(parts) > 1 else []
+    item_tokens = parts[2].split() if len(parts) > 2 else []
+    color_index = int(parts[3]) if len(parts) > 3 and parts[3].lstrip('-').isdigit() else 0
+    min_required_raw = parts[4] if len(parts) > 4 else ""
+    display_name = parts[6] if len(parts) > 6 and parts[6] else name
+
+    reward = None
+    if len(reward_tokens) >= 3:
+        reward = {"type": reward_tokens[0], "itemId": reward_tokens[1], "amount": int(reward_tokens[2])}
+
+    items = []
+    for i in range(0, len(item_tokens) - 2, 3):
+        items.append({
+            "itemId": item_tokens[i],
+            "qty": int(item_tokens[i + 1]),
+            "quality": int(item_tokens[i + 2]),
+        })
+
+    min_required = int(min_required_raw) if min_required_raw.isdigit() else len(items)
+
+    return {
+        "name": name,
+        "displayName": display_name,
+        "reward": reward,
+        "items": items,
+        "colorIndex": color_index,
+        "minRequired": min_required,
+    }
+
+
+def parse_bundle_data(root):
+    result = {}
+    for item in root.findall(".//bundleData/item"):
+        key_el = item.find("key/string")
+        val_el = item.find("value/string")
+        if key_el is not None and val_el is not None and key_el.text and val_el.text:
+            result[key_el.text] = parse_bundle_string(val_el.text)
+    return result
+
+
 def push_to_gist(data):
     global GIST_ID
     if not GIST_TOKEN:
@@ -283,6 +389,118 @@ def push_to_gist(data):
         print(f"[bridge] Gist push failed: {e}")
 
 
+def create_gist(token):
+    """One-shot gist creation for the setup wizard — separate from
+    push_to_gist() because that function is designed for the silent
+    background watch loop (swallows errors), whereas setup needs to show
+    the user exactly what went wrong if their token doesn't work."""
+    payload = json.dumps({
+        "description": "Stardew Valley Live Save (The Grindset)",
+        "public": False,
+        "files": {"sdv-save.json": {"content": json.dumps({"schema_version": 1, "status": "waiting for first sync"})}},
+    }).encode("utf-8")
+    req = urllib.request.Request("https://api.github.com/gists", data=payload, method="POST")
+    req.add_header("Authorization", f"Bearer {token}")
+    req.add_header("Accept", "application/vnd.github+json")
+    req.add_header("Content-Type", "application/json")
+    req.add_header("User-Agent", "stardew-bridge/1.0")
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read())
+            return True, result["id"]
+    except urllib.error.HTTPError as e:
+        return False, f"GitHub said: {e.code} — {e.read().decode('utf-8', 'ignore')[:200]}"
+    except Exception as e:
+        return False, str(e)
+
+
+def generate_sync_code(token, gist_id):
+    """Bundle the token+gist-id into one paste-able code. Note: this is
+    necessarily longer than a short PIN — it's the actual credential pair,
+    reversibly encoded, not a lookup key — because there's deliberately no
+    server anywhere to look a short code up against.
+
+    Grouped with SPACES every 4 characters for readability — NOT dashes:
+    URL-safe base64's alphabet legitimately includes '-' (in place of '+'),
+    so stripping dashes on decode would silently corrupt any code whose
+    encoding happens to contain one. Confirmed real with a quick fuzz test.
+    Space never appears in base64 output, so it's always safe to strip."""
+    raw = f"{token}|{gist_id}".encode("utf-8")
+    encoded = base64.urlsafe_b64encode(raw).decode("ascii").rstrip("=")
+    return " ".join(encoded[i:i + 4] for i in range(0, len(encoded), 4))
+
+
+def decode_sync_code(code):
+    raw = code.replace(" ", "")
+    padded = raw + ("=" * (-len(raw) % 4))
+    decoded = base64.urlsafe_b64decode(padded).decode("utf-8")
+    token, gist_id = decoded.split("|", 1)
+    return token, gist_id
+
+
+def run_setup_wizard():
+    """First-run interactive setup: get a GitHub token, create the user's
+    private gist, save both for next time, and hand them a sync code to
+    paste into the website. No account system, no shared server — every
+    user's data lives in their own gist from here on."""
+    global GIST_TOKEN, GIST_ID
+    print()
+    print("=" * 60)
+    print("  Let's get your farm synced!")
+    print("=" * 60)
+    print()
+    print("First, a free GitHub token — this keeps your farm data private,")
+    print("just for you. No password or account needed beyond this.")
+    print()
+    print("1. Open this link:")
+    print("   https://github.com/settings/tokens/new?scopes=gist&description=Stardew+Bridge")
+    print("2. Click the green 'Generate token' button at the bottom.")
+    print("3. Copy the token it shows you (starts with 'ghp_').")
+    print()
+    token = input("Paste your token here, then press Enter: ").strip()
+    if not token:
+        print("\n[bridge] No token entered — run this again whenever you're ready.")
+        return False
+
+    print("\nCreating your private farm storage...")
+    ok, result = create_gist(token)
+    if not ok:
+        print(f"\n[bridge] Something went wrong: {result}")
+        print("[bridge] Double-check you copied the whole token, then run this again.")
+        return False
+
+    gist_id = result
+    GIST_TOKEN, GIST_ID = token, gist_id
+
+    try:
+        secrets_path = os.path.join(_BRIDGE_DIR, "bridge_secrets.py")
+        with open(secrets_path, "w") as f:
+            f.write(f'GIST_TOKEN = "{token}"\nGIST_ID    = "{gist_id}"\n')
+    except OSError as e:
+        print(f"[bridge] Couldn't save your setup for next time: {e}")
+        print("[bridge] You'll need to paste your token again next time you run this.")
+
+    print_sync_code(token, gist_id, first_time=True)
+    return True
+
+
+def print_sync_code(token, gist_id, first_time=False):
+    code = generate_sync_code(token, gist_id)
+    print()
+    print("=" * 60)
+    print("  You're all set!" if first_time else "  Your sync code")
+    print("=" * 60)
+    print()
+    print("Your sync code:")
+    print()
+    print(f"  {code}")
+    print()
+    print("Copy that, then open The Grindset on your phone, tap Log In,")
+    print("and paste it in. That's the whole setup" + (" — you won't need to do this again." if first_time else "."))
+    print()
+
+
 def parse_save():
     try:
         tree = ET.parse(SAVE_PATH)
@@ -292,7 +510,8 @@ def parse_save():
 
     out = {
         "schema_version": 1,
-        "farm": "Hoe Down Farms",
+        "farm": "My Farm",
+        "seed": None,
         "updated": datetime.now().strftime("%H:%M:%S"),
         "generated_at": int(time.time()),
         "gold": 0, "season": "spring", "day": 1, "year": 1,
@@ -304,6 +523,14 @@ def parse_save():
 
     money = root.find(".//player/money")
     if money is not None: out["gold"] = int(money.text or 0)
+
+    farm_name_el = root.find(".//farmName")
+    if farm_name_el is not None and farm_name_el.text:
+        out["farm"] = farm_name_el.text
+
+    seed_el = root.find(".//uniqueIDForThisGame")
+    if seed_el is not None and seed_el.text:
+        out["seed"] = int(seed_el.text)
 
     season_el = root.find(".//currentSeason")
     day_el    = root.find(".//dayOfMonth")
@@ -326,6 +553,15 @@ def parse_save():
             if idx < len(exp_list):
                 out["skills"][skill_id] = xp_to_level(int(exp_list[idx].text or 0))
 
+    def parse_date_node(el):
+        """Friendship dates are {Year, Season, DayOfMonth} structs, not a single int."""
+        if el is None:
+            return None
+        y, s, d = el.find("Year"), el.find("Season"), el.find("DayOfMonth")
+        if y is None or s is None or d is None:
+            return None
+        return {"year": int(y.text or 1), "season": (s.text or "spring").lower(), "day": int(d.text or 1)}
+
     # SV 1.6: friendship data moved from .//friendships to player/friendshipData
     _frnd_paths = [".//player/friendshipData/item", ".//friendships/item"]
     for path in _frnd_paths:
@@ -333,6 +569,10 @@ def parse_save():
             key_el = entry.find("key/string")
             pts_el = entry.find("value/Friendship/Points")
             gifts_el = entry.find("value/Friendship/GiftsThisWeek")
+            last_gift_el = entry.find("value/Friendship/LastGiftDate")
+            talked_el = entry.find("value/Friendship/TalkedToToday")
+            wedding_el = entry.find("value/Friendship/WeddingDate")
+            status_el = entry.find("value/Friendship/Status")
             if key_el is not None and pts_el is not None:
                 name = key_el.text
                 if name in FRIENDSHIP_NPCS:
@@ -340,11 +580,45 @@ def parse_save():
                     out["friendship"][nk] = int(pts_el.text or 0)
                     if gifts_el is not None:
                         out.setdefault("giftsThisWeek", {})[nk] = int(gifts_el.text or 0)
+                    last_gift = parse_date_node(last_gift_el)
+                    if last_gift:
+                        out.setdefault("lastGiftDate", {})[nk] = last_gift
+                    if talked_el is not None:
+                        out.setdefault("talkedToToday", {})[nk] = (talked_el.text == "true")
+                    wedding = parse_date_node(wedding_el)
+                    if wedding:
+                        out.setdefault("weddingDate", {})[nk] = wedding
+                    if status_el is not None and status_el.text:
+                        out.setdefault("relationshipStatus", {})[nk] = status_el.text
+
+    gifted_items = {}
+    for entry in root.findall(".//player/giftedItems/item"):
+        npc_key_el = entry.find("key/string")
+        if npc_key_el is None or not npc_key_el.text or npc_key_el.text not in FRIENDSHIP_NPCS:
+            continue
+        nk = npc_key_el.text.lower()
+        per_item = {}
+        for gift_entry in entry.findall("value/dictionary/item"):
+            item_id_el = gift_entry.find("key/string")
+            times_el = gift_entry.find("value/int")
+            if item_id_el is not None and times_el is not None and item_id_el.text:
+                per_item[item_id_el.text] = int(times_el.text or 0)
+        if per_item:
+            gifted_items[nk] = per_item
+    out["giftedItems"] = gifted_items
+
+    # Real, per-save resolved CC bundle contents — works for vanilla AND
+    # remixed bundles alike, so this replaces CC_BUNDLE_MAP as the source of
+    # truth for "what does this bundle actually want" (CC_BUNDLE_MAP is kept
+    # only as a fallback/reference, since it's confirmed wrong for at least
+    # one bundle on this exact save: bundleData says bundle 36 is "Abandoned
+    # Joja Mart: The Missing," not the hardcoded "Home Cook").
+    out["bundleData"] = parse_bundle_data(root)
 
     inv_counts = {}
     for item in root.findall(".//player/items/Item"):
         name_el  = item.find("name")
-        stack_el = item.find("Stack") or item.find("stack")
+        stack_el = find_any(item, "Stack", "stack")
         if name_el is not None and name_el.text and stack_el is not None:
             n = name_el.text.replace(" ", "")
             count = int(stack_el.text or 0)
@@ -355,7 +629,7 @@ def parse_save():
     chest_ore = {"copper": 0, "iron": 0, "gold": 0, "coal": 0}
     for item in root.findall(".//objects/item/value/Object/items/Item"):
         name_el  = item.find("name")
-        stack_el = item.find("Stack") or item.find("stack")
+        stack_el = find_any(item, "Stack", "stack")
         if name_el is not None and name_el.text and stack_el is not None:
             n = name_el.text.replace(" ", "")
             count = int(stack_el.text or 0)
@@ -374,6 +648,39 @@ def parse_save():
     out["goldOre"]   = inv_counts.get("gold",   0) + chest_ore["gold"]
     out["coal"]      = inv_counts.get("coal",   0) + chest_ore["coal"]
 
+    # ── CHESTS (full contents, grouped by location, no item allowlist) ─────────
+    # The above inv_counts/chest_ore logic (an allowlisted subset, location
+    # discarded) stays untouched for backward compat — this is a separate,
+    # additive, complete view for Davy Jones' Locker's per-location browser.
+    chests_by_location = {}
+    for loc in root.findall(".//locations/GameLocation"):
+        loc_name_el = loc.find("name")
+        loc_name = loc_name_el.text if loc_name_el is not None and loc_name_el.text else "Unknown"
+        for obj_item in loc.findall("objects/item"):
+            chest_items = obj_item.findall("value/Object/items/Item")
+            if not chest_items:
+                continue
+            chest_name_el = obj_item.find("value/Object/name")
+            chest_name = chest_name_el.text if chest_name_el is not None and chest_name_el.text else "Chest"
+            x_el, y_el = obj_item.find("key/Vector2/X"), obj_item.find("key/Vector2/Y")
+            tile = [int(x_el.text), int(y_el.text)] if x_el is not None and y_el is not None else None
+            items_list = []
+            for it in chest_items:
+                n = it.find("name")
+                s = find_any(it, "Stack", "stack")
+                q = it.find("quality")
+                if n is not None and n.text:
+                    items_list.append({
+                        "name": n.text,
+                        "count": int(s.text or 1) if s is not None else 1,
+                        "quality": int(q.text or 0) if q is not None else 0,
+                    })
+            if items_list:
+                chests_by_location.setdefault(loc_name, []).append({
+                    "chestName": chest_name, "tile": tile, "items": items_list,
+                })
+    out["chests"] = chests_by_location
+
     hoard_have = set()
     storage = {}
     all_item_els = (
@@ -382,7 +689,7 @@ def parse_save():
     )
     for item in all_item_els:
         name_el  = item.find("name")
-        stack_el = item.find("Stack") or item.find("stack")
+        stack_el = find_any(item, "Stack", "stack")
         if name_el is not None and name_el.text:
             name  = name_el.text
             count = int(stack_el.text or 0) if stack_el is not None else 1
@@ -417,23 +724,85 @@ def parse_save():
     out["mail"] = list(mail)
 
     events = set()
+    event_flags = set()  # non-numeric entries (e.g. "festival_summer11") — proves real attendance, not just date-passed
     for e in root.findall(".//player/eventsSeen/int"):
+        if not e.text:
+            continue
         try:
-            if e.text: events.add(int(e.text))
+            events.add(int(e.text))
         except ValueError:
-            pass
+            event_flags.add(e.text)
     out["events"] = list(events)
+    out["eventFlags"] = list(event_flags)
 
     total_money_el = root.find(".//player/totalMoneyEarned")
     out["totalMoneyEarned"] = int(total_money_el.text or 0) if total_money_el is not None else 0
 
+    # SV 1.6 stores the real numeric stats in a nested Values dict — the direct
+    # children of <stats> (daysPlayed, monstersKilled, etc.) are empty placeholders.
     stats = {}
     stats_el = root.find(".//player/stats")
     if stats_el is not None:
-        for child in stats_el:
-            try: stats[child.tag] = int(child.text or 0)
-            except: pass
+        values_el = stats_el.find("Values")
+        if values_el is not None:
+            for item in values_el.findall("item"):
+                k = item.find("key/string")
+                v = item.find("value")
+                if k is not None and k.text and v is not None and len(v):
+                    try: stats[k.text] = int(v[0].text or 0)
+                    except (TypeError, ValueError): pass
+
+    specific_monsters = {}
+    sm_el = stats_el.find("specificMonstersKilled") if stats_el is not None else None
+    if sm_el is not None:
+        for item in sm_el.findall("item"):
+            k = item.find("key/string")
+            v = item.find("value/int")
+            if k is not None and k.text and v is not None:
+                try: specific_monsters[k.text] = int(v.text or 0)
+                except (TypeError, ValueError): pass
+
     out["stats"] = stats
+    out["specificMonstersKilled"] = specific_monsters
+
+    # ── COLLECTIONS (fish/artifacts/minerals actually found — for the Holocron) ──
+    fish_caught = {}
+    for item in root.findall(".//player/fishCaught/item"):
+        k = item.find("key/string")
+        vals = item.findall("value/ArrayOfInt/int")
+        if k is not None and k.text and len(vals) >= 2:
+            fish_caught[k.text] = {"count": int(vals[0].text or 0), "maxSize": int(vals[1].text or 0)}
+    out["fishCaught"] = fish_caught
+
+    artifacts_found = {}
+    for item in root.findall(".//player/archaeologyFound/item"):
+        k = item.find("key/string")
+        vals = item.findall("value/ArrayOfInt/int")
+        if k is not None and k.text and vals:
+            artifacts_found[k.text] = int(vals[0].text or 0)
+    out["archaeologyFound"] = artifacts_found
+
+    minerals_found = {}
+    for item in root.findall(".//player/mineralsFound/item"):
+        k = item.find("key/string")
+        v = item.find("value/int")
+        if k is not None and k.text and v is not None:
+            minerals_found[k.text] = int(v.text or 0)
+    out["mineralsFound"] = minerals_found
+
+    # ── MISC FIELDS (achievements, secret notes, locations, songs, recipes cooked) ──
+    out["achievements"] = [int(e.text) for e in root.findall(".//player/achievements/int") if e.text]
+    out["secretNotesSeen"] = [int(e.text) for e in root.findall(".//player/secretNotesSeen/int") if e.text]
+    out["locationsVisited"] = [e.text for e in root.findall(".//player/locationsVisited/string") if e.text]
+    out["songsHeard"] = [e.text for e in root.findall(".//player/songsHeard/string") if e.text]
+
+    recipes_cooked = {}
+    for item in root.findall(".//player/recipesCooked/item"):
+        k = item.find("key/string")
+        v = item.find("value/int")
+        if k is not None and k.text and v is not None:
+            recipes_cooked[k.text] = int(v.text or 0)
+    out["recipesCooked"] = recipes_cooked
 
     completed_quests = set()
     for q in root.findall(".//player/questLog/Quest"):
@@ -443,24 +812,30 @@ def parse_save():
             completed_quests.add(int(id_el.text or 0))
     out["completedQuests"] = list(completed_quests)
 
-    donated = 0
+    # museumPieces is keyed by tile position -> donated item ID; count() alone
+    # discards *which* items were donated, which the Museum tab needs to break
+    # artifacts vs minerals apart (item-ID->name resolution happens client-side).
+    museum_item_ids = []
     for item in root.findall(".//locations/GameLocation/museumPieces/item"):
-        donated += 1
-    out["museumDonations"] = donated
+        val_el = item.find("value/string")
+        if val_el is not None and val_el.text:
+            museum_item_ids.append(val_el.text)
+    out["museumDonations"] = len(museum_item_ids)
+    out["museumItemIds"] = museum_item_ids
 
     # Active quests currently in questLog (journal + Help Wanted board)
     active_quests = []
     for q in root.findall(".//player/questLog/Quest"):
-        id_el      = q.find("id") or q.find("questID")
+        id_el      = find_any(q, "id", "questID")
         # Help Wanted quests store title in _questTitle; story quests use questTitle/title
-        title_el   = q.find("questTitle") or q.find("title") or q.find("_questTitle")
+        title_el   = find_any(q, "questTitle", "title", "_questTitle")
         obj_el     = q.find("_currentObjective")
         completed_el = q.find("completed")
         daily_el   = q.find("dailyQuest")
         days_el    = q.find("daysLeft")
         reward_el  = q.find("moneyReward")
         item_el    = q.find("itemIndex")
-        req_el     = q.find("requester") or q.find("target")
+        req_el     = find_any(q, "requester", "target")
         number_el  = q.find("number")
 
         if title_el is None or not title_el.text:
@@ -484,14 +859,14 @@ def parse_save():
     special_orders = []
     for so in root.findall(".//specialOrders/SpecialOrder"):
         key_el = so.find("questKey")
-        name_el = so.find("questName") or so.find("questTitle")
+        name_el = find_any(so, "questName", "questTitle")
         due_el = so.find("dueDate")
         done_el = so.find("readyForRemoval")
         obj_descs = []
         for obj in so.findall(".//objectives/SpecialOrderObjective"):
             desc_el = obj.find("description")
             cur_el = obj.find("currentCount")
-            max_el = obj.find("maxCount") or obj.find("requiredCount")
+            max_el = find_any(obj, "maxCount", "requiredCount")
             if desc_el is not None and desc_el.text:
                 cur = int(cur_el.text or 0) if cur_el is not None else 0
                 req = int(max_el.text or 0) if max_el is not None else 0
@@ -525,6 +900,9 @@ def parse_save():
 
     house_el = root.find(".//player/houseUpgradeLevel")
     out["houseUpgradeLevel"] = int(house_el.text or 0) if house_el is not None else 0
+
+    max_items_el = root.find(".//player/maxItems")
+    out["maxItems"] = int(max_items_el.text or 12) if max_items_el is not None else 12
 
     spouse_el = root.find(".//player/spouse")
     out["spouse"] = spouse_el.text.strip() if spouse_el is not None and spouse_el.text else None
@@ -584,6 +962,15 @@ def parse_save():
         for bid in [23, 24, 25, 26]:
             bundle_done[bid] = True
             slot_donated[(bid, 0)] = True
+
+    # Raw per-slot completion, independent of CC_BUNDLE_MAP identity — lets
+    # the frontend pair real bundleData item names with real completion
+    # status for ANY save (vanilla or remixed) without trusting whether
+    # CC_BUNDLE_MAP guessed the right item count/order for a given bundle.
+    # Re-keyed from the raw i*3 XML triple-index to a plain item index (0,1,2...)
+    # matching bundleData["Room/bid"].items[i] directly — the *3 encoding is
+    # an XML-format quirk callers shouldn't need to know about.
+    out["bundleSlotDonated"] = {f"{bid}_{i // 3}": v for (bid, i), v in slot_donated.items() if i % 3 == 0}
 
     hoard_have_set = set(out["hoard_have"])
     room_map = {r: {"name": r, "emoji": ROOM_EMOJI[r], "bundles": [], "done": 0} for r in ROOM_ORDER}
@@ -646,6 +1033,25 @@ def parse_save():
         n = el.find("name") if el is not None else None
         return n.text if n is not None else None
 
+    # Weapons have no dedicated "equipped" slot in the save the way hats/rings
+    # do — pick the best melee weapon actually carried (highest max damage) as
+    # the one worth showing on Fit Check.
+    best_weapon = None
+    _ns_xsi = "http://www.w3.org/2001/XMLSchema-instance"
+    for it in root.findall(".//player/items/Item"):
+        if it.get(f"{{{_ns_xsi}}}type") != "MeleeWeapon":
+            continue
+        name_el, min_el, max_el = it.find("name"), it.find("minDamage"), it.find("maxDamage")
+        if name_el is None or not name_el.text:
+            continue
+        max_dmg = int(max_el.text or 0) if max_el is not None else 0
+        if best_weapon is None or max_dmg > best_weapon["maxDamage"]:
+            best_weapon = {
+                "name": name_el.text,
+                "minDamage": int(min_el.text or 0) if min_el is not None else 0,
+                "maxDamage": max_dmg,
+            }
+
     out["equipment"] = {
         "hat":       _item_name(".//player/hat/Hat"),
         "boots":     _item_name(".//player/boots/Boots"),
@@ -653,6 +1059,7 @@ def parse_save():
         "rightRing": _item_name(".//player/rightRing/Ring"),
         "shirt":     _item_name(".//player/shirtItem/Clothing"),
         "pants":     _item_name(".//player/pantsItem/Clothing"),
+        "weapon":    best_weapon,
     }
 
     # ── APPEARANCE ────────────────────────────────────────────────────────────
@@ -699,11 +1106,15 @@ def parse_save():
     out["caveChoice"] = int(cave_el.text or 0) if cave_el is not None else 0
 
     # ── ANIMALS ───────────────────────────────────────────────────────────────
+    # FarmAnimal lives at indoors/animals/item/value/FarmAnimal (a serialized
+    # key->value dict), NOT indoors/characters/FarmAnimal — that slot is for
+    # NPCs, and is always empty for an animal house. Confirmed against a real
+    # save: the old path found 0 animals, this one finds all of them.
     animals = []
     for b in root.findall(".//locations/GameLocation/buildings/Building"):
-        bt = b.find("buildingType") or b.find("name")
+        bt = find_any(b, "buildingType", "name")
         bname = bt.text if bt is not None else "Building"
-        for a in b.findall(".//indoors/characters/FarmAnimal"):
+        for a in b.findall(".//indoors/animals/item/value/FarmAnimal"):
             a_name = a.find("name")
             a_type = a.find("type")
             a_friend = a.find("friendshipTowardFarmer")
@@ -743,6 +1154,10 @@ def xp_to_level(xp):
 
 def watch_loop():
     global latest_data, last_modified
+    if not SAVE_PATH:
+        latest_data = {"error": "Couldn't find a Stardew save automatically. Set SDV_SAVE_PATH to your save file's full path."}
+        print("[bridge] No save found automatically — set SDV_SAVE_PATH and restart.")
+        return
     print(f"[bridge] Watching: {SAVE_PATH}")
     while True:
         try:
@@ -832,12 +1247,21 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    if os.path.exists(SAVE_PATH):
+    if not GIST_TOKEN:
+        run_setup_wizard()
+    elif GIST_ID:
+        print_sync_code(GIST_TOKEN, GIST_ID)
+
+    if SAVE_PATH and os.path.exists(SAVE_PATH):
         latest_data = parse_save()
         # Push immediately on startup so phone gets current data right away
         threading.Thread(target=push_to_gist, args=(latest_data,), daemon=True).start()
-    else:
+    elif SAVE_PATH:
         latest_data = {"error": "Save file not found yet."}
+    else:
+        latest_data = {"error": "Couldn't find a Stardew save automatically. Set SDV_SAVE_PATH to your save file's full path."}
+        print("[bridge] No Stardew save found automatically.")
+        print("[bridge] If you've played before, set SDV_SAVE_PATH to your save file's full path and run this again.")
 
     t = threading.Thread(target=watch_loop, daemon=True)
     t.start()
