@@ -259,8 +259,16 @@ img.sdv-icon{image-rendering:pixelated;display:block;}
 .nav-btn:active{transform:scale(0.92);}
 
 /* ── SUB-NAV ── */
+/* Sticky so the sub-tab switcher stays reachable no matter how far you've
+   scrolled into a tab's content — background matches body's own dot-pattern
+   recipe (var(--bg) + the same radial-gradient) so scrolled content doesn't
+   show through underneath it. */
 .sub-nav{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;
-  -webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:1px;}
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:1px;
+  position:sticky;top:0;z-index:5;
+  background-color:var(--bg);
+  background-image:radial-gradient(circle, color-mix(in srgb, var(--acc) 38%, transparent) 1.6px, transparent 1.6px);
+  background-size:20px 20px;}
 .sub-nav::-webkit-scrollbar{display:none;}
 .sub-btn{flex-shrink:0;background:var(--surf);border:1.5px solid var(--border);
   border-radius:20px;padding:6px 14px;font-size:11px;font-weight:600;
@@ -864,7 +872,7 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   <!-- 🔮 STARDROP HOLOCRON -->
   <div class="panel" id="p-holo">
     <div class="panel-title"><img src="assets/icons/crystalarium.png">Stardrop Holocron — Full-Game Task Database</div>
-    <div class="sub-nav" id="holo-cat-nav" style="flex-wrap:wrap">
+    <div class="sub-nav" id="holo-cat-nav">
       <button class="sub-btn active" data-holocat="all">All</button>
     </div>
     <div id="holo-content"></div>
