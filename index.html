@@ -198,6 +198,31 @@ img.sdv-icon{image-rendering:pixelated;display:block;}
   padding:0 2px;line-height:1;font-family:inherit;}
 #bridge-modal-body{overflow-y:auto;padding:10px 14px;font-size:11px;line-height:1.6;
   -webkit-overflow-scrolling:touch;}
+#setup-backdrop{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.45);
+  align-items:center;justify-content:center;padding:16px;}
+#setup-backdrop.open{display:flex;}
+#setup-modal{background:var(--surf);border:2px solid var(--acc);border-radius:var(--r);
+  box-shadow:var(--shadow-bubble);width:min(480px,100%);max-height:85vh;
+  display:flex;flex-direction:column;overflow:hidden;}
+#setup-modal-hdr{display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;background:var(--acc);color:#fff;font-size:14px;font-weight:800;flex-shrink:0;}
+#setup-modal-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;
+  padding:0 4px;line-height:1;font-family:inherit;}
+#setup-modal-body{overflow-y:auto;padding:14px 16px;font-size:13px;line-height:1.55;
+  -webkit-overflow-scrolling:touch;}
+#setup-modal-body h5{font-size:12px;font-weight:800;color:var(--acc);margin:16px 0 6px;
+  text-transform:uppercase;letter-spacing:.02em;}
+#setup-modal-body h5:first-child{margin-top:0;}
+#setup-modal-body ol{margin:0 0 4px 18px;padding:0;}
+#setup-modal-body li{margin-bottom:4px;}
+#setup-modal-body code{background:color-mix(in srgb,var(--acc) 12%,transparent);
+  padding:1px 5px;border-radius:5px;font-size:12px;}
+.setup-os-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.setup-os-tab{flex:1;padding:8px;border-radius:10px;border:1.5px solid var(--acc);
+  background:none;color:var(--acc);font-weight:700;font-size:12px;cursor:pointer;font-family:inherit;}
+.setup-os-tab.active{background:var(--acc);color:#fff;}
+.setup-os-panel{display:none;}
+.setup-os-panel.active{display:block;}
 .bm-row{display:flex;justify-content:space-between;
   border-bottom:1px solid color-mix(in srgb,var(--border) 30%,transparent);
   padding:3px 0;gap:8px;}
@@ -661,6 +686,60 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
   <div id="bridge-modal-body"></div>
 </div>
 
+<div id="setup-backdrop" onclick="if(event.target===this)closeSetupGuide()">
+  <div id="setup-modal" role="dialog" aria-label="Farm sync setup guide">
+    <div id="setup-modal-hdr">
+      <span>🌾 Setting Up Your Farm Sync</span>
+      <button id="setup-modal-close" onclick="closeSetupGuide()">✕</button>
+    </div>
+    <div id="setup-modal-body">
+      <p style="margin:0 0 12px">One-time, ~5 minutes. After this, your farm just shows up on your phone — no password, no account, just a little script quietly watching your save file.</p>
+      <div class="setup-os-tabs">
+        <button class="setup-os-tab active" data-setupos="win" onclick="goSetupOS('win')">🪟 Windows / Chrome</button>
+        <button class="setup-os-tab" data-setupos="mac" onclick="goSetupOS('mac')">🍎 Mac / Safari</button>
+      </div>
+
+      <div class="setup-os-panel active" id="setup-os-win">
+        <h5>Step 1 — Get Python</h5>
+        <ol>
+          <li>Go to <code>python.org/downloads</code> and click the yellow "Download Python" button.</li>
+          <li>Open the file you downloaded.</li>
+          <li><b>Important:</b> on the first install screen, check "Add Python to PATH" before clicking Install. (Missed it? Just run the installer again and check it.)</li>
+          <li>Click through the rest with the default options.</li>
+        </ol>
+        <h5>Step 2 — Grab the sync script</h5>
+        <ol><li>Download <code>stardew-bridge.py</code> and put it somewhere you'll remember — your Desktop is fine.</li></ol>
+        <h5>Step 3 — Run it</h5>
+        <ol><li>Double-click <code>stardew-bridge.py</code>. A black window will pop up — that's normal, that's just it working. Leave it open.</li></ol>
+      </div>
+
+      <div class="setup-os-panel" id="setup-os-mac">
+        <h5>Step 1 — Get Python</h5>
+        <ol>
+          <li>Go to <code>python.org/downloads</code> and download the Mac version.</li>
+          <li>Open the file, double-click the .pkg, click through the installer (defaults are fine). Macs handle the rest automatically.</li>
+        </ol>
+        <h5>Step 2 — Grab the sync script</h5>
+        <ol><li>Download <code>stardew-bridge.py</code> and put it somewhere you'll remember — your Desktop is fine.</li></ol>
+        <h5>Step 3 — Run it</h5>
+        <ol><li>Right-click <code>stardew-bridge.py</code> → Open With → Python. A little Terminal window will pop up — that's normal. Leave it open.</li></ol>
+      </div>
+
+      <h5>Step 4 — Get your sync code</h5>
+      <p style="margin:0 0 10px">The first time it runs, it finds your Stardew save on its own — you don't need to tell it where anything is. The window will show you a code, longer than a typical PIN (it's your actual private key, not a lookup code — there's no shorter way to do this without running a server, which we're deliberately not doing). Copy it. It's your farm's personal key; nobody else can see your data with it.</p>
+      <h5>Step 5 — Log in on your phone</h5>
+      <ol>
+        <li>Open this site on your phone.</li>
+        <li>Tap "Log In" on the Game Sync card.</li>
+        <li>Paste your sync code.</li>
+        <li>You're in — your farm should show up right away.</li>
+      </ol>
+      <h5>Keeping it fresh</h5>
+      <p style="margin:0">Leave that window open on your computer while you play (or just run it again right after a play session). As long as it's running, your phone stays up to date. Closed the window? No worries — your data's safe, it just won't update until you open it again.</p>
+    </div>
+  </div>
+</div>
+
 <main id="main">
 
   <!-- 🏠 HOME -->
@@ -699,6 +778,9 @@ html[data-dark=true] .bg-sprite{opacity:.05;}
         </div>
         <button class="bridge-btn" id="gist-connect">Log In</button>
         <div class="bridge-status" id="bridge-status">Run the setup script on your computer first — it'll print a sync code for you to paste here.</div>
+        <div style="text-align:center;margin-top:8px">
+          <a href="#" onclick="openSetupGuide();return false" style="font-size:11px;color:var(--acc);font-weight:700;text-decoration:underline">Don't have a sync code yet? Setup guide →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -3172,6 +3254,68 @@ const TASKS_TRACKB_PHASE1=[
 {id:'he_shane_14',category:'relationships',urgency:'prep',label:'Shane 14♥ event — "On the first day, Marnie, Jas, and yourself are outside of the saloon."',unlock:{friendship:'shane',gte:3500}},
 {id:'he_krobus_3',category:'relationships',urgency:'prep',label:'Krobus 3♥ event — "After reaching 3 hearts with Krobus, he will send you a recipe in the mail."',unlock:{friendship:'krobus',gte:750}},
 {id:'he_krobus_14',category:'relationships',urgency:'prep',label:'Krobus 14♥ event — "Krobus sits on the docks at the Beach watching Moonlight Jellies swim, when a sea monster appears."',unlock:{friendship:'krobus',gte:3500}},
+// ── Non-marriage-candidate NPCs' heart events (Chunk 14 Phase 6) — same ──
+// api.php sourcing + template/fallback parsing as Phase 5. These NPCs cap
+// lower (most max around 7-9 hearts, kids like Jas/Vincent have just one
+// real event) since they're not romanceable. Caught and fixed a parsing bug
+// here: recipe-mail events embedded as raw wikitext ("Image Recipe
+// Description <Name> <letter text>") were initially mis-split by a naive
+// regex on 2-word recipe names (e.g. "Fried Mushroom" -> "Fried"/"Mushroom");
+// fixed by matching against the already-verified COOKING_RECIPE_LIST instead
+// of guessing the split point.
+{id:'he_caroline_2',category:'relationships',urgency:'prep',label:'Caroline 2♥ event — "Caroline is excited to show you her new "private" sunroom."',unlock:{friendship:'caroline',gte:500}},
+{id:'he_caroline_3',category:'relationships',urgency:'prep',label:'Caroline 3♥ event — "Recipe gift (Parsnip Soup): Nothing is more satisfying than cooking with fresh vegetables from your own garden!"',unlock:{friendship:'caroline',gte:750}},
+{id:'he_caroline_6',category:'relationships',urgency:'prep',label:'Caroline 6♥ event — "As you enter the store, you hear Caroline and Abigail having an argument in the kitchen."',unlock:{friendship:'caroline',gte:1500}},
+{id:'he_caroline_7',category:'relationships',urgency:'prep',label:'Caroline 7♥ event — "Note that the recipe is called Vegetable Stew in the letter, but cooking the recipe creates Vegetable Medley."',unlock:{friendship:'caroline',gte:1750}},
+{id:'he_clint_3a',category:'relationships',urgency:'prep',label:'Clint 3♥ event — "Clint says he has terrible luck with women, and asks for your advice."',unlock:{friendship:'clint',gte:750}},
+{id:'he_clint_3b',category:'relationships',urgency:'prep',label:'Clint 3♥ event — "Recipe gift (Algae Soup): Well, I know a couple of recipes."',unlock:{friendship:'clint',gte:750}},
+{id:'he_clint_6',category:'relationships',urgency:'prep',label:'Clint 6♥ event — "You find Clint watching Emily from the bushes."',unlock:{friendship:'clint',gte:1500}},
+{id:'he_clint_7',category:'relationships',urgency:'prep',label:'Clint 7♥ event — "Recipe gift (Bean Hotpot): Well, I know a couple of recipes."',unlock:{friendship:'clint',gte:1750}},
+{id:'he_demetrius_3',category:'relationships',urgency:'prep',label:'Demetrius 3♥ event — "Recipe gift (Fried Mushroom): I wanted to say \'thanks\' for taking an interest in my work."',unlock:{friendship:'demetrius',gte:750}},
+{id:'he_demetrius_6',category:'relationships',urgency:'prep',label:'Demetrius 6♥ event — "You see Demetrius and Robin arguing."',unlock:{friendship:'demetrius',gte:1500}},
+{id:'he_demetrius_7',category:'relationships',urgency:'prep',label:'Demetrius 7♥ event — "Recipe gift (Autumn\'s Bounty): I wanted to say \'thanks\' for taking an interest in my work."',unlock:{friendship:'demetrius',gte:1750}},
+{id:'he_evelyn_4',category:'relationships',urgency:'prep',label:'Evelyn 4♥ event — "You find Evelyn baking cookies."',unlock:{friendship:'evelyn',gte:1000}},
+{id:'he_evelyn_7',category:'relationships',urgency:'prep',label:'Evelyn 7♥ event — "After reaching 7 hearts with Evelyn she will send the player a recipe in the mail."',unlock:{friendship:'evelyn',gte:1750}},
+{id:'he_george_3',category:'relationships',urgency:'prep',label:'George 3♥ event — "After reaching 3 hearts with George, he will send the player a recipe in the mail."',unlock:{friendship:'george',gte:750}},
+{id:'he_george_6',category:'relationships',urgency:'prep',label:'George 6♥ event — "George struggles to reach something on a bookshelf."',unlock:{friendship:'george',gte:1500}},
+{id:'he_george_7',category:'relationships',urgency:'prep',label:'George 7♥ event — "After reaching 7 hearts with George, he will send the player a recipe in the mail."',unlock:{friendship:'george',gte:1750}},
+{id:'he_gus_3',category:'relationships',urgency:'prep',label:'Gus 3♥ event — "After reaching three hearts with Gus, he will send you a recipe in the mail."',unlock:{friendship:'gus',gte:750}},
+{id:'he_gus_4',category:'relationships',urgency:'prep',label:'Gus 4♥ event — "When you enter the bar, Gus will be sitting at one of the tables looking dejected."',unlock:{friendship:'gus',gte:1000}},
+{id:'he_gus_5',category:'relationships',urgency:'prep',label:'Gus 5♥ event — "Gus appears with a pot of sauce."',unlock:{friendship:'gus',gte:1250}},
+{id:'he_gus_7',category:'relationships',urgency:'prep',label:'Gus 7♥ event — "After reaching seven hearts with Gus, he will send you a recipe in the mail."',unlock:{friendship:'gus',gte:1750}},
+{id:'he_jas_8',category:'relationships',urgency:'prep',label:'Jas 8♥ event — "Vincent will explain how to clean Spring Onions by removing insects."',unlock:{friendship:'jas',gte:2000}},
+{id:'he_jodi_2',category:'relationships',urgency:'prep',label:'Jodi 2♥ event — "When the player reaches 2 hearts, they can enter her room and find a letter from her husband Kent in the drawer next to her bed."',unlock:{friendship:'jodi',gte:500}},
+{id:'he_jodi_3',category:'relationships',urgency:'prep',label:'Jodi 3♥ event — "Recipe gift (Fried Calamari): (Player), This recipe of mine won 1st place in a cooking competition!"',unlock:{friendship:'jodi',gte:750}},
+{id:'he_jodi_4',category:'relationships',urgency:'prep',label:'Jodi 4♥ event — "Leave your farmhouse between 6:00am - 9:30am on a Monday to find Jodi waiting outside."',unlock:{friendship:'jodi',gte:1000}},
+{id:'he_jodi_7',category:'relationships',urgency:'prep',label:'Jodi 7♥ event — "Recipe gift (Ice Cream): (Player), This recipe of mine won 1st place in a cooking competition!"',unlock:{friendship:'jodi',gte:1750}},
+{id:'he_kent_3',category:'relationships',urgency:'prep',label:'Kent 3♥ event — "When the player enters Jodi and Kent\'s house, a cutscene begins and player walks into the kitchen and Jodi says, "Hi, (Player)!"',unlock:{friendship:'kent',gte:750}},
+{id:'he_kent_7',category:'relationships',urgency:'prep',label:'Kent 7♥ event — "After reaching seven hearts with Kent, he will send the player a recipe in the mail."',unlock:{friendship:'kent',gte:1750}},
+{id:'he_lewis_3',category:'relationships',urgency:'prep',label:'Lewis 3♥ event — "After reaching 3 hearts with Lewis, he will send you a recipe in the mail."',unlock:{friendship:'lewis',gte:750}},
+{id:'he_lewis_6',category:'relationships',urgency:'prep',label:'Lewis 6♥ event — "You will appear behind Lewis\' house."',unlock:{friendship:'lewis',gte:1500}},
+{id:'he_lewis_7',category:'relationships',urgency:'prep',label:'Lewis 7♥ event — "After reaching 7 hearts with Lewis, he will send you a recipe in the mail."',unlock:{friendship:'lewis',gte:1750}},
+{id:'he_linus_3',category:'relationships',urgency:'prep',label:'Linus 3♥ event — "After reaching 3 hearts with Linus he will send you a recipe in the mail."',unlock:{friendship:'linus',gte:750}},
+{id:'he_linus_4',category:'relationships',urgency:'prep',label:'Linus 4♥ event — "Enter the mountain area near his tent between 8pm - 12am on a day that\'s not raining."',unlock:{friendship:'linus',gte:1000}},
+{id:'he_linus_7',category:'relationships',urgency:'prep',label:'Linus 7♥ event — "After reaching seven hearts with Linus, he will send you a recipe in the mail."',unlock:{friendship:'linus',gte:1750}},
+{id:'he_linus_8',category:'relationships',urgency:'prep',label:'Linus 8♥ event — "Exit Robin\'s house on a day that\'s not raining between 9am and 5pm."',unlock:{friendship:'linus',gte:2000}},
+{id:'he_marnie_3a',category:'relationships',urgency:'prep',label:'Marnie 3♥ event — "Marnie greets the player as they come out of the farmhouse."',unlock:{friendship:'marnie',gte:750}},
+{id:'he_marnie_3b',category:'relationships',urgency:'prep',label:'Marnie 3♥ event — "Recipe gift (Pale Broth): Dear neighbor, when I\'m not taking care of animals I like to experiment in the kitchen."',unlock:{friendship:'marnie',gte:750}},
+{id:'he_marnie_6',category:'relationships',urgency:'prep',label:'Marnie 6♥ event — "You will appear behind Lewis\' house."',unlock:{friendship:'marnie',gte:1500}},
+{id:'he_marnie_7',category:'relationships',urgency:'prep',label:'Marnie 7♥ event — "Recipe gift (Rhubarb Pie): Dear neighbor, when I\'m not taking care of animals I like to experiment in the kitchen."',unlock:{friendship:'marnie',gte:1750}},
+{id:'he_pam_3',category:'relationships',urgency:'prep',label:'Pam 3♥ event — "After reaching 3 hearts with Pam, she will send you a recipe in the mail."',unlock:{friendship:'pam',gte:750}},
+{id:'he_pam_7',category:'relationships',urgency:'prep',label:'Pam 7♥ event — "After reaching 7 hearts with Pam, she will send you a recipe in the mail."',unlock:{friendship:'pam',gte:1750}},
+{id:'he_pam_9',category:'relationships',urgency:'prep',label:'Pam 9♥ event — "Purchase the "Community Upgrade" from the Carpenter\'s Shop."',unlock:{friendship:'pam',gte:2250}},
+{id:'he_pierre_3',category:'relationships',urgency:'prep',label:'Pierre 3♥ event — "After reaching 3 hearts with Pierre, he will send you a recipe in the mail."',unlock:{friendship:'pierre',gte:750}},
+{id:'he_pierre_6',category:'relationships',urgency:'prep',label:'Pierre 6♥ event — "You enter Pierre\'s bedroom."',unlock:{friendship:'pierre',gte:1500}},
+{id:'he_robin_6',category:'relationships',urgency:'prep',label:'Robin 6♥ event — "You find Robin cleaning the dust off her saw."',unlock:{friendship:'robin',gte:1500}},
+{id:'he_robin_7',category:'relationships',urgency:'prep',label:'Robin 7♥ event — "After reaching 7 hearts with Robin she will send you a recipe in the mail."',unlock:{friendship:'robin',gte:1750}},
+{id:'he_sandy_7',category:'relationships',urgency:'prep',label:'Sandy 7♥ event — "After reaching seven hearts with Sandy, she will send you a recipe in the mail."',unlock:{friendship:'sandy',gte:1750}},
+{id:'he_vincent_8',category:'relationships',urgency:'prep',label:'Vincent 8♥ event — "Vincent will explain how to clean Spring Onions by removing insects."',unlock:{friendship:'vincent',gte:2000}},
+{id:'he_willy_3',category:'relationships',urgency:'prep',label:'Willy 3♥ event — "After reaching three hearts with Willy he will send you a recipe in the mail."',unlock:{friendship:'willy',gte:750}},
+{id:'he_willy_5',category:'relationships',urgency:'prep',label:'Willy 5♥ event — "After reaching five hearts with Willy he will send you a recipe in the mail."',unlock:{friendship:'willy',gte:1250}},
+{id:'he_willy_6',category:'relationships',urgency:'prep',label:'Willy 6♥ event — "Enter The Beach between 6am and 5:10pm."',unlock:{friendship:'willy',gte:1500}},
+{id:'he_willy_7',category:'relationships',urgency:'prep',label:'Willy 7♥ event — "After reaching seven hearts with Willy he will send you a recipe in the mail."',unlock:{friendship:'willy',gte:1750}},
+{id:'he_willy_9',category:'relationships',urgency:'prep',label:'Willy 9♥ event — "After reaching nine hearts with Willy he will send you a recipe in the mail."',unlock:{friendship:'willy',gte:2250}},
+{id:'he_wizard_4',category:'relationships',urgency:'prep',label:'Wizard 4♥ event — "Players gain access to the basement of the Wizard\'s Tower, where they can change their character\'s appearance at The Shrine of Illusions (appearance customization)."',unlock:{friendship:'wizard',gte:1000}},
 ];
 // Populated by migrating the existing Year-1 route (id's preserved verbatim,
 // 2 pre-existing duplicate ids found and fixed: su3a/su7_cart's 2nd occurrence
@@ -5859,6 +6003,14 @@ function updateSyncDot(){
   if(age<30000){dot.className='ok';if(pill)pill.className='ok';}
   else if(age<120000){dot.className='stale';if(pill)pill.className='stale';}
   else{dot.className='';if(pill)pill.className='';}
+}
+
+function openSetupGuide(){document.getElementById('setup-backdrop').classList.add('open');}
+function closeSetupGuide(){document.getElementById('setup-backdrop').classList.remove('open');}
+function goSetupOS(os){
+  document.querySelectorAll('.setup-os-tab').forEach(b=>b.classList.toggle('active',b.dataset.setupos===os));
+  document.querySelectorAll('.setup-os-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('setup-os-'+os).classList.add('active');
 }
 
 function toggleBridgeModal(){
