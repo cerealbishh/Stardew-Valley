@@ -3197,6 +3197,30 @@ const TASKS_TRACKB_PHASE1=[
 {id:'he_willy_7',category:'relationships',urgency:'prep',label:'Willy 7♥ event — "After reaching seven hearts with Willy he will send you a recipe in the mail."',unlock:{friendship:'willy',gte:1750}},
 {id:'he_willy_9',category:'relationships',urgency:'prep',label:'Willy 9♥ event — "After reaching nine hearts with Willy he will send you a recipe in the mail."',unlock:{friendship:'willy',gte:2250}},
 {id:'he_wizard_4',category:'relationships',urgency:'prep',label:'Wizard 4♥ event — "Players gain access to the basement of the Wizard\'s Tower, where they can change their character\'s appearance at The Shrine of Illusions (appearance customization)."',unlock:{friendship:'wizard',gte:1000}},
+// ── Skills & Professions (Chunk 14 Phase 7) — real profession-choice ──
+// content for all 5 skills at Lv5/Lv10, using the already-verified
+// PROF_DATA/SKILL_PROFS reference data (same data powering the
+// Skillmaxxing tab's next-level preview) repackaged as checkable tasks.
+{id:'sk_farm_5',category:'skills',urgency:'prep',label:'Farming Lv5: choose Rancher (Animal products +20%) or Tiller (Crops +10%)',unlock:{skill:'farm',gte:5}},
+{id:'sk_farm_10a',category:'skills',urgency:'prep',label:'Farming Lv10 (via Rancher): choose Coopmaster (Coop animals befriend faster) or Shepherd (Barn animals befriend faster)',unlock:{skill:'farm',gte:10}},
+{id:'sk_farm_10b',category:'skills',urgency:'prep',label:'Farming Lv10 (via Tiller): choose Artisan (Artisan goods +40%) or Agriculturist (Crops grow 10% faster)',unlock:{skill:'farm',gte:10}},
+{id:'sk_farm_max',category:'skills',urgency:'prep',label:'Farming Level 10 reached — max level',unlock:{skill:'farm',gte:10}},
+{id:'sk_fish_5',category:'skills',urgency:'prep',label:'Fishing Lv5: choose Fisher (Fish +25%) or Trapper (Crab pots cost less)',unlock:{skill:'fish',gte:5}},
+{id:'sk_fish_10a',category:'skills',urgency:'prep',label:'Fishing Lv10 (via Fisher): choose Angler (Fish +50%) or Pirate (More treasure)',unlock:{skill:'fish',gte:10}},
+{id:'sk_fish_10b',category:'skills',urgency:'prep',label:'Fishing Lv10 (via Trapper): choose Mariner (No junk in crab pots) or Luremaster (Crab pots need no bait)',unlock:{skill:'fish',gte:10}},
+{id:'sk_fish_max',category:'skills',urgency:'prep',label:'Fishing Level 10 reached — max level',unlock:{skill:'fish',gte:10}},
+{id:'sk_forage_5',category:'skills',urgency:'prep',label:'Foraging Lv5: choose Forester (Wood +50%) or Gatherer (Chance to double-harvest)',unlock:{skill:'forage',gte:5}},
+{id:'sk_forage_10a',category:'skills',urgency:'prep',label:'Foraging Lv10 (via Forester): choose Lumberjack (Trees drop hardwood) or Tapper (Syrups +25%)',unlock:{skill:'forage',gte:10}},
+{id:'sk_forage_10b',category:'skills',urgency:'prep',label:'Foraging Lv10 (via Gatherer): choose Botanist (Foraged items always iridium quality) or Tracker (Forageables shown on map)',unlock:{skill:'forage',gte:10}},
+{id:'sk_forage_max',category:'skills',urgency:'prep',label:'Foraging Level 10 reached — max level',unlock:{skill:'forage',gte:10}},
+{id:'sk_mine_5',category:'skills',urgency:'prep',label:'Mining Lv5: choose Miner (+1 ore per vein) or Geologist (Gems appear in pairs)',unlock:{skill:'mine',gte:5}},
+{id:'sk_mine_10a',category:'skills',urgency:'prep',label:'Mining Lv10 (via Miner): choose Blacksmith (Metal bars worth more) or Prospector (Coal 2x more often)',unlock:{skill:'mine',gte:10}},
+{id:'sk_mine_10b',category:'skills',urgency:'prep',label:'Mining Lv10 (via Geologist): choose Excavator (Geodes doubled) or Gemologist (Gems +30%)',unlock:{skill:'mine',gte:10}},
+{id:'sk_mine_max',category:'skills',urgency:'prep',label:'Mining Level 10 reached — max level',unlock:{skill:'mine',gte:10}},
+{id:'sk_combat_5',category:'skills',urgency:'prep',label:'Combat Lv5: choose Fighter (Hits +10% dmg, +15 HP) or Scout (Crit chance +50%)',unlock:{skill:'combat',gte:5}},
+{id:'sk_combat_10a',category:'skills',urgency:'prep',label:'Combat Lv10 (via Fighter): choose Brute (Kills boost speed + damage) or Defender (+25 max HP)',unlock:{skill:'combat',gte:10}},
+{id:'sk_combat_10b',category:'skills',urgency:'prep',label:'Combat Lv10 (via Scout): choose Acrobat (Special cooldown halved) or Desperado (Crits can insta-kill)',unlock:{skill:'combat',gte:10}},
+{id:'sk_combat_max',category:'skills',urgency:'prep',label:'Combat Level 10 reached — max level',unlock:{skill:'combat',gte:10}},
 ];
 // Populated by migrating the existing Year-1 route (id's preserved verbatim,
 // 2 pre-existing duplicate ids found and fixed: su3a/su7_cart's 2nd occurrence
