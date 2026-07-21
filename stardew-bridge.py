@@ -532,6 +532,9 @@ def parse_save():
     if seed_el is not None and seed_el.text:
         out["seed"] = int(seed_el.text)
 
+    legacy_rng_el = root.find(".//useLegacyRandom")
+    out["useLegacyRandom"] = (legacy_rng_el.text == "true") if legacy_rng_el is not None and legacy_rng_el.text else True
+
     season_el = root.find(".//currentSeason")
     day_el    = root.find(".//dayOfMonth")
     year_el   = root.find(".//year")
