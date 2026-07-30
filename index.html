@@ -2964,11 +2964,45 @@ const TASKS_TRACKB_PHASE1=[
 // ── Ginger Island ─────────────────────────────────────────────────────────
 {id:'gi_unlock',category:'ginger-island',urgency:'prep',label:'Unlock Ginger Island: finish CC (or Joja route) → ~2 days later Willy mails you → go behind his shop counter → repair the boat: 200 Hardwood + 5 Iridium Bars + 5 Battery Packs',unlock:{custom:'isCCAllDone'}},
 {id:'gi_ticket',category:'ginger-island',urgency:'prep',label:'Boat ticket — 1,000g round trip from Willy\'s shop (after the boat is repaired)'},
-{id:'gi_farm',category:'ginger-island',urgency:'prep',label:'Clear the Island Farm plots (bombs/tools) for tropical crops — Pineapple, Taro Root, Ostrich'},
-{id:'gi_resort',category:'ginger-island',urgency:'prep',label:'Repair the Island Resort (materials requested by Willy) — relax, and a source of Mermaid Pendant hints'},
-{id:'gi_volcano',category:'ginger-island',urgency:'prep',label:'Volcano Dungeon — 10 floors + the Volcano Forge at the summit (combine two rings into one)'},
-{id:'gi_walnutroom',category:'ginger-island',urgency:'prep',label:'Qi\'s Walnut Room unlocks after 100 Golden Walnuts found (Perfection Tracker + Qi Gem vending machine)'},
+// Deepened (Chunk 14 Phase 9) with real parrot-reward walnut costs, all
+// island sub-areas/puzzles, and the Volcano Dungeon/Forge — sourced from the
+// wiki's Ginger_Island, Golden_Walnut, and Volcano_Dungeon pages via the same
+// api.php method. gi_unlock/gi_ticket kept as originally authored (already
+// correct); gi_farm/gi_resort/gi_volcano/gi_walnutroom/gi_walnuts kept but
+// gi_resort's description corrected (it's walnut-gated, not "materials from
+// Willy" as originally written).
+{id:'gi_parrothints',category:'ginger-island',urgency:'prep',label:'Leo\'s parrot (in his hut, Island East) gives location hints for 123 of the 130 Golden Walnuts — hints update/disappear as walnuts are found. 7 walnuts have no hint: 1 in the Gem Birds shrine bush, 3 for a banana-altar offering near Leo\'s stairs, 3 from winning Darts'},
+{id:'gi_north',category:'ginger-island',urgency:'prep',label:'Unlock Island North — 1 Golden Walnut to the parrot at Leo\'s hut'},
+{id:'gi_west',category:'ginger-island',urgency:'prep',label:'Unlock Island West (wakes the sleeping turtle) — 10 Golden Walnuts, parrot on Island South (only appears after Leo\'s parrot gets its walnut)'},
+{id:'gi_farmhouse',category:'ginger-island',urgency:'prep',label:'Repair the Island Farmhouse — 20 Golden Walnuts, parrot on Island West. 4 rooms + kitchen + 1 Tropical Bed per farmer + a shipping bin; lets you sleep on the island without leaving'},
+{id:'gi_farm',category:'ginger-island',urgency:'prep',label:'Clear the Island Farm plots (bombs/tools) for tropical crops — Pineapple, Taro Root, Ostrich. 879 tillable tiles total; no Crows spawn here so Scarecrows are unnecessary; any crop grows regardless of season, like the Greenhouse'},
+{id:'gi_mailbox',category:'ginger-island',urgency:'prep',label:'Island Farmhouse Mailbox — 5 Golden Walnuts, access your mail without leaving the island'},
+{id:'gi_obelisk',category:'ginger-island',urgency:'prep',label:'Island Farm Obelisk — 20 Golden Walnuts, teleport back to the mainland farm; building it also gives you a free Warp Totem: Island'},
+{id:'gi_digsite',category:'ginger-island',urgency:'prep',label:'Repair the Dig Site bridge — 10 Golden Walnuts, parrot on Island North. Unlocks a Quarry-like area: Rocks, Bone Nodes, Clay Nodes, and Mahogany Tree seeds spawn daily'},
+{id:'gi_mushroomcave',category:'ginger-island',urgency:'prep',label:'Free Professor Snail from the Ginger Island Mushroom Cave (near the Dig Site) by placing any bomb on the blocking boulder — unlocks the Island Field Office and gives the cave its own daily mushroom spawns (ground-level, so Gatherer/Botanist applies)'},
+{id:'gi_fieldoffice',category:'ginger-island',urgency:'prep',label:'Island Field Office (unlocked after rescuing Professor Snail): donate fossils and answer the Island Survey for rewards'},
+{id:'gi_islandtrader',category:'ginger-island',urgency:'prep',label:'Unlock the Island Trader (Island North) — 10 Golden Walnuts; barter-only shop (Foraging items, no gold), sells island-themed furniture and the restricted Galaxy Soul'},
+{id:'gi_parrotexpress',category:'ginger-island',urgency:'prep',label:'Unlock the Parrot Express fast-travel network — 10 Golden Walnuts, one-time cost for the whole island'},
+{id:'gi_resort',category:'ginger-island',urgency:'prep',label:'Build the Island Beach Resort (after the Farmhouse is repaired) — 20 Golden Walnuts. Unlocks Island Southeast + Pirate Cove; random Pelican Town villagers visit 11am-6pm on clear non-festival days (Gus runs a bar); toggle open/closed at the changing room'},
+{id:'gi_qigemwalnuts',category:'ginger-island',urgency:'prep',label:'After all other parrot rewards are bought, remaining Golden Walnuts convert to 2 Qi Gems each at Qi\'s Walnut Room — 116 walnuts unlock everything, leaving 14 spare (28 Qi Gems) out of the full 130'},
+{id:'gi_goldenjojaparrot',category:'ginger-island',urgency:'prep',label:'Golden Joja Parrot (west of the volcano): pay 10,000g per unfound Golden Walnut to auto-complete your count overnight — explicitly the "skip the real experience" option'},
+{id:'gi_walnutroom',category:'ginger-island',urgency:'prep',label:'Qi\'s Walnut Room unlocks at 100 Golden Walnuts found (101 actually required — the very first walnut found doesn\'t count toward the threshold) — Perfection Tracker + Special Order board + Qi Gem vending machine'},
 {id:'gi_walnuts',category:'ginger-island',urgency:'prep',label:'130 Golden Walnuts total scattered across the island — puzzles, digging, fishing, parrot perches'},
+{id:'gi_gembirds',category:'ginger-island',urgency:'prep',label:'Gem Birds puzzle (jungle shrine, Island East): on rainy days a gem bird appears in 1 of 4 regions — catch its dropped gem and place it on the matching compass-direction pedestal (volcano=N, waves=S, palm tree=E, heart=W) to win 5 Golden Walnuts, once per save'},
+{id:'gi_mermaid',category:'ginger-island',urgency:'prep',label:'Mermaid puzzle (Island Southeast, rainy days only): a mermaid appears on the shore rock — tune 5 Flute Blocks to the stone key (2/11/9/5/7 clicks, or equivalently 1/10/8/4/6) and play them left-to-right for 5 Golden Walnuts'},
+{id:'gi_piratecove',category:'ginger-island',urgency:'prep',label:'Pirate Cove (hidden entrance, Island Southeast, after Resort built): pirates visit after 8pm on non-rainy even days — play Darts to win Golden Walnuts (first 3 wins only); wear a Pirate Hat/Eye Patch/Deluxe Pirate Hat/Parrot Egg trinket for a free daily Mead at the bar'},
+{id:'gi_gourmandfrog',category:'ginger-island',urgency:'prep',label:'Gourmand Frog (cave in the Island Farm, after Farmhouse repaired): grow Melon, then Wheat, then Garlic on the island farm one at a time (mature but NOT harvested) and show each to the frog in that order for 5 Golden Walnuts each (15 total)'},
+{id:'gi_birdie',category:'ginger-island',urgency:'prep',label:'Birdie\'s Shack (Island West beach): meet Birdie for "The Pirate\'s Wife" quest — about her late husband, the shipwreck\'s captain'},
+{id:'gi_whackamole',category:'ginger-island',urgency:'prep',label:'Green Whack-a-Mole (Island West): hit the green Duggy with a Watering Can for 1 Golden Walnut, or trap 3 of its holes and finish it with an Axe/Pickaxe'},
+{id:'gi_shipwreck',category:'ginger-island',urgency:'prep',label:'Shipwreck (Island West beach, SE of the farm): explore it for 1 Golden Walnut — Birdie explains it was her husband\'s ship'},
+{id:'gi_tigerslimegrove',category:'ginger-island',urgency:'prep',label:'Tiger Slime Grove (north of the pond, Island West): Mahogany Trees grow here and Tiger Slimes spawn daily — a farmable Mahogany source and a combat check'},
+{id:'gi_crystalpuzzle',category:'ginger-island',urgency:'prep',label:'Colored Crystals Puzzle (cave NE of Tiger Slime Grove): a Simon Says minigame with a lion — win for 3 Golden Walnuts; failing repeatedly slows later rounds down (4 fails slows rounds 3+, 6 fails slows 4-5, 8 fails skips the final round)'},
+{id:'gi_beachmussels',category:'ginger-island',urgency:'prep',label:'Island Beach mussel rocks (SE tide pools): mine them for Mussels — 5 Golden Walnuts hidden among them'},
+{id:'gi_volcano',category:'ginger-island',urgency:'prep',label:'Volcano Dungeon — 10 floors (8 randomly generated like Skull Cavern, no ladders — find each floor\'s doorway manually); passing out at 2am costs 2,500g and wakes you at the Island Farmhouse'},
+{id:'gi_volcanobridge',category:'ginger-island',urgency:'prep',label:'Volcano permanent entrance bridge — 5 Golden Walnuts (parrot appears after reaching floor 5) — skips needing a Watering Can to cross the entrance lava every visit'},
+{id:'gi_volcanoshortcut',category:'ginger-island',urgency:'prep',label:'Volcano floor 5 exit shortcut — 5 Golden Walnuts, quick access between Island North and floor 5 without redoing the whole dungeon'},
+{id:'gi_forge',category:'ginger-island',urgency:'prep',label:'The Forge (Volcano floor 10 / Volcano Caldera): spend Cinder Shards to add gem enchantments to weapons/tools, or combine two rings into one — first visit\'s chest has a non-respawning Prismatic Shard; you can also fish here for Lava Eel'},
+{id:'gi_forgeexit',category:'ginger-island',urgency:'prep',label:'After reaching floor 10 once, the gate between the Volcano entrance and floor 10 stays permanently open on all future visits — direct access to the Forge from then on'},
 // ── Perfection ────────────────────────────────────────────────────────────
 // Rewritten with the real per-category percentage weights (Chunk 14 Phase 8),
 // sourced from the wiki's Qi's_Walnut_Room page (its Perfection Tracker table
