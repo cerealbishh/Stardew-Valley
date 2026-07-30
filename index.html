@@ -2970,15 +2970,24 @@ const TASKS_TRACKB_PHASE1=[
 {id:'gi_walnutroom',category:'ginger-island',urgency:'prep',label:'Qi\'s Walnut Room unlocks after 100 Golden Walnuts found (Perfection Tracker + Qi Gem vending machine)'},
 {id:'gi_walnuts',category:'ginger-island',urgency:'prep',label:'130 Golden Walnuts total scattered across the island — puzzles, digging, fishing, parrot perches'},
 // ── Perfection ────────────────────────────────────────────────────────────
-{id:'pf_shipped',category:'perfection',urgency:'prep',label:'Perfection: ship one of every shippable item (Collections → Items Shipped) — the single largest component'},
-{id:'pf_obelisks',category:'perfection',urgency:'prep',label:'Perfection: build all 4 Obelisks (Earth, Water, Desert, Island) from the Wizard'},
-{id:'pf_goldclock',category:'perfection',urgency:'prep',label:'Perfection: build the Golden Clock — 10,000,000g from the Wizard (stops crops withering in winter)'},
-{id:'pf_monsters',category:'perfection',urgency:'prep',label:'Perfection: complete every Monster Eradication goal at the Adventurer\'s Guild',unlock:{mail:'guildMember'}},
-{id:'pf_fish',category:'perfection',urgency:'prep',label:'Perfection: catch every fish in the game (Collections → Fish)'},
-{id:'pf_cookcraft',category:'perfection',urgency:'prep',label:'Perfection: cook every recipe and craft every recipe'},
-{id:'pf_maxfriend',category:'perfection',urgency:'prep',label:'Perfection: reach max friendship with every villager'},
-{id:'pf_walnuts100',category:'perfection',urgency:'prep',label:'Perfection: find all 130 Golden Walnuts on Ginger Island'},
-{id:'pf_skills10',category:'perfection',urgency:'prep',label:'Perfection: reach Level 10 in all 5 skills'},
+// Rewritten with the real per-category percentage weights (Chunk 14 Phase 8),
+// sourced from the wiki's Qi's_Walnut_Room page (its Perfection Tracker table
+// is transcluded onto the Perfection page itself) via the same api.php
+// method — replaces the earlier generic pf_cookcraft/pf_maxfriend placeholders
+// with the real, separately-weighted, real-item-count breakdown.
+{id:'pf_shipped',category:'perfection',urgency:'prep',label:'Perfection (15%): ship one of every Farm & Forage item (Collections → Items Shipped) — 154 items, the single largest component'},
+{id:'pf_obelisks',category:'perfection',urgency:'prep',label:'Perfection (4%): build all 4 Obelisks (Earth, Water, Desert, Island) on the farm'},
+{id:'pf_goldclock',category:'perfection',urgency:'prep',label:'Perfection (10%): build the Golden Clock — 10,000,000g from the Wizard (stops crops withering in winter)'},
+{id:'pf_monsters',category:'perfection',urgency:'prep',label:'Perfection (10%): complete all 12 Monster Eradication goals at the Adventurer\'s Guild',unlock:{mail:'guildMember'}},
+{id:'pf_fish',category:'perfection',urgency:'prep',label:'Perfection (10%): catch all 72 fish in the Collections → Fish tab'},
+{id:'pf_cooking',category:'perfection',urgency:'prep',label:'Perfection (10%): cook all 81 recipes'},
+{id:'pf_crafting',category:'perfection',urgency:'prep',label:'Perfection (10%): craft all 149 recipes — the Wedding Ring is NOT required, even in multiplayer'},
+{id:'pf_greatfriends',category:'perfection',urgency:'prep',label:'Perfection (11%): reach max friendship with all 34 villagers — includes Kent, so this genuinely can\'t be finished in Year 1; children don\'t count either way'},
+{id:'pf_skills10',category:'perfection',urgency:'prep',label:'Perfection (5%): reach Level 10 in every skill'},
+{id:'pf_stardrops',category:'perfection',urgency:'prep',label:'Perfection (10%): find all 7 Stardrops in the game'},
+{id:'pf_walnuts100',category:'perfection',urgency:'prep',label:'Perfection (5%): find all 130 Golden Walnuts on Ginger Island'},
+{id:'pf_unlocks',category:'perfection',urgency:'prep',label:'Reaching 100% Perfection (next day): a Grandpa\'s-pride letter, a rumbling that unlocks The Summit (with its own cutscene), a flock of Ginger Island parrots over the farm, the Statue Of True Perfection, Golden Eggs/Chickens, the ??? hat from a Volcano Caldera monkey, and a Stardrop carving above Grandpa\'s Shrine'},
+{id:'pf_waiver',category:'perfection',urgency:'prep',label:'Perfection Waivers: after first visiting Qi\'s Walnut Room, Fizz (a Joja rep) offers +1% Perfection for 500,000g each in Ginger Island\'s "watery cave" (Professor Snail\'s mushroom cave) — 14 waivers (7,000,000g) is cheaper than building all 4 Obelisks + Golden Clock (13,000,000g for the same 14%)'},
 // ── Movie Theater ─────────────────────────────────────────────────────────
 {id:'mt_ccroute',category:'movie-theater',urgency:'prep',label:'Movie Theater (CC route): the night after finishing the Vault\'s "Missing Bundle" bonus, Junimos convert the abandoned JojaMart into a theater',unlock:{mail:'ccMovieTheater'}},
 {id:'mt_jojaroute',category:'movie-theater',urgency:'prep',label:'Movie Theater (Joja route): buy from Morris for 500,000g after every other Joja community upgrade is done',unlock:{mail:'ccMovieTheaterJoja'}},
@@ -2989,6 +2998,9 @@ const TASKS_TRACKB_PHASE1=[
 {id:'tc_desertunlock',category:'traveling-cart-casino-desert',urgency:'prep',label:'Desert bus route — Vault bundles (42,500g) or 40,000g Joja Community Development Form',unlock:{any:[{mail:'ccVault'},{mail:'jojaVault'}]}},
 {id:'tc_qiquest',category:'traveling-cart-casino-desert',urgency:'prep',label:'Complete "The Mysterious Qi" quest chain (4 tasks) → earn the Club Card to enter the Casino',unlock:{mail:'skullCave'}},
 {id:'tc_casino',category:'traveling-cart-casino-desert',urgency:'prep',label:'Casino (Oasis back door): exchange gold for Qi Coins (1,000g → 100 coins) — Slots, Calico Jack, Prize Machine',unlock:{mail:'HasClubCard'}},
+{id:'tc_casino_games',category:'traveling-cart-casino-desert',urgency:'prep',label:'Casino games: 2 Slot Machines + 2 CalicoJack (blackjack) tables — 100 Qi Coins low-stakes, 1,000 Qi high-stakes',unlock:{mail:'HasClubCard'}},
+{id:'tc_casino_shop',category:'traveling-cart-casino-desert',urgency:'prep',label:'Casino Qi Gem shop highlights: Top Hat (8,000 Qi), Rarecrow #3 (10,000 Qi), rotating furniture (3,000-5,000 Qi); a separate shady figure sells the Statue Of Endless Fortune for 1,000,000g (not Qi Coins)',unlock:{mail:'HasClubCard'}},
+{id:'tc_cart_special',category:'traveling-cart-casino-desert',urgency:'prep',label:'Traveling Cart special stock (rotates in): Rare Seed (Spring/Summer, guaranteed), Coffee Bean / Rarecrow #4 (Fall/Winter), Red Fez, Joja/Junimo/Retro Furniture Catalogues, the 5 skill books (Almanac/Bait and Bobber/Woodcutter\'s Weekly/Mining Monthly/Combat Quarterly), Wedding Ring recipe (multiplayer only)'},
 // ── Marriage & Children ──────────────────────────────────────────────────
 {id:'mc_bouquet',category:'marriage-children',urgency:'prep',label:'Give a Bouquet (200g, Pierre\'s) at 8 hearts to start dating — unfreezes friendship past 8 hearts'},
 {id:'mc_pendant',category:'marriage-children',urgency:'prep',label:'Buy the Mermaid\'s Pendant (5,000g) from the Old Mariner — rainy days only, Beach tide pools; needs 10 hearts, House Upgrade 1, and not already married'},
@@ -2996,6 +3008,10 @@ const TASKS_TRACKB_PHASE1=[
 {id:'mc_wedding',category:'marriage-children',urgency:'prep',label:'Wedding ceremony — held the morning 3 days after you propose'},
 {id:'mc_nursery',category:'marriage-children',urgency:'prep',label:'Kids\' Room upgrade (65,000g + 100 Hardwood) is required before children are possible'},
 {id:'mc_child1',category:'marriage-children',urgency:'prep',label:'Children — your spouse randomly asks at bedtime once the nursery exists (max 2 kids total)'},
+{id:'mc_havechild',category:'marriage-children',urgency:'prep',label:'Having a child: 10 hearts + nursery + married 7+ days → ~5% chance each night your spouse asks; agree and a biological baby arrives in 14 days (or an adopted one appears overnight with a note)'},
+{id:'mc_stages',category:'marriage-children',urgency:'prep',label:'Child growth (Stage 1→4): sleeping only (14 days) → can be tossed in the air for friendship, sleeps after 6pm (14 days) → crawls around, interact once/day (28 days) → permanent toddler, runs to their Child Bed at 7pm and attends non-time-passing festivals with your spouse'},
+{id:'mc_maxkids',category:'marriage-children',urgency:'prep',label:'Max 2 children total, one of each gender (1st is random, 2nd is the opposite) — you can only be asked about a 2nd child once the 1st reaches the toddler stage'},
+{id:'mc_dismiss',category:'marriage-children',urgency:'prep',label:'Children can be permanently dismissed (turned into doves) at the Dark Shrine of Selfishness in the Witch\'s Hut using a Prismatic Shard — irreversible, but re-opens the chance to have children again'},
 // ── Mines & Skull Cavern — deeper mechanics (Chunk 14 Phase 3, sourced via ──
 // the same MediaWiki api.php method as Phase 2) — the 41 migrated Year-1
 // tasks already cover early rush strategy; these fill in whole-game
@@ -3221,6 +3237,32 @@ const TASKS_TRACKB_PHASE1=[
 {id:'sk_combat_10a',category:'skills',urgency:'prep',label:'Combat Lv10 (via Fighter): choose Brute (Kills boost speed + damage) or Defender (+25 max HP)',unlock:{skill:'combat',gte:10}},
 {id:'sk_combat_10b',category:'skills',urgency:'prep',label:'Combat Lv10 (via Scout): choose Acrobat (Special cooldown halved) or Desperado (Crits can insta-kill)',unlock:{skill:'combat',gte:10}},
 {id:'sk_combat_max',category:'skills',urgency:'prep',label:'Combat Level 10 reached — max level',unlock:{skill:'combat',gte:10}},
+// ── Festivals — whole-game mechanics (Chunk 14 Phase 8) — the existing ──
+// migrated Year-1 tasks already cover festival-day strategy reminders
+// (what to skip, when shops close); these are the actual festival mechanics/
+// rewards/shops themselves, sourced from the wiki's Festivals overview page
+// plus each individual festival's own page via the same api.php method.
+{id:'fe_egg',category:'festivals',urgency:'prep',label:'Egg Festival (Spring 13, Pelican Town Sq, 9am-2pm): Egg Hunt — gather 9 colored eggs in 50 real-time seconds before Abigail. Reward: Straw Hat (first win), Prize Ticket after. Shop sells Lawn Flamingo, Plush Bunny, seasonal plants, Strawberry Seeds (plant by Sp16 for 2 harvests before Summer)'},
+{id:'fe_desert',category:'festivals',urgency:'prep',label:'Desert Festival (Spring 15-17, the Desert, 10am-2am — time passes, shops stay open): currency is the Calico Egg (sells for 0g, don\'t ship them). No Skull Key needed to enter Skull Cavern during the festival'},
+{id:'fe_desert_races',category:'festivals',urgency:'prep',label:'Desert Festival races: bet Calico Eggs on 3 of 5 contestants (Speed Rooster/King Sting/Shoebiscuit/Escar-go/Cactus Crawler) — win pays 20 eggs (100 for first Escar-go win each day); pay the Suspicious Man 1 egg to rig a race'},
+{id:'fe_desert_sc',category:'festivals',urgency:'prep',label:'Desert Festival Skull Cavern bonus: Marlon offers 2 of 3 daily egg quests (Monster Hunt, Deep Dive to floor 30, Treasure Hunt); Calico Egg Nodes and buff-granting Calico Statues only appear during the festival'},
+{id:'fe_desert_willy',category:'festivals',urgency:'prep',label:'Desert Festival Willy fishing quests (1 per day for Calico Eggs): Sp15 catch 3 Sandfish, Sp16 catch a Scorpion Carp, Sp17 retrieve the Golden Bobber (appears in the day\'s first treasure chest)'},
+{id:'fe_desert_scholar',category:'festivals',urgency:'prep',label:'Desert Festival Scholar: answer 4 random trivia questions correctly (once per festival) for 50 Calico Eggs — the "how many steps have you taken" question always has the numerically middle answer correct'},
+{id:'fe_flowerdance',category:'festivals',urgency:'prep',label:'Flower Dance (Spring 24, Cindersap Forest, 9am-2pm): ask a 4+-heart bachelor/ette to dance (talk twice) for +250 friendship. Shop sells Dandelion, Daffodil, Tub o\' Flowers, seasonal plants, Rarecrow #5'},
+{id:'fe_luau',category:'festivals',urgency:'prep',label:'Luau (Summer 11, Beach, 9am-2pm): add ONE ingredient to the potluck soup before Lewis\'s warning line. Governor\'s reaction by item quality/value: Best +120 friendship (top wines/smoked fish/Starfruit), Good +60, Neutral 0, Bad -50 (common raw forage), Worst -100 (Sea Cucumber/Void items/Pufferfish) — Lucky Purple Shorts triggers a unique secret response instead'},
+{id:'fe_troutderby',category:'festivals',urgency:'prep',label:'Trout Derby (Summer 20-21, Cindersap Forest river, 6:10am-2am — time passes, shops stay open): catch Rainbow Trout for a chance at Golden Tags, exchange for Tent Kit / Bucket Hat / Mounted Trout at the derby booth'},
+{id:'fe_moonlightjellies',category:'festivals',urgency:'prep',label:'Dance of the Moonlight Jellies (Summer 28, Beach, 10pm-12am): watch the jellyfish gather at the docks — no minigame, ends automatically'},
+{id:'fe_fair',category:'festivals',urgency:'prep',label:'Stardew Valley Fair (Fall 16, Pelican Town, 9am-3pm): free Survival Burgers from Gus all day, plus Star Token games and the Grange Display'},
+{id:'fe_fair_grange',category:'festivals',urgency:'prep',label:'Grange Display scoring: 14 base points + item-count bonus (2×items−9, so all 9 slots filled = +9, empty = -9) + 5pts per category represented (8 categories, max 30 from 6) + sell-price/quality bonus. 90+ pts = 1st (1,000 tokens), 75+ = 2nd (500), 60+ = 3rd (250), else 4th (50) — including Mayor Lewis\'s Lucky Purple Shorts = automatic Disqualified (750 tokens, a special case)'},
+{id:'fe_fair_shop',category:'festivals',urgency:'prep',label:'Fair Star Token shop highlights: a Stardrop for 2,000 tokens (permanent max energy!), Rarecrow #1 (800), Fedora (500), Prize Ticket (1,000), Light Green Rug (500), plus rotating stock'},
+{id:'fe_spiritseve',category:'festivals',urgency:'prep',label:'Spirit\'s Eve (Fall 27, Pelican Town, 9pm-11:50pm): the maze north of Pierre\'s booth leads to a Golden Pumpkin (odd years) or Prize Ticket (even years) — near the end, walk through hedges by a "?" sign in the NW corner. Pierre sells a Rarecrow, Jack-O-Lantern, and its recipe'},
+{id:'fe_iceicefishing',category:'festivals',urgency:'prep',label:'Festival of Ice (Winter 8, Cindersap Forest mountain lake, 9am-2pm): Ice Fishing Contest with Pam/Willy/Elliott — catch 5+ fish (rod provided) to win. First win: 2 Tackles + 1 Magnet bait + Sailor\'s Cap; later wins: Prize Ticket'},
+{id:'fe_squidfest',category:'festivals',urgency:'prep',label:'SquidFest (Winter 12-13, Beach, 6:10am-2am — time passes, shops stay open): catch Squid for tiered daily prizes — 8 Squid on day 1 + 10 on day 2 gets everything, including the \'Squid Kid\' pet, Squid Hat, and The Art O\' Crabbing skill book'},
+{id:'fe_nightmarket',category:'festivals',urgency:'prep',label:'Night Market (Winter 15-17, Beach docks, 5pm-2am — time passes, shops stay open): Desert Trader gives free coffee nightly; Decoration Boat sells candy-cane decor; the Traveling Cart appears too (with the Wedding Ring recipe in multiplayer)'},
+{id:'fe_nightmarket_sub',category:'festivals',urgency:'prep',label:'Night Market Fishing Submarine (5pm-11pm, 1,000g/dive, ~30 real min down, fish until 2am): 3 exclusive fish (Midnight Squid, Spook Fish, Blobfish, unless using Magic Bait elsewhere), plus Seaweed/Sea Jelly/Sea Cucumber/Octopus/a rare Pearl — Curiosity Lure boosts the rare-fish odds'},
+{id:'fe_nightmarket_mermaid',category:'festivals',urgency:'prep',label:'Night Market Mermaid Boat (5pm-12:30am): after the show, play the clam shells in order 1-5-4-2-3 (per Secret Note #15) for a guaranteed Pearl, once per save'},
+{id:'fe_nightmarket_magicshop',category:'festivals',urgency:'prep',label:'Night Market Magic Shop Boat: unique hat + fireplace + seeds (Garlic/Red Cabbage/Artichoke seeds NOT available until Year 2); Rarecrow #7/#8 and the Crystal Chair only unlock after the Museum\'s first Rarecrow reward'},
+{id:'fe_winterstar',category:'festivals',urgency:'prep',label:'Feast of the Winter Star (Winter 25, Pelican Town, 9am-2pm): Secret Santa — Lewis reveals your assigned gift recipient by letter on Winter 18; your gift to them is worth 5× normal friendship points, and you receive one back from your own secret giver'},
 ];
 // Populated by migrating the existing Year-1 route (id's preserved verbatim,
 // 2 pre-existing duplicate ids found and fixed: su3a/su7_cart's 2nd occurrence
