@@ -887,700 +887,164 @@ let _routeAutoOpenDay=null; // tracks which day we last auto-opened today's card
 let _routeScrolledDay=null; // tracks which day we last auto-scrolled to
 let _lastDataDay=null;      // tracks last day renderRoute was fully rebuilt
 
-const RD={
-spring:[
-{d:1,name:'Year Begins — Meet Everyone',tasks:[
-  {type:'fire',label:'Chop 9 Maple/Pine trees until Foraging Lv 1 FIRST — do not chop Oak trees (save acorns)',id:'sp1a'},
-  {type:'fire',label:'Meet ALL 27 villagers today → completes Introductions quest (100g reward tomorrow)',id:'sp1b'},
-  {type:'gather',label:'Forage Cindersap Forest — Spring Onions, Daffodil, Dandelion, Leek, Wild Horseradish',id:'sp1c'},
-  {type:'fire',label:'Plant 15 Parsnip Seeds + all Mixed Seeds before 2AM',id:'sp1d'},
-  {type:'prep',label:'Keep: 20 fiber, stone, wood. Ship everything else. Craft Chest (50 wood).',id:'sp1e'},
-  {type:'prep',label:'📋 Special Orders board is live — check left of Pierre\'s every Monday for weekly orders',id:'sp1_so'},
-  {type:'tomorrow',label:"Willy's letter arrives tomorrow — go to beach first thing for bamboo pole",id:'sp1f'},
-  {type:'tomorrow',label:'Save file generates when you sleep tonight → run stardew-bridge.py tomorrow to connect live data',id:'sp1_bridge'},
-]},
-{d:2,name:'Fishing Begins — Get Fiberglass Rod',tasks:[
-  {type:'fire',label:'Pick up Bamboo Pole from Willy — give him any rock → collect 100g Introductions reward',id:'sp2a'},
-  {type:'fire',label:'Fish south of pier with bamboo pole until Fishing Lv 2',id:'sp2b'},
-  {type:'purchase',label:'Buy Training Rod (25g) from Willy — fish with minimum casts until you have 1,800g',id:'sp2c'},
-  {type:'fire',label:'Buy Fiberglass Rod (1,800g) + max bait (5g each). Equip bait immediately.',id:'sp2d'},
-  {type:'fire',label:'Fish at beach with Fiberglass Rod until 2AM — pass out, leave fish in chest',id:'sp2e'},
-  {type:'tomorrow',label:'Spring 3 ALWAYS RAINS — go straight to Cindersap Forest river. Skip everything else.',id:'sp2f'},
-]},
-{d:3,name:'Catfish Day (rain = Catfish in Forest river)',tasks:[
-  {type:'fire',label:'🌧️ RAIN = CATFISH. Go directly to Cindersap Forest river. Fish all day until 2AM.',id:'sp3a'},
-  {type:'fire',label:'Best spot: cast south 6 tiles west of Leah\'s door — aim for deep water east of island',id:'sp3b'},
-  {type:'prep',label:'Catfish sell 200g+ each (Fisher: 250g). This day is worth more than any other Spring day.',id:'sp3c'},
-  {type:'prep',label:'Save 75g to buy 1 copper ore from Clint tomorrow → triggers Furnace cutscene',id:'sp3d'},
-  {type:'tomorrow',label:'Check TV every morning from now on for next day\'s weather',id:'sp3e'},
-]},
-{d:4,name:'Mountain Lake Fishing',tasks:[
-  {type:'prep',label:'Check TV: what is tomorrow\'s weather? (do this every single morning)',id:'sp4a'},
-  {type:'fire',label:'Mountain lake — cast east toward the submerged log in deep water',id:'sp4b'},
-  {type:'fire',label:'Fish until 1AM. Fill inventory with gems/ore/coal + best fish before passing out.',id:'sp4c'},
-  {type:'prep',label:'If it rains tomorrow → fish forest river instead of mountain lake (catfish!)',id:'sp4d'},
-]},
-{d:5,name:'☔ RAIN — Catfish + Copper Pickaxe',tasks:[
-  {type:'fire',label:'RAIN TODAY — Cindersap Forest river: CATFISH 200g+ each. Bubble 2:10PM-5:50PM tile(61,61) then 6:10PM-6:40PM tile(34,79). Fish river until 2pm, submit pickaxe to Clint, return and fish until 2am.',id:'sp5_rain'},
-  {type:'fire',label:'⚠️ SMELT 5 Copper Bars — deliver to Clint before 4pm, upgrade to Copper Pickaxe (2,000g)',id:'sp5a'},
-  {type:'purchase',label:"Pierre's — buy 1 Bean Starter (60g) + 1 Cauliflower (80g) + 1 Potato (50g) + 16 Kale Seeds (1,120g)",id:'sp5b'},
-  {type:'fire',label:'Plant + water all new seeds on the farm',id:'sp5c'},
-  {type:'fire',label:'Mountain lake fishing until 2AM. Smelt iron bars while fishing.',id:'sp5d'},
-  {type:'prep',label:'Mine floors 40–79 with copper pick for iron ore — need 5 Iron Bars for Steel Pickaxe',id:'sp5e'},
-]},
-{d:6,name:'Fish + Smelt Iron',tasks:[
-  {type:'fire',label:'Mountain lake fishing until 1AM',id:'sp6a'},
-  {type:'prep',label:'Smelt Iron Bars from yesterday\'s ore — need 5 total for Steel Pickaxe',id:'sp6b'},
-  {type:'tomorrow',label:"Wizard's letter should arrive — DON'T skip the cutscene (walk through it)",id:'sp6c'},
-]},
-{d:7,name:"Lewis Birthday + Wizard Tower",tasks:[
-  {type:'plate',label:"🎂 Lewis — Leek / Daffodil / gem",id:'sp7a'},
-  {type:'fire',label:"Get Wizard's letter, go to Wizard's Tower — watch CC cutscene, DO NOT skip",id:'sp7b'},
-  {type:'prep',label:'Steel Pickaxe when ready: 5 Iron Bars + 5,000g at Clint (2-day wait). Dynamic task fires when you have both.',id:'sp7c'},
-  {type:'fire',label:'Mountain lake fishing until 2AM',id:'sp7d'},
-  {type:'plate',label:'💜 Amethyst / Chocolate Cake → Abigail',id:'sp7_abigail'},
-]},
-{d:8,name:'Catfish Day (if rain) + Cave Choice',tasks:[
-  {type:'fire',label:'🌧️ RAIN (predicted) — Cindersap Forest river all day. Catfish = 200–250g each, best gold/hr.',id:'sp8_rain'},
-  {type:'prep',label:'If cave upgrade offered: choose MUSHROOMS — faster restock, better energy food, more value',id:'sp8a'},
-]},
-{d:9,name:'☔ RAIN — Catfish Day + Large Pack',tasks:[
-  {type:'fire',label:'RAIN TODAY — Cindersap Forest river: CATFISH all day. Bubbles: 10:00AM-10:30AM tile(45,86), 1:10PM-3:20PM tile(50,87), 10:00PM-1:50AM tile(46,66). Stop at Pierre for Large Pack on the way.',id:'sp9_rain'},
-  {type:'prep',label:'Retrieve Steel Pickaxe from Clint if you submitted Spring 7',id:'sp9a'},
-  {type:'purchase',label:'Buy Large Pack from Pierre (2,000g) — 36 inventory slots',id:'sp9b'},
-  {type:'fire',label:'Fish Cindersap Forest river until 2AM',id:'sp9c'},
-  {type:'prep',label:'Fishing 10 target — choose Angler profession (+50% fish value) when you hit it',id:'sp9d'},
-]},
-{d:10,name:"Vincent Bday + Catfish (if rain)",tasks:[
-  {type:'fire',label:'🌧️ RAIN (predicted) — fish Cindersap Forest river for Catfish all day',id:'sp10_rain'},
-  {type:'plate',label:"🎂 Vincent — Daffodil / Earth Crystal / Parsnip",id:'sp10a'},
-  {type:'prep',label:'Retrieve pickaxe from Clint if submitted 2 days ago',id:'sp10b'},
-]},
-{d:11,name:'🌬️ Windy — Kale Harvest + Mining Starts',tasks:[
-  {type:'fire',label:'Harvest all Kale → should reach Farming 2',id:'sp11a'},
-  {type:'purchase',label:"Buy ~86 Kale Seeds (6,020g) from Pierre — batch 1 toward Farming 6 (Pierre open Thu–Tue)",id:'sp10c'},
-  {type:'fire',label:'Hoe farm in Quality Sprinkler pattern (do NOT water — sprinklers coming)',id:'sp11b'},
-  {type:'fire',label:'GO TO THE MINES. Mining push starts today. Bring furnace.',id:'sp11c'},
-  {type:'prep',label:'Every new elevator floor: return to 0F, empty inventory, restock furnaces',id:'sp11d'},
-  {type:'prep',label:'Keep stone for Staircase crafting on infested floors (need Mining 2 first)',id:'sp11e'},
-]},
-{d:12,name:'Catfish Day (if rain) or Mine',tasks:[
-  {type:'fire',label:'🌧️ RAIN (predicted) — if vault not done: Cindersap Forest river catfish all day > mine',id:'sp12_rain'},
-  {type:'fire',label:'Mine until 2AM if skipping catfish. Smelt copper and iron continuously.',id:'sp12a'},
-  {type:'prep',label:'Mining 5 → choose Miner profession (+1 ore per vein)',id:'sp12b'},
-]},
-{d:13,name:'Mine (skip Egg Festival)',tasks:[
-  {type:'fire',label:'Guide: skip Egg Festival — mine instead (worth more than strawberries)',id:'sp13a'},
-  {type:'prep',label:'Optional: attend 9AM–2PM to buy 1–2 Strawberry Seeds for Spring Crops bundle',id:'sp13b'},
-  {type:'fire',label:'Mine until 2AM',id:'sp13c'},
-]},
-{d:14,name:'☔ RAIN — Haley Bday + Catfish',tasks:[
-  {type:'fire',label:'RAIN TODAY — Forest river CATFISH all day. Bubbles: 7:00AM-10:50AM tile(34,69), 11:40AM-2:50PM tile(24,28), 6:20PM-6:50PM tile(41,29), 8:40PM-9:20PM tile(36,68). Evening: Beach for Eel (85g) 4pm-2am.',id:'sp14_rain'},
-  {type:'plate',label:"🎂 Haley — Daffodil / Earth Crystal",id:'sp14a'},
-  {type:'plate',label:'💜 Abigail — Amethyst',id:'sp14_abigail'},
-]},
-{d:15,name:'🎁 CC Bundle Day',tasks:[
-  {type:'fire',label:'🎁 CC: Bring Spring Foraging — Daffodil, Dandelion, Leek, Wild Horseradish',id:'sp15a'},
-  {type:'fire',label:'🎁 CC: Bring Spring Crops — Parsnip, Green Bean, Cauliflower, Potato',id:'sp15b'},
-  {type:'fire',label:'🎁 CC: Bring Blacksmith — Copper Bar, Iron Bar, Gold Bar',id:'sp15c'},
-  {type:'fire',label:'🎁 CC: Bring Geologist — Quartz, Earth Crystal, Frozen Tear, Fire Quartz',id:'sp15d'},
-  {type:'fire',label:"🎁 CC: Bring Adventurer's — Slime x99, Bat Wing x10",id:'sp15e'},
-  {type:'fire',label:'💰 Pay Vault bundles if you have 42,500g — bus + desert unlocked next morning',id:'sp15f'},
-  {type:'fire',label:'Place Crystalarium (CC reward) → put Diamond in it for speed buff chain',id:'sp15g'},
-  {type:'fire',label:'Mine until 2AM — minecarts now unlocked',id:'sp15h'},
-]},
-{d:16,name:'⛈️ STORM — Mine Push',tasks:[
-  {type:'fire',label:'Mine push — target floor 100. Use minecarts to get there faster.',id:'sp16a'},
-  {type:'prep',label:'Floor 90 chest: Obsidian Edge. Floor 100: Skull Key + Stardrop.',id:'sp16b'},
-  {type:'prep',label:'Check Help Wanted board at Pierre\'s daily — quick 150–1,000g quests',id:'sp16c'},
-]},
-{d:17,name:'Mine to 120 / SC Prep',tasks:[
-  {type:'fire',label:'🏴‍☠️ GOAL: Mine floor 120 ASAP. Skull Key = bus = Skull Cavern opens.',id:'sp17a'},
-  {type:'fire',label:'If vault not done yet: fish mountain lake on bad luck days',id:'sp17b'},
-  {type:'prep',label:'Tip: finish floor 120 AND vault on same day if possible → bus fixed next morning',id:'sp17c'},
-]},
-{d:18,name:"☔ RAIN — SC / Catfish",tasks:[
-  {type:'plate',label:"🎂 Pam — Parsnip",id:'sp18a'},
-  {type:'fire',label:'SC run if Skull Key obtained + vault done, else mine',id:'sp18b'},
-]},
-{d:19,name:'SC Runs Begin',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — good luck day: go deep. Bad luck day: mine floor 80 for gold.',id:'sp19a'},
-  {type:'gather',label:'Keep Jade (→ Staircases Sunday), Emerald (→ Cheese Friday), Ruby (→ Spicy Eel)',id:'sp19b'},
-  {type:'prep',label:'Do NOT sell Iridium Bars yet — wait for Mining 10 + Blacksmith profession (1,500g vs 1,000g)',id:'sp19c'},
-]},
-{d:20,name:'Harvest Kale + Plant Batch 2',tasks:[
-  {type:'fire',label:'Harvest kale batch 1',id:'sp20a'},
-  {type:'purchase',label:'Buy second ~86 kale batch from Pierre (6,020g)',id:'sp20b'},
-  {type:'fire',label:'Plant + water, then SC/mine',id:'sp20c'},
-  {type:'prep',label:'Craft Quality Sprinklers (1 iron bar + 1 gold bar + 1 refined quartz) — place on kale',id:'sp20d'},
-]},
-{d:21,name:'SC / Mine',tasks:[
-  {type:'fire',label:'🚀 SC run. Mining XP fast in SC — push toward Mining 10.',id:'sp21a'},
-  {type:'prep',label:'💜 Amethyst / Chocolate Cake → Abigail (2×/wk)',id:'sp21b'},
-]},
-{d:22,name:'🌬️ Windy — SC + Copper Axe',tasks:[
-  {type:'fire',label:'Drop Axe at Clint for Copper upgrade (2,000g)',id:'sp22a'},
-  {type:'fire',label:'🚀 SC run',id:'sp22b'},
-]},
-{d:23,name:'SC / Catfish if Rain',tasks:[
-  {type:'fire',label:'🌧️ If raining: Cindersap Forest river catfish — always better than SC on rain',id:'sp23a'},
-  {type:'fire',label:'☀️ If sunny: 🚀 SC run',id:'sp23b'},
-  {type:'prep',label:'Retrieve Copper Axe from Clint',id:'sp23c'},
-]},
-{d:24,name:'🌸 Flower Dance (Clint + Pierre closed)',tasks:[
-  {type:'prep',label:'Flower Dance today (Cindersap Forest, 9am–2pm). Clint + Pierre both closed — axe pickup moves to tomorrow.',id:'sp24_dance'},
-  {type:'fire',label:'🚀 SC run — Flower Dance is optional, SC is better gold',id:'sp24b'},
-]},
-{d:25,name:'Retrieve Copper Axe + Submit Steel',tasks:[
-  {type:'fire',label:'Retrieve Copper Axe from Clint (submitted Spring 22) + drop for Steel upgrade (5,000g) — retrieve Spring 27',id:'sp24a'},
-  {type:'fire',label:'🚀 SC or catfish if rain',id:'sp25a'},
-  {type:'prep',label:'Plan Starfruit count for Summer 2. Target 400–500 seeds + Deluxe Speed-Gro.',id:'sp25b'},
-  {type:'prep',label:'Oasis (Sandy) sells Deluxe Speed-Gro (80g) every day — go whenever bus is fixed.',id:'sp25c'},
-]},
-{d:26,name:"Pierre Birthday + SC",tasks:[
-  {type:'plate',label:"🎂 Pierre — Daffodil / Dandelion",id:'sp26a'},
-  {type:'fire',label:'🚀 SC run',id:'sp26c'},
-]},
-{d:27,name:"☔ RAIN — Emily Bday + Axe + Catfish",tasks:[
-  {type:'fire',label:'Retrieve Steel Axe from Clint (submitted Spring 25)',id:'sp26b'},
-  {type:'fire',label:'Harvest second kale batch → should hit Farming 6',id:'sp27a'},
-  {type:'plate',label:"🎂 Emily — Amethyst / Aquamarine",id:'sp27b'},
-  {type:'fire',label:'🚀 SC run',id:'sp27c'},
-]},
-{d:28,name:'🌬️ Windy — Season End',tasks:[
-  {type:'fire',label:'Ship as much as possible — need gold for Summer 2 Starfruit buy',id:'sp28a'},
-  {type:'fire',label:'Craft + place Quality Sprinklers on all farm tiles',id:'sp28b'},
-  {type:'prep',label:'💜 Amethyst → Abigail · goal 8♥ by Fall 13',id:'sp28c'},
-  {type:'prep',label:'Journal reminder: check Help Wanted board tomorrow and every day',id:'sp28d'},
-  {type:'tomorrow',label:'Summer 2: warp Desert 6AM → Deluxe Speed-Gro + Starfruit Seeds (400g) → plant whole farm',id:'sp28e'},
-]},
-],
-
-summer:[
-{d:1,name:'💰 Cash Out + CC + Vault Day',tasks:[
-  {type:'fire',label:'Ship all sellable bars — keep 20 Gold Bars + 20 Iron Bars + 14 Refined Quartz for sprinklers. Sell rest: Gold Bar 500g, Iron 100g, Copper 60g, gems.',id:'su1a'},
-  {type:'fire',label:'Walk to Wizard Tower (south of Cindersap Forest) → CC cutscene fires → Junimo Notes revealed',id:'su1_wizard'},
-  {type:'fire',label:'Visit Community Center → collect Boiler Room ✓ (minecarts!), Spring Crops ✓, Spring Foraging ✓ — all fully donated',id:'su1_cc'},
-  {type:'fire',label:'Donate 3 artifacts/minerals to Museum (57→60) → Rusty Key → Sewers (manhole south of town bridge)',id:'su1_museum'},
-  {type:'fire',label:'Pay all 4 Vault bundles at CC (2,500+5,000+10,000+25,000 = 42,500g) → bus fixed tomorrow',id:'su1d'},
-  {type:'prep',label:'Buy White Chicken from Marnie (800g) — Coop already built, start egg production for CC Animal bundle',id:'su1_chicken'},
-  {type:'gather',label:'🎁 Fiddlehead Fern from Secret Woods — SUMMER ONLY, grab whenever you pass by',id:'su1c'},
-  {type:'prep',label:'Goal this week: Iridium Bars from SC → Iridium Pickaxe at Clint (25,000g + 5 bars)',id:'su1b'},
-  {type:'plate',label:'💜 Gift Abigail — Amethyst (Mon, start 2×/week rhythm all summer)',id:'su1_abigail'},
-]},
-{d:2,name:'🌟 Bus Day + ⭐ Galaxy Sword + Starfruit',tasks:[
-  {type:'fire',label:'10AM: Take bus to Calico Desert (500g) → Sandy\'s Oasis: buy Deluxe Speed-Gro (80g each, buy 100+) + Starfruit Seeds (400g each, fill the farm)',id:'su2b'},
-  {type:'fire',label:'⭐ GALAXY SWORD — bring Prismatic Shard (in your chest!) to the 3 pillars NE of desert → instant equip',id:'su2_galaxy'},
-  {type:'fire',label:'Plant ALL Starfruit + Speed-Gro when home — harvests Su12 (10 days)',id:'su2c'},
-  {type:'prep',label:'Order house upgrade from Robin: 10,000g + 450 Wood (you have the wood in chest!) → kitchen in 3 days = marriage eligible',id:'su2_house'},
-  {type:'prep',label:'Craft 10–15 Lightning Rods tonight — Su13 is guaranteed storm, Su10+Su26 often storm',id:'su2d'},
-  {type:'prep',label:'Plant Acorns in a corner — Oak Tree forest for Oak Resin → Kegs → Starfruit Wine',id:'su2e'},
-]},
-{d:3,name:'⚒️ First SC Run — Clint Closed Wed',tasks:[
-  {type:'fire',label:'🚀 First Skull Cavern run! Galaxy Sword equipped — go deep, bomb clusters, take every shaft',id:'su3b'},
-  {type:'fire',label:'🌧️ RAIN (predicted) — SC underground, rain no effect. Eel at beach 4pm–2am if done early.',id:'su3_rain'},
-  {type:'gather',label:'🎁 Fiddlehead Fern from Secret Woods on the way',id:'su3c'},
-  {type:'prep',label:'⚠️ Clint CLOSED today (Wed) — drop Gold Pickaxe + 5 Iridium Bars for Iridium upgrade tomorrow (Thu)',id:'su3a'},
-]},
-{d:4,name:'⛏️ Iridium Pickaxe Drop + SC + Jas Birthday',tasks:[
-  {type:'fire',label:'Drop Gold Pickaxe + 5 Iridium Bars at Clint → Iridium Pickaxe (25,000g) — retrieve Su6',id:'su3a'},
-  {type:'fire',label:'🚀 SC all day after drop-off — Galaxy Sword + Gold Pick until retrieve',id:'su4b'},
-  {type:'fire',label:'🎣 Pufferfish: beach noon–4pm SUNNY ONLY — CC Ocean Fish bundle',id:'su4c'},
-  {type:'plate',label:'🎂 Jas — Coconut / Pink Cake (skip if mid-SC)',id:'su4a'},
-  {type:'plate',label:'💜 Gift Abigail (Thu)',id:'su4_abigail'},
-]},
-{d:5,name:'🛒 Traveling Cart + SC + Crab Pots',tasks:[
-  {type:'fire',label:'🛒 Traveling Cart (Fri) — RED CABBAGE SEEDS (buy any you see!), Nautilus Shell, Woodskip, Rabbit\'s Foot',id:'su7_cart'},
-  {type:'fire',label:'🌧️ RAIN — Eel at beach 4pm–2am if SC done early (Night Fishing bundle)',id:'su5_rain'},
-  {type:'fire',label:'🚀 SC all day',id:'su5a'},
-  {type:'prep',label:'Set up Crab Pots in river + ocean — Lobster, Crab, Snail, Periwinkle, Oyster, Mussel, Clam, Crayfish, Shrimp needed for Crab Pot bundle',id:'su5c'},
-  {type:'gather',label:'🎁 Fiddlehead Fern from Secret Woods',id:'su5d'},
-]},
-{d:6,name:'⛏️ Retrieve Iridium Pickaxe + SC',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — Iridium Pick + Galaxy Sword equipped. Dramatically deeper each run.',id:'su6a'},
-  {type:'fire',label:'Retrieve Iridium Pickaxe from Clint (submitted Su4)',id:'su6b'},
-  {type:'prep',label:'Check Crab Pots — Lobster, Crab, Snail, Periwinkle counting toward CC Crab Pot bundle',id:'su6c'},
-  {type:'plate',label:'💜 Amethyst → Abigail',id:'su6d'},
-]},
-{d:7,name:'🛒 Traveling Cart (Sunday) + SC',tasks:[
-  {type:'fire',label:'🛒 Traveling Cart (Sun) — Red Cabbage Seeds, Nautilus Shell, Rabbit\'s Foot, Woodskip',id:'su7_cart'},
-  {type:'fire',label:'🌧️ RAIN — Eel at beach 4pm–2am (Night Fishing bundle)',id:'su7_rain'},
-  {type:'fire',label:'🚀 SC all day',id:'su7a'},
-  {type:'fire',label:'🎣 Tonight: Eel (beach 4pm–2am) + Bream (river 6pm–2am) — Night Fishing bundle',id:'su7b'},
-  {type:'gather',label:'🎁 Fiddlehead Fern from Secret Woods — grab every opportunity',id:'su7c'},
-]},
-{d:8,name:"Gus Birthday + SC",tasks:[
-  {type:'fire',label:'🚀 SC all day',id:'su8b'},
-  {type:'fire',label:'Check Crab Pots — Lobster, Crab, Snail, Periwinkle, Oyster counting toward CC Crab Pot bundle',id:'su8c'},
-  {type:'prep',label:'Check Help Wanted board + Special Orders at Pierre\'s — easy gold + friendship',id:'su8e'},
-  {type:'plate',label:'🎂 Gus — Diamond / Orange (skip if mid-SC)',id:'su8a'},
-  {type:'plate',label:'💜 Amethyst → Abigail (Mon)',id:'su8d'},
-]},
-{d:9,name:'SC + Fiddlehead',tasks:[
-  {type:'fire',label:'🚀 SC all day',id:'su9b'},
-  {type:'gather',label:'🎁 Fiddlehead Fern from Secret Woods — time running out, grab every trip',id:'su9c'},
-  {type:'prep',label:'Need more Starfruit Seeds? Oasis (Sandy) open every day — 400g each + Speed-Gro',id:'su9e'},
-  {type:'plate',label:'💜 Amethyst → Abigail (Thu)',id:'su9d'},
-]},
-{d:10,name:"⛈️ STORM — Maru Bday + Battery Packs + SC",tasks:[
-  {type:'fire',label:'⛈️ STORM TODAY — collect Battery Packs from Lightning Rods first thing in the morning',id:'su10_storm'},
-  {type:'plate',label:"🎂 Maru — Diamond / Battery Pack / Gold Bar",id:'su10a'},
-  {type:'fire',label:'🚀 SC all day',id:'su10b'},
-  {type:'gather',label:'🎁 CC: Fiddlehead Fern from Secret Woods',id:'su10c'},
-  {type:'prep',label:"Pierre's closed tomorrow (Luau). Oasis/Sandy is fine — she's in the desert, not at the beach.",id:'su10d'},
-]},
-{d:11,name:'🌊 Luau + SC',tasks:[
-  {type:'fire',label:'Luau potluck 9am–2pm — bring best quality item for Governor approval',id:'su11a'},
-  {type:'fire',label:'🚀 SC after Luau',id:'su11b'},
-  {type:'gather',label:'🎁 CC: Fiddlehead Fern — last few days in Secret Woods this summer',id:'su11c'},
-  {type:'prep',label:'💜 Amethyst / Spicy Eel → Abigail',id:'su11d'},
-]},
-{d:12,name:'🌟 Batch 1 Harvest + Replant + Cart',tasks:[
-  {type:'fire',label:'🌟 HARVEST ALL Starfruit (planted Su2, 10 days with Speed-Gro) — replant immediately',id:'su12b'},
-  {type:'fire',label:'🛒 Traveling Cart (Fri) — Red Cabbage Seeds, Nautilus Shell, Rabbit\'s Foot',id:'su12a'},
-  {type:'gather',label:'🎁 LAST DAYS — Fiddlehead Fern from Secret Woods before Su16 forage push',id:'su12c'},
-]},
-{d:13,name:'⛈️ STORM — Battery Pack Day (guaranteed)',tasks:[
-  {type:'fire',label:'⚡ Summer 13 GUARANTEED STORM — collect Battery Packs from Lightning Rods in AM',id:'su13a'},
-  {type:'plate',label:"🎂 Alex — Complete Breakfast (cooking)",id:'su13b'},
-  {type:'fire',label:'🚀 SC (storm doesn\'t affect SC)',id:'su13c'},
-  {type:'prep',label:'Craft Crystalariums with Battery Packs — put Diamond in first 5–10 for espresso supply',id:'su13d'},
-  {type:'prep',label:'💜 Amethyst → Abigail',id:'su13e'},
-]},
-{d:14,name:'🐡 Pufferfish + Traveling Cart',tasks:[
-  {type:'fire',label:'🐡 PUFFERFISH — beach noon–4pm SUNNY ONLY. Very limited window — Ocean Fish bundle.',id:'su14a'},
-  {type:'fire',label:'🛒 Traveling Cart (Sun) — Red Cabbage Seeds, Nautilus Shell, Rabbit\'s Foot',id:'su14b'},
-  {type:'prep',label:'Chicken check: petting daily? Need Large Egg for CC Animal bundle — takes a few weeks at 200+ friendship',id:'su14c'},
-]},
-{d:15,name:'⛈️ STORM — SC + Battery Packs (no Pufferfish)',tasks:[
-  {type:'fire',label:'⛈️ STORM TODAY — collect Battery Packs from Lightning Rods this morning',id:'su15_storm'},
-  {type:'fire',label:'⚠️ NO PUFFERFISH today (storm = not sunny) — plan to catch it Su14 or Su16 instead',id:'su15a'},
-  {type:'fire',label:'🚀 SC all day (storm doesn\'t affect SC underground)',id:'su15b'},
-  {type:'gather',label:'🎁 CC: Plant Poppy today (7-day crop) → harvest Su22 for CC Chef bundle',id:'su15c'},
-  {type:'prep',label:'Place Tapper on a Maple Tree — Maple Syrup needed for CC Chef bundle (~7 days)',id:'su15d'},
-  {type:'prep',label:'💜 Amethyst / Spicy Eel → Abigail',id:'su15e'},
-]},
-{d:16,name:'🌿 Summer Foraging Bundle Day',tasks:[
-  {type:'fire',label:'🎁 FORAGE Sweet Pea, Grape, Spice Berry on Cindersap Forest paths + town roads → Summer Foraging bundle complete (3/3)',id:'su16b'},
-  {type:'fire',label:'🚀 SC rest of day',id:'su16a'},
-  {type:'prep',label:'🎁 Ocean Fish still needs: Tuna (beach 6am–7pm), Red Snapper (rainy day), Tilapia (ocean)',id:'su16c'},
-  {type:'prep',label:'Check journal + Help Wanted board — complete active quests',id:'su16d'},
-]},
-{d:17,name:'Sam Birthday + SC',tasks:[
-  {type:'plate',label:"🎂 Sam — Pizza (Saloon 600g) / Cactus Fruit",id:'su17a'},
-  {type:'fire',label:'🚀 SC all day',id:'su17b'},
-  {type:'gather',label:'🎁 CC: plant Sunflower today (8 days → harvest Su25) for Dye bundle if not donated yet',id:'su17c'},
-  {type:'prep',label:'💜 Amethyst → Abigail',id:'su17d'},
-  {type:'prep',label:'Check Help Wanted board + Special Orders board daily — easy gold, friendship, unique rewards',id:'su17e'},
-]},
-{d:18,name:'SC + Ocean Fish Push',tasks:[
-  {type:'fire',label:'🚀 SC all day — Galaxy Sword + Iridium Pick combo at full strength',id:'su18a'},
-  {type:'fire',label:'Ocean fishing if bad luck day: Tuna (beach 6am–7pm), Red Snapper (rainy), Tilapia — CC Ocean Fish bundle',id:'su18b'},
-  {type:'prep',label:'💜 Marnie: gift her to 2♥ (500 pts) → her bedroom unlocks → Mayor\'s Shorts quest (750g)',id:'su18c'},
-  {type:'plate',label:'💜 Gift Abigail (Thu)',id:'su18_abigail'},
-]},
-{d:19,name:'Demetrius Birthday + 🛒 Cart',tasks:[
-  {type:'fire',label:'🛒 Traveling Cart (Fri) — Red Cabbage Seeds, Nautilus Shell, Rabbit\'s Foot',id:'su19d'},
-  {type:'fire',label:'🚀 SC all day',id:'su19b'},
-  {type:'prep',label:'Sell Iridium Bars once Mining 10 reached — with Geologist→Gemologist at 10: gems worth +30% too',id:'su19c'},
-  {type:'plate',label:'🎂 Demetrius — Strawberry / Ice Cream',id:'su19a'},
-]},
-{d:20,name:'⛈️ Batch 2 Harvest + Replant + Storm',tasks:[
-  {type:'fire',label:'⛈️ Collect Battery Packs from Lightning Rods first (storm common today)',id:'su20_storm'},
-  {type:'fire',label:'🌟 HARVEST Starfruit batch 2 (planted Su12, 8 days) — replant immediately',id:'su20a'},
-  {type:'fire',label:'Desert → Oasis for Starfruit batch 3 seeds + Speed-Gro (harvests Su28+ so only if early enough)',id:'su20b'},
-  {type:'fire',label:'Plant all Starfruit + Speed-Gro immediately',id:'su20c'},
-  {type:'fire',label:'🚀 SC after planting',id:'su20d'},
-  {type:'prep',label:'Farming 10 reached? Re-spec to Artisan (Statue of Uncertainty, Sewers, 10,000g) before first wine sell',id:'su20e'},
-]},
-{d:21,name:'🛒 Cart + SC + Eel Night',tasks:[
-  {type:'fire',label:'🛒 Traveling Cart (Sun) — Red Cabbage Seeds, Nautilus Shell, Rabbit\'s Foot',id:'su21a'},
-  {type:'fire',label:'🌧️ RAIN — Eel at beach 4pm–2am (Night Fishing bundle: Catfish + Eel + Bream)',id:'su21_rain'},
-  {type:'fire',label:'🚀 SC all day',id:'su21b'},
-  {type:'fire',label:'Check Crab Pots — Lobster, Crab, Periwinkle, Snail, Oyster, Mussel, Clam, Shrimp',id:'su21c'},
-]},
-{d:22,name:'SC + Chef\'s Bundle',tasks:[
-  {type:'fire',label:'🚀 SC all day',id:'su22a'},
-  {type:'gather',label:'🎁 Check Maple Tapper — Maple Syrup ready? Donate to CC Chef\'s bundle',id:'su22b'},
-  {type:'prep',label:'Check Special Orders board — weekly quests, unique rewards',id:'su22c'},
-  {type:'plate',label:'💜 Gift Abigail (Mon)',id:'su22d'},
-]},
-{d:23,name:'SC + Desert Trader',tasks:[
-  {type:'fire',label:'🚀 SC all day. Desert Trader: Ruby→Spicy Eel (Fri), Diamond→Espresso, Jade→Staircase (Sun only)',id:'su23a'},
-  {type:'prep',label:'Mining 10 reached? Sell Iridium Bars — Geologist→Gemologist means gems sell for 30% more too',id:'su23b'},
-]},
-{d:24,name:'SC + 🌸 Poppy Harvest',tasks:[
-  {type:'fire',label:'🌸 POPPY harvest (planted Su15, 9 days) → donate to CC Chef\'s bundle immediately',id:'su24a'},
-  {type:'fire',label:'🚀 SC all day',id:'su24b'},
-  {type:'plate',label:'💜 Gift Abigail (Thu)',id:'su24c'},
-]},
-{d:25,name:'SC + Oak Tappers + Fall Prep',tasks:[
-  {type:'fire',label:'🚀 SC all day',id:'su25a'},
-  {type:'purchase',label:'Oasis — Deluxe Speed-Gro (80g each) for Fall Pumpkins',id:'su25b'},
-  {type:'fire',label:'Place Tappers on ALL Oak Trees — Oak Resin → Kegs → Starfruit Wine = massive income',id:'su25c'},
-]},
-{d:26,name:'⚡ Storm + 🛒 Cart + SC',tasks:[
-  {type:'fire',label:'⚡ Summer 26 often storms — collect Battery Packs from Rods AM',id:'su26a'},
-  {type:'fire',label:'🛒 Traveling Cart (Fri) — last Friday cart of summer!',id:'su26b'},
-  {type:'prep',label:'Craft Crystalariums from Battery Packs — Diamond → Espresso for SC runs',id:'su26c'},
-  {type:'plate',label:'💜 Gift Abigail (Abigail ~5.5♥ — Fa13 birthday will push to 8♥)',id:'su26d'},
-]},
-{d:27,name:'Final SC + Starfruit Harvest',tasks:[
-  {type:'fire',label:'🌟 HARVEST ALL Starfruit — everything dies at midnight',id:'su27a'},
-  {type:'fire',label:'🚀 SC all day with Galaxy Sword (obtained Su2)',id:'su27b'},
-  {type:'fire',label:'⭐ Galaxy Sword already equipped — confirm! (obtained Su2 at Desert pillars)',id:'su27_galaxy'},
-  {type:'plate',label:'💜 Gift Abigail — at 8♥? Buy Bouquet from Pierre (200g) → girlfriend!',id:'su27_abigail'},
-  {type:'purchase',label:'Buy Wheat Seeds from Pierre (10g each) — cover whole farm',id:'su27c'},
-]},
-{d:28,name:'🌊 Moonlight Jellies + Season Close',tasks:[
-  {type:'fire',label:'Harvest any remaining Starfruit before 6pm',id:'su28a'},
-  {type:'purchase',label:'9AM: Pierre\'s — Wheat Seeds (10g each, plant immediately)',id:'su28b'},
-  {type:'fire',label:'Plant Wheat — linger crop preserves Deluxe Speed-Gro for Fall Pumpkins',id:'su28c'},
-  {type:'fire',label:'🛒 Traveling Cart (Sun) — final summer check',id:'su28_cart'},
-  {type:'fire',label:'🌧️ RAIN — Eel at beach 4pm–2am if time',id:'su28_rain'},
-  {type:'fire',label:'🚀 SC before festival if good luck day',id:'su28_sc'},
-  {type:'fire',label:'⭐ Galaxy Sword check — already done Su2!',id:'su28_galaxy'},
-  {type:'fire',label:'🌊 Moonlight Jellies festival at beach tonight — story cutscene',id:'su28d'},
-  {type:'plate',label:'💜 Gift Abigail',id:'su28_abigail'},
-  {type:'tomorrow',label:'Fall 1: harvest Wheat → plant Pumpkins IMMEDIATELY. Speed-Gro still active!',id:'su28e'},
-]},
-],
-
-fall:[
-{d:1,name:'🍂 Fall Begins — SC + Seeds + Foraging',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — SC is primary income now. Go every day you can.',id:'fa1a'},
-  {type:'purchase',label:'Buy Pumpkin Seeds from Pierre (100g each) to fill whole farm — 3 Pumpkin harvests planned: Fa10, Fa18, Fa26',id:'fa1b'},
-  {type:'gather',label:'🎁 Forage Chanterelle, Common Mushroom, Wild Plum, Hazelnut all Fall — CC Fall Foraging bundle',id:'fa1c'},
-  {type:'prep',label:'Wheat planted Su28 = linger crop. Harvest Fa2, immediately plant Pumpkins with Speed-Gro still active!',id:'fa1d'},
-  {type:'prep',label:'Pumpkins > Cranberries — Pumpkin Wine worth more, plan for 3 harvests',id:'fa1e'},
-  {type:'plate',label:'💜 Amethyst / Chocolate Cake → Abigail (Mon — keep 2×/week all fall!)',id:'fa1_abigail'},
-  {type:'prep',label:'Kitchen upgrade done (ordered Su2) → marriage eligible! Need 10♥ + Mermaid\'s Pendant on rainy beach day (5,000g)',id:'fa1_marriage'},
-  {type:'prep',label:'Gift priority: Marnie (2♥→Mayor\'s Shorts quest 750g), Elliott (2♥→Crab Pot recipe), Willy (5♥→Coral)',id:'fa1_friends'},
-]},
-{d:2,name:'☔ RAIN — Penny Bday + Wheat→Pumpkins',tasks:[
-  {type:'fire',label:'HARVEST WHEAT first — then immediately plant Pumpkin Seeds on every tile (Speed-Gro stays!)',id:'fa2b'},
-  {type:'fire',label:'🌧️ RAIN — Catfish in Cindersap Forest river before/after planting',id:'fa2_rain'},
-  {type:'fire',label:'🚀 SC after planting',id:'fa2c'},
-  {type:'gather',label:'🎁 Forage Wild Plum (forest floor) + Hazelnut (shake trees)',id:'fa2d'},
-  {type:'plate',label:"🎂 Penny — Poppy / Melon / Emerald",id:'fa2a'},
-]},
-{d:3,name:'CC Donation Day + SC',tasks:[
-  {type:'fire',label:'🎁 DONATE to CC: Summer Foraging ✓, Ocean Fish items you caught, Crab Pot haul. Boiler Room ✓ already collected.',id:'fa3a'},
-  {type:'fire',label:'🚀 SC all day',id:'fa3b'},
-  {type:'gather',label:'🎁 Tiger Trout (river 6am–7pm, Fall ONLY) — Specialty Fish bundle',id:'fa3c'},
-  {type:'gather',label:'🎁 Walleye (river/lake on rainy days, 12pm–2am) — Night Fishing bundle if still needed',id:'fa3d'},
-]},
-{d:4,name:'SC + Foraging (rain: Catfish/Walleye)',tasks:[
-  {type:'fire',label:'🌧️ RAIN — Walleye (river/lake 12pm–2am) + Catfish (river 6am–midnight)',id:'fa4_rain'},
-  {type:'fire',label:'🚀 SC all day — Iridium Pick + Galaxy Sword already equipped',id:'fa4a'},
-  {type:'gather',label:'🎁 Forage Chanterelle + Wild Plum in Cindersap Forest',id:'fa4b'},
-  {type:'gather',label:'🎁 Tiger Trout + Walleye if not caught yet',id:'fa4c'},
-  {type:'prep',label:'📋 Traveling Cart (Fri) — Nautilus Shell, Red Cabbage',id:'fa4d'},
-]},
-{d:5,name:'🛒 Elliott Birthday + SC',tasks:[
-  {type:'fire',label:'🛒 Traveling Cart (Fri) — Nautilus Shell, Red Cabbage Seeds',id:'fa5b'},
-  {type:'fire',label:'🚀 SC all day',id:'fa5d'},
-  {type:'gather',label:'🎁 Forage Common Mushroom + Chanterelle',id:'fa5c'},
-  {type:'plate',label:"🎂 Elliott — Lobster / Crab (should have from Crab Pots!)",id:'fa5a'},
-]},
-{d:6,name:'☔ RAIN — Catfish/Walleye + SC',tasks:[
-  {type:'fire',label:'📋 Traveling Cart (Fri) — CHECK: Nautilus Shell, Red Cabbage, Woodskip, Rabbit\'s Foot',id:'fa6a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa6b'},
-  {type:'gather',label:'🎁 Bundle: forage Wild Plum + Hazelnut',id:'fa6c'},
-  {type:'prep',label:'Trade gems at Desert Trader: Ruby → Spicy Eel, Diamond → Triple Espresso, Jade → Staircase (Sun)',id:'fa6d'},
-]},
-{d:7,name:'Pre-Blackberry + SC',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — last full SC day before Blackberry week slows you down',id:'fa7a'},
-  {type:'gather',label:'🎁 Bundle: Purple Mushroom (mine 80–120) — Field Research Bundle',id:'fa7b'},
-  {type:'prep',label:'Place Tappers on Oak Trees if not done — Oak Resin needed for Kegs (1 Keg = 1 Oak Resin)',id:'fa7c'},
-  {type:'tomorrow',label:'🫐 Blackberry season Fall 8–11 — forage hard, good energy food + sells decently',id:'fa7d'},
-]},
-{d:8,name:'🫐 Blackberry Season!',tasks:[
-  {type:'gather',label:'🫐 FORAGE BLACKBERRIES all morning — Cindersap Forest, bus stop, town paths',id:'fa8a'},
-  {type:'gather',label:'🎁 Bundle: Blackberry for Enchanter Bundle',id:'fa8b'},
-  {type:'gather',label:'🎁 Bundle: Hazelnut (shake trees!)',id:'fa8c'},
-  {type:'fire',label:'🚀 Skull Cavern afternoon',id:'fa8d'},
-  {type:'prep',label:'📋 Cart was yesterday (Fall 7 Sun) — next Traveling Cart: Fall 12 (Friday)',id:'fa8e'},
-]},
-{d:9,name:'🫐 Blackberry + Re-spec Day',tasks:[
-  {type:'gather',label:'🫐 Blackberries — sweep all routes before SC',id:'fa9a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa9b'},
-  {type:'fire',label:'Guide: Fall 9 = re-spec from Agriculturist → Artisan (Statue of Uncertainty) before selling wine',id:'fa9c'},
-  {type:'prep',label:'Start selling Starfruit Wine / Pumpkin Wine if Kegs are ready and you\'ve re-spec\'d to Artisan',id:'fa9d'},
-]},
-{d:10,name:'🎃 First Pumpkin Harvest + Replant',tasks:[
-  {type:'fire',label:'🎃 FIRST PUMPKIN HARVEST — planted Fall 2, 8 days with Speed-Gro + Agriculturist',id:'fa10a'},
-  {type:'fire',label:'Replant Pumpkin Seeds immediately (Deluxe Speed-Gro stays on tile)',id:'fa10b'},
-  {type:'fire',label:'🚀 Skull Cavern after planting',id:'fa10c'},
-  {type:'gather',label:'🎁 Bundle: Red Mushroom (trees) + Purple Mushroom (mine 80+) — Field Research',id:'fa10d'},
-  {type:'prep',label:'Guide: 3 Pumpkin harvests total in Fall — Fall 10, ~Fall 18, Fall 26–27',id:'fa10e'},
-]},
-{d:11,name:"☔ RAIN — Catfish/Walleye",tasks:[
-  {type:'plate',label:"🎂 Jodi — Diamond / Chocolate Cake",id:'fa11a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa11b'},
-  {type:'gather',label:'🎁 Bundle: Frozen Geode (mine 40–79) — Field Research Bundle',id:'fa11c'},
-]},
-{d:12,name:'CC Donation Run',tasks:[
-  {type:'fire',label:'🎁 DONATE FALL ITEMS at CC — bring all forage + fish you\'ve collected',id:'fa12a'},
-  {type:'fire',label:'Harvest Cranberries (second harvest)',id:'fa12b'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa12c'},
-]},
-{d:13,name:"💜💜 ABIGAIL BIRTHDAY — Most Important Day",tasks:[
-  {type:'plate',label:"🎂💜 ABIGAIL BIRTHDAY — give Amethyst or Chocolate Cake (8× pts = 640pts!). Should push to ~8♥ today.",id:'fa13a'},
-  {type:'fire',label:'💜 At 8♥ after birthday? Buy Bouquet from Pierre (200g, open 9am–5pm) → she becomes girlfriend → now need 10♥',id:'fa13d'},
-  {type:'fire',label:'🛒 Traveling Cart (Sun tomorrow, Fa14) — last chance for Nautilus Shell, Red Cabbage',id:'fa13b'},
-  {type:'fire',label:'🚀 SC all day',id:'fa13c'},
-  {type:'prep',label:'Kitchen upgrade done (ordered Su2) ✓ — marriage eligible when you reach 10♥',id:'fa13e'},
-]},
-{d:14,name:"Harvey Birthday + Pumpkins",tasks:[
-  {type:'plate',label:"🎂 Harvey — Coffee (Saloon 300g) / Wine",id:'fa14a'},
-  {type:'fire',label:'🎃 FIRST PUMPKIN HARVEST — keep Gold+ quality for Quality Crops Bundle!',id:'fa14b'},
-  {type:'fire',label:'Harvest Cranberries third time',id:'fa14c'},
-  {type:'prep',label:'🎁 Bundle: Gold Star Pumpkin × 5 needed for Quality Crops Bundle',id:'fa14d'},
-]},
-{d:15,name:"☔ RAIN — Pre-Fair + Catfish",tasks:[
-  {type:'plate',label:"🎂 Sandy — Crocus (Winter forage) / Daffodil",id:'fa15a'},
-  {type:'prep',label:'🎡 Grange Display prep for tomorrow — 9 items, max variety',id:'fa15b'},
-  {type:'prep',label:'Best Grange: gold crop, artisan good, fish, mineral, animal product',id:'fa15c'},
-  {type:'prep',label:'📋 Cart was yesterday (Fall 14 Sun) — next Traveling Cart: Fall 19 (Friday)',id:'fa15d'},
-]},
-{d:16,name:'🎡 Stardew Valley Fair',tasks:[
-  {type:'fire',label:'🎡 Grange Display 9am–3pm — aim 90+ points for star token jackpot',id:'fa16a'},
-  {type:'purchase',label:'Spend star tokens: Rarecrow #6 (2500★) is most useful',id:'fa16b'},
-  {type:'fire',label:'🚀 Skull Cavern before/after fair (farm is accessible all day)',id:'fa16c'},
-]},
-{d:17,name:'Post-Fair',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — back to grind',id:'fa17a'},
-  {type:'gather',label:'🎁 Bundle: check if you have Pumpkin + Corn + Eggplant + Yam for Fall Crops Bundle',id:'fa17b'},
-  {type:'prep',label:'Keg check — fill with Pumpkin/Cranberry for wine',id:'fa17c'},
-]},
-{d:18,name:'CC Sprint',tasks:[
-  {type:'fire',label:'🎁 DONATE to CC — Fall Crops Bundle, Boiler Room, whatever you have ready',id:'fa18a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa18b'},
-  {type:'fire',label:'Harvest Cranberries (keep checking)',id:'fa18c'},
-]},
-{d:19,name:'☔ RAIN — Catfish/Walleye + SC',tasks:[
-  {type:'fire',label:'🌧️ RAIN (predicted) — Catfish in Cindersap Forest river all day. River Fish Bundle item.',id:'fa19_rain'},
-  {type:'fire',label:'🎣 Catfish: river 6am–midnight. Walleye: river/lake 12pm–2am.',id:'fa19a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa19b'},
-  {type:'prep',label:'📋 Traveling Cart FRIDAY — last few chances for Nautilus Shell this season',id:'fa19c'},
-]},
-{d:20,name:'☔ RAIN — Catfish/Walleye (second day)',tasks:[
-  {type:'fire',label:'Harvest Pumpkins + Cranberries',id:'fa20a'},
-  {type:'fire',label:'🎁 Donate Quality Crops bundle items if you have 5× gold-star Pumpkin, Corn, etc.',id:'fa20b'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa20c'},
-]},
-{d:21,name:"Robin Bday + Building Check",tasks:[
-  {type:'fire',label:'🌧️ RAIN (predicted) — Catfish + Walleye fishing day',id:'fa21_rain'},
-  {type:'plate',label:"🎂 Robin — Goat Cheese / Spaghetti",id:'fa21a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa21b'},
-  {type:'gather',label:'🎁 Bundle: Purple Mushroom from deep mines — Field Research Bundle critical item',id:'fa21c'},
-  {type:'prep',label:'📋 Traveling Cart SUNDAY — last realistic Nautilus Shell chance before winter',id:'fa21d'},
-  {type:'prep',label:'Building audit: Barn built? Big Barn (12K)? Deluxe Barn for Sheep+Pig (25K)? Animal Products bundle needs Wool + Truffle.',id:'fa21e'},
-  {type:'prep',label:'Big Coop (10K) → Ducks (Duck Egg for CC). Deluxe Coop (20K) → Rabbit (Rabbit\'s Foot for CC).',id:'fa21f'},
-]},
-{d:22,name:'💜 10♥ Check + Winter Prep',tasks:[
-  {type:'fire',label:'🚀 SC all day',id:'fa22a'},
-  {type:'prep',label:'🌿 Buy Winter Seeds from Pierre/Willy for Greenhouse — Snow Yam + Crocus for CC Winter Foraging bundle',id:'fa22b'},
-  {type:'fire',label:'🎁 CC review — which rooms still open? Fall Foraging, Fall Crops, Fish Tank priority',id:'fa22c'},
-  {type:'fire',label:"💜 At 10♥ + Bouquet given? RAINY beach day → Old Mariner (south of beach) → Mermaid's Pendant (5,000g) → PROPOSAL",id:'fa22d'},
-  {type:'prep',label:'Kitchen upgrade done ✓ (ordered Su2) — marriage path clear once 10♥ + Pendant',id:'fa22e'},
-  {type:'prep',label:'📋 Check quest log — complete active journals before year end',id:'fa22f'},
-]},
-{d:23,name:'Final Harvest + Catfish (if rain)',tasks:[
-  {type:'fire',label:'🌧️ RAIN (predicted) — Catfish + Walleye before/after harvesting',id:'fa23_rain'},
-  {type:'fire',label:'Harvest Pumpkins + Cranberries (everything ready before season end)',id:'fa23a'},
-  {type:'fire',label:'🚀 Skull Cavern if good luck',id:'fa23b'},
-  {type:'prep',label:'📋 Next Traveling Cart: Fall 26 (Friday) — last Fall cart. Get Nautilus Shell if missing.',id:'fa23c'},
-]},
-{d:24,name:"☔ RAIN — Willy Bday + Catfish",tasks:[
-  {type:'plate',label:"🎂 Willy — Catfish / Diamond / Iridium Bar",id:'fa24a'},
-  {type:'fire',label:'Final Pumpkin + Cranberry harvest',id:'fa24b'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'fa24c'},
-]},
-{d:25,name:'Harvest Everything',tasks:[
-  {type:'fire',label:'🌧️ RAIN (predicted) — Catfish/Walleye while harvesting (AutoScythe helps)',id:'fa25_rain'},
-  {type:'fire',label:'Harvest ALL crops — nothing survives season change',id:'fa25a'},
-  {type:'fire',label:'Ship everything you\'re not keeping for CC bundles',id:'fa25b'},
-  {type:'prep',label:"Spirit's Eve is in 2 days (Fall 27, starts 9pm) — maze = Golden Pumpkin reward",id:'fa25c'},
-]},
-{d:26,name:'🛒 Traveling Cart (Friday) + Harvest',tasks:[
-  {type:'fire',label:'🛒 CHECK TRAVELING CART — final Friday cart of Fall! Nautilus Shell, Red Cabbage, Rabbit\'s Foot',id:'fa26c'},
-  {type:'fire',label:'Harvest crops + ship — last regular harvest before Spirit\'s Eve tomorrow',id:'fa26d'},
-  {type:'fire',label:'🚀 SC if time allows',id:'fa26e'},
-]},
-{d:27,name:"🎃 Spirit's Eve + Final Fall Day",tasks:[
-  {type:'fire',label:'Harvest anything remaining — crops die at season end (Fall 28 midnight)',id:'fa27a'},
-  {type:'fire',label:'🎁 DONATE everything you can to CC before winter',id:'fa27b'},
-  {type:'purchase',label:'Buy Winter Seeds from Pierre (bag of 25g) — open until 5pm before Spirit\'s Eve starts',id:'fa27c'},
-  {type:'prep',label:'Stock up: bombs, staircases, cheese/salad for winter SC runs',id:'fa27d'},
-  {type:'fire',label:"🎃 Spirit's Eve 9pm–11:30pm — solve maze for Golden Pumpkin reward",id:'fa26a'},
-  {type:'purchase',label:"Buy rare items from Spirit's Eve vendors if useful",id:'fa26b'},
-]},
-{d:28,name:'☔ RAIN — Final Fall Day (Season End)',tasks:[
-  {type:'fire',label:'Final harvest — all remaining crops die at midnight',id:'fa28a'},
-  {type:'fire',label:'Ship everything except CC bundle items',id:'fa28b'},
-  {type:'prep',label:'Organize chests — CC items separate, SC supplies ready',id:'fa28c'},
-  {type:'tomorrow',label:'Winter: plant Winter Seeds in Greenhouse (Snow Yam + Crocus for CC!)',id:'fa28d'},
-]},
-],
-
-winter:[
-{d:1,name:'❄️ Winter Begins — CC Sprint Mode',tasks:[
-  {type:'fire',label:'🌿 Plant Winter Seeds in Greenhouse IMMEDIATELY — Snow Yam + Crocus for CC Winter Foraging bundle',id:'wi1b'},
-  {type:'fire',label:'🚀 Skull Cavern all day — no crops, no sprinklers, just SC and CC bundles',id:'wi1e'},
-  {type:'gather',label:'🎁 Forage Crystal Fruit, Winter Root, Holly on paths — CC Winter Foraging bundle',id:'wi1c'},
-  {type:'gather',label:'🎁 Dig artifact spots on BEACH every day — Nautilus Shell (Field Research bundle, high chance in winter)',id:'wi1d'},
-  {type:'prep',label:'⚠️ Night Market Wi15–17: submarine fishing is the ONLY Year 1 source of Sea Urchin (CC Dye bundle) — budget time!',id:'wi1_nightmarket'},
-  {type:'plate',label:"🎂 Krobus — Diamond / Void Egg",id:'wi1a'},
-]},
-{d:2,name:'❄️ Snow — CC Bundle Check',tasks:[
-  {type:'fire',label:'🎁 DONATE everything ready at CC — which rooms are closest to complete?',id:'wi2a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi2b'},
-  {type:'fire',label:'🎣 Night fish: Squid (beach 6pm–2am), Midnight Carp (river/lake 12am–2am)',id:'wi2c'},
-  {type:'gather',label:'🎁 Bundle: dig beach artifact spots for Nautilus Shell every day!',id:'wi2d'},
-]},
-{d:3,name:"Linus Birthday",tasks:[
-  {type:'plate',label:"🎂 Linus — Cactus Fruit / Yam",id:'wi3a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi3b'},
-  {type:'gather',label:'🎁 Bundle: Winter Root (dig in snow, 7% chance artifact spots) + Crystal Fruit',id:'wi3c'},
-]},
-{d:4,name:'Skull Cavern',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — target floor 100+',id:'wi4a'},
-  {type:'prep',label:'Smelt iridium bars — sell at 1,500g each with Blacksmith / 1,000g without',id:'wi4b'},
-  {type:'gather',label:'🎁 Bundle: dig beach + town for Nautilus Shell daily',id:'wi4c'},
-]},
-{d:5,name:'❄️ Snow — Mine + Fish',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi5a'},
-  {type:'fire',label:'🎣 Lingcod (river/ocean 12pm–2am), Squid (beach 6pm–2am)',id:'wi5b'},
-  {type:'gather',label:'🎁 Bundle: Crocus + Snow Yam — check Greenhouse seeds, or forage mountain/bus stop',id:'wi5c'},
-]},
-{d:6,name:'❄️ Snow — Fish Bundles',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi6a'},
-  {type:'fire',label:'🎣 Midnight Carp (river/lake 12am–2am) — Night Fishing Bundle',id:'wi6b'},
-  {type:'gather',label:'🎁 Bundle: Squid (ocean 6pm–2am) + Walleye (if missed in fall)',id:'wi6c'},
-  {type:'prep',label:'Upgrade tools at Clint if not done (Iridium Pickaxe 25,000g!)',id:'wi6d'},
-]},
-{d:7,name:"❄️ Snow — Caroline Bday",tasks:[
-  {type:'plate',label:"🎂 Caroline — Daffodil / Summer Spangle",id:'wi7a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi7b'},
-  {type:'gather',label:'🎁 Bundle: check Greenhouse — Winter Seeds growing? Harvest if ready',id:'wi7c'},
-]},
-{d:8,name:'🎣 Festival of Ice',tasks:[
-  {type:'fire',label:'Festival of Ice 9am–2pm mountain lake — fish contest',id:'wi8a'},
-  {type:'fire',label:'Win contest with Iridium Rod + Trap Bobber',id:'wi8b'},
-  {type:'fire',label:'🚀 Skull Cavern morning before festival',id:'wi8c'},
-]},
-{d:9,name:'❄️ Snow — CC Sprint',tasks:[
-  {type:'fire',label:'🎁 DONATE to CC — how many rooms left?',id:'wi9a'},
-  {type:'fire',label:'🚀 Skull Cavern — keep stacking income',id:'wi9b'},
-  {type:'gather',label:'🎁 Bundle: dig beach DAILY for Nautilus Shell',id:'wi9c'},
-  {type:'prep',label:'Keg check — sell artisan wines + pickles',id:'wi9d'},
-  {type:'prep',label:'💜 Amethyst / Pumpkin → Abigail',id:'wi9e'},
-  {type:'prep',label:'📋 Check quest log — complete any active journals. Help Wanted board daily.',id:'wi9f'},
-]},
-{d:10,name:'❄️ Snow — Skull Cavern',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi10a'},
-  {type:'fire',label:'🎣 Squid (beach 6pm–2am) — Ocean Fish Bundle item',id:'wi10b'},
-  {type:'gather',label:'🎁 Bundle: check Greenhouse for Snow Yam + Crocus harvest',id:'wi10c'},
-]},
-{d:11,name:'❄️ Snow — Deep Cavern',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — push as deep as possible',id:'wi11a'},
-  {type:'prep',label:'Restock: bombs, staircases, cheese/salad, coffee',id:'wi11b'},
-  {type:'gather',label:'🎁 Bundle: forage Crystal Fruit, Holly, Crocus on the way around town',id:'wi11c'},
-]},
-{d:12,name:'CC Push',tasks:[
-  {type:'fire',label:'🎁 DONATE everything you have — CC completion is SO CLOSE',id:'wi12a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi12b'},
-  {type:'gather',label:'🎁 Bundle: Nautilus Shell — dig every artifact spot on beach today',id:'wi12c'},
-]},
-{d:13,name:'Almost There',tasks:[
-  {type:'fire',label:'🎁 What\'s left? Check each CC room — this week is the window!',id:'wi13a'},
-  {type:'fire',label:'🚀 Skull Cavern for income on missing items',id:'wi13b'},
-  {type:'fire',label:'🎣 Any missing Fish Tank fish? Winter fishing window closing',id:'wi13c'},
-  {type:'prep',label:'Buy Winter Star gift — check mailbox for your assigned villager',id:'wi13d'},
-]},
-{d:14,name:'🏆 CC COMPLETE TARGET DAY',tasks:[
-  {type:'fire',label:'🏆 COMMUNITY CENTER COMPLETE — this is the goal! All 6 rooms done. Junimos celebrate!',id:'wi14a'},
-  {type:'fire',label:'🎉 Ginger Island unlocked the next morning — whole new area opens!',id:'wi14b'},
-  {type:'fire',label:'🚀 If not complete yet: identify exactly what\'s missing and go get it today',id:'wi14c'},
-]},
-{d:15,name:'🌃 Night Market Day 1',tasks:[
-  {type:'fire',label:'🚀 SC in morning',id:'wi15d'},
-  {type:'fire',label:'🌃 Night Market opens 5pm at beach — submarine fishing inside the sub',id:'wi15a'},
-  {type:'purchase',label:'⭐ Submarine fishing: 1,000g ticket → catches Blobfish, Midnight Squid, Spook Fish — repeat until you get SEA URCHIN',id:'wi15b'},
-  {type:'purchase',label:'Buy: Mermaid Pearl (mermaid puzzle), Rarecrow #5, Magic Rock Candy if available',id:'wi15c'},
-]},
-{d:16,name:'🌃 Night Market Day 2',tasks:[
-  {type:'fire',label:'🚀 SC in morning',id:'wi16c'},
-  {type:'fire',label:'🌃 Night Market tonight — submarine fishing again (keep going for Sea Urchin if not caught)',id:'wi16a'},
-  {type:'fire',label:'🎣 Submarine: Midnight Squid + Sea Urchin (CC Dye bundle — ONLY source this year)',id:'wi16b'},
-]},
-{d:17,name:'🌃 Night Market Day 3 — Last Chance',tasks:[
-  {type:'fire',label:'🚀 SC in morning',id:'wi17c'},
-  {type:'fire',label:'🌃 FINAL Night Market — last chance for Sea Urchin all year!',id:'wi17a'},
-  {type:'fire',label:'🎣 Submarine until you get Sea Urchin — Dye bundle is blocked without it',id:'wi17b'},
-]},
-{d:18,name:'❄️ Snow — Post-Market',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi18a'},
-  {type:'prep',label:'Ship artisan wines + pickles for big gold',id:'wi18b'},
-  {type:'gather',label:'🎁 Any open bundles? Forage + dig + fish for remaining items',id:'wi18c'},
-]},
-{d:19,name:'❄️ Snow — Skull Cavern',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi19a'},
-  {type:'fire',label:'🎣 Squid (beach 6pm), Lingcod (river 12pm), Midnight Carp (lake 12am)',id:'wi19b'},
-]},
-{d:20,name:"❄️ Snow — Evelyn Bday",tasks:[
-  {type:'plate',label:"🎂 Evelyn — Diamond / Chocolate Cake",id:'wi20a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi20b'},
-  {type:'gather',label:'🎁 Bundle: forage for Crocus at mountain, bus stop, Pelican Town',id:'wi20c'},
-]},
-{d:21,name:'Skull Cavern',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern deep run',id:'wi21a'},
-  {type:'prep',label:'Organize inventory — ship everything not needed',id:'wi21b'},
-  {type:'gather',label:'🎁 Bundle: dig beach for Nautilus Shell — still daily!',id:'wi21c'},
-]},
-{d:22,name:'❄️ Snow — Year End Prep',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi22a'},
-  {type:'prep',label:'Buy Winter Star gift for your assigned villager',id:'wi22b'},
-  {type:'prep',label:'Plan Year 2: Ginger Island, farm expansion, Ancient Fruit seedlings',id:'wi22c'},
-  {type:'prep',label:'💜 Abigail: at 10♥ + Bouquet given? Buy Mermaid\'s Pendant from Old Mariner on a rainy beach day',id:'wi22d'},
-  {type:'fire',label:'📋 Complete ALL active journal quests before year ends — check quest log now',id:'wi22e'},
-  {type:'prep',label:'📋 Pierre\'s Special Orders board: check for any final week orders to complete',id:'wi22f'},
-]},
-{d:23,name:"❄️ Snow — Leah Bday",tasks:[
-  {type:'plate',label:"🎂 Leah — Salad (Saloon 220g) / Wine",id:'wi23a'},
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi23b'},
-  {type:'fire',label:'🎣 Final push for any missing fish bundle items',id:'wi23c'},
-]},
-{d:24,name:"❄️ Snow — George Bday",tasks:[
-  {type:'plate',label:"🎂 George — Leek / Fried Mushroom",id:'wi24a'},
-  {type:'fire',label:'🚀 Final big Skull Cavern run before Feast',id:'wi24b'},
-  {type:'prep',label:'Gift wrapped for Winter Star tomorrow?',id:'wi24c'},
-]},
-{d:25,name:'🎄 Feast of the Winter Star',tasks:[
-  {type:'fire',label:'🎄 Feast of the Winter Star — town square 9am–2pm',id:'wi25a'},
-  {type:'fire',label:'Give secret gift to your assigned villager',id:'wi25b'},
-  {type:'gather',label:'🎁 Bundle: Nautilus Shell sometimes received as gift — check your gifts!',id:'wi25c'},
-]},
-{d:26,name:'Final Push',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern — last big push of Year 1',id:'wi26a'},
-  {type:'prep',label:'Ship remaining artisan goods for final gold count',id:'wi26b'},
-  {type:'gather',label:'🎁 Any CC items still missing? Forage + fish + dig today',id:'wi26c'},
-]},
-{d:27,name:'❄️ Snow — Year End',tasks:[
-  {type:'fire',label:'🚀 Skull Cavern',id:'wi27a'},
-  {type:'prep',label:'Final organize — chests, kegs, shipping bin',id:'wi27b'},
-  {type:'tomorrow',label:'Year 1 ends at midnight — everything in shipping bin!',id:'wi27c'},
-]},
-{d:28,name:'❄️ Snow — Year 1 Complete!',tasks:[
-  {type:'fire',label:'Final shipping — everything in bin by midnight',id:'wi28a'},
-  {type:'fire',label:'🎁 Final CC donate — last chance for Year 1 completion!',id:'wi28b'},
-  {type:'prep',label:'Review: did you complete the Community Center? 🎉',id:'wi28c'},
-  {type:'tomorrow',label:'Year 2: Ginger Island + farm expansion + animals begins!',id:'wi28d'},
-]},
-],
+// Day-level metadata only (which task ids belong to a day, and their label/
+// urgency, now lives in TASK_DB — this table is just the human-facing
+// per-day header name, analogous to the existing EVENTS table for festival/
+// birthday calendar entries). Extracted once from the original hand-authored
+// route before it was deleted; not duplicated content going forward.
+const DAY_NAMES={
+  spring:{
+    1:'Year Begins — Meet Everyone',
+    2:'Fishing Begins — Get Fiberglass Rod',
+    3:'Catfish Day (rain = Catfish in Forest river)',
+    4:'Mountain Lake Fishing',
+    5:'☔ RAIN — Catfish + Copper Pickaxe',
+    6:'Fish + Smelt Iron',
+    7:'Lewis Birthday + Wizard Tower',
+    8:'Catfish Day (if rain) + Cave Choice',
+    9:'☔ RAIN — Catfish Day + Large Pack',
+    10:'Vincent Bday + Catfish (if rain)',
+    11:'🌬️ Windy — Kale Harvest + Mining Starts',
+    12:'Catfish Day (if rain) or Mine',
+    13:'Mine (skip Egg Festival)',
+    14:'☔ RAIN — Haley Bday + Catfish',
+    15:'🎁 CC Bundle Day',
+    16:'⛈️ STORM — Mine Push',
+    17:'Mine to 120 / SC Prep',
+    18:'☔ RAIN — SC / Catfish',
+    19:'SC Runs Begin',
+    20:'Harvest Kale + Plant Batch 2',
+    21:'SC / Mine',
+    22:'🌬️ Windy — SC + Copper Axe',
+    23:'SC / Catfish if Rain',
+    24:'🌸 Flower Dance (Clint + Pierre closed)',
+    25:'Retrieve Copper Axe + Submit Steel',
+    26:'Pierre Birthday + SC',
+    27:'☔ RAIN — Emily Bday + Axe + Catfish',
+    28:'🌬️ Windy — Season End',
+  },
+  summer:{
+    1:'💰 Cash Out + CC + Vault Day',
+    2:'🌟 Bus Day + ⭐ Galaxy Sword + Starfruit',
+    3:'⚒️ First SC Run — Clint Closed Wed',
+    4:'⛏️ Iridium Pickaxe Drop + SC + Jas Birthday',
+    5:'🛒 Traveling Cart + SC + Crab Pots',
+    6:'⛏️ Retrieve Iridium Pickaxe + SC',
+    7:'🛒 Traveling Cart (Sunday) + SC',
+    8:'Gus Birthday + SC',
+    9:'SC + Fiddlehead',
+    10:'⛈️ STORM — Maru Bday + Battery Packs + SC',
+    11:'🌊 Luau + SC',
+    12:'🌟 Batch 1 Harvest + Replant + Cart',
+    13:'⛈️ STORM — Battery Pack Day (guaranteed)',
+    14:'🐡 Pufferfish + Traveling Cart',
+    15:'⛈️ STORM — SC + Battery Packs (no Pufferfish)',
+    16:'🌿 Summer Foraging Bundle Day',
+    17:'Sam Birthday + SC',
+    18:'SC + Ocean Fish Push',
+    19:'Demetrius Birthday + 🛒 Cart',
+    20:'⛈️ Batch 2 Harvest + Replant + Storm',
+    21:'🛒 Cart + SC + Eel Night',
+    22:'SC + Chef\'s Bundle',
+    23:'SC + Desert Trader',
+    24:'SC + 🌸 Poppy Harvest',
+    25:'SC + Oak Tappers + Fall Prep',
+    26:'⚡ Storm + 🛒 Cart + SC',
+    27:'Final SC + Starfruit Harvest',
+    28:'🌊 Moonlight Jellies + Season Close',
+  },
+  fall:{
+    1:'🍂 Fall Begins — SC + Seeds + Foraging',
+    2:'☔ RAIN — Penny Bday + Wheat→Pumpkins',
+    3:'CC Donation Day + SC',
+    4:'SC + Foraging (rain: Catfish/Walleye)',
+    5:'🛒 Elliott Birthday + SC',
+    6:'☔ RAIN — Catfish/Walleye + SC',
+    7:'Pre-Blackberry + SC',
+    8:'🫐 Blackberry Season!',
+    9:'🫐 Blackberry + Re-spec Day',
+    10:'🎃 First Pumpkin Harvest + Replant',
+    11:'☔ RAIN — Catfish/Walleye',
+    12:'CC Donation Run',
+    13:'💜💜 ABIGAIL BIRTHDAY — Most Important Day',
+    14:'Harvey Birthday + Pumpkins',
+    15:'☔ RAIN — Pre-Fair + Catfish',
+    16:'🎡 Stardew Valley Fair',
+    17:'Post-Fair',
+    18:'CC Sprint',
+    19:'☔ RAIN — Catfish/Walleye + SC',
+    20:'☔ RAIN — Catfish/Walleye (second day)',
+    21:'Robin Bday + Building Check',
+    22:'💜 10♥ Check + Winter Prep',
+    23:'Final Harvest + Catfish (if rain)',
+    24:'☔ RAIN — Willy Bday + Catfish',
+    25:'Harvest Everything',
+    26:'🛒 Traveling Cart (Friday) + Harvest',
+    27:'🎃 Spirit\'s Eve + Final Fall Day',
+    28:'☔ RAIN — Final Fall Day (Season End)',
+  },
+  winter:{
+    1:'❄️ Winter Begins — CC Sprint Mode',
+    2:'❄️ Snow — CC Bundle Check',
+    3:'Linus Birthday',
+    4:'Skull Cavern',
+    5:'❄️ Snow — Mine + Fish',
+    6:'❄️ Snow — Fish Bundles',
+    7:'❄️ Snow — Caroline Bday',
+    8:'🎣 Festival of Ice',
+    9:'❄️ Snow — CC Sprint',
+    10:'❄️ Snow — Skull Cavern',
+    11:'❄️ Snow — Deep Cavern',
+    12:'CC Push',
+    13:'Almost There',
+    14:'🏆 CC COMPLETE TARGET DAY',
+    15:'🌃 Night Market Day 1',
+    16:'🌃 Night Market Day 2',
+    17:'🌃 Night Market Day 3 — Last Chance',
+    18:'❄️ Snow — Post-Market',
+    19:'❄️ Snow — Skull Cavern',
+    20:'❄️ Snow — Evelyn Bday',
+    21:'Skull Cavern',
+    22:'❄️ Snow — Year End Prep',
+    23:'❄️ Snow — Leah Bday',
+    24:'❄️ Snow — George Bday',
+    25:'🎄 Feast of the Winter Star',
+    26:'Final Push',
+    27:'❄️ Snow — Year End',
+    28:'❄️ Snow — Year 1 Complete!',
+  },
 };
+
+// Route 66's day-by-day view is now DERIVED from TASK_DB (the Stardrop
+// Holocron's underlying database) rather than a separately hand-authored
+// object. Every task with schedule.mode==='fixed' belongs to exactly one
+// calendar day; getRouteDays() groups them back into the {d,name,tasks}
+// shape the rendering code already expects, so renderRoute/renderCarry/
+// renderHome/patchTodayCard needed zero changes to their internals — only
+// their data source changed. This is intentionally NOT computed at
+// top-level script scope because TASK_DB isn't fully assembled yet at this
+// point in the file; it's cached lazily on first real use instead (always
+// after TASK_DB exists, since nothing calls it before init()/render calls
+// fire, and those only happen once the whole script has finished running).
+let _routeDaysCache=null;
+function getRouteDays(){
+  if(_routeDaysCache) return _routeDaysCache;
+  const bySeason={spring:{},summer:{},fall:{},winter:{}};
+  TASK_DB.forEach(t=>{
+    const sch=t.schedule;
+    if(!sch||sch.mode!=='fixed') return;
+    const season=sch.season, day=sch.day;
+    if(!bySeason[season]) return;
+    if(!bySeason[season][day]) bySeason[season][day]={d:day,name:(DAY_NAMES[season]&&DAY_NAMES[season][day])||'',tasks:[]};
+    bySeason[season][day].tasks.push({type:t.urgency,label:t.label,id:t.id});
+  });
+  const out={};
+  ['spring','summer','fall','winter'].forEach(season=>{
+    out[season]=Object.values(bySeason[season]).sort((a,b)=>a.d-b.d);
+  });
+  _routeDaysCache=out;
+  return out;
+}
 
 const EVENTS={
 spring:[
@@ -1871,7 +1335,7 @@ function renderHome(){
   const sn={spring:'Spring',summer:'Summer',fall:'Fall',winter:'Winter'};
   document.getElementById('home-day').textContent=`${sn[S.season]} ${S.day} · Year 1`;
 
-  const todayData=(RD[S.season]||[]).find(d=>d.d===S.day);
+  const todayData=(getRouteDays()[S.season]||[]).find(d=>d.d===S.day);
   if(todayData){
     const tasks=computeDynamicPrep(todayData.tasks,S.bridge);
     const countable=tasks.filter(t=>!t.noCount);
@@ -2185,7 +1649,7 @@ function _taskRowHTML(t, ch, isToday){
 function patchTodayCard(){
   const todayCard=document.querySelector('#route-list .route-day.today');
   if(!todayCard) return;
-  const dayData=(RD[S.season]||[]).find(d=>d.d===S.day);
+  const dayData=(getRouteDays()[S.season]||[]).find(d=>d.d===S.day);
   if(!dayData) return;
   const tasks=computeDynamicPrep(dayData.tasks,S.bridge);
   const countable=tasks.filter(t=>!t.noCount);
@@ -2210,7 +1674,7 @@ function renderRoute(){
     openSet.add(S.day);
     _routeAutoOpenDay=dayKey;
   }
-  const days=RD[S.season];
+  const days=getRouteDays()[S.season];
   const frag=document.createDocumentFragment();
   days.forEach(day=>{
     const isToday=day.d===S.day;
@@ -2409,9 +1873,11 @@ function taskRenderState(task,ctx){
 }
 
 // TASK_DB: the shared master list every category filter/sub-tab renderer
-// eventually reads from. Populated by migrating RD (Chunk 8) and by ongoing
-// content authoring per category (Part B §7) — starts empty here since this
-// chunk is the engine, not the content.
+// reads from — including Route 66 itself now (see getRouteDays() far below,
+// which derives the day-by-day view straight from this array instead of a
+// separately hand-authored object). Originally migrated from a standalone
+// RD literal (Chunk 8); RD has since been deleted entirely so there's one
+// real source of truth, not two kept in sync by hand.
 const TASKS_YEAR1_LEGACY=[
 {id:'sp1a',category:'skills',urgency:'fire',label:'Chop 9 Maple/Pine trees until Foraging Lv 1 FIRST — do not chop Oak trees (save acorns)',schedule:{mode:'fixed',year:1,season:'spring',day:1}},
 {id:'sp1b',category:'farming-schedule',urgency:'fire',label:'Meet ALL 27 villagers today → completes Introductions quest (100g reward tomorrow)',schedule:{mode:'fixed',year:1,season:'spring',day:1}},
@@ -3638,7 +3104,7 @@ function renderCarry(){
   const curOrd=SORD_[S.season]*28+S.day;
   const overdue=[];
   ['spring','summer','fall','winter'].forEach(season=>{
-    (RD[season]||[]).forEach(day=>{
+    (getRouteDays()[season]||[]).forEach(day=>{
       const dayOrd=SORD_[season]*28+day.d;
       if(dayOrd>=curOrd) return;
       const missed=day.tasks.filter(t=>!taskUserDone(t.id));
