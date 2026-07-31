@@ -5997,6 +5997,12 @@ function renderFromData(data){
   if(S.tab==='story') renderStoryTab(lsGet('sdv_stab')||'previously');
   if(S.tab==='nightlock') renderNightlockSub(lsGet('sdv_nsub')||'tardis');
   if(S.tab==='holo') renderHolo(lsGet('sdv_holocat')||'all');
+  // Route 66's own sub-tabs (par/carry specifically) weren't in this list —
+  // goSubPanel's fix covers switching INTO them fresh, but if the user is
+  // already sitting on Par/Carry when a new poll lands mid-session, they
+  // need the same active-tab refresh the other panels get.
+  if(S.tab==='route'&&S.sub==='par') renderPar();
+  if(S.tab==='route'&&S.sub==='carry') renderCarry();
 }
 
 function updateSyncDot(){
@@ -6180,6 +6186,17 @@ function goSubPanel(sub){
   if(btn) btn.classList.add('active');
   if(panel) panel.classList.add('active');
   if(S.tab==='route') document.documentElement.dataset.sub=sub;
+  // Every other tab's sub-switcher (goHoardSub/goStoryTab/goNightlockSub/
+  // goHolo) re-renders its target on every switch, so it's always fresh
+  // against current S.bridge/S.season/S.day. This one didn't — it only
+  // toggled CSS visibility, so Never Forget/Are We There Yet kept showing
+  // whatever they'd last rendered (often the init()-time default of Spring
+  // Day 1, from before the bridge's first real day ever arrived) for the
+  // entire session. Real bug, not intentional.
+  if(sub==='tasks') renderRoute();
+  else if(sub==='cal') renderCal();
+  else if(sub==='par') renderPar();
+  else if(sub==='carry') renderCarry();
 }
 
 
