@@ -3536,7 +3536,7 @@ function renderUnlocks(){
   const el=document.getElementById('unlocks-content');
   if(!el) return;
   const b=S.bridge;
-  const TLVL=['Basic','Copper','Iron','Gold','Iridium'];
+  const TLVL=['Basic','Copper','Steel','Gold','Iridium']; // corrected — Stardew's tier-2 tool name is "Steel", not "Iron" (confirmed against real save XML/wiki)
   let html='';
 
   // Tools
@@ -4375,7 +4375,6 @@ function renderOdds(){
   <div class="unlock-section"><div class="unlock-sec-title">${si('buff-farming',18)}Farm Life</div>
     ${srow(`${si('item-prismatic-shard',14)}Days Played`,days,'',days>=112?'Year 1 complete!':days>=84?'Winter is here':days>=56?'Fall vibes':days>=28?'Summer sun':'Spring baby')}
     ${srow(`${si('buff-speed',14)}Steps Taken`,stats.stepsTaken||0,'',null)}
-    ${srow(`${si('item-beer',14)}Times Slept`,stats.timesSleep||0,'',null)}
     ${srow(`${si('icon-skull',14)}Passed Out`,passOut,'',passOut>=10?'Please eat something!!':passOut>=5?'Touch some grass':passOut>=1?'Oops':null)}
   </div>
   <div class="unlock-section"><div class="unlock-sec-title">${si('fishing-rod',18)}The Fishing Life</div>
@@ -4441,9 +4440,12 @@ const SPECIAL_FLAGS=[
   {k:'hasMagicInk',l:'Magic Ink',d:'Wizard quest reward'},
   {k:'hasMagnifyingGlass',l:'Magnifying Glass',d:'Find secret notes'},
   {k:'canUnderstandDwarves',l:'Dwarf Language',d:'4 dwarf scrolls donated'},
-  {k:'hasGaloshes',l:'Galoshes',d:'Rainy day speed boost'},
   {k:'hasSpecialCharm',l:'Special Charm',d:'Daily luck +0.025'},
 ];
+// "Galoshes" (was here, "rainy day speed boost") was removed — verified via
+// web search that no such vanilla item/flag exists in Stardew Valley; that
+// mechanic only exists in community mods, not the base game this tracker
+// covers. hasGaloshes was always going to read false for every real player.
 
 function heartBar(pts,max){
   const full=Math.floor(pts/250);

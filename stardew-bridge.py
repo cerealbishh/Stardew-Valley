@@ -886,19 +886,26 @@ def parse_save():
     out["specialOrders"] = special_orders
     out["completedSpecialOrders"] = completed_so
 
-    # Tool upgrade levels: 0=Basic 1=Copper 2=Iron 3=Gold 4=Iridium
-    # Scan both player inventory and chests (players often store tools in a chest)
+    # Tool upgrade levels: 0=Basic 1=Copper 2=Steel 3=Gold 4=Iridium
+    # Scan both player inventory and chests (players often store tools in a chest).
+    # Match by the item's real xsi:type attribute (Pickaxe/Axe/Hoe/WateringCan),
+    # NOT by its <name> text — confirmed against a real save that once a tool is
+    # upgraded past Basic, its <name> becomes tier-prefixed ("Iridium Pickaxe"),
+    # so the previous exact-string match against bare "Pickaxe"/"Axe"/"Hoe"
+    # silently failed for every upgraded tool and reported it as still Basic.
+    # xsi:type stays the same ("Pickaxe") across all tiers, so it's reliable.
+    XSI_TYPE = "{http://www.w3.org/2001/XMLSchema-instance}type"
+    TOOL_TYPE_TO_KEY = {"Pickaxe": "Pickaxe", "Axe": "Axe", "Hoe": "Hoe", "WateringCan": "Watering Can"}
     tool_levels = {}
     _tool_paths = [".//player/items/Item", ".//objects/item/value/Object/items/Item"]
     for path in _tool_paths:
         for item in root.findall(path):
-            name_el = item.find("name")
+            xsi_type = item.attrib.get(XSI_TYPE)
             upgrade_el = item.find("upgradeLevel")
-            if name_el is not None and name_el.text and upgrade_el is not None:
-                n = name_el.text
-                if n in ("Pickaxe", "Axe", "Hoe", "Watering Can"):
-                    lvl = int(upgrade_el.text or 0)
-                    tool_levels[n] = max(tool_levels.get(n, 0), lvl)
+            if xsi_type in TOOL_TYPE_TO_KEY and upgrade_el is not None:
+                key = TOOL_TYPE_TO_KEY[xsi_type]
+                lvl = int(upgrade_el.text or 0)
+                tool_levels[key] = max(tool_levels.get(key, 0), lvl)
     out["toolLevels"] = tool_levels
 
     house_el = root.find(".//player/houseUpgradeLevel")
@@ -1055,13 +1062,20 @@ def parse_save():
                 "maxDamage": max_dmg,
             }
 
+    # Confirmed against a real save: hat/boots/rings/shirt/pants each hold the
+    # equipped item's fields (name, category, etc.) DIRECTLY as children of
+    # their own tag — there's no nested Hat/Boots/Ring/Clothing wrapper element
+    # the way the previous paths assumed. That wrong nesting silently made
+    # every one of these report None even when something was really equipped
+    # (confirmed: this save has a Glow Ring, Magnet Ring, Space Boots, and a
+    # Shirt/Shorts pair genuinely equipped, all previously invisible).
     out["equipment"] = {
-        "hat":       _item_name(".//player/hat/Hat"),
-        "boots":     _item_name(".//player/boots/Boots"),
-        "leftRing":  _item_name(".//player/leftRing/Ring"),
-        "rightRing": _item_name(".//player/rightRing/Ring"),
-        "shirt":     _item_name(".//player/shirtItem/Clothing"),
-        "pants":     _item_name(".//player/pantsItem/Clothing"),
+        "hat":       _item_name(".//player/hat"),
+        "boots":     _item_name(".//player/boots"),
+        "leftRing":  _item_name(".//player/leftRing"),
+        "rightRing": _item_name(".//player/rightRing"),
+        "shirt":     _item_name(".//player/shirtItem"),
+        "pants":     _item_name(".//player/pantsItem"),
         "weapon":    best_weapon,
     }
 
@@ -1089,16 +1103,26 @@ def parse_save():
     # ── SPECIAL FLAGS ─────────────────────────────────────────────────────────
     # Stardew 1.6 stores many boolean flags as empty XML elements (<flag />)
     # rather than <flag>true</flag>, so also cross-check mail flags as fallback.
+    # Real flag names sourced from the wiki's Modding:Mail_data reference page
+    # (the actual internal mailReceived flag list, not guessed) — this caught
+    # "learnedDwarfLanguage" being wrong (real flag is
+    # HasDwarvishTranslationGuide, confirmed against a real save that had
+    # donated all 4 Dwarf Scrolls yet still showed canUnderstandDwarves=false)
+    # and added the previously-missing fallbacks for Dark Talisman/Magic Ink/
+    # Special Charm, which had no mail cross-check at all before.
     MAIL_FLAG_MAP = {
         "hasSkullKey":         "HasSkullKey",
         "hasRustyKey":         "HasRustyKey",
         "hasClubCard":         "HasClubCard",
-        "canUnderstandDwarves":"learnedDwarfLanguage",
+        "canUnderstandDwarves":"HasDwarvishTranslationGuide",
         "hasMagnifyingGlass":  "HasMagnifyingGlass",
+        "hasDarkTalisman":     "HasDarkTalisman",
+        "hasMagicInk":         "HasMagicInk",
+        "hasSpecialCharm":     "HasSpecialCharm",
     }
     for flag in ("hasSkullKey", "hasClubCard", "hasDarkTalisman", "hasMagicInk",
                  "hasMagnifyingGlass", "hasRustyKey", "canUnderstandDwarves",
-                 "hasGaloshes", "hasSpecialCharm", "catPerson"):
+                 "hasSpecialCharm", "catPerson"):
         el = root.find(f".//player/{flag}")
         xml_true = el is not None and (el.text or "").lower() == "true"
         mail_key = MAIL_FLAG_MAP.get(flag)
